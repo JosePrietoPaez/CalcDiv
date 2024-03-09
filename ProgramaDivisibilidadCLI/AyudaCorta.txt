@@ -1,0 +1,4 @@
+﻿Plantilla de uso: DivCalc -[argumentos] (divisor base coeficientes) (nombre)
+
+Los argumentos con -d deben ser positivos, divisor y base deben ser mayores que uno
+El nombre, con -n, puede no puede ser vacío
