@@ -202,5 +202,9 @@ namespace Operaciones {
 		{
 			CalculosEstatico.ReglasDivisibilidad(reglas, num, cantidad, _raiz);
 		}
+
+		public string ReglaDividibilidadExtendida(long divisor, int cantidad) {
+			return CalculosEstatico.ReglaDividibilidadExtendida(divisor, cantidad, _raiz);
+		}
 	}
 }

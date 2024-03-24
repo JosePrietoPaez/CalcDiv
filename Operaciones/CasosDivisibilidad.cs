@@ -1,0 +1,12 @@
+﻿using System;
+
+namespace Operaciones {
+	internal enum CasosDivisibilidad {
+		USAR_NORMAL = 0,
+		MIRAR_CIFRAS = 1,
+		SUMAR_BLOQUES = 2,
+		RESTAR_BLOQUES = 3,
+		UNO = 4,
+		CERO = 5
+	}
+}
