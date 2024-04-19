@@ -12,4 +12,9 @@
     <PackageReference Include="jmpp.expanded-lists" Version="0.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="Operaciones\Operaciones.csproj" />
+    <ProjectReference Include="ProgramaDivisibilidadCLI\ProgramaDivisibilidadCLI.csproj" />
+  </ItemGroup>
+
 </Project>
