@@ -74,7 +74,9 @@ namespace Operaciones
 				Longitud = primos.Longitud
 			};
 			Calculos.Descomposicion(primos, res, num);
-			res.BorrarUltimos(0L);
+			while (res.UltimoElemento == 0L) {
+				res.BorrarUltimo();
+			}
 			return res;
 		}
 
@@ -96,30 +98,28 @@ namespace Operaciones
 			long cont;
 			ListSerie<long> serie = new();
 			if (_longitudPrimos == 0) { //Si no se ha calculado ninguno hace los cálculos completos
-				if (num == 2) {
+				if (num >= 2) {
 					serie.InsertarUltimo(2L);
-					_primosCalculados.Insertar(2L);
-					_longitudPrimos = 1;
 				}
 				if (num <= 2) {
 					return serie;
 				}
 				cont = 3;
+				_primosCalculados.Insertar(2L); //Es más complicado si se introduce en el primer if
+				_longitudPrimos = 1;
 			} else {
-				for (int i = 0; _primosCalculados[i] <= num && i < _primosCalculados.Longitud; i++) { //Se insertan todos los 
+				for (int i = 0; _primosCalculados[i] <= num && i < _primosCalculados.Longitud; i++) { //Se insertan todos los que se necesiten para no tener que buscarlos otra vez
 					serie.InsertarUltimo(_primosCalculados[i]);
 				}
-				cont = _primosCalculados.UltimoElemento;
+				cont = _primosCalculados.UltimoElemento + 2; //Se le suma 2 para evitar que se inserte otra vez en el while
 			}
 
-			if (serie.UltimoElemento == cont && cont > num) { //Si aún hacen falta más primos se encuentran más
-				while (cont <= num) {
-					if (EsPrimo(cont)) {
-						serie.InsertarUltimo(cont);
-						_primosCalculados.InsertarUltimo(cont);
-					}
-					cont += 2;
+			while (cont <= num) {
+				if (EsPrimo(cont)) {
+					serie.InsertarUltimo(cont);
+					_primosCalculados.InsertarUltimo(cont);
 				}
+				cont += 2;
 			}
 			
 			return serie;
@@ -328,23 +328,24 @@ namespace Operaciones
 			OperacionesSeries.PotenciaModProgresiva(serie, inv, num, cantidad, 0);
 		}
 
-		public static string ReglaDividibilidadExtendida(long divisor, int cantidad, long raiz) {
+		public static (bool,string) ReglaDivisibilidadExtendida(long divisor, long raiz) {
 			var caso = CasoEspecialRegla(divisor, raiz);
-			return caso.caso switch {
+			string mensaje = caso.caso switch {
 				CasosDivisibilidad.MIRAR_CIFRAS => CrearMensajeDivisibilidad($"{divisor} está compuesto de potencias de divisores de {raiz}",
-										$"sus primeras {caso.informacion} cifras son múltiplo de {divisor}",
-										raiz, divisor),
+					$"sus primeras {caso.informacion} cifras son múltiplo de {divisor}",
+					raiz, divisor),
 				CasosDivisibilidad.UNO => "Todos los enteros son divisibles entre uno.",
 				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es {raiz} elevado a {caso.informacion}",
-										$"al separar sus cifras en grupos de {caso.informacion} desde las unidades, la diferencia de la suma de los grupos pares" +
-										$" y la de los grupos impares es múltiplo de {divisor}",
-										raiz,divisor),
+					$"al separar sus cifras en grupos de {caso.informacion} desde las unidades, la diferencia de la suma de los grupos pares" +
+					$" y la de los grupos impares es múltiplo de {divisor}",
+					raiz,divisor),
 				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es {raiz} elevado a {caso.informacion}",
-										$"al separar sus cifras en grupos de {caso.informacion} desde las unidades, la suma de los grupos es múltiplo de {divisor}",
-										raiz, divisor),
+					$"al separar sus cifras en grupos de {caso.informacion} desde las unidades, la suma de los grupos es múltiplo de {divisor}",
+					raiz, divisor),
 				CasosDivisibilidad.CERO => "No se le puede aplicar la relación de divisibilidad a cero.",
-				_ => "No se ha encontrado ninguna regla alternativa, use aplique la regla calculada.",
+				_ => "No se ha encontrado ninguna regla alternativa, aplique la regla calculada.",
 			};
+			return (caso.caso != CasosDivisibilidad.USAR_NORMAL, mensaje);
 		}
 
 		[return: NotNull]

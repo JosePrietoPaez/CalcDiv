@@ -24,6 +24,7 @@ Si no es tan fácil ver si el resultado es múltiplo del divisor, se aplica la r
 -d: si se pasan todos los datos se obtiene un resultado sin que la aplicación pida datos
 -t: se escriben todas las reglas posibles con la cantidad de coeficientes proporcionado, el valor absoluto de los coeficientes será menor al del divisor
 -n: escribe el nombre introducido como parámetro antes de cada elemento con su indice
+-x: cambia la salida a una regla alternativa que no usa coeficientes, si puede encontrar
 
 Si se introduce un argumento incorrecto será ignorado
 
@@ -32,3 +33,4 @@ Si se introduce un argumento incorrecto será ignorado
 0: el programa se ha ejecutado de forma correcta
 1: no todos los datos introducidos fueron correctos
 2: el usuario ha cerrado el programa de forma voluntaria
+3: se pidió una regla alternativa pero no se pudo encontrar
