@@ -10,11 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="jmpp.expanded-lists" Version="0.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="Operaciones\Operaciones.csproj" />
-    <ProjectReference Include="ProgramaDivisibilidadCLI\ProgramaDivisibilidadCLI.csproj" />
+    <PackageReference Include="NUnit" Version="4.1.0" />
   </ItemGroup>
 
 </Project>

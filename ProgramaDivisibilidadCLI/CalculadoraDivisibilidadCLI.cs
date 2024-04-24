@@ -37,6 +37,7 @@ namespace ProgramaDivisibilidad {
 		private static bool IntentarDirecto() { //Intenta dar las reglas de forma directa, devuelve true si lo consigue y false si hay algún error
 			bool correcto = DatosFlags.NumeroArgumentosCorrecto(PrimerNullOFin(datos), flags);
 			if (correcto) {
+				Console.WriteLine($"Divisor: {datos[0]}, Base: {datos[1]}, Coeficientes: {datos[2]}");
 				if (!long.TryParse(datos[0], out long divisor) ||
 					!long.TryParse(datos[1], out long @base) ||
 					!int.TryParse(datos[2], out int coeficientes) ||
@@ -49,7 +50,7 @@ namespace ProgramaDivisibilidad {
 						var salidaExpandido = CalculosEstatico.ReglaDivisibilidadExtendida(divisor, @base); //Obtenemos la regla expandida
 						Console.WriteLine(salidaExpandido.Item2);
 						correcto = salidaExpandido.Item1; //Si se ha obtenido la regla se salta el resto
-						salida = SALIDA_FRACASO_EXPANDIDA;
+						salida = SALIDA_CORRECTA;
 					}
 					if ((!flags[DatosFlags.EXPANDIDO] || !correcto) && CalculosEstatico.Mcd(divisor, @base) != 1) { //Si la base y divisor no son coprimos y no ha conseguido encontrar otras reglas
 						Console.WriteLine(ERROR_PRIMO);
@@ -57,6 +58,7 @@ namespace ProgramaDivisibilidad {
 						correcto = false;
 					} else if (!flags[DatosFlags.EXPANDIDO] || !correcto) { //Si los argumentos son correctos y no ha conseguido encontrar otras reglas
 						Console.WriteLine(StringReglasConNombre(divisor, @base, coeficientes, 3));
+						salida = SALIDA_FRACASO_EXPANDIDA;
 						correcto = true;
 					}
 				}
