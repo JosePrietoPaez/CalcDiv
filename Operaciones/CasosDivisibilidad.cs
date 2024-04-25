@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Operaciones {
-	internal enum CasosDivisibilidad {
+	public enum CasosDivisibilidad {
 		USAR_NORMAL = 0,
 		MIRAR_CIFRAS = 1,
 		SUMAR_BLOQUES = 2,

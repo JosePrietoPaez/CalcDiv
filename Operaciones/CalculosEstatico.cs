@@ -9,13 +9,13 @@ namespace Operaciones
 	public static class CalculosEstatico {
 
 		private static int _longitudPrimos = 0;
-		private static readonly IListaDinamica<long> _primosCalculados = new ListSerie<long>();
+		private static readonly ListSerie<long> _primosCalculados = new ListSerie<long>();
 
 		/// <summary>
-		/// Esta propiedad devuelve un clon de la lista de primos más larga que ha sido calculada para no tener que calcular todos los primos siempre
+		/// Esta propiedad devuelve un clon de la lista de primos más larga que ha sido calculada para no tener que calcular todos los primos siempre.
 		/// </summary>
 		/// <remarks>
-		/// Asegúrese de que PrimosHasta ha sido llamado con argumento mayor o igual al número que espera
+		/// Asegúrese de que PrimosHasta ha sido llamado con argumento mayor o igual al número que espera.
 		/// </remarks>
 		public static IListaDinamica<long> PrimosCalculados => _primosCalculados.ClonarDinamica();
 		public static bool EsPrimo(long raiz) {
@@ -30,10 +30,10 @@ namespace Operaciones
 			return primo;
 		}
 
-		/**
-		 * Calcula el factorial de raiz
-		 * @return raiz!
-		 */
+		
+		/// <summary>
+		/// Devuelve el factorial de <c>raiz</c>.
+		/// </summary>
 		public static long Factorial(long raiz) {
 			ArgumentOutOfRangeException.ThrowIfNegative(raiz);
 			long res = raiz;
@@ -44,12 +44,9 @@ namespace Operaciones
 			return res;
 		}
 
-		/**
-		 * Devuelve el máximo común divisor de raiz y segundo
-		 * <p></p>
-		 * Se usa el algoritmo de Euclidess
-		 * @return mcd(raiz, segundo)
-		 */
+		/// <summary>
+		/// Devuelve el máximo común divisor de <c>raiz</c> y <c>segundo</c>.
+		/// </summary>
 		public static long Mcd(long raiz, long segundo)
 		{
 			if (raiz < segundo) { //Necesitamos que raiz sea mayor o igual que segundo
@@ -197,8 +194,7 @@ namespace Operaciones
 		 * @param raiz raiz del número
 		 * @return número de cifras de {@code num} en raiz {@code raiz}
 		 */
-		public static short Cifras(long num, long raiz) {
-			if (num == 0) return 1;
+		public static short Cifras(long num, long raiz) { 
 			return (short)Math.Ceiling(Math.Log(Math.Abs(num) + 1L) / Math.Log(raiz));
 		}
 
@@ -229,9 +225,10 @@ namespace Operaciones
 		 * @param raiz raiz del número
 		 * @return cifra {@code pos} de {@code num} en raiz {@code raiz}
 		 */
-		public static byte Cifra(long num, long pos, long raiz) {
+		public static short Cifra(long num, long pos, long raiz) { //Recemos para que nadie ponga un número de base mayor a 32767
+			if (num == 0) return 1;
 			if (pos >= Cifras(num, raiz) || pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
-			return (byte)(num / (long)Math.Pow(raiz, pos) % raiz);
+			return (short)(num / PotenciaEntera(raiz,pos) % raiz);
 		}
 
 		/**
@@ -329,10 +326,10 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Calcula la potencia de enteros de forma eficiente
+		/// Calcula la potencia de enteros de forma eficiente.
 		/// </summary>
 		/// <remarks>
-		/// <c>exp</c> debe ser positivo
+		/// <c>exp</c> debe ser positivo.
 		/// <para>
 		/// Obtenido de https://stackoverflow.com/a/2065303/22934376
 		/// </para>
@@ -346,7 +343,9 @@ namespace Operaciones
 			long result = 1;
 			while (exp > 0) {
 				if ((exp & 1) != 0) {
-					result *= @base;
+					checked {
+						result *= @base;
+					}
 				}
 				exp >>= 1;
 				@base *= @base;
@@ -366,19 +365,34 @@ namespace Operaciones
 		/// </remarks>
 		/// <param name="divisor"></param>
 		/// <param name="raiz"></param>
-		/// <returns></returns>
+		/// <returns>
+		/// Tupla con un booleano indicando el éxito del método y un mensaje explicando la regla obtenida.
+		/// </returns>
 		public static (bool,string) ReglaDivisibilidadExtendida(long divisor, long raiz) {
 			var caso = CasoEspecialRegla(divisor, raiz);
-			string mensaje = caso.caso switch {
+			string potencia = "";
+			try {
+				long resultado = -1;
+				if (caso.caso == CasosDivisibilidad.RESTAR_BLOQUES) {
+					resultado = PotenciaEntera(raiz, caso.informacion) - 1;
+				} else if (caso.caso == CasosDivisibilidad.SUMAR_BLOQUES) {
+					resultado = PotenciaEntera(raiz, caso.informacion) + 1;
+				}
+				potencia = resultado.ToString(); //Puede dar overflow si el exponente es grande
+			} catch (OverflowException) {
+				potencia = "Resultado demasiado grande";
+			}
+			string mensaje;
+			mensaje = caso.caso switch {
 				CasosDivisibilidad.MIRAR_CIFRAS => CrearMensajeDivisibilidad($"{divisor} está compuesto de potencias de los factores primos de {raiz}",
 					$"sus primeras {caso.informacion} cifras son múltiplo de {divisor}",
 					raiz, divisor),
 				CasosDivisibilidad.UNO => "Todos los enteros son divisibles entre uno.",
-				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {raiz} elevado a {caso.informacion} más uno ({PotenciaEntera(raiz,caso.informacion) + 1})",
+				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {raiz} elevado a {caso.informacion} más uno ({potencia})",
 					$"al separar sus cifras en grupos de {caso.informacion} desde las unidades, la diferencia de la suma de los grupos pares" +
 					$" y la de los grupos impares es múltiplo de {divisor}",
 					raiz,divisor),
-				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {raiz} elevado a {caso.informacion} menos uno ({PotenciaEntera(raiz, caso.informacion) - 1})",
+				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {raiz} elevado a {caso.informacion} menos uno ({potencia})",
 					$"al separar sus cifras en grupos de {caso.informacion} desde las unidades, la suma de los grupos es múltiplo de {divisor}",
 					raiz, divisor),
 				CasosDivisibilidad.CERO => "No se le puede aplicar la relación de divisibilidad a cero.",
@@ -387,6 +401,7 @@ namespace Operaciones
 			if (caso.informacion == 1) {
 				mensaje = MensajeParaDatoConValorUno(caso.caso,divisor,raiz,mensaje);
 			}
+			
 			return (caso.caso != CasosDivisibilidad.USAR_NORMAL, mensaje);
 		}
 
@@ -402,8 +417,28 @@ namespace Operaciones
 			};
 		}
 
+		/// <summary>
+		/// Devuelve una tupla que representa la regla de divisibilidad encontrada para <c>divisor</c> y <c>raiz</c>.
+		/// </summary>
+		/// <remarks>
+		/// Para obtener los mensajes use <see cref="ReglaDivisibilidadExtendida(long, long)"/> en su lugar.
+		/// <para>
+		/// Este método es público porque el flujo normal de la aplicación solo devuelve mensajes.
+		/// </para>
+		/// <list type="bullet">
+		/// <listheader>Significado de <c>informacion</c> según el caso:</listheader>
+		/// <item>CERO, UNO y USAR_NORMAL</item> - <description>Ninguno, siempre es -1 ya que no se requiere más información</description>
+		/// <item>MIRAR_CIFRAS</item> - <description>Cifras que se deben considerar</description>
+		/// <item>RESTAR_BLOQUES y SUMAR_BLOQUES</item> - <description>Longitud de los bloques para agrupar las cifras</description>
+		/// </list>
+		/// </remarks>
+		/// <param name="divisor"></param>
+		/// <param name="raiz"></param>
+		/// <returns>
+		/// Tupla con un caso y un entero con información
+		/// </returns>
 		[return: NotNull]
-		private static (CasosDivisibilidad caso,int informacion) CasoEspecialRegla(long divisor, long raiz) {
+		public static (CasosDivisibilidad caso,int informacion) CasoEspecialRegla(long divisor, long raiz) {
 			if (divisor == 0) return (CasosDivisibilidad.CERO, -1);
 			if (divisor == 1) return (CasosDivisibilidad.UNO, -1);
 
@@ -481,6 +516,12 @@ namespace Operaciones
 			return $"{motivo}.\nUn número en base {raiz} será múltiplo de {divisor} si {condicion}.";
 		}
 
+		/// <summary>
+		/// Extensión para <see cref="ISerie{T}"/> que calcula su ToString con otro formato.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="lista"></param>
+		/// <returns></returns>
 		public static string ToStringCompleto<T>(this ISerie<T> lista) {
 			if (lista.Longitud == 0) return "Serie vacía";
 			StringBuilder sb = new();
@@ -493,6 +534,12 @@ namespace Operaciones
 			return sb.ToString();
 		}
 
+		/// <summary>
+		/// Extensión para <see cref="ISerie{T}"/> que calcula su ToString con otro formato, con los elementos en el orden inverso.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="lista"></param>
+		/// <returns></returns>
 		public static string ToStringCompletoInverso<T>(this ISerie<T> lista) {
 			if (lista.Longitud == 0) return "Serie vacía";
 			StringBuilder sb = new();

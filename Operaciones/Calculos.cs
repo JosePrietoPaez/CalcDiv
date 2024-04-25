@@ -154,7 +154,7 @@ namespace Operaciones {
 		 * @param pos cifra que calcular
 		 * @return cifra {@code pos} de {@code num} en la raiz del objeto
 		 */
-		public byte Cifra(long num, long pos)
+		public short Cifra(long num, long pos)
 		{
 			return CalculosEstatico.Cifra(num, pos, _raiz);
 		}
