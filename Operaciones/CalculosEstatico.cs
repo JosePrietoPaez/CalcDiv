@@ -18,15 +18,24 @@ namespace Operaciones
 		/// Asegúrese de que PrimosHasta ha sido llamado con argumento mayor o igual al número que espera.
 		/// </remarks>
 		public static IListaDinamica<long> PrimosCalculados => _primosCalculados.ClonarDinamica();
-		public static bool EsPrimo(long raiz) {
-			if (raiz <= 1) return false; //Por definición
-			if (raiz == 2) return true; //Porque si no, no va
+
+		/// <summary>
+		/// Devuelve true si el número es primo, si no false
+		/// </summary>
+		/// <remarks>
+		/// Los números no naturales no se consideran primos, por lo que se devuelve false
+		/// </remarks>
+		/// <param name="numero"></param>
+		/// <returns></returns>
+		public static bool EsPrimo(long numero) {
+			if (numero <= 1) return false; //Por definición
+			if (numero == 2) return true; //Porque si no, no va
 			long cont = 2;
-			double raizT = ((long)Math.Sqrt(raiz)) + 1;
-			while (cont < raizT && raiz % cont != 0) {
+			double raizT = ((long)Math.Sqrt(numero)) + 1;
+			while (cont < raizT && numero % cont != 0) {
 				cont++;
 			}
-			bool primo = raiz % cont != 0;
+			bool primo = numero % cont != 0;
 			return primo;
 		}
 
@@ -183,10 +192,7 @@ namespace Operaciones
 		 * @return min{|{@code un}|,|{@code dos}|}
 		 */
 		public static long MinAbs(long un, long dos) {
-			if (Math.Min(Math.Abs(un), Math.Abs(dos)) == Math.Abs(un)) {
-				return un;
-			}
-			return dos;
+			return Math.Min(Math.Abs(un), Math.Abs(dos));
 		}
 
 		/**
@@ -228,7 +234,7 @@ namespace Operaciones
 		public static short Cifra(long num, long pos, long raiz) { //Recemos para que nadie ponga un número de base mayor a 32767
 			if (num == 0) return 1;
 			if (pos >= Cifras(num, raiz) || pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
-			return (short)(num / PotenciaEntera(raiz,pos) % raiz);
+			return (short)(num / PotenciaEntera(raiz,pos) % raiz);	
 		}
 
 		/**
@@ -266,6 +272,7 @@ namespace Operaciones
 		}
 
 		public static long ProductoMod(long fac1, long fac2, long raiz) {
+			if (raiz == 0) throw new ArgumentException("No se puede calcular el resto con divisor 0");
 			return fac1 * fac2 % raiz;
 		}
 
@@ -521,7 +528,9 @@ namespace Operaciones
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="lista"></param>
-		/// <returns></returns>
+		/// <returns>
+		/// Un <c>string</c> con el formato <c>lista.Nombre<see cref="NumASubindice(long)"/>(i)=lista[i]</c>, para cada elemento
+		/// </returns>
 		public static string ToStringCompleto<T>(this ISerie<T> lista) {
 			if (lista.Longitud == 0) return "Serie vacía";
 			StringBuilder sb = new();
@@ -539,7 +548,9 @@ namespace Operaciones
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="lista"></param>
-		/// <returns></returns>
+		/// <returns>
+		/// Un <c>string</c> con el formato <c>lista.Nombre<see cref="NumASubindice(long)"/>(i)=lista[i]</c>, para cada elemento
+		/// </returns>
 		public static string ToStringCompletoInverso<T>(this ISerie<T> lista) {
 			if (lista.Longitud == 0) return "Serie vacía";
 			StringBuilder sb = new();
