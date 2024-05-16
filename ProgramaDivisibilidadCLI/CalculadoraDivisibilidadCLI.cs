@@ -77,13 +77,13 @@ namespace ProgramaDivisibilidad {
 						correcto = salidaExpandido.Item1; //Si se ha obtenido la regla se salta el resto
 						salida = SALIDA_CORRECTA;
 					}
-					if ((!flags[DatosFlags.EXPANDIDO] || !correcto) && CalculosEstatico.Mcd(divisor, @base) != 1) { //Si la base y divisor no son coprimos y no ha conseguido encontrar otras reglas
+					if (!(flags[DatosFlags.EXPANDIDO] && correcto) && CalculosEstatico.Mcd(divisor, @base) != 1) { //Si la base y divisor no son coprimos y no ha conseguido encontrar otras reglas
 						Console.WriteLine(ERROR_PRIMO);
 						salida = SALIDA_ERROR;
 						correcto = false;
-					} else if (!flags[DatosFlags.EXPANDIDO] || !correcto) { //Si los argumentos son correctos y no ha conseguido encontrar otras reglas
+					} else if (!(flags[DatosFlags.EXPANDIDO] && correcto)) { //Si los argumentos son correctos y no ha conseguido encontrar otras reglas
 						Console.WriteLine(StringReglasConNombre(divisor, @base, coeficientes, 3));
-						salida = SALIDA_FRACASO_EXPANDIDA;
+						salida = flags[DatosFlags.EXPANDIDO]? SALIDA_FRACASO_EXPANDIDA : SALIDA_CORRECTA;
 						correcto = true;
 					}
 				}
