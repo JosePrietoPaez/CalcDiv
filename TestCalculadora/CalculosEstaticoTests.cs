@@ -61,12 +61,12 @@ namespace TestCalculadora {
 			Assert.That(result, Is.True);
 		}
 
-		[Test]
-		public void Mcd_StateUnderTest_ExpectedBehavior() {
+		[Test(Description = "Mcd devuelve el producto de dos números coprimos")]
+		public void Mcd_Coprimos_DevuelveProducto() {
 			// Arrange
 			
-			long raiz = 0;
-			long segundo = 0;
+			ulong raiz = 3;
+			ulong segundo = 16;
 
 			// Act
 			var result = CalculosEstatico.Mcd(
@@ -74,7 +74,55 @@ namespace TestCalculadora {
 				segundo);
 
 			// Assert
-			Assert.Fail();
+			Assert.That(result, EqualTo(raiz * segundo))
+		}
+
+		[Test(Description = "Mcd no devuelve el producto de dos números no coprimos")]
+		public void Mcd_NoCoprimos_NoDevuelveProducto() {
+			// Arrange
+			
+			ulong raiz = 6;
+			ulong segundo = 15;
+
+			// Act
+			var result = CalculosEstatico.Mcd(
+				raiz,
+				segundo);
+
+			// Assert
+			Assert.That(result, NotEqualTo(raiz * segundo))
+		}
+
+		[Test(Description = "Mcd de una raiz y su potencia devuelve la potencia")]
+		public void Mcd_RaizYPotencia_DevuelvePotencia() {
+			// Arrange
+			
+			ulong raiz = 2;
+			ulong potencia = 8;
+
+			// Act
+			var result = CalculosEstatico.Mcd(
+				raiz,
+				potencia);
+
+			// Assert
+			Assert.That(result, EqualTo(potencia))
+		}
+
+		[Test(Description = "Mcd de cero y otro número devuelve el otro número")]
+		public void Mcd_CeroYOtro_DevuelveOtro() {
+			// Arrange
+			
+			ulong raiz = 0;
+			ulong segundo = 4;
+
+			// Act
+			var result = CalculosEstatico.Mcd(
+				raiz,
+				segundo);
+
+			// Assert
+			Assert.That(result, EqualTo(segundo))
 		}
 
 		[Test]

@@ -56,7 +56,7 @@ namespace Operaciones
 		/// <summary>
 		/// Devuelve el máximo común divisor de <c>raiz</c> y <c>segundo</c>.
 		/// </summary>
-		public static long Mcd(long raiz, long segundo)
+		public static long Mcd(ulong raiz, ulong segundo)
 		{
 			if (raiz < segundo) { //Necesitamos que raiz sea mayor o igual que segundo
 				(segundo, raiz) = (raiz, segundo);
