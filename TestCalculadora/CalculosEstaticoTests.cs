@@ -374,8 +374,8 @@ namespace TestCalculadora {
 			Assert.Fail();
 		}
 
-		[Test]
-		public void CasoEspecialRegla_StateUnderTest_ExpectedBehavior() {
+		[Test(Description = "CasoEspecialRegla devuelve el caso CERO e información -1 si el divisor es 0")]
+		public void CasoEspecialRegla_DivisorCero_CasoEsCeroInformacionMenos1() {
 			// Arrange
 			
 			long divisor = 0;
@@ -385,9 +385,121 @@ namespace TestCalculadora {
 			var result = CalculosEstatico.CasoEspecialRegla(
 				divisor,
 				raiz);
+			
+			// Assert
+			Assert.Multiple(() => {
+				Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.CERO));
+				Assert.That(result.informacion, Is.EqualTo(-1));
+			});
+		}
+
+		[Test(Description = "CasoEspecialRegla devuelve el caso UNO e información -1 si el divisor es 1")]
+		public void CasoEspecialRegla_DivisorUno_CasoEsUnoInformacionMenos1() {
+			// Arrange
+
+			long divisor = 1;
+			long raiz = 0;
+
+			// Act
+			var result = CalculosEstatico.CasoEspecialRegla(
+				divisor,
+				raiz);
 
 			// Assert
-			Assert.Fail();
+			Assert.Multiple(() => {
+				Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.UNO));
+				Assert.That(result.informacion, Is.EqualTo(-1));
+			});
+		}
+
+		[Test(Description = "CasoEspecialRegla devuelve el caso SUMAR_BLOQUES si el divisor es múltiplo de la base o una potencia menos uno y devuelve el tamaño de los bloques")]
+		[TestCase()]
+		[TestCase(5,16,1)]
+		[TestCase(7,2,3)]
+		public void CasoEspecialRegla_DivisorMultiploRaizMenos1_CasoSumarBloques(long divisor = -1, long raiz = -1, int potencia = -1) {
+			// Arrange - para que haya un arrange
+			if (divisor == -1) {
+				divisor = 9;
+				raiz = 10;
+				potencia = 1;
+			}
+			// Act
+			var result = CalculosEstatico.CasoEspecialRegla(
+				divisor,
+				raiz);
+
+			// Assert
+			Assert.Multiple(() => {
+				Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.SUMAR_BLOQUES));
+				Assert.That(result.informacion, Is.EqualTo(potencia));
+			});
+		}
+
+
+		[Test(Description = "CasoEspecialRegla devuelve el caso RESTAR_BLOQUES si el divisor es múltiplo de la base o una potencia más uno y devuelve el tamaño de los bloques")]
+		[TestCase()]
+		[TestCase(17, 16, 1)]
+		[TestCase(9, 2, 3)]
+		public void CasoEspecialRegla_DivisorMultiploRaizMas1_CasoRestarBloques(long divisor = -1, long raiz = -1, int potencia = -1) {
+			// Arrange - para que haya un arrange
+			if (divisor == -1) {
+				divisor = 11;
+				raiz = 10;
+				potencia = 1;
+			}
+
+			// Act
+			var result = CalculosEstatico.CasoEspecialRegla(
+				divisor,
+				raiz);
+
+			// Assert
+			Assert.Multiple(() => {
+				Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.RESTAR_BLOQUES));
+				Assert.That(result.informacion, Is.EqualTo(potencia));
+			});
+		}
+
+		[Test(Description = "CasoEspecialRegla devuelve el caso MIRAR_CIFRAS si el divisor está compuesto de los divisores de la base y devuelve las cifras que se deben considerar")]
+		[TestCase()]
+		[TestCase(32, 16, 2)]
+		[TestCase(16, 2, 4)]
+		public void CasoEspecialRegla_DivisorCompuestoDePotenciasDeRaiz_CasoMirarCifras(long divisor = -1, long raiz = -1, int cifras = -1) {
+			// Arrange - para que haya un arrange
+			if (divisor == -1) {
+				divisor = 5;
+				raiz = 10;
+				cifras = 1;
+			}
+
+			// Act
+			var result = CalculosEstatico.CasoEspecialRegla(
+				divisor,
+				raiz);
+
+			// Assert
+			Assert.Multiple(() => {
+				Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.MIRAR_CIFRAS));
+				Assert.That(result.informacion, Is.EqualTo(cifras));
+			});
+		}
+
+		[Test(Description = "CasoEspecialRegla devuelve el caso USAR_NORMAL e información -1 si ninguno de los casos especiales se aplica")]
+		public void CasoEspecialRegla_NoEncuentra_CasoNormal() {
+			// Arrange
+			long divisor = 789293; // No significa que no pueda existir otra regla para estos valores, pero no se pueden encontrar usando longs
+			long raiz = 31233;
+
+			// Act
+			var result = CalculosEstatico.CasoEspecialRegla(
+				divisor,
+				raiz);
+
+			// Assert
+			Assert.Multiple(() => {
+				Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.USAR_NORMAL));
+				Assert.That(result.informacion, Is.EqualTo(-1));
+			});
 		}
 
 		[Test]

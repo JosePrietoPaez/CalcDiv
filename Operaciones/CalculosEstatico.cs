@@ -70,10 +70,12 @@ namespace Operaciones
 			return raiz;
 		}
 
-		/**
-		 * Devuelve una serie que contiene la descomposición en números primos de {@code num}
-		 * <p>Los elementos de la serie son los exponentes de los números primos en orden ascendente</p>
-		 */
+		/// <summary>
+		/// Devuelve una serie que contiene la descomposición en números primos de <c>num</c>.
+		/// </summary>
+		/// <remarks>
+		/// Los elementos de la serie son los exponentes de los números primos en orden ascendente hasta llegar al último con coeficiente positivo.
+		/// </remarks>
 		public static IListaDinamica<long> DescompsicionEnPrimos(long num) {
 			IListaDinamica<long> primos = PrimosHasta(num);
 			ListSerie<long> res = new(primos.Longitud) {
@@ -87,20 +89,25 @@ namespace Operaciones
 			return res;
 		}
 
-		/**
-		 * Calcula el mínimo común múltiplo de {@code primero} y {@code segundo}
-		 * @return mcm(primero,segundo)
-		 */
+		/// <summary>
+		/// Calcula el mínimo común múltiplo de <c>primero</c> y <c>segundo</c>.
+		/// </summary>
+		/// <remarks>
+		/// <c>primero</c> y <c>segundo</c> deben ser no negativos.
+		/// </remarks>
+		/// <exception cref="ArgumentException"></exception>
+		/// <returns>
+		/// El mínimo número positivo que es múltiplo de los dos argumentos.
+		/// </returns>
 		public static long Mcm(long primero, long segundo) {
 			if (primero < 0 || segundo < 0) throw new ArgumentException("Los argumentos deben ser no negativos");
 			if (primero == 0 || segundo == 0) return 0;
 			return primero * segundo / Mcd(primero, segundo);
 		}
 
-		/**
-		 * Devuelve una serie con los números primos hasta num incluido
-		 * <p>La serie tendrá nombre nulo</p>
-		 */
+		/// <summary>
+		/// Devuelve una lista con los números primos hasta <c>num</c> incluido
+		/// </summary>
 		public static IListaDinamica<long> PrimosHasta(long num) {
 			long cont;
 			ListSerie<long> serie = new();
@@ -188,50 +195,44 @@ namespace Operaciones
 			return (inicio + fin) * num / 2;
 		}
 
-		/**
-		 * Devuelve el mínimo de los absolutos entre {@code un} y {@code dos}
-		 * @return min{|{@code un}|,|{@code dos}|}
-		 */
+		/// <summary>
+		/// Devuelve el mínimo de los absolutos entre <c>un</c> y <c>dos</c>.
+		/// </summary>
 		public static long MinAbs(long un, long dos) {
 			return Math.Min(Math.Abs(un), Math.Abs(dos));
 		}
 
-		/**
-		 * Calcula el número de cifras de {@code num} con la raiz indicada
-		 * @param raiz raiz del número
-		 * @return número de cifras de {@code num} en raiz {@code raiz}
-		 */
+		/// <summary>
+		/// Calcula el número de cifras de <c>num</c> en base <c>raiz</c>.
+		/// </summary>
 		public static short Cifras(long num, long raiz) { 
 			return (short)Math.Ceiling(Math.Log(Math.Abs(num) + 1L) / Math.Log(raiz));
 		}
 
-		/**
-		 * Calcula el número de cifras de parte entera de {@code num} con la raiz indicada
-		 * @param raiz raiz del número
-		 * @return número de cifras de {@code num} en raiz {@code raiz}
-		 */
+		/// <summary>
+		/// Calcula el número de cifras de <c>num</c> en base <c>raiz</c>.
+		/// </summary>
 		public static short Cifras(double num, double raiz) {
 			if (num == 0) return 1;
 			return (short)Math.Ceiling(Math.Log(Math.BitIncrement(Math.Abs(num))) / Math.Log(raiz));
 		}
-
-		/**
-		 * Calcula el número de cifras de {@code num} en raiz diez
-		 * <p>Equivalente a {@code cifras(num,10)}</p>
-		 * @return número de cifras de {@code num} en raiz 10
-		 */
+		
+		/// <summary>
+		/// Calcula el número de cifras de <c>num</c> en base 10.
+		/// </summary>
 		public static short Cifras10(long num) {
 			return Cifras(num, 10);
 		}
 
-		/**
-		 * Calcula la cifra en la posición {@code pos} de {@code num} en la raiz {@code raiz}
-		 * <p>La cifra 0 es la menos significativa</p>
-		 * La posición debe estar dentro del número
-		 * @param pos cifra que calcular
-		 * @param raiz raiz del número
-		 * @return cifra {@code pos} de {@code num} en raiz {@code raiz}
-		 */
+		/// <summary>
+		/// Calcula la cifra en la posición <c>pos</c> de <c>num</c> en base <c>raiz</c>.
+		/// </summary>
+		/// <remarks>
+		/// La cifra 0 es la menos significativa.
+		/// </remarks>
+		/// <returns>
+		/// Cifra <c>pos</c> de <c>num</c> en base <c>raiz</c>
+		/// </returns>
 		public static short Cifra(long num, long pos, long raiz) { //Recemos para que nadie ponga un número de base mayor a 32767
 			if (num == 0) return 1;
 			if (pos >= Cifras(num, raiz) || pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
@@ -272,6 +273,13 @@ namespace Operaciones
 			return res;
 		}
 
+		/// <summary>
+		/// Calcula el producto de <c>fac1</c> y <c>fac2</c> en módulo <c>raiz</c>
+		/// </summary>
+		/// <returns>
+		/// <c>fac1 * fac2 % raiz</c>
+		/// </returns>
+		/// <exception cref="ArgumentException"></exception>
 		public static long ProductoMod(long fac1, long fac2, long raiz) {
 			if (raiz == 0) throw new ArgumentException("No se puede calcular el resto con divisor 0");
 			return fac1 * fac2 % raiz;
@@ -370,7 +378,9 @@ namespace Operaciones
 		/// Si no se encuentra una regla debería usarse <see cref="ReglasDivisibilidad(ISerie{ISerie{long}}, long, int, long)"/>
 		/// para calcularlas.
 		/// </para>
+		/// El divisor debe ser mayor o igual que 2.
 		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException"></exception>
 		/// <param name="divisor"></param>
 		/// <param name="raiz"></param>
 		/// <returns>
@@ -382,9 +392,9 @@ namespace Operaciones
 			try {
 				long resultado = -1;
 				if (caso.caso == CasosDivisibilidad.RESTAR_BLOQUES) {
-					resultado = PotenciaEntera(raiz, caso.informacion) - 1;
-				} else if (caso.caso == CasosDivisibilidad.SUMAR_BLOQUES) {
 					resultado = PotenciaEntera(raiz, caso.informacion) + 1;
+				} else if (caso.caso == CasosDivisibilidad.SUMAR_BLOQUES) {
+					resultado = PotenciaEntera(raiz, caso.informacion) - 1;
 				}
 				potencia = resultado.ToString(); //Puede dar overflow si el exponente es grande
 			} catch (OverflowException) {
@@ -433,6 +443,7 @@ namespace Operaciones
 		/// <para>
 		/// Este método es público porque el flujo normal de la aplicación solo devuelve mensajes.
 		/// </para>
+		/// El divisor debe ser mayor o igual que 2.
 		/// <list type="bullet">
 		/// <listheader>Significado de <c>informacion</c> según el caso:</listheader>
 		/// <item>CERO, UNO y USAR_NORMAL</item> - <description>Ninguno, siempre es -1 ya que no se requiere más información</description>
@@ -440,6 +451,7 @@ namespace Operaciones
 		/// <item>RESTAR_BLOQUES y SUMAR_BLOQUES</item> - <description>Longitud de los bloques para agrupar las cifras</description>
 		/// </list>
 		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException"></exception>
 		/// <param name="divisor"></param>
 		/// <param name="raiz"></param>
 		/// <returns>
@@ -449,6 +461,8 @@ namespace Operaciones
 		public static (CasosDivisibilidad caso,int informacion) CasoEspecialRegla(long divisor, long raiz) {
 			if (divisor == 0) return (CasosDivisibilidad.CERO, -1);
 			if (divisor == 1) return (CasosDivisibilidad.UNO, -1);
+
+			ArgumentOutOfRangeException.ThrowIfLessThan(raiz,2,nameof(raiz));
 
 			IListaDinamica<long> descomposicionDivisor = DescompsicionEnPrimos(divisor),
 				descomposicionRaiz = DescompsicionEnPrimos(raiz);
