@@ -379,7 +379,7 @@ namespace TestCalculadora {
 			// Arrange
 			
 			long divisor = 0;
-			long raiz = 0;
+			long raiz = 3;
 
 			// Act
 			var result = CalculosEstatico.CasoEspecialRegla(
@@ -398,7 +398,7 @@ namespace TestCalculadora {
 			// Arrange
 
 			long divisor = 1;
-			long raiz = 0;
+			long raiz = 3;
 
 			// Act
 			var result = CalculosEstatico.CasoEspecialRegla(
@@ -482,6 +482,34 @@ namespace TestCalculadora {
 				Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.MIRAR_CIFRAS));
 				Assert.That(result.informacion, Is.EqualTo(cifras));
 			});
+		}
+
+		[Test(Description = "CasoEspecialRegla lanza excepción si la base es menor que 2")]
+		public void CasoEspecialRegla_BaseMenorQue2_LanzaExcepcion() {
+			// Arrange
+			long divisor = 10; // No significa que no pueda existir otra regla para estos valores, pero no se pueden encontrar usando longs
+			long raiz = -1;
+
+			// Act
+			Assert.Throws<ArgumentOutOfRangeException>(
+				() => CalculosEstatico.CasoEspecialRegla(
+				divisor,
+				raiz));
+			
+		}
+
+		[Test(Description = "CasoEspecialRegla lanza excepción si el divisor es menor que 2")]
+		public void CasoEspecialRegla_DivisorNegativo_LanzaExcepcion() {
+			// Arrange
+			long divisor = 10; // No significa que no pueda existir otra regla para estos valores, pero no se pueden encontrar usando longs
+			long raiz = -1;
+
+			// Act
+			Assert.Throws<ArgumentOutOfRangeException>(
+				() => CalculosEstatico.CasoEspecialRegla(
+				divisor,
+				raiz));
+
 		}
 
 		[Test(Description = "CasoEspecialRegla devuelve el caso USAR_NORMAL e información -1 si ninguno de los casos especiales se aplica")]

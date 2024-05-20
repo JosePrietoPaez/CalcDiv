@@ -459,10 +459,11 @@ namespace Operaciones
 		/// </returns>
 		[return: NotNull]
 		public static (CasosDivisibilidad caso,int informacion) CasoEspecialRegla(long divisor, long raiz) {
+			ArgumentOutOfRangeException.ThrowIfLessThan(raiz,2,nameof(raiz));
+			ArgumentOutOfRangeException.ThrowIfLessThan(raiz,0, nameof(raiz));
+
 			if (divisor == 0) return (CasosDivisibilidad.CERO, -1);
 			if (divisor == 1) return (CasosDivisibilidad.UNO, -1);
-
-			ArgumentOutOfRangeException.ThrowIfLessThan(raiz,2,nameof(raiz));
 
 			IListaDinamica<long> descomposicionDivisor = DescompsicionEnPrimos(divisor),
 				descomposicionRaiz = DescompsicionEnPrimos(raiz);
