@@ -17,7 +17,7 @@ namespace Operaciones
 		/// <remarks>
 		/// Asegúrese de que PrimosHasta ha sido llamado con argumento mayor o igual al número que espera.
 		/// </remarks>
-		public static IListaDinamica<long> PrimosCalculados => _primosCalculados.ClonarDinamica();
+		internal static IListaDinamica<long> PrimosCalculados => _primosCalculados.ClonarDinamica();
 
 		/// <summary>
 		/// Devuelve true si el número es primo, si no false
@@ -334,7 +334,9 @@ namespace Operaciones
 		 * @param raiz raiz que se usa para crear la regla
 		 */
 		public static void ReglaDivisibilidadBase(IListaDinamica<long> serie, long num, int cantidad, long raiz) {
-			if (num < 0 || raiz < 0 || cantidad < 0) throw new ArgumentException("Los argumentos no pueden ser negativos");
+			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(num,nameof(num));
+			ArgumentOutOfRangeException.ThrowIfLessThan(raiz, 2,nameof(raiz));
+			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(cantidad, nameof(cantidad));
 			long inv = InversoMod(raiz, num);
 			if (inv == 0) throw new ArithmeticException("num debe ser coprimo con raiz");
 			serie.Vacia = true;
