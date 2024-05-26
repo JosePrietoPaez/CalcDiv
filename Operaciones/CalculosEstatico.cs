@@ -77,6 +77,7 @@ namespace Operaciones
 		/// Los elementos de la serie son los exponentes de los números primos en orden ascendente hasta llegar al último con coeficiente positivo.
 		/// </remarks>
 		public static IListaDinamica<long> DescompsicionEnPrimos(long num) {
+			if (num < 0 ) throw new ArgumentException("El argumento debe ser positivo");
 			IListaDinamica<long> primos = PrimosHasta(num);
 			ListSerie<long> res = new(primos.Longitud) {
 				FuncionDeGeneracion = num => 0L,
