@@ -63,86 +63,95 @@ namespace TestCalculadora {
 			Assert.That(result, Is.True);
 		}
 
-		[Test(Description = "Mcd de dos números coprimos devuelve 1")]
-		public void Mcd_Coprimos_DevuelveProducto() {
-			// Arrange
-			
-			long raiz = 3;
-			long segundo = 16;
+		[TestFixture]
+		public class McdTest
+		{
+            [Test(Description = "Mcd de dos números coprimos devuelve 1")]
+            public void Mcd_Coprimos_DevuelveProducto()
+            {
+                // Arrange
 
-			// Act
-			var result = CalculosEstatico.Mcd(
-				raiz,
-				segundo);
+                long raiz = 3;
+                long segundo = 16;
 
-			// Assert
-			Assert.That(result, Is.EqualTo(1));
-		}
+                // Act
+                var result = CalculosEstatico.Mcd(
+                    raiz,
+                    segundo);
 
-		[Test(Description = "Mcd devuelve el comun divisor de dos números primos multiplicados por otro")]
-		public void Mcd_NoCoprimos_NoDevuelveProducto() {
-			// Arrange
-			
-			long raiz = 2*3;
-			long segundo = 5*3;
+                // Assert
+                Assert.That(result, Is.EqualTo(1));
+            }
 
-			// Act
-			var result = CalculosEstatico.Mcd(
-				raiz,
-				segundo);
+            [Test(Description = "Mcd devuelve el comun divisor de dos números primos multiplicados por otro")]
+            public void Mcd_NoCoprimos_NoDevuelveProducto()
+            {
+                // Arrange
 
-			// Assert
-			Assert.That(result, Is.EqualTo(3));
-		}
+                long raiz = 2 * 3;
+                long segundo = 5 * 3;
 
-		[Test(Description = "Mcd de una raiz y su potencia devuelve la raiz")]
-		public void Mcd_RaizYPotencia_DevuelvePotencia() {
-			// Arrange
-			
-			long raiz = 2;
-			long potencia = 8;
+                // Act
+                var result = CalculosEstatico.Mcd(
+                    raiz,
+                    segundo);
 
-			// Act
-			var result = CalculosEstatico.Mcd(
-				raiz,
-				potencia);
+                // Assert
+                Assert.That(result, Is.EqualTo(3));
+            }
 
-			// Assert
-			Assert.That(result, Is.EqualTo(raiz));
-		}
+            [Test(Description = "Mcd de una raiz y su potencia devuelve la raiz")]
+            public void Mcd_RaizYPotencia_DevuelvePotencia()
+            {
+                // Arrange
 
-		[Test(Description = "Mcd de cero y otro número devuelve el otro número")]
-		public void Mcd_CeroYOtro_DevuelveOtro() {
-			// Arrange
-			
-			long raiz = 0;
-			long segundo = 4;
+                long raiz = 2;
+                long potencia = 8;
 
-			// Act
-			var result = CalculosEstatico.Mcd(
-				raiz,
-				segundo);
+                // Act
+                var result = CalculosEstatico.Mcd(
+                    raiz,
+                    potencia);
 
-			// Assert
-			Assert.That(result, Is.EqualTo(segundo));
-		}
+                // Assert
+                Assert.That(result, Is.EqualTo(raiz));
+            }
 
-		[Test(Description = "Mcd de números negativos lanza una excepción")]
-		public void Mcd_NumeroNegativo_LanzaExcepcion() {
-			// Arrange
-			
-			long raiz = -1;
-			long segundo = -2;
+            [Test(Description = "Mcd de cero y otro número devuelve el otro número")]
+            public void Mcd_CeroYOtro_DevuelveOtro()
+            {
+                // Arrange
 
-			// Assert
-			Assert.Throws<ArgumentException>( () =>
-				// Act
-				CalculosEstatico.Mcd(
-					raiz,
-					segundo
-				)
-			);
-		}
+                long raiz = 0;
+                long segundo = 4;
+
+                // Act
+                var result = CalculosEstatico.Mcd(
+                    raiz,
+                    segundo);
+
+                // Assert
+                Assert.That(result, Is.EqualTo(segundo));
+            }
+
+            [Test(Description = "Mcd de números negativos lanza una excepción")]
+            public void Mcd_NumeroNegativo_LanzaExcepcion()
+            {
+                // Arrange
+
+                long raiz = -1;
+                long segundo = -2;
+
+                // Assert
+                Assert.Throws<ArgumentException>(() =>
+                    // Act
+                    CalculosEstatico.Mcd(
+                        raiz,
+                        segundo
+                    )
+                );
+            }
+        }
 
 		[Test]
 		public void DescompsicionEnPrimos_StateUnderTest_ExpectedBehavior() {
