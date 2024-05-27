@@ -65,7 +65,7 @@ namespace TestCalculadora {
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
 
 			Assert.Multiple(() => {
-				Assert.That(_lectorSalida.ToString()?[0..^2], Is.EqualTo(File.ReadAllText("AyudaCorta.txt"))); // Hay un \r\n de más
+				Assert.That(_lectorSalida.ToString()?[0..^Environment.NewLine.Length], Is.EqualTo(File.ReadAllText("AyudaCorta.txt"))); // Hay un \r\n de más
 				Assert.That(salida, Is.Zero);
 			});
 		}
@@ -87,25 +87,27 @@ namespace TestCalculadora {
 		}
 
 		[Test(Description = "Al llamar a la calculadora en modo directo inverso con base y divisor coprimos devuelve la regla por consola en el orden inverso")]
-		public void Calculadora_DialogoTodosNombre_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
-			_args = ["-tn","nombre"];
-			ListSerie<ISerie<long>> regla = new();
-			CalculosEstatico.ReglasDivisibilidad(regla, 7, 5, 10);
-			_lectorEntrada = File.OpenText("ScriptPrueba.txt");
-			Console.SetIn(_lectorEntrada);
+		public void Calculadora_DirectoTodosNombre_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
+			_args = ["-dtn", "5", "13", "5","Nombre"];
+			ListSerie<ISerie<long>> regla = new("Nombre");
+			CalculosEstatico.ReglasDivisibilidad(regla, 5, 5, 13); //Genera 2^cantidad reglas
+			string[] resultado = regla.Select(regla => regla.ToStringCompleto()).ToArray();
+
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
 			string[] lineas = LineasDeWriter(_lectorSalida);
 
 			Assert.Multiple(() => {
-				Assert.That(lineas[1], Is.EqualTo(regla.ToString())); //La segunda porque primero se escriben los argumentos
+				Assert.That(lineas[1..33], Is.EqualTo(resultado)); //La segunda porque primero se escriben los argumentos 
 				Assert.That(salida, Is.Zero);
 			});
-			_lectorEntrada.Close();
 		}
 
 		[TearDown]
 		public void RestaurarEntradaYSalida() {
+			if (_lectorEntrada is TextReader) {
+				_lectorEntrada.Dispose();
+			}
 			_lectorSalida.Close();
 			Console.SetOut(_salidaOriginal);
 			Console.SetIn(_entradaOriginal);
