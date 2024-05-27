@@ -1107,7 +1107,7 @@ namespace TestCalculadora
 			}
 		}
 
-		[Test]
+		[Test(Description ="Devuelve serie vacia si la lista no tiene valores")]
 		public void ToStringCompleto_ListSerie_vacia_String()
 		{
 			// Arrange
@@ -1122,7 +1122,7 @@ namespace TestCalculadora
 			Assert.That(result,Is.EqualTo("Serie vacía"));
 		}
 
-		[Test]
+		[Test(Description ="Devuelve un toString con un formato especifico")]
 		public void ToStringCompleto_ListSerie_String()
 		{
 			// Arrange
@@ -1143,7 +1143,7 @@ namespace TestCalculadora
 			Assert.That(result,Is.EqualTo("La lista=11, La lista₁=6, La lista₂=8"));
 		}
 
-		[Test]
+		[Test(Description ="Devuelve la lista invertida y con un formato especifico")]
 		public void ToStringCompletoInverso_StateUnderTest_ExpectedBehavior()
 		{
 			// Arrange
