@@ -198,7 +198,6 @@ namespace TestCalculadora
 			public void DescompsicionEnPrimos_NumeroCompuesto_DevuelveListaDePotencias()
 			{
 				// Arrange
-
 				long num = 18;
 
 				// Act
@@ -219,19 +218,20 @@ namespace TestCalculadora
 			}
 		}
 
-		[Test]
-		public void PrimosHasta_StateUnderTest_ExpectedBehavior()
+		[Test(Description = "La lista que devuelve el metodo debe contener todos los numeros primos incluido el numero propio")]
+		public void PrimosHasta_ValoresSimples_DevuelveListaDePrimos()
 		{
-			// Arrange
-
-			long num = 0;
-
+			long num = 18;
 			// Act
-			var result = CalculosEstatico.PrimosHasta(
-				num);
+			IListaDinamica<long> primos = CalculosEstatico.PrimosHasta(num);
+			long[] numerosPrim = new long[] { 2, 3, 5, 7, 11, 13, 17, 18 };
+			
+			int contador = 0;
+			foreach(long value in primos){
+				Assert.That(value, Is.EqualTo(numerosPrim[contador]));
+				contador++;
+			}
 
-			// Assert
-			Assert.Fail();
 		}
 
 		[TestFixture]
@@ -288,38 +288,37 @@ namespace TestCalculadora
 		}
 
 
-		[Test]
-		public void MinAbs_StateUnderTest_ExpectedBehavior()
+		[Test(Description = "Devuelve aquel numero que su absoluto sea el menor de ambos valores pasados por consola")]
+		public void MinAbs_valoresAbsolutos_DevuelveElMenor()
 		{
 			// Arrange
-
-			long un = 0;
-			long dos = 0;
+			long un = -11;
+			long dos = 2;
 
 			// Act
 			var result = CalculosEstatico.MinAbs(
 				un,
 				dos);
 
-			// Assert
-			Assert.Fail();
+			Assert.That(2,Is.EqualTo(result));
+
 		}
 
-		[Test]
-		public void Cifras_StateUnderTest_ExpectedBehavior()
+		[Test (Description ="Calcula el número de cifras de numero en base raiz")]
+		public void Cifras_Valor_DevuelveLong()
 		{
 			// Arrange
 
-			long num = 0;
-			long raiz = 0;
+			long num = 64;
+			long raiz = 2;
 
 			// Act
 			var result = CalculosEstatico.Cifras(
 				num,
 				raiz);
 
-			// Assert
-			Assert.Fail();
+			Console.Write(result);
+			Assert.That(result,Is.EqualTo(7));
 		}
 
 		[Test]
@@ -370,15 +369,15 @@ namespace TestCalculadora
 			// Assert
 			Assert.Fail();
 		}
-
-		[Test]
-		public void ProductoMod_StateUnderTest_ExpectedBehavior()
+		[Test(Description ="Devuelve el valor en base raiz de fact1 * fact2")]
+		public void ProductoMod_longValues_DevuelveElModulo_EnBase_raiz()
 		{
 			// Arrange
 
-			long fac1 = 0;
-			long fac2 = 0;
-			long raiz = 0;
+
+			long fac1 = 12;
+			long fac2 = 18;
+			long raiz = 7;
 
 			// Act
 			var result = CalculosEstatico.ProductoMod(
@@ -386,14 +385,32 @@ namespace TestCalculadora
 				fac2,
 				raiz);
 
-			// Assert
-			Assert.Fail();
+			Assert.That(result,Is.EqualTo(6));
+		}
+
+		[Test(Description = "ProductMod lanza excepción si raiz es 0")]
+		public void ProductoMod_Cero_LanzaExcepcion()
+		{
+			// Arrange
+
+			long fac1 = 8;
+			long fac2 = 2;
+			long raiz = 0;
+
+			// Act
+			var result = 
+
+			// Act
+			Assert.Throws<ArgumentException>(() =>
+			CalculosEstatico.ProductoMod(
+				fac1,
+				fac2,
+				raiz));
 		}
 
 		[TestFixture]
 		public class ReglasDivisibilidadTests
 		{
-
 			[Test(Description = "ReglasDivisibilidad lanza excepción si num es 0")]
 			public void ReglasDivisibilidad_NumNoPositivo_LanzaExcepcion()
 			{
@@ -665,21 +682,21 @@ namespace TestCalculadora
 			}
 		}
 
-		[Test]
-		public void PotenciaEntera_StateUnderTest_ExpectedBehavior()
+		[Test(Description ="Devuelve de forma acertada el valor de la base segun su exponente")]
+		public void PotenciaEntera_LongValues_ValorDeLaPotencia()
 		{
 			// Arrange
 
-			long @base = 0;
-			long exp = 0;
+			long @base = 4;
+			long exp = 8;
 
 			// Act
 			var result = CalculosEstatico.PotenciaEntera(
 				@base,
 				exp);
 
-			// Assert
-			Assert.Fail();
+				Assert.That(result, Is.EqualTo(65536));
+
 		}
 
 		[TestFixture]
@@ -1091,18 +1108,39 @@ namespace TestCalculadora
 		}
 
 		[Test]
-		public void ToStringCompleto_StateUnderTest_ExpectedBehavior()
+		public void ToStringCompleto_ListSerie_vacia_String()
 		{
 			// Arrange
 
-			ISerie<int> lista = null;
+
+			ISerie<int> lista = new ListSerie<int>();
 
 			// Act
 			var result = CalculosEstatico.ToStringCompleto(
 				lista);
 
-			// Assert
-			Assert.Fail();
+			Assert.That(result,Is.EqualTo("Serie vacía"));
+		}
+
+		[Test]
+		public void ToStringCompleto_ListSerie_String()
+		{
+			// Arrange
+
+
+			ISerie<int> lista = new ListSerie<int>();
+
+			lista.Insertar(11);
+			lista.Insertar(6);
+			lista.Insertar(8);
+
+			lista.Nombre = "La lista";
+
+			// Act
+			var result = CalculosEstatico.ToStringCompleto(
+				lista);
+
+			Assert.That(result,Is.EqualTo("La lista=11, La lista₁=6, La lista₂=8"));
 		}
 
 		[Test]
@@ -1110,14 +1148,16 @@ namespace TestCalculadora
 		{
 			// Arrange
 
-			ISerie<int> lista = null;
+			ISerie<int> lista = new ListSerie<int>();
+			lista.Insertar(11);
+			lista.Insertar(6);
+			lista.Insertar(8);
 
-			// Act
-			var result = CalculosEstatico.ToStringCompletoInverso(
-				lista);
+			lista.Nombre = "La lista";
 
-			// Assert
-			Assert.Fail();
+			var result = CalculosEstatico.ToStringCompletoInverso(lista);
+			
+			Assert.That(result,Is.EqualTo("La lista₂=8, La lista₁=6, La lista=11"));
 		}
 	}
 }
