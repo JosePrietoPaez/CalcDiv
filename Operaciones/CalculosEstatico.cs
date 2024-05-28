@@ -207,6 +207,7 @@ namespace Operaciones
 		/// Calcula el número de cifras de <c>num</c> en base <c>raiz</c>.
 		/// </summary>
 		public static short Cifras(long num, long raiz) { 
+			if (num == 0) return 1;
 			return (short)Math.Ceiling(Math.Log(Math.Abs(num) + 1L) / Math.Log(raiz));
 		}
 
@@ -235,7 +236,6 @@ namespace Operaciones
 		/// Cifra <c>pos</c> de <c>num</c> en base <c>raiz</c>
 		/// </returns>
 		public static short Cifra(long num, long pos, long raiz) { //Recemos para que nadie ponga un número de base mayor a 32767
-			if (num == 0) return 1;
 			if (pos >= Cifras(num, raiz) || pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
 			return (short)(num / PotenciaEntera(raiz,pos) % raiz);	
 		}

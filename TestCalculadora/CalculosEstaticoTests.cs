@@ -325,6 +325,21 @@ namespace TestCalculadora
 				long expected = (long) Math.Ceiling(Math.Log(num) / Math.Log(raiz));
 				Assert.That(result, Is.EqualTo(expected));
 			}
+
+			[Test]
+			public void Cifras_NumeroCero_DevuelveUno() {
+				// Arrange
+
+				long num = 0;
+
+				// Act
+				var result = CalculosEstatico.Cifras(
+					num,
+					10);
+
+				// Assert
+				Assert.That(result, Is.EqualTo(1));
+			}
 		}
 		[TestFixture]
 		public class CifraTest {
@@ -1144,7 +1159,7 @@ namespace TestCalculadora
 		}
 
 		[Test(Description ="Devuelve serie vacia si la lista no tiene valores")]
-		public void ToStringCompleto_ListSerie_vacia_String()
+		public void ToStringCompleto_ListSerie_Vacia_String()
 		{
 			// Arrange
 
@@ -1176,7 +1191,7 @@ namespace TestCalculadora
 			var result = CalculosEstatico.ToStringCompleto(
 				lista);
 
-			Assert.That(result,Is.EqualTo("La lista=11, La lista₁=6, La lista₂=8"));
+			Assert.That(result,Is.EqualTo("La lista₀=11, La lista₁=6, La lista₂=8"));
 		}
 
 		[Test(Description ="Devuelve la lista invertida y con un formato especifico")]
@@ -1193,7 +1208,7 @@ namespace TestCalculadora
 
 			var result = CalculosEstatico.ToStringCompletoInverso(lista);
 			
-			Assert.That(result,Is.EqualTo("La lista₂=8, La lista₁=6, La lista=11"));
+			Assert.That(result,Is.EqualTo("La lista₂=8, La lista₁=6, La lista₀=11"));
 		}
 	}
 }

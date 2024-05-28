@@ -80,6 +80,7 @@ namespace Operaciones
 		/// <param name="base">la base de la potencia</param>
 		/// <param name="serie">la serie que modificar</param>
 		public static void PotenciaModProgresiva(IListaDinamica<long> serie, long @base, long mod, int inicio, int fin, int incremento, int pos) {
+			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(mod,nameof(mod));
 			if (inicio < 0 || fin < 0) throw new ArgumentOutOfRangeException("Las potencias son de exponentes no negativos");
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(inicio, fin,"La última potencia no puede ser menor que la primera");
 			long num = (long)Math.Pow(@base, inicio)%mod;

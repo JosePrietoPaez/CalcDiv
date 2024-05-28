@@ -22,7 +22,7 @@ namespace TestCalculadora {
 			int pos = 0;
 
 			// Assert
-			Assert.Throws<ArgumentException>(() => OperacionesSeries.PotenciaModProgresiva(
+			Assert.Throws<ArgumentOutOfRangeException>(() => OperacionesSeries.PotenciaModProgresiva(
 				serie,
 				@base,
 				mod,
