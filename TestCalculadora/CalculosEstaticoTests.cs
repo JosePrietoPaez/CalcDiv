@@ -304,21 +304,27 @@ namespace TestCalculadora
 
 		}
 
-		[Test (Description ="Calcula el número de cifras de numero en base raiz")]
-		public void Cifras_Valor_DevuelveLong()
-		{
-			// Arrange
+		[TestFixture]
+		public class CifrasTest {
+			[TestCase(10, TestName = "Cifras en base 10 devuelve el entero superior o igual al logaritmo en base 10")]
+			[TestCase(2, TestName = "Cifras en base 2 devuelve el entero superior o igual al logaritmo en base 2")]
+			[TestCase(3, TestName = "Cifras en base 10 devuelve el entero superior o igual al logaritmo en base 3")]
+			public void Cifras_NumeroBasePositivos_DevuelveLogaritmo(long raiz)
+			{
+				// Arrange
 
-			long num = 64;
-			long raiz = 2;
+				long num = 40;
 
-			// Act
-			var result = CalculosEstatico.Cifras(
-				num,
-				raiz);
+				// Act
+				var result = CalculosEstatico.Cifras(
+					num,
+					raiz);
 
-			Console.Write(result);
-			Assert.That(result,Is.EqualTo(7));
+				// Assert
+				// Entero superior o igual al logaritmo en base de raiz
+				long expected = (long) Math.Ceiling(Math.Log(num) / Math.Log(raiz));
+				Assert.That(result, Is.EqualTo(expected));
+			}
 		}
 
 		[Test]
