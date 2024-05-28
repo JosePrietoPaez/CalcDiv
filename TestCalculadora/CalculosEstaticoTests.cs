@@ -326,24 +326,54 @@ namespace TestCalculadora
 				Assert.That(result, Is.EqualTo(expected));
 			}
 		}
+		[TestFixture]
+		public class CifraTest {
+			[Test(Description = "Cifra en base 10 devuelve la cifra correcta")]
+			public void Cifra_Base10_DevuelveCifraCorrecta()
+			{
+				// Arrange
 
-		[Test]
-		public void Cifra_StateUnderTest_ExpectedBehavior()
-		{
-			// Arrange
+				long num = 543210;
+				long pos = 3;
+				long raiz = 10;
 
-			long num = 0;
-			long pos = 0;
-			long raiz = 0;
+				// Act
+				var result = CalculosEstatico.Cifra(
+					num,
+					pos,
+					raiz);
 
-			// Act
-			var result = CalculosEstatico.Cifra(
-				num,
-				pos,
-				raiz);
+				// Assert
+				Assert.That(result, Is.EqualTo(pos));
+			}
 
-			// Assert
-			Assert.Fail();
+			[TestCase(2, TestName = "Cifra en base 2 devuelve la cifra correcta")]
+			[TestCase(3, TestName = "Cifra en base 3 devuelve la cifra correcta")]
+			public void Cifra_OtraBase_DevuelveCifraCorrecta(long raiz)
+			{
+				// Arrange
+
+				long num = 18;
+
+				// Act
+				var ncifras = CalculosEstatico.Cifras(num, raiz);
+				long[] cifras = new long[ncifras];
+				for(int i = 0; i < ncifras; i++) {
+					cifras[i] = CalculosEstatico.Cifra(num, i, raiz);
+				}
+
+				// Calculo de numero a partir de cifras en base 10
+				long pot = 1;
+				long res = 0;
+				for (int i = 0; i < ncifras; i++) {
+					res += cifras[i] * pot;
+					pot *= raiz;
+				}
+
+				// Assert
+				Assert.That(cifras[ncifras - 1], Is.GreaterThan(0));
+				Assert.That(res, Is.EqualTo(num));
+			}
 		}
 
 		[Test]
