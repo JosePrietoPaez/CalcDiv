@@ -16,8 +16,6 @@ namespace ProgramaDivisibilidad {
 		private const int MAX_ARGS = 64,MAX_DATOS = 4, SALIDA_CORRECTA = 0, SALIDA_ERROR = 1, SALIDA_VOLUNTARIA = 2, SALIDA_FRACASO_EXPANDIDA = 3;
 		private const string ERROR_NUEMRICO = "El divisor, base y el número de coeficientes deben ser números enteros positivos\r\ndivisor y base deben ser mayor que 1"
 			,SALIDA = "FIN", ERROR_PRIMO = "La base y el divisor deben ser coprimos";
-		private static readonly bool[] flags = new bool[MAX_ARGS]; //Serán usados en todo el programa
-		private static readonly string[] datos = new string[MAX_DATOS];
 		private static bool salir = false; //Usado para saber si el usuario ha solicitado terminar la ejecución
 		private static int salida = SALIDA_CORRECTA; //Salida del programa
 
@@ -34,22 +32,6 @@ namespace ProgramaDivisibilidad {
 		/// </list>
 		/// </returns>
 		public static int Main(string[] args) {
-			ObtenerFlags(args); //Obtenemos los flags y los argumentos numéricos de args
-			if (flags[DatosFlags.AYUDA]) {
-				EscribirArchivo("Ayuda.txt");
-			} else if (flags[DatosFlags.CORTA]) {
-				EscribirArchivo("AyudaCorta.txt");
-			} else {
-				bool exito = true; //Valor de éxito de la última llamada, usada para llamar a ayuda si falla sin cambiar los flags
-				if (flags[DatosFlags.DIRECTO]) { //Si args incluye d
-					exito = IntentarDirecto();
-				} else {
-					salida = IniciarAplicacion();
-				}
-				if (!exito) {
-					EscribirArchivo("AyudaCorta.txt");
-				}
-			}
 			return salida;
 		}
 
@@ -60,35 +42,7 @@ namespace ProgramaDivisibilidad {
 		/// booleano que indica si ha conseguido calcular la regla.
 		/// </returns>
 		private static bool IntentarDirecto() { //Intenta dar las reglas de forma directa, devuelve true si lo consigue y false si hay algún error
-			bool correcto = DatosFlags.NumeroArgumentosCorrecto(PrimerNullOFin(datos), flags);
-			if (correcto) {
-				Console.WriteLine($"Divisor: {datos[0]}, Base: {datos[1]}, Coeficientes: {datos[2]}");
-				if (!long.TryParse(datos[0], out long divisor) ||
-					!long.TryParse(datos[1], out long @base) ||
-					!int.TryParse(datos[2], out int coeficientes) ||
-					(divisor <= 1 && @base <= 1 && coeficientes <= 0)) { //Si los argumentos no son correctos
-					Console.WriteLine(ERROR_NUEMRICO);
-					salida = SALIDA_ERROR;
-					correcto = false;
-				} else { //Si los argumentos no son inmediatamente inválidos
-					if (flags[DatosFlags.EXPANDIDO]) {
-						var salidaExpandido = CalculosEstatico.ReglaDivisibilidadExtendida(divisor, @base); //Obtenemos la regla expandida
-						Console.WriteLine(salidaExpandido.Item2);
-						correcto = salidaExpandido.Item1; //Si se ha obtenido la regla se salta el resto
-						salida = SALIDA_CORRECTA;
-					}
-					if (!(flags[DatosFlags.EXPANDIDO] && correcto) && CalculosEstatico.Mcd(divisor, @base) != 1) { //Si la base y divisor no son coprimos y no ha conseguido encontrar otras reglas
-						Console.WriteLine(ERROR_PRIMO);
-						salida = SALIDA_ERROR;
-						correcto = false;
-					} else if (!(flags[DatosFlags.EXPANDIDO] && correcto)) { //Si los argumentos son correctos y no ha conseguido encontrar otras reglas
-						Console.WriteLine(StringReglasConNombre(divisor, @base, coeficientes, 3));
-						salida = flags[DatosFlags.EXPANDIDO]? SALIDA_FRACASO_EXPANDIDA : SALIDA_CORRECTA;
-						correcto = true;
-					}
-				}
-			}
-			return correcto;
+			return true;
 		}
 
 		/// <summary>
@@ -103,62 +57,8 @@ namespace ProgramaDivisibilidad {
 		/// Código de la salida de la aplicación.
 		/// </returns>
 		private static int IniciarAplicacion() { //Si no se proporcionan los argumentos de forma directa, se establece un diálogo con el usuario para obtenerlos
-			bool preguntarTodos = !flags[DatosFlags.TODOS], preguntarInverso = !flags[DatosFlags.INVERSO], preguntarExpandido = !flags[DatosFlags.EXPANDIDO] //Si los flags están activados no se preguntan
-				, continuar; //Si se cambia a true se continua el bucle
 			Console.WriteLine($"El programa se ejecutará de forma normal, escriba {SALIDA} para cerrarlo");
 			try {
-				do {
-
-					if (preguntarExpandido) {
-						Console.WriteLine("Escriba S si quiere obtener reglas de más tipos aparte de las de coeficientes, si la base y el divisor son adecuados.");
-						Console.WriteLine("Esto saltará varias comprobaciones de argumentos.");
-						ObtenerDeUsuario(out flags[DatosFlags.EXPANDIDO]);
-					}
-
-					Console.WriteLine("Introduzca el divisor para calcular su regla de divisibilidad.");
-					ObtenerDeUsuario(out long divisor, 2, "El divisor debe ser un entero mayor que 1.");
-
-					long @base = 0;
-					int coeficientes = 0;
-					(bool, string) resultadoExpandido = (false,"");
-					if (flags[DatosFlags.EXPANDIDO]) {
-						Console.WriteLine("Introduzca la base en la que se calculará la base, para las reglas de coeficientes debe ser coprima con el divisor.");
-						ObtenerDeUsuario(out @base, 2, "La base debe ser un entero mayor que 1.");
-
-						resultadoExpandido = CalculosEstatico.ReglaDivisibilidadExtendida(divisor, @base);
-						Console.WriteLine(resultadoExpandido.Item2);
-
-						if (!resultadoExpandido.Item1 && CalculosEstatico.Mcd(@base,divisor) > 1) { //Si falla y no son coprimos no se pueden calcular las reglas normales
-							resultadoExpandido = (true, ""); //Para saltarse los ifs
-							Console.WriteLine("La base y el divisor no son coprimos, no se pueden calcular reglas de coeficientes");
-						}
-					} else {
-						Console.WriteLine("Introduzca la base en la que se calculará la base, debe ser coprima con el divisor.");
-						ObtenerDeUsuarioCoprimo(out @base, 2, "La base debe ser un entero mayor que 1 y coprima con el divisor.",divisor);
-
-					}
-
-					if (!resultadoExpandido.Item1) {
-						Console.WriteLine("Introduzca el número de coeficientes de la regla, esto afecta al resultado.");
-						ObtenerDeUsuario(out coeficientes, 1, "El número de coeficientes debe ser positivo.");
-
-						if (preguntarTodos) {
-							Console.WriteLine("Escriba S si quiere obtener todas las reglas de divisibilidad con coeficientes pequeños, si no se devolverá el que tenga menores coeficientes.");
-							ObtenerDeUsuario(out flags[DatosFlags.TODOS]);
-						}
-						if (preguntarInverso) {
-							Console.WriteLine("Escriba S si quiere que se escriban las reglas en orden inverso.");
-							ObtenerDeUsuario(out flags[DatosFlags.INVERSO]);
-						}
-					}
-
-					if (!resultadoExpandido.Item1) {
-						Console.WriteLine("Reglas obtenidas.");
-						Console.WriteLine(StringReglasConNombre(divisor, @base, coeficientes, 0));
-					}
-					Console.WriteLine("Escriba S si calcular otras reglas.");
-					ObtenerDeUsuario(out continuar);
-				} while (continuar);
 			} catch {
 				salir = true;
 				Console.WriteLine("Se ha interrumpido el programa.");
