@@ -223,11 +223,10 @@ namespace ProgramaDivisibilidad {
 		}
 
 		private static string ObtenerReglas(long divisor, long @base, int coeficientes, string nombre = "") {
-			Calculos calc = new(@base);
 			string resultado;
 			if (flags[DatosFlags.TODOS]) { //Si se piden las 2^coeficientes reglas
 				ISerie<ISerie<long>> series = new ListSerie<ISerie<long>>();
-				calc.ReglasDivisibilidad(series, divisor, coeficientes);
+				CalculosEstatico.ReglasDivisibilidad(series, divisor, coeficientes,@base);
 				if (nombre != "") {
 					foreach (var serie in series) {
 						serie.Nombre = nombre;
@@ -236,7 +235,7 @@ namespace ProgramaDivisibilidad {
 				resultado = SerieRectangularString(series);
 			} else {
 				ListSerie<long> serie = new(nombre);
-				calc.ReglaDivisibilidadOptima(serie, divisor, coeficientes);
+				CalculosEstatico.ReglaDivisibilidadOptima(serie, divisor, coeficientes, @base);
 				resultado = StringSerieConFlags(serie);
 			}
 			return resultado;

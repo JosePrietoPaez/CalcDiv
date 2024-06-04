@@ -178,13 +178,5 @@ namespace Operaciones
 				if (!arr[i]) i++;
 			}
 		}
-
-		public static long Producto(ILista<long> serie) {
-			long res = 1;
-			foreach (long elem in serie) {
-				res *= elem;
-			}
-			return res;
-		}
 	}
 }

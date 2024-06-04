@@ -100,7 +100,7 @@ namespace TestCalculadora {
 		}
 
 		[Test]
-		public void ArrayFalso_StateUnderTest_ExpectedBehavior() {
+		public void ArrayFalso_ArraySinTrue_DevuelveTrue() {
 			// Arrange
 			bool[] arr = new bool[10];
 
@@ -109,20 +109,92 @@ namespace TestCalculadora {
 				arr);
 
 			// Assert
-			Assert.Fail();
+			Assert.That(result, Is.True);
 		}
 
 		[Test]
-		public void IncrementarArray_StateUnderTest_ExpectedBehavior() {
+		public void ArrayFalso_ArrayConTrue_DevuelveTrue() {
 			// Arrange
-			bool[] arr = new bool[10];
+			bool[] arr = {true,false,false,false,false};
+
+			// Act
+			var result = OperacionesSeries.ArrayFalso(
+				arr);
+
+			// Assert
+			Assert.That(result, Is.False);
+		}
+
+		[Test]
+		public void IncrementarArray_ArrayFalso_PrimerElementoTrue() {
+			// Arrange
+			int longitud = 10;
+			bool[] arr = new bool[longitud];
 
 			// Act
 			OperacionesSeries.IncrementarArray(
 				arr);
 
 			// Assert
-			Assert.Fail();
+			Assert.Multiple(() => {
+				Assert.That(arr, Has.Length.EqualTo(longitud));
+				Assert.That(arr[0], Is.True);
+			});
 		}
+
+		[Test]
+		public void IncrementarArray_ArrayPrimeroTrue_PrimerElementoFalseSegundoTrue() {
+			// Arrange
+			int longitud = 10;
+			bool[] arr = [true,false,false,false,false,false,false,false,false,false];
+
+			// Act
+			OperacionesSeries.IncrementarArray(
+				arr);
+
+			// Assert
+			Assert.Multiple(() => {
+				Assert.That(arr, Has.Length.EqualTo(longitud));
+				Assert.That(arr[0], Is.False);
+				Assert.That(arr[1], Is.True);
+			});
+		}
+
+		[Test]
+		public void IncrementarArray_ArrayPrimeroSegundoTrue_PrimerSegundoElementoFalseSegundoTrue() {
+			// Arrange
+			int longitud = 10;
+			bool[] arr = [true, true, false, false, false, false, false, false, false, false];
+
+			// Act
+			OperacionesSeries.IncrementarArray(
+				arr);
+
+			// Assert
+			Assert.Multiple(() => {
+				Assert.That(arr, Has.Length.EqualTo(longitud));
+				Assert.That(arr[0], Is.False);
+				Assert.That(arr[1], Is.False);
+				Assert.That(arr[2], Is.True);
+			});
+		}
+
+		[Test]
+		public void IncrementarArray_ArrayTrue_DevuelveArrayFalse() {
+			// Arrange
+			int longitud = 10;
+			bool[] arr = [true, true, true, true, true, true, true, true, true, true];
+
+			// Act
+			OperacionesSeries.IncrementarArray(
+				arr);
+
+			// Assert
+			Assert.Multiple(() => {
+				Assert.That(arr, Has.Length.EqualTo(longitud));
+				Assert.That(arr, Has.All.EqualTo(false));
+			});
+		}
+
 	}
 }

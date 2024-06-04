@@ -392,34 +392,49 @@ namespace TestCalculadora
 		}
 
 		[Test]
-		public void NumASubindice_StateUnderTest_ExpectedBehavior()
-		{
+		public void NumASubindice_NumeroNoNegativo_DevuelveStringConElNumero() {
 			// Arrange
 
-			long num = 0;
+			long num = 1234567890;
+			string esperado = "₁₂₃₄₅₆₇₈₉₀";
 
 			// Act
 			var result = CalculosEstatico.NumASubindice(
 				num);
 
 			// Assert
-			Assert.Fail();
+			Assert.That(result,Is.EqualTo(esperado));
 		}
 
 		[Test]
-		public void CifraASubindice_StateUnderTest_ExpectedBehavior()
-		{
+		public void NumASubindice_NumeroNegativo_DevuelveStringConElNumero() {
 			// Arrange
 
-			long num = 0;
+			long num = -1234567890;
+			string esperado = "₋₁₂₃₄₅₆₇₈₉₀";
 
 			// Act
-			var result = CalculosEstatico.CifraASubindice(
+			var result = CalculosEstatico.NumASubindice(
 				num);
 
 			// Assert
-			Assert.Fail();
+			Assert.That(result, Is.EqualTo(esperado));
 		}
+
+		[Test]
+		public void CifraASubindice_PruebaDeTodoElDominio_DevuelveSubindicies() {
+			// Arrange
+
+			long[] num = [1,2,3,4,5,6,7,8,9,0];
+			char[] subindices = ['₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉','₀'];
+
+			// Act
+			var result = num.Select(CalculosEstatico.CifraASubindice).ToArray();
+
+			// Assert
+			Assert.That(result, Is.EqualTo(subindices));
+		}
+
 		[Test(Description ="Devuelve el valor en base raiz de fact1 * fact2")]
 		public void ProductoMod_longValues_DevuelveElModulo_EnBase_raiz()
 		{

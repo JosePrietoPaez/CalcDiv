@@ -83,7 +83,7 @@ namespace Operaciones
 				FuncionDeGeneracion = num => 0L,
 				Longitud = primos.Longitud
 			};
-			Calculos.Descomposicion(primos, res, num);
+			Descomposicion(primos, res, num);
 			while (res.UltimoElemento == 0L) {
 				res.BorrarUltimo();
 			}
@@ -237,15 +237,18 @@ namespace Operaciones
 		/// </returns>
 		public static short Cifra(long num, long pos, long raiz) { //Recemos para que nadie ponga un número de base mayor a 32767
 			if (pos >= Cifras(num, raiz) || pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
-			return (short)(num / PotenciaEntera(raiz,pos) % raiz);	
+			return (short)(Math.Abs(num) / PotenciaEntera(raiz,pos) % raiz);	
 		}
 
 		/**
 		 * Devuelve un objeto {@code String} que contiene {@code num} escrito con subíndices de sus cifras en raiz 10
 		 * @return {@code num} en subíndices
 		 */
-		public static String NumASubindice(long num) {
+		public static string NumASubindice(long num) {
 			StringBuilder res = new();
+			if (num < 0) {
+				res.Append('₋');
+			}
 			short cifras = Cifras(num, 10);
 			for (int i = cifras - 1; i >= 0; i--) {
 				res.Append(CifraASubindice(Cifra(num, i, 10)));
@@ -286,6 +289,16 @@ namespace Operaciones
 			return fac1 * fac2 % raiz;
 		}
 
+		//Guarda en desc la descomposicion de num, usando los primos de primos
+		internal static void Descomposicion(IListaDinamica<long> primos, IListaDinamica<long> desc, long num) {
+			for (int j = 0; j < primos.Longitud && num > 1; j++) {
+				while (num % primos[j] == 0) {
+					num /= primos[j];
+					desc[j]++;
+				}
+			}
+		}
+
 		/**
 		 * Devuelve todas las reglas de divisibilidad de {@code num} en raiz {@code raiz} con {@code cantidad} coeficientes cuyo valor absoluto no supera raiz
 		 * <p>reglas se borra antes de calcular las reglas</p>
@@ -295,7 +308,7 @@ namespace Operaciones
 		 */
 		public static void ReglasDivisibilidad(ISerie<ISerie<long>> reglas, long num, int cantidad, long raiz) {
 			reglas.BorrarTodos(); //Se borra la serie
-			String nombre = reglas.Nombre;
+			string nombre = reglas.Nombre;
 			reglas.InsertarUltimo(new ListSerie<long>(nombre, cantidad));
 			ReglaDivisibilidadBase(reglas[0], num, cantidad, raiz); //Se calcula la regla de positivos
 			ISerie<long> aux, atajo = reglas[0]; //aux guarda la serie que se añadirá y atajo es un atajo
