@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using CommandLine;
 using System.Text;
 using Listas;
 using Operaciones;
@@ -13,11 +14,12 @@ namespace ProgramaDivisibilidad {
 	public static class CalculadoraDivisibilidadCLI {
 		
 		//Inicialización de variables privadas
-		private const int MAX_ARGS = 64,MAX_DATOS = 4, SALIDA_CORRECTA = 0, SALIDA_ERROR = 1, SALIDA_VOLUNTARIA = 2, SALIDA_FRACASO_EXPANDIDA = 3;
+		private const int SALIDA_CORRECTA = 0, SALIDA_ERROR = 1, SALIDA_VOLUNTARIA = 2, SALIDA_FRACASO_EXPANDIDA = 3;
 		private const string ERROR_NUEMRICO = "El divisor, base y el número de coeficientes deben ser números enteros positivos\r\ndivisor y base deben ser mayor que 1"
 			,SALIDA = "FIN", ERROR_PRIMO = "La base y el divisor deben ser coprimos";
 		private static bool salir = false; //Usado para saber si el usuario ha solicitado terminar la ejecución
 		private static int salida = SALIDA_CORRECTA; //Salida del programa
+		private static Flags? flags;
 
 		/// <summary>
 		/// Este método calcula la regla de divisibilidad, obteniendo los datos desde la consola o desde los argumentos.
@@ -32,6 +34,12 @@ namespace ProgramaDivisibilidad {
 		/// </list>
 		/// </returns>
 		public static int Main(string[] args) {
+			var resultado = Parser.Default.ParseArguments<Flags>(args) //Parsea los argumentos
+				.WithParsed(options => { flags = options; Console.Error.WriteLine(options.Dump()); })
+				.WithNotParsed(errors => { salida = SALIDA_ERROR; Console.Error.WriteLine(errors); });
+			if (salida == SALIDA_ERROR) {
+				return salida;
+			}
 			return salida;
 		}
 
@@ -70,8 +78,8 @@ namespace ProgramaDivisibilidad {
 		/// Calcula las reglas con los argumentos proporcionados y el usuario lo ha pedido
 		/// </summary>
 		private static string StringReglasConNombre(long divisor, long @base, int coeficientes, int indice) {
-			if (flags[DatosFlags.NOMBRE]) {
-				return ObtenerReglas(divisor, @base, coeficientes, datos[indice]);
+			if (flags.Nombre is not null) {
+				return ObtenerReglas(divisor, @base, coeficientes, flags.Nombre);
 			} else {
 				return ObtenerReglas(divisor, @base, coeficientes);
 			}
@@ -124,8 +132,8 @@ namespace ProgramaDivisibilidad {
 
 		private static string ObtenerReglas(long divisor, long @base, int coeficientes, string nombre = "") {
 			string resultado;
-			if (flags[DatosFlags.TODOS]) { //Si se piden las 2^coeficientes reglas
-				ISerie<ISerie<long>> series = new ListSerie<ISerie<long>>();
+			if (flags.Todos) { //Si se piden las 2^coeficientes reglas
+				ListSerie<ListSerie<long>> series = new();
 				CalculosEstatico.ReglasDivisibilidad(series, divisor, coeficientes,@base);
 				if (nombre != "") {
 					foreach (var serie in series) {
@@ -144,17 +152,6 @@ namespace ProgramaDivisibilidad {
 		private static void EscribirArchivo(string ruta) {
 			string texto = File.ReadAllText(ruta);
 			Console.WriteLine(texto);
-		}
-
-		private static void ObtenerFlags(string[] args) {
-			int indiceFlags = InicioArgs(args); //Debería ser 0 pero no estoy seguro
-			if (indiceFlags > -1) {
-				CopiarArrayParcial(args,datos,indiceFlags+1,MAX_DATOS); //Extraemos los argumentos
-				ulong indiceEnum = DatosFlags.StringAIndice(args[indiceFlags].Remove(0,1));
-				for (int i = 0; i < MAX_ARGS; i++) { //Inicializamos flags
-					flags[i] = ((1UL<<i)&indiceEnum) != 0;
-				}
-			}
 		}
 
 		//Copia los elementos entre inicioCopia y finCopia de original a los primeros elementos de copia
@@ -183,7 +180,7 @@ namespace ProgramaDivisibilidad {
 			return indice;
 		}
 
-		private static string SerieRectangularString(ISerie<ISerie<long>> serie) {
+		private static string SerieRectangularString(ListSerie<ListSerie<long>> serie) {
 			StringBuilder stringBuilder = new();
 			foreach (var item in serie) {
 				stringBuilder.Append(StringSerieConFlags(item)).Append('\n');
@@ -199,10 +196,10 @@ namespace ProgramaDivisibilidad {
 		/// String que representa a <c>serie</c> dependiendo de los flags.
 		/// </returns>
 		private static string StringSerieConFlags(ISerie<long> serie) {
-			if (flags[DatosFlags.INVERSO]) {
-				return flags[DatosFlags.NOMBRE] ? serie.ToStringCompletoInverso() : serie.ToStringInverso();
+			if (flags.Inverso) {
+				return flags.Nombre is not null ? serie.ToStringCompletoInverso() : serie.ToStringInverso();
 			}
-			return flags[DatosFlags.NOMBRE] ? serie.ToStringCompleto() : serie.ToString()??"";
+			return flags.Nombre is not null ? serie.ToStringCompleto() : serie.ToString()??"";
 		}
 	}
 }

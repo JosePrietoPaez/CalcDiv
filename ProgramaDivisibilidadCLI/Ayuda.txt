@@ -22,7 +22,7 @@ Si no es tan fácil ver si el resultado es múltiplo del divisor, se aplica la r
 -h: muestra una versión reducida de la ayuda, no se ejecuta el programa
 -r: las series se escriben en orden inverso, se salta la comprobación en la aplicación
 -d: si se pasan todos los datos se obtiene un resultado sin que la aplicación pida datos
--t: se escriben todas las reglas posibles con la cantidad de coeficientes proporcionado, el valor absoluto de los coeficientes será menor al del divisor
+-t: se escriben todas las reglas posibles con la cantidad de coeficientes proporcionado, el valor absoluto de los coeficientes será menor al del divisor (cambiado a -a)
 -n: escribe el nombre introducido como parámetro antes de cada elemento con su indice
 -x: cambia la salida a una regla alternativa que no usa coeficientes, si puede encontrar
 

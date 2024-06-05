@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="jmpp.expanded-lists" Version="0.1.0" />
+    <PackageReference Include="ObjectDumper.NET" Version="4.2.7" />
   </ItemGroup>
 
   <ItemGroup>

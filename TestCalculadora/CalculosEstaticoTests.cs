@@ -300,7 +300,7 @@ namespace TestCalculadora
 				un,
 				dos);
 
-			Assert.That(2,Is.EqualTo(result));
+			Assert.That(result,Is.EqualTo(2));
 
 		}
 
@@ -482,7 +482,7 @@ namespace TestCalculadora
 			{
 				// Arrange
 
-				ISerie<ISerie<long>> serie = new ListSerie<ISerie<long>>();
+				ISerie<ListSerie<long>> serie = new ListSerie<ListSerie<long>>();
 				long num = 0;
 				int cantidad = 3;
 				long raiz = 10;
@@ -501,7 +501,7 @@ namespace TestCalculadora
 			{
 				// Arrange
 
-				ISerie<ISerie<long>> serie = new ListSerie<ISerie<long>>();
+				ISerie<ListSerie<long>> serie = new ListSerie<ListSerie<long>>();
 				long num = 0;
 				int cantidad = 3;
 				long raiz = 10;
@@ -520,7 +520,7 @@ namespace TestCalculadora
 			{
 				// Arrange
 
-				ISerie<ISerie<long>> serie = new ListSerie<ISerie<long>>();
+				ISerie<ListSerie<long>> serie = new ListSerie<ListSerie<long>>();
 				long num = 7;
 				int cantidad = 3;
 				long raiz = 1;
@@ -539,7 +539,7 @@ namespace TestCalculadora
 			{
 				// Arrange
 
-				ISerie<ISerie<long>> serie = new ListSerie<ISerie<long>>();
+				ISerie<ListSerie<long>> serie = new ListSerie<ListSerie<long>>();
 				ISerie<long> serieOptima = new ListSerie<long>();
 				long num = 7;
 				int cantidad = 3;

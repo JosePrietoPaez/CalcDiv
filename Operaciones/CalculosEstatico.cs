@@ -12,7 +12,7 @@ namespace Operaciones
 		private static readonly ListSerie<long> _primosCalculados = new ListSerie<long>();
 
 		/// <summary>
-		/// Esta propiedad devuelve un clon de la lista de primos más larga que ha sido calculada para no tener que calcular todos los primos siempre.
+		/// Esta propiedad devuelve primero clon de la lista de primos más larga que ha sido calculada para no tener que calcular todos los primos siempre.
 		/// </summary>
 		/// <remarks>
 		/// Asegúrese de que PrimosHasta ha sido llamado con argumento mayor o igual al número que espera.
@@ -41,33 +41,33 @@ namespace Operaciones
 
 		
 		/// <summary>
-		/// Devuelve el factorial de <c>raiz</c>.
+		/// Devuelve el factorial de <c>@base</c>.
 		/// </summary>
-		public static long Factorial(long raiz) {
-			ArgumentOutOfRangeException.ThrowIfNegative(raiz);
-			long res = raiz;
-			while (raiz > 1) {
-				res *= raiz;
-				raiz--;
+		public static long Factorial(long num) {
+			ArgumentOutOfRangeException.ThrowIfNegative(num);
+			long res = num;
+			while (num > 1) {
+				res *= num;
+				num--;
 			}
 			return res;
 		}
 
 		/// <summary>
-		/// Devuelve el máximo común divisor de <c>raiz</c> y <c>segundo</c>.
+		/// Devuelve el máximo común divisor de <c>@base</c> y <c>segundo</c>.
 		/// </summary>
-		public static long Mcd(long raiz, long segundo)
+		public static long Mcd(long primero, long segundo)
 		{
-			if (raiz < 0 || segundo < 0) throw new ArgumentException("Los argumentos deben ser no negativos");
-			if (raiz < segundo) { //Necesitamos que raiz sea mayor o igual que segundo
-				(segundo, raiz) = (raiz, segundo);
+			if (primero < 0 || segundo < 0) throw new ArgumentException("Los argumentos deben ser no negativos");
+			if (primero < segundo) { //Necesitamos que @base sea mayor o igual que segundo
+				(segundo, primero) = (primero, segundo);
 			}
 			while (segundo != 0) {
-				long aux = raiz;
-				raiz = segundo;
+				long aux = primero;
+				primero = segundo;
 				segundo = aux % segundo;
 			}
-			return raiz;
+			return primero;
 		}
 
 		/// <summary>
@@ -98,7 +98,7 @@ namespace Operaciones
 		/// </remarks>
 		/// <exception cref="ArgumentException"></exception>
 		/// <returns>
-		/// El mínimo número positivo que es múltiplo de los dos argumentos.
+		/// El mínimo número positivo que es múltiplo de los segundo argumentos.
 		/// </returns>
 		public static long Mcm(long primero, long segundo) {
 			if (primero < 0 || segundo < 0) throw new ArgumentException("Los argumentos deben ser no negativos");
@@ -140,17 +140,17 @@ namespace Operaciones
 			return serie;
 		}
 
-		/**
-		 * Calcula el inverso multiplicativo de a en módulo m
-		 * <p></p>
-		 * Copiado del artículo de <a href="https://es.wikipedia.org/wiki/Inverso_multiplicativo">
-		 *     Wikipedia</a><p></p>
-		 * Devuelve 0 si no hay inverso, es decir, mcd(a,m) &ne; 1
-		 * El resultado nunca es negativo
-		 * @param a número cuyo inverso queremos calcular
-		 * @param m módulo que se usa para el cálculo
-		 * @return a^-1, talque a*a^-1 &equiv; 1 (mód m)
-		 */
+		/// <summary>
+		/// Calcula el inverso multiplicativo de <c>a</c> en módulo <c>m</c>.
+		/// </summary>
+		/// <remarks>
+		/// Devuelve 0 si no hay inverso.<para>
+		/// El resultado nunca es negativo
+		/// </para>
+		/// </remarks>
+		/// <returns>
+		/// a^-1 talque a * a^-1 equivale a 1 (mód m)
+		/// </returns>
 		public static long InversoMod(long a, long m) {
 			long c1 = 1;
 			long c2 = -(m / a); //coeficiente de a y b respectivamente
@@ -197,26 +197,26 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Devuelve el mínimo de los absolutos entre <c>un</c> y <c>dos</c>.
+		/// Devuelve el mínimo de los absolutos entre <c>primero</c> y <c>segundo</c>.
 		/// </summary>
-		public static long MinAbs(long un, long dos) {
-			return Math.Min(Math.Abs(un), Math.Abs(dos));
+		public static long MinAbs(long primero, long segundo) {
+			return Math.Min(Math.Abs(primero), Math.Abs(segundo));
 		}
 
 		/// <summary>
-		/// Calcula el número de cifras de <c>num</c> en base <c>raiz</c>.
+		/// Calcula el número de cifras de <c>num</c> en base <c>@base</c>.
 		/// </summary>
-		public static short Cifras(long num, long raiz) { 
+		public static short Cifras(long num, long @base) { 
 			if (num == 0) return 1;
-			return (short)Math.Ceiling(Math.Log(Math.Abs(num) + 1L) / Math.Log(raiz));
+			return (short)Math.Ceiling(Math.Log(Math.Abs(num) + 1L) / Math.Log(@base));
 		}
 
 		/// <summary>
-		/// Calcula el número de cifras de <c>num</c> en base <c>raiz</c>.
+		/// Calcula el número de cifras de <c>num</c> en base <c>@base</c>.
 		/// </summary>
-		public static short Cifras(double num, double raiz) {
+		public static short Cifras(double num, double @base) {
 			if (num == 0) return 1;
-			return (short)Math.Ceiling(Math.Log(Math.BitIncrement(Math.Abs(num))) / Math.Log(raiz));
+			return (short)Math.Ceiling(Math.Log(Math.BitIncrement(Math.Abs(num))) / Math.Log(@base));
 		}
 		
 		/// <summary>
@@ -227,21 +227,21 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Calcula la cifra en la posición <c>pos</c> de <c>num</c> en base <c>raiz</c>.
+		/// Calcula la cifra en la posición <c>pos</c> de <c>num</c> en base <c>@base</c>.
 		/// </summary>
 		/// <remarks>
 		/// La cifra 0 es la menos significativa.
 		/// </remarks>
 		/// <returns>
-		/// Cifra <c>pos</c> de <c>num</c> en base <c>raiz</c>
+		/// Cifra <c>pos</c> de <c>num</c> en base <c>@base</c>
 		/// </returns>
-		public static short Cifra(long num, long pos, long raiz) { //Recemos para que nadie ponga un número de base mayor a 32767
-			if (pos >= Cifras(num, raiz) || pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
-			return (short)(Math.Abs(num) / PotenciaEntera(raiz,pos) % raiz);	
+		public static short Cifra(long num, long pos, long @base) { //Recemos para que nadie ponga primero número de base mayor a 32767
+			if (pos >= Cifras(num, @base) || pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
+			return (short)(Math.Abs(num) / PotenciaEntera(@base,pos) % @base);	
 		}
 
 		/**
-		 * Devuelve un objeto {@code String} que contiene {@code num} escrito con subíndices de sus cifras en raiz 10
+		 * Devuelve primero objeto {@code String} que contiene {@code num} escrito con subíndices de sus cifras en @base 10
 		 * @return {@code num} en subíndices
 		 */
 		public static string NumASubindice(long num) {
@@ -259,34 +259,34 @@ namespace Operaciones
 		public static char CifraASubindice(long num) { return (char)(num + 0x2080); }
 
 		/**
-		 * Calcula {@code num}^{@code exp} en módulo {@code raiz} multiplicando {@code num} por sí mismo y haciendo el módulo en cada paso
+		 * Calcula {@code num}^{@code exp} en módulo {@code @base} multiplicando {@code num} por sí mismo y haciendo el módulo en cada paso
 		 * <p>Intenta evitar el overflow que se produciría al hacer la potencia antes del módulo,
 		 * pero esto no se garantiza</p>
-		 * @param num raiz de la potencia
+		 * @param num @base de la potencia
 		 * @param exp exponente
-		 * @param raiz raiz del módulo
-		 * @return {@code num}^{@code exp} en módulo {@code raiz}
+		 * @param @base @base del módulo
+		 * @return {@code num}^{@code exp} en módulo {@code @base}
 		 */
-		public static long PotenciaMod(long num, long exp, long raiz) {
+		public static long PotenciaMod(long num, long exp, long @base) {
 			long res = 1;
-			num %= raiz;
+			num %= @base;
 			while (exp > 0) {
-				res = ProductoMod(res, num, raiz);
+				res = ProductoMod(res, num, @base);
 				exp--;
 			}
 			return res;
 		}
 
 		/// <summary>
-		/// Calcula el producto de <c>fac1</c> y <c>fac2</c> en módulo <c>raiz</c>
+		/// Calcula el producto de <c>fac1</c> y <c>fac2</c> en módulo <c>@base</c>
 		/// </summary>
 		/// <returns>
-		/// <c>fac1 * fac2 % raiz</c>
+		/// <c>fac1 * fac2 % @base</c>
 		/// </returns>
 		/// <exception cref="ArgumentException"></exception>
-		public static long ProductoMod(long fac1, long fac2, long raiz) {
-			if (raiz == 0) throw new ArgumentException("No se puede calcular el resto con divisor 0");
-			return fac1 * fac2 % raiz;
+		public static long ProductoMod(long fac1, long fac2, long @base) {
+			if (@base == 0) throw new ArgumentException("No se puede calcular el resto con divisor 0");
+			return fac1 * fac2 % @base;
 		}
 
 		//Guarda en desc la descomposicion de num, usando los primos de primos
@@ -300,19 +300,21 @@ namespace Operaciones
 		}
 
 		/**
-		 * Devuelve todas las reglas de divisibilidad de {@code num} en raiz {@code raiz} con {@code cantidad} coeficientes cuyo valor absoluto no supera raiz
+		 * Devuelve todas las reglas de divisibilidad de {@code num} en @base {@code @base} con {@code cantidad} coeficientes cuyo valor absoluto no supera @base
 		 * <p>reglas se borra antes de calcular las reglas</p>
 		 * @param reglas serie donde guardar las series que guardan las reglas
 		 * @param cantidad número de coeficientes de la regla
-		 * @param raiz raiz que se usa para crear la regla
+		 * @param @base @base que se usa para crear la regla
 		 */
-		public static void ReglasDivisibilidad(ISerie<ISerie<long>> reglas, long num, int cantidad, long raiz) {
+		public static void ReglasDivisibilidad(ISerie<ListSerie<long>> reglas, long num, int cantidad, long @base) {
 			reglas.BorrarTodos(); //Se borra la serie
 			string nombre = reglas.Nombre;
 			reglas.InsertarUltimo(new ListSerie<long>(nombre, cantidad));
-			ReglaDivisibilidadBase(reglas[0], num, cantidad, raiz); //Se calcula la regla de positivos
-			ISerie<long> aux, atajo = reglas[0]; //aux guarda la serie que se añadirá y atajo es un atajo
+			ReglaDivisibilidadBase(reglas[0], num, cantidad, @base); //Se calcula la regla de positivos
+			ListSerie<long> aux, atajo = reglas[0]; //aux guarda la serie que se añadirá y atajo es primero atajo
 			bool[] producto = new bool[cantidad]; //guarda si el elemento i de atajo se le resta num
+			int iteracionesMaximas = (int)PotenciaEntera(2, cantidad), //Antes se usaba ArrayFalso, pero eso significaba una operación O(cantidad) en cada iteración
+				iteracionesActuales = 0;
 			OperacionesSeries.IncrementarArray(producto); //Como el primero ya está se incrementa
 			do {
 				aux = new ListSerie<long>(nombre, cantidad);
@@ -321,38 +323,39 @@ namespace Operaciones
 				}
 				reglas.InsertarUltimo(aux);
 				OperacionesSeries.IncrementarArray(producto); //Itera el bucle
-			} while (!OperacionesSeries.ArrayFalso(producto));
+				iteracionesActuales++;
+			} while (iteracionesMaximas > iteracionesActuales);
 		}
 		/**
-		 * Calcula la regla de divisibilidad de {@code num} en raiz {@code raiz} con {@code cantidad} coeficiente
+		 * Calcula la regla de divisibilidad de {@code num} en @base {@code @base} con {@code cantidad} coeficiente
 		 * tal que todos los coeficientes tienen el menor valor absoluto y la guarda en serie
 		 * <p>{@code serie} se borra antes de crear la regla</p>
 		 * @param serie serie donde guardar la regla
 		 * @param cantidad número de coeficientes de la regla
-		 * @param raiz raiz que se usa para crear la regla
+		 * @param @base @base que se usa para crear la regla
 		 */
-		public static void ReglaDivisibilidadOptima(IListaDinamica<long> serie, long num, int cantidad, long raiz) {
-			ReglaDivisibilidadBase(serie, num, cantidad, raiz);
+		public static void ReglaDivisibilidadOptima(IListaDinamica<long> serie, long num, int cantidad, long @base) {
+			ReglaDivisibilidadBase(serie, num, cantidad, @base);
 			for (int i = 0; i < serie.Longitud; i++) {
 				serie[i] = MinAbs(serie[i], serie[i] - num);
 			}
 		}
 
 		/**
-		 * Calcula una regla de divisibilidad de {@code num} en raiz {@code raiz} con {@code cantidad} coeficientes
+		 * Calcula una regla de divisibilidad de {@code num} en @base {@code @base} con {@code cantidad} coeficientes
 		 * y la guarda en serie
 		 * <p>{@code serie} se borra antes de crear la regla</p>
 		 * Los coeficientes son positivos siempre
 		 * @param serie serie donde guardar la regla
 		 * @param cantidad número de coeficientes de la regla
-		 * @param raiz raiz que se usa para crear la regla
+		 * @param @base @base que se usa para crear la regla
 		 */
-		public static void ReglaDivisibilidadBase(IListaDinamica<long> serie, long num, int cantidad, long raiz) {
+		public static void ReglaDivisibilidadBase(IListaDinamica<long> serie, long num, int cantidad, long @base) {
 			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(num,nameof(num));
-			ArgumentOutOfRangeException.ThrowIfLessThan(raiz, 2,nameof(raiz));
+			ArgumentOutOfRangeException.ThrowIfLessThan(@base, 2,nameof(@base));
 			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(cantidad, nameof(cantidad));
-			long inv = InversoMod(raiz, num);
-			if (inv == 0) throw new ArithmeticException("num debe ser coprimo con raiz");
+			long inv = InversoMod(@base, num);
+			if (inv == 0) throw new ArithmeticException("num debe ser coprimo con @base");
 			serie.Vacia = true;
 			OperacionesSeries.PotenciaModProgresiva(serie, inv, num, cantidad, 0);
 		}
@@ -389,7 +392,7 @@ namespace Operaciones
 		/// Devuelve una tupla indicando si se ha encontrado una regla alternativa y una explicación de como aplicarla.
 		/// </summary>
 		/// <remarks>
-		/// <c>divisor</c> y <c>raiz</c> deben ser mayores que uno.
+		/// <c>divisor</c> y <c>@base</c> deben ser mayores que uno.
 		/// <para>
 		/// Si no se encuentra una regla debería usarse <see cref="ReglasDivisibilidad(ISerie{ISerie{long}}, long, int, long)"/>
 		/// para calcularlas.
@@ -398,19 +401,19 @@ namespace Operaciones
 		/// </remarks>
 		/// <exception cref="ArgumentOutOfRangeException"></exception>
 		/// <param name="divisor"></param>
-		/// <param name="raiz"></param>
+		/// <param name="@base"></param>
 		/// <returns>
-		/// Tupla con un booleano indicando el éxito del método y un mensaje explicando la regla obtenida.
+		/// Tupla con primero booleano indicando el éxito del método y primero mensaje explicando la regla obtenida.
 		/// </returns>
-		public static (bool,string) ReglaDivisibilidadExtendida(long divisor, long raiz) {
-			var caso = CasoEspecialRegla(divisor, raiz);
+		public static (bool,string) ReglaDivisibilidadExtendida(long divisor, long @base) {
+			var caso = CasoEspecialRegla(divisor, @base);
 			string potencia = "";
 			try {
 				long resultado = -1;
 				if (caso.caso == CasosDivisibilidad.RESTAR_BLOQUES) {
-					resultado = PotenciaEntera(raiz, caso.informacion) + 1;
+					resultado = PotenciaEntera(@base, caso.informacion) + 1;
 				} else if (caso.caso == CasosDivisibilidad.SUMAR_BLOQUES) {
-					resultado = PotenciaEntera(raiz, caso.informacion) - 1;
+					resultado = PotenciaEntera(@base, caso.informacion) - 1;
 				}
 				potencia = resultado.ToString(); //Puede dar overflow si el exponente es grande
 			} catch (OverflowException) {
@@ -418,41 +421,41 @@ namespace Operaciones
 			}
 			string mensaje;
 			mensaje = caso.caso switch {
-				CasosDivisibilidad.MIRAR_CIFRAS => CrearMensajeDivisibilidad($"{divisor} está compuesto de potencias de los factores primos de {raiz}",
+				CasosDivisibilidad.MIRAR_CIFRAS => CrearMensajeDivisibilidad($"{divisor} está compuesto de potencias de los factores primos de {@base}",
 					$"sus primeras {caso.informacion} cifras son múltiplo de {divisor}",
-					raiz, divisor),
+					@base, divisor),
 				CasosDivisibilidad.UNO => "Todos los enteros son divisibles entre uno.",
-				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {raiz} elevado a {caso.informacion} más uno ({potencia})",
+				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {@base} elevado a {caso.informacion} más uno ({potencia})",
 					$"al separar sus cifras en grupos de {caso.informacion} desde las unidades, la diferencia de la suma de los grupos pares" +
 					$" y la de los grupos impares es múltiplo de {divisor}",
-					raiz,divisor),
-				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {raiz} elevado a {caso.informacion} menos uno ({potencia})",
+					@base,divisor),
+				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {@base} elevado a {caso.informacion} menos uno ({potencia})",
 					$"al separar sus cifras en grupos de {caso.informacion} desde las unidades, la suma de los grupos es múltiplo de {divisor}",
-					raiz, divisor),
+					@base, divisor),
 				CasosDivisibilidad.CERO => "No se le puede aplicar la relación de divisibilidad a cero.",
 				_ => "No se ha encontrado ninguna regla alternativa, aplique la regla calculada, si se puede calcular.",
 			};
 			if (caso.informacion == 1) {
-				mensaje = MensajeParaDatoConValorUno(caso.caso,divisor,raiz,mensaje);
+				mensaje = MensajeParaDatoConValorUno(caso.caso,divisor,@base,mensaje);
 			}
 			
 			return (caso.caso != CasosDivisibilidad.USAR_NORMAL, mensaje);
 		}
 
-		private static string MensajeParaDatoConValorUno(CasosDivisibilidad caso, long divisor, long raiz, string mensajeInicial) {
+		private static string MensajeParaDatoConValorUno(CasosDivisibilidad caso, long divisor, long @base, string mensajeInicial) {
 			return caso switch {
-				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {raiz} más uno",
+				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {@base} más uno",
 					$"la diferencia de la suma de las cifras pares con la de las impares es múltiplo de {divisor}",
-					raiz, divisor),
-				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {raiz} menos uno",
+					@base, divisor),
+				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {@base} menos uno",
 					$"la suma de sus cifras es múltiplo de {divisor}",
-					raiz, divisor),
+					@base, divisor),
 				_ => mensajeInicial
 			};
 		}
 
 		/// <summary>
-		/// Devuelve una tupla que representa la regla de divisibilidad encontrada para <c>divisor</c> y <c>raiz</c>.
+		/// Devuelve una tupla que representa la regla de divisibilidad encontrada para <c>divisor</c> y <c>@base</c>.
 		/// </summary>
 		/// <remarks>
 		/// Para obtener los mensajes use <see cref="ReglaDivisibilidadExtendida(long, long)"/> en su lugar.
@@ -469,45 +472,45 @@ namespace Operaciones
 		/// </remarks>
 		/// <exception cref="ArgumentOutOfRangeException"></exception>
 		/// <param name="divisor"></param>
-		/// <param name="raiz"></param>
+		/// <param name="@base"></param>
 		/// <returns>
-		/// Tupla con un caso y un entero con información
+		/// Tupla con primero caso y primero entero con información
 		/// </returns>
 		[return: NotNull]
-		public static (CasosDivisibilidad caso,int informacion) CasoEspecialRegla(long divisor, long raiz) {
-			ArgumentOutOfRangeException.ThrowIfLessThan(raiz,2,nameof(raiz));
-			ArgumentOutOfRangeException.ThrowIfLessThan(raiz,0, nameof(raiz));
+		public static (CasosDivisibilidad caso,int informacion) CasoEspecialRegla(long divisor, long @base) {
+			ArgumentOutOfRangeException.ThrowIfLessThan(@base,2,nameof(@base));
+			ArgumentOutOfRangeException.ThrowIfLessThan(@base,0, nameof(@base));
 
 			if (divisor == 0) return (CasosDivisibilidad.CERO, -1);
 			if (divisor == 1) return (CasosDivisibilidad.UNO, -1);
 
 			IListaDinamica<long> descomposicionDivisor = DescompsicionEnPrimos(divisor),
-				descomposicionRaiz = DescompsicionEnPrimos(raiz);
+				descomposicionRaiz = DescompsicionEnPrimos(@base);
 			if (descomposicionDivisor.Longitud > descomposicionRaiz.Longitud) {
 				descomposicionRaiz.Longitud = descomposicionDivisor.Longitud;
 			} else {
 				descomposicionDivisor.Longitud = descomposicionRaiz.Longitud;
 			}
-			var tuplaCaso = ProductoDePotenciasDeBases(descomposicionDivisor, descomposicionRaiz, raiz);
+			var tuplaCaso = ProductoDePotenciasDeBases(descomposicionDivisor, descomposicionRaiz, @base);
 
 			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.MIRAR_CIFRAS,tuplaCaso.dato);
-			tuplaCaso = UnoMenosQuePotencia(divisor, raiz);
+			tuplaCaso = UnoMenosQuePotencia(divisor, @base);
 			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.RESTAR_BLOQUES, tuplaCaso.dato);
-			tuplaCaso = UnoMasQuePotencia(divisor, raiz);
+			tuplaCaso = UnoMasQuePotencia(divisor, @base);
 			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.SUMAR_BLOQUES, tuplaCaso.dato);
 			return (CasosDivisibilidad.USAR_NORMAL,-1);
 		}
 
 		/// <summary>
-		/// Comprueba si divisor es una potencia de raiz menos uno, o una de los divisores de raiz menos uno, lo que permite usar una regla distinta
+		/// Comprueba si divisor es una potencia de @base menos uno, o una de los divisores de @base menos uno, lo que permite usar una regla distinta
 		/// </summary>
 		/// <returns></returns>
-		private static (bool, int) UnoMenosQuePotencia(long divisor, long raiz) {
-			if (Mcd(divisor, raiz) > 1) return (false, -1);
-			ListSerie<long> modulos = new(); // Para evitar que entre en un bucle
-			long raizModulo = raiz % divisor;
+		private static (bool, int) UnoMenosQuePotencia(long divisor, long @base) {
+			if (Mcd(divisor, @base) > 1) return (false, -1);
+			ListSerie<long> modulos = new(); // Para evitar que entre en primero bucle
+			long raizModulo = @base % divisor;
 			int potencia = 1;
-			bool restoDivisorMenosUno = raiz % divisor == divisor - 1;
+			bool restoDivisorMenosUno = @base % divisor == divisor - 1;
 			if (!restoDivisorMenosUno)
 				do {
 					modulos.Insertar(raizModulo);
@@ -520,15 +523,15 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Comprueba si divisor es una potencia de raiz más uno, o uno de sus divisores, lo que permite usar una regla distinta
+		/// Comprueba si divisor es una potencia de @base más uno, o uno de sus divisores, lo que permite usar una regla distinta
 		/// </summary>
 		/// <returns></returns>
-		private static (bool,int) UnoMasQuePotencia(long divisor, long raiz) {
-			if (Mcd(divisor, raiz) > 1) return (false, -1);
-			ListSerie<long> modulos = new(); // Para evitar que entre en un bucle
-			long raizModulo = raiz % divisor;
+		private static (bool,int) UnoMasQuePotencia(long divisor, long @base) {
+			if (Mcd(divisor, @base) > 1) return (false, -1);
+			ListSerie<long> modulos = new(); // Para evitar que entre en primero bucle
+			long raizModulo = @base % divisor;
 			int potencia = 1;
-			bool restoUno = raiz % divisor == 1;
+			bool restoUno = @base % divisor == 1;
 			if (!restoUno)
 				do {
 					modulos.Insertar(raizModulo);
@@ -540,19 +543,19 @@ namespace Operaciones
 			return (restoUno, potencia);
 		}
 
-		private static (bool cumpleCondicion,int dato) ProductoDePotenciasDeBases(ILista<long> divisor, ILista<long> raiz, long valorRaiz) {
-			if (raiz.Vacia) return (false, -1);
+		private static (bool cumpleCondicion,int dato) ProductoDePotenciasDeBases(ILista<long> divisor, ILista<long> @base, long valorRaiz) {
+			if (@base.Vacia) return (false, -1);
 			int maxPotencia = 0;
-			for (int i = 0; i < Math.Min(divisor.Longitud,raiz.Longitud); i++) { //Comprueba que todos los valores de divisor estén en raiz
-				//Si en divisor es mayor que cero, pero en raiz es cero, tiene un componente primo que no esta en raiz y no se le puede aplicar la regla
-				if (divisor[i] != 0 && raiz[i] == 0) return (false, -1);
-				maxPotencia = Math.Max(maxPotencia, raiz[i] == 0 ? 0 : (int)Math.Ceiling(divisor[i] / (double)raiz[i]));
+			for (int i = 0; i < Math.Min(divisor.Longitud,@base.Longitud); i++) { //Comprueba que todos los valores de divisor estén en @base
+				//Si en divisor es mayor que cero, pero en @base es cero, tiene primero componente primo que no esta en @base y no se le puede aplicar la regla
+				if (divisor[i] != 0 && @base[i] == 0) return (false, -1);
+				maxPotencia = Math.Max(maxPotencia, @base[i] == 0 ? 0 : (int)Math.Ceiling(divisor[i] / (double)@base[i]));
 			}
 			return (true, maxPotencia);
 		}
 
-		private static string CrearMensajeDivisibilidad(string motivo, string condicion, long raiz, long divisor) {
-			return $"{motivo}.\nUn número en base {raiz} será múltiplo de {divisor} si {condicion}.";
+		private static string CrearMensajeDivisibilidad(string motivo, string condicion, long @base, long divisor) {
+			return $"{motivo}.\nUn número en base {@base} será múltiplo de {divisor} si {condicion}.";
 		}
 
 		/// <summary>
