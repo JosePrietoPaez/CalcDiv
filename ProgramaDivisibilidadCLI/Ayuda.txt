@@ -20,7 +20,6 @@ Si no es tan fácil ver si el resultado es múltiplo del divisor, se aplica la r
 
 -H: escribe este mensaje por pantalla, no se ejecuta el programa
 -h: muestra una versión reducida de la ayuda, no se ejecuta el programa
--r: las series se escriben en orden inverso, se salta la comprobación en la aplicación
 -d: si se pasan todos los datos se obtiene un resultado sin que la aplicación pida datos
 -t: se escriben todas las reglas posibles con la cantidad de coeficientes proporcionado, el valor absoluto de los coeficientes será menor al del divisor (cambiado a -a)
 -n: escribe el nombre introducido como parámetro antes de cada elemento con su indice
@@ -32,5 +31,6 @@ Si se introduce un argumento incorrecto será ignorado
 
 0: el programa se ha ejecutado de forma correcta
 1: no todos los datos introducidos fueron correctos
-2: el usuario ha cerrado el programa de forma voluntaria
-3: se pidió una regla alternativa pero no se pudo encontrar
+2: se han introducido argumentos de forma errónea
+3: el usuario ha cerrado el programa de forma voluntaria
+4: se pidió una regla alternativa pero no se pudo encontrar

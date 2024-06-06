@@ -34,7 +34,7 @@ namespace TestCalculadora {
 		public void Calculadora_Directo_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
 			_args = ["-d","7","10","4"];
 			ListSerie<long> regla = new();
-			CalculosEstatico.ReglaDivisibilidadOptima(regla, 7, 4, 10);
+			Calculos.ReglaDivisibilidadOptima(regla, 7, 4, 10);
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
 			string[] lineas = LineasDeWriter(_lectorSalida);
@@ -74,7 +74,7 @@ namespace TestCalculadora {
 		public void Calculadora_DirectoInverso_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
 			_args = ["-dr", "7", "10", "4"];
 			ListSerie<long> regla = new();
-			CalculosEstatico.ReglaDivisibilidadOptima(regla, 7, 4, 10);
+			Calculos.ReglaDivisibilidadOptima(regla, 7, 4, 10);
 			regla.Invertir();
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
@@ -90,7 +90,7 @@ namespace TestCalculadora {
 		public void Calculadora_DirectoTodosNombre_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
 			_args = ["-dtn", "5", "13", "5","Nombre"];
 			ListSerie<ISerie<long>> regla = new("Nombre");
-			CalculosEstatico.ReglasDivisibilidad(regla, 5, 5, 13); //Genera 2^cantidad reglas
+			Calculos.ReglasDivisibilidad(regla, 5, 5, 13); //Genera 2^cantidad reglas
 			string[] resultado = regla.Select(regla => regla.ToStringCompleto()).ToArray();
 
 

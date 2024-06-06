@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Operaciones
 {
-	public static class CalculosEstatico {
+	public static class Calculos {
 
 		private static int _longitudPrimos = 0;
 		private static readonly ListSerie<long> _primosCalculados = new ListSerie<long>();
@@ -313,8 +313,8 @@ namespace Operaciones
 			ReglaDivisibilidadBase(reglas[0], num, cantidad, @base); //Se calcula la regla de positivos
 			ListSerie<long> aux, atajo = reglas[0]; //aux guarda la serie que se añadirá y atajo es primero atajo
 			bool[] producto = new bool[cantidad]; //guarda si el elemento i de atajo se le resta num
-			int iteracionesMaximas = (int)PotenciaEntera(2, cantidad), //Antes se usaba ArrayFalso, pero eso significaba una operación O(cantidad) en cada iteración
-				iteracionesActuales = 0;
+			int iteracionesMaximas = PotenciaEntera(2, cantidad), //Antes se usaba ArrayFalso, pero eso significaba una operación O(cantidad) en cada iteración
+				iteracionesActuales = 1;
 			OperacionesSeries.IncrementarArray(producto); //Como el primero ya está se incrementa
 			do {
 				aux = new ListSerie<long>(nombre, cantidad);
@@ -389,6 +389,34 @@ namespace Operaciones
 		}
 
 		/// <summary>
+		/// Calcula la potencia de enteros de forma eficiente.
+		/// </summary>
+		/// <remarks>
+		/// <c>exp</c> debe ser positivo.
+		/// <para>
+		/// Obtenido de https://stackoverflow.com/a/2065303/22934376
+		/// </para>
+		/// </remarks>
+		/// <param name="base"></param>
+		/// <param name="exp"></param>
+		/// <returns>
+		/// <c>base</c> ^ <c>exp</c>
+		/// </returns>
+		public static int PotenciaEntera(int @base, int exp) {
+			int result = 1;
+			while (exp > 0) {
+				if ((exp & 1) != 0) {
+					checked {
+						result *= @base;
+					}
+				}
+				exp >>= 1;
+				@base *= @base;
+			}
+			return result;
+		}
+
+		/// <summary>
 		/// Devuelve una tupla indicando si se ha encontrado una regla alternativa y una explicación de como aplicarla.
 		/// </summary>
 		/// <remarks>
@@ -405,7 +433,7 @@ namespace Operaciones
 		/// <returns>
 		/// Tupla con primero booleano indicando el éxito del método y primero mensaje explicando la regla obtenida.
 		/// </returns>
-		public static (bool,string) ReglaDivisibilidadExtendida(long divisor, long @base) {
+		public static (bool,string,int) ReglaDivisibilidadExtendida(long divisor, long @base) {
 			var caso = CasoEspecialRegla(divisor, @base);
 			string potencia = "";
 			try {
@@ -439,7 +467,7 @@ namespace Operaciones
 				mensaje = MensajeParaDatoConValorUno(caso.caso,divisor,@base,mensaje);
 			}
 			
-			return (caso.caso != CasosDivisibilidad.USAR_NORMAL, mensaje);
+			return (caso.caso != CasosDivisibilidad.USAR_NORMAL, mensaje,caso.informacion);
 		}
 
 		private static string MensajeParaDatoConValorUno(CasosDivisibilidad caso, long divisor, long @base, string mensajeInicial) {

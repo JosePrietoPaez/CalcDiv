@@ -20,7 +20,7 @@ namespace TestCalculadora
 			long numero = argumento;
 
 			// Act
-			var result = CalculosEstatico.EsPrimo(
+			var result = Calculos.EsPrimo(
 				numero);
 
 			// Assert
@@ -34,7 +34,7 @@ namespace TestCalculadora
 			long numero = 1;
 
 			// Act
-			var result = CalculosEstatico.EsPrimo(
+			var result = Calculos.EsPrimo(
 				numero);
 
 			// Assert
@@ -48,7 +48,7 @@ namespace TestCalculadora
 			long numero = 12;
 
 			// Act
-			var result = CalculosEstatico.EsPrimo(
+			var result = Calculos.EsPrimo(
 				numero);
 
 			// Assert
@@ -62,7 +62,7 @@ namespace TestCalculadora
 			long numero = 7;
 
 			// Act
-			var result = CalculosEstatico.EsPrimo(
+			var result = Calculos.EsPrimo(
 				numero);
 
 			// Assert
@@ -81,7 +81,7 @@ namespace TestCalculadora
 				long segundo = 16;
 
 				// Act
-				var result = CalculosEstatico.Mcd(
+				var result = Calculos.Mcd(
 					raiz,
 					segundo);
 
@@ -98,7 +98,7 @@ namespace TestCalculadora
 				long segundo = 5 * 3;
 
 				// Act
-				var result = CalculosEstatico.Mcd(
+				var result = Calculos.Mcd(
 					raiz,
 					segundo);
 
@@ -115,7 +115,7 @@ namespace TestCalculadora
 				long potencia = 8;
 
 				// Act
-				var result = CalculosEstatico.Mcd(
+				var result = Calculos.Mcd(
 					raiz,
 					potencia);
 
@@ -132,7 +132,7 @@ namespace TestCalculadora
 				long segundo = 4;
 
 				// Act
-				var result = CalculosEstatico.Mcd(
+				var result = Calculos.Mcd(
 					raiz,
 					segundo);
 
@@ -151,7 +151,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Throws<ArgumentException>(() =>
 					// Act
-					CalculosEstatico.Mcd(
+					Calculos.Mcd(
 						raiz,
 						segundo
 					)
@@ -172,7 +172,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Throws<ArgumentException>(() =>
 					// Act
-					CalculosEstatico.DescompsicionEnPrimos(num)
+					Calculos.DescompsicionEnPrimos(num)
 				);
 			}
 
@@ -184,7 +184,7 @@ namespace TestCalculadora
 				long num = 3;
 
 				// Act
-				var result = CalculosEstatico.DescompsicionEnPrimos(
+				var result = Calculos.DescompsicionEnPrimos(
 					num);
 
 				// Assert
@@ -201,12 +201,12 @@ namespace TestCalculadora
 				long num = 18;
 
 				// Act
-				var result = CalculosEstatico.DescompsicionEnPrimos(
+				var result = Calculos.DescompsicionEnPrimos(
 					num);
 
 				// Assert
 				// Calculamos el resultado
-				IListaDinamica<long> primos = CalculosEstatico.PrimosHasta(num);
+				IListaDinamica<long> primos = Calculos.PrimosHasta(num);
 				long res = 1;
 				var eprimos = primos.GetEnumerator();
 				var eresult = result.GetEnumerator();
@@ -223,7 +223,7 @@ namespace TestCalculadora
 		{
 			long num = 18;
 			// Act
-			IListaDinamica<long> primos = CalculosEstatico.PrimosHasta(num);
+			IListaDinamica<long> primos = Calculos.PrimosHasta(num);
 			long[] numerosPrim = new long[] { 2, 3, 5, 7, 11, 13, 17, 18 };
 			
 			int contador = 0;
@@ -248,7 +248,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Throws<DivideByZeroException>(() =>
 					// Act
-					CalculosEstatico.InversoMod(a, m)
+					Calculos.InversoMod(a, m)
 				);
 			}
 
@@ -261,7 +261,7 @@ namespace TestCalculadora
 				long m = 4;
 
 				// Act
-				var result = CalculosEstatico.InversoMod(
+				var result = Calculos.InversoMod(
 					a,
 					m);
 
@@ -278,7 +278,7 @@ namespace TestCalculadora
 				long m = 4;
 
 				// Act
-				var result = CalculosEstatico.InversoMod(
+				var result = Calculos.InversoMod(
 					a,
 					m);
 
@@ -296,7 +296,7 @@ namespace TestCalculadora
 			long dos = 2;
 
 			// Act
-			var result = CalculosEstatico.MinAbs(
+			var result = Calculos.MinAbs(
 				un,
 				dos);
 
@@ -316,7 +316,7 @@ namespace TestCalculadora
 				long num = 40;
 
 				// Act
-				var result = CalculosEstatico.Cifras(
+				var result = Calculos.Cifras(
 					num,
 					raiz);
 
@@ -333,7 +333,7 @@ namespace TestCalculadora
 				long num = 0;
 
 				// Act
-				var result = CalculosEstatico.Cifras(
+				var result = Calculos.Cifras(
 					num,
 					10);
 
@@ -353,7 +353,7 @@ namespace TestCalculadora
 				long raiz = 10;
 
 				// Act
-				var result = CalculosEstatico.Cifra(
+				var result = Calculos.Cifra(
 					num,
 					pos,
 					raiz);
@@ -371,10 +371,10 @@ namespace TestCalculadora
 				long num = 18;
 
 				// Act
-				var ncifras = CalculosEstatico.Cifras(num, raiz);
+				var ncifras = Calculos.Cifras(num, raiz);
 				long[] cifras = new long[ncifras];
 				for(int i = 0; i < ncifras; i++) {
-					cifras[i] = CalculosEstatico.Cifra(num, i, raiz);
+					cifras[i] = Calculos.Cifra(num, i, raiz);
 				}
 
 				// Calculo de numero a partir de cifras en base 10
@@ -399,7 +399,7 @@ namespace TestCalculadora
 			string esperado = "₁₂₃₄₅₆₇₈₉₀";
 
 			// Act
-			var result = CalculosEstatico.NumASubindice(
+			var result = Calculos.NumASubindice(
 				num);
 
 			// Assert
@@ -414,7 +414,7 @@ namespace TestCalculadora
 			string esperado = "₋₁₂₃₄₅₆₇₈₉₀";
 
 			// Act
-			var result = CalculosEstatico.NumASubindice(
+			var result = Calculos.NumASubindice(
 				num);
 
 			// Assert
@@ -429,7 +429,7 @@ namespace TestCalculadora
 			char[] subindices = ['₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉','₀'];
 
 			// Act
-			var result = num.Select(CalculosEstatico.CifraASubindice).ToArray();
+			var result = num.Select(Calculos.CifraASubindice).ToArray();
 
 			// Assert
 			Assert.That(result, Is.EqualTo(subindices));
@@ -446,7 +446,7 @@ namespace TestCalculadora
 			long raiz = 7;
 
 			// Act
-			var result = CalculosEstatico.ProductoMod(
+			var result = Calculos.ProductoMod(
 				fac1,
 				fac2,
 				raiz);
@@ -468,7 +468,7 @@ namespace TestCalculadora
 
 			// Act
 			Assert.Throws<ArgumentException>(() =>
-			CalculosEstatico.ProductoMod(
+			Calculos.ProductoMod(
 				fac1,
 				fac2,
 				raiz));
@@ -489,7 +489,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(() =>
-				CalculosEstatico.ReglasDivisibilidad(
+				Calculos.ReglasDivisibilidad(
 					serie,
 					num,
 					cantidad,
@@ -508,7 +508,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(() =>
-				CalculosEstatico.ReglasDivisibilidad(
+				Calculos.ReglasDivisibilidad(
 					serie,
 					num,
 					cantidad,
@@ -527,7 +527,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(() =>
-				CalculosEstatico.ReglasDivisibilidad(
+				Calculos.ReglasDivisibilidad(
 					serie,
 					num,
 					cantidad,
@@ -544,14 +544,14 @@ namespace TestCalculadora
 				long num = 7;
 				int cantidad = 3;
 				long raiz = 10;
-				CalculosEstatico.ReglaDivisibilidadOptima(
+				Calculos.ReglaDivisibilidadOptima(
 					serieOptima,
 					num,
 					cantidad,
 					raiz);
 
 				// Act
-				CalculosEstatico.ReglasDivisibilidad(
+				Calculos.ReglasDivisibilidad(
 					serie,
 					num,
 					cantidad,
@@ -560,8 +560,8 @@ namespace TestCalculadora
 				// Assert
 				Assert.Multiple(() =>
 				{
-					Assert.That(serie.Longitud, Is.EqualTo(CalculosEstatico.PotenciaEntera(2, cantidad)));
-					Assert.That(serie.Select(lista => lista.Select(elemento => CalculosEstatico.MinAbs(elemento, elemento - num))) //Calcula la regla óptima de todas las reglas
+					Assert.That(serie.Longitud, Is.EqualTo(Calculos.PotenciaEntera(2, cantidad)));
+					Assert.That(serie.Select(lista => lista.Select(elemento => Calculos.MinAbs(elemento, elemento - num))) //Calcula la regla óptima de todas las reglas
 						, Has.All.EquivalentTo(serieOptima)); //Todas deben ser la misma
 				});
 			}
@@ -583,7 +583,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(() =>
-				CalculosEstatico.ReglaDivisibilidadOptima(
+				Calculos.ReglaDivisibilidadOptima(
 					serie,
 					num,
 					cantidad,
@@ -602,7 +602,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(() =>
-				CalculosEstatico.ReglaDivisibilidadOptima(
+				Calculos.ReglaDivisibilidadOptima(
 					serie,
 					num,
 					cantidad,
@@ -621,7 +621,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(() =>
-				CalculosEstatico.ReglaDivisibilidadOptima(
+				Calculos.ReglaDivisibilidadOptima(
 					serie,
 					num,
 					cantidad,
@@ -638,11 +638,11 @@ namespace TestCalculadora
 				long num = 7;
 				int cantidad = 3;
 				long raiz = 10;
-				CalculosEstatico.ReglaDivisibilidadBase(serieAuxiliar, num, cantidad, raiz); //Literalmente se calcula así
-				IEnumerable<long> listaOptima = serieAuxiliar.Select(elemento => CalculosEstatico.MinAbs(elemento, elemento - num)); //Select es el equivalente a map de haskell
+				Calculos.ReglaDivisibilidadBase(serieAuxiliar, num, cantidad, raiz); //Literalmente se calcula así
+				IEnumerable<long> listaOptima = serieAuxiliar.Select(elemento => Calculos.MinAbs(elemento, elemento - num)); //Select es el equivalente a map de haskell
 
 				// Act
-				CalculosEstatico.ReglaDivisibilidadOptima(
+				Calculos.ReglaDivisibilidadOptima(
 					serie,
 					num,
 					cantidad,
@@ -675,7 +675,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(() =>
-				CalculosEstatico.ReglaDivisibilidadBase(
+				Calculos.ReglaDivisibilidadBase(
 					serie,
 					num,
 					cantidad,
@@ -694,7 +694,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(() =>
-				CalculosEstatico.ReglaDivisibilidadBase(
+				Calculos.ReglaDivisibilidadBase(
 					serie,
 					num,
 					cantidad,
@@ -713,7 +713,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(() =>
-				CalculosEstatico.ReglaDivisibilidadBase(
+				Calculos.ReglaDivisibilidadBase(
 					serie,
 					num,
 					cantidad,
@@ -730,10 +730,10 @@ namespace TestCalculadora
 				long raiz = 10;
 				IListaDinamica<long> serie = new ListSerie<long>(),
 					serieAssert = new ListSerie<long>();
-				OperacionesSeries.PotenciaModProgresiva(serieAssert, CalculosEstatico.InversoMod(raiz, num), num, cantidad, 0);
+				OperacionesSeries.PotenciaModProgresiva(serieAssert, Calculos.InversoMod(raiz, num), num, cantidad, 0);
 
 				// Act
-				CalculosEstatico.ReglaDivisibilidadBase(
+				Calculos.ReglaDivisibilidadBase(
 					serie,
 					num,
 					cantidad,
@@ -757,7 +757,7 @@ namespace TestCalculadora
 			long exp = 8;
 
 			// Act
-			var result = CalculosEstatico.PotenciaEntera(
+			var result = Calculos.PotenciaEntera(
 				@base,
 				exp);
 
@@ -778,7 +778,7 @@ namespace TestCalculadora
 				long raiz = 3;
 
 				// Act
-				var result = CalculosEstatico.ReglaDivisibilidadExtendida(
+				var result = Calculos.ReglaDivisibilidadExtendida(
 					divisor,
 					raiz);
 
@@ -799,7 +799,7 @@ namespace TestCalculadora
 				long raiz = 3;
 
 				// Act
-				var result = CalculosEstatico.ReglaDivisibilidadExtendida(
+				var result = Calculos.ReglaDivisibilidadExtendida(
 					divisor,
 					raiz);
 
@@ -824,7 +824,7 @@ namespace TestCalculadora
 					potencia = 3;
 				}
 				// Act
-				var result = CalculosEstatico.ReglaDivisibilidadExtendida(
+				var result = Calculos.ReglaDivisibilidadExtendida(
 					divisor,
 					raiz);
 
@@ -832,7 +832,7 @@ namespace TestCalculadora
 				Assert.Multiple(() =>
 				{
 					Assert.That(result.Item1, Is.True);
-					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} elevado a {potencia} menos uno ({CalculosEstatico.PotenciaEntera(raiz, potencia) - 1})" +
+					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} elevado a {potencia} menos uno ({Calculos.PotenciaEntera(raiz, potencia) - 1})" +
 						$".\nUn número en base {raiz} será múltiplo de {divisor} si al separar sus cifras en grupos de {potencia} desde las unidades, la suma de los grupos es múltiplo de {divisor}."));
 				});
 			}
@@ -849,7 +849,7 @@ namespace TestCalculadora
 					raiz = 16;
 				}
 				// Act
-				var result = CalculosEstatico.ReglaDivisibilidadExtendida(
+				var result = Calculos.ReglaDivisibilidadExtendida(
 					divisor,
 					raiz);
 
@@ -877,7 +877,7 @@ namespace TestCalculadora
 					potencia = 2;
 				}
 				// Act
-				var result = CalculosEstatico.ReglaDivisibilidadExtendida(
+				var result = Calculos.ReglaDivisibilidadExtendida(
 					divisor,
 					raiz);
 
@@ -885,7 +885,7 @@ namespace TestCalculadora
 				Assert.Multiple(() =>
 				{
 					Assert.That(result.Item1, Is.True);
-					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} elevado a {potencia} más uno ({CalculosEstatico.PotenciaEntera(raiz, potencia) + 1})" +
+					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} elevado a {potencia} más uno ({Calculos.PotenciaEntera(raiz, potencia) + 1})" +
 						$".\nUn número en base {raiz} será múltiplo de {divisor} si al separar sus cifras en grupos de {potencia} desde las unidades, la diferencia de la suma de los grupos pares y la de los grupos impares es múltiplo de {divisor}."));
 				});
 			}
@@ -903,7 +903,7 @@ namespace TestCalculadora
 					raiz = 10;
 				}
 				// Act
-				var result = CalculosEstatico.ReglaDivisibilidadExtendida(
+				var result = Calculos.ReglaDivisibilidadExtendida(
 					divisor,
 					raiz);
 
@@ -931,7 +931,7 @@ namespace TestCalculadora
 				}
 
 				// Act
-				var result = CalculosEstatico.ReglaDivisibilidadExtendida(
+				var result = Calculos.ReglaDivisibilidadExtendida(
 					divisor,
 					raiz);
 
@@ -953,7 +953,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(
-					() => CalculosEstatico.ReglaDivisibilidadExtendida(
+					() => Calculos.ReglaDivisibilidadExtendida(
 					divisor,
 					raiz));
 
@@ -968,7 +968,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(
-					() => CalculosEstatico.ReglaDivisibilidadExtendida(
+					() => Calculos.ReglaDivisibilidadExtendida(
 					divisor,
 					raiz));
 
@@ -982,7 +982,7 @@ namespace TestCalculadora
 				long raiz = 31233;
 
 				// Act
-				var result = CalculosEstatico.ReglaDivisibilidadExtendida(
+				var result = Calculos.ReglaDivisibilidadExtendida(
 					divisor,
 					raiz);
 
@@ -1008,7 +1008,7 @@ namespace TestCalculadora
 				long raiz = 3;
 
 				// Act
-				var result = CalculosEstatico.CasoEspecialRegla(
+				var result = Calculos.CasoEspecialRegla(
 					divisor,
 					raiz);
 
@@ -1029,7 +1029,7 @@ namespace TestCalculadora
 				long raiz = 3;
 
 				// Act
-				var result = CalculosEstatico.CasoEspecialRegla(
+				var result = Calculos.CasoEspecialRegla(
 					divisor,
 					raiz);
 
@@ -1055,7 +1055,7 @@ namespace TestCalculadora
 					potencia = 1;
 				}
 				// Act
-				var result = CalculosEstatico.CasoEspecialRegla(
+				var result = Calculos.CasoEspecialRegla(
 					divisor,
 					raiz);
 
@@ -1083,7 +1083,7 @@ namespace TestCalculadora
 				}
 
 				// Act
-				var result = CalculosEstatico.CasoEspecialRegla(
+				var result = Calculos.CasoEspecialRegla(
 					divisor,
 					raiz);
 
@@ -1110,7 +1110,7 @@ namespace TestCalculadora
 				}
 
 				// Act
-				var result = CalculosEstatico.CasoEspecialRegla(
+				var result = Calculos.CasoEspecialRegla(
 					divisor,
 					raiz);
 
@@ -1131,7 +1131,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(
-					() => CalculosEstatico.CasoEspecialRegla(
+					() => Calculos.CasoEspecialRegla(
 					divisor,
 					raiz));
 
@@ -1146,7 +1146,7 @@ namespace TestCalculadora
 
 				// Act
 				Assert.Throws<ArgumentOutOfRangeException>(
-					() => CalculosEstatico.CasoEspecialRegla(
+					() => Calculos.CasoEspecialRegla(
 					divisor,
 					raiz));
 
@@ -1160,7 +1160,7 @@ namespace TestCalculadora
 				long raiz = 31233;
 
 				// Act
-				var result = CalculosEstatico.CasoEspecialRegla(
+				var result = Calculos.CasoEspecialRegla(
 					divisor,
 					raiz);
 
@@ -1182,7 +1182,7 @@ namespace TestCalculadora
 			ISerie<int> lista = new ListSerie<int>();
 
 			// Act
-			var result = CalculosEstatico.ToStringCompleto(
+			var result = Calculos.ToStringCompleto(
 				lista);
 
 			Assert.That(result,Is.EqualTo("Serie vacía"));
@@ -1203,7 +1203,7 @@ namespace TestCalculadora
 			lista.Nombre = "La lista";
 
 			// Act
-			var result = CalculosEstatico.ToStringCompleto(
+			var result = Calculos.ToStringCompleto(
 				lista);
 
 			Assert.That(result,Is.EqualTo("La lista₀=11, La lista₁=6, La lista₂=8"));
@@ -1221,7 +1221,7 @@ namespace TestCalculadora
 
 			lista.Nombre = "La lista";
 
-			var result = CalculosEstatico.ToStringCompletoInverso(lista);
+			var result = Calculos.ToStringCompletoInverso(lista);
 			
 			Assert.That(result,Is.EqualTo("La lista₂=8, La lista₁=6, La lista₀=11"));
 		}
