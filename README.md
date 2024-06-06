@@ -1,67 +1,64 @@
-# Sobre DivCalc(Nombre temporal)
+# Sobre DivCalc (Nombre temporal)
+
 Aplicación GUI y CLI en C# para calcular reglas de divisibilidad, 3ª revisión.
 
-Seguramente sea cambiado a CalcDiv, ya que existe una aplicación de móvil con el mismo nombre, aunque es completamente distinta, y CalcDiv solo parece ser usada por una librería de R.
-Le cambiaré el nombre una vez haya terminado con el refactoring y saque la siguiente versión de la aplicación CLI.
+Seguramente sea cambiado a CalcDiv, ya que existe una aplicación móvil con el mismo nombre, aunque es completamente distinta. Además, CalcDiv solo parece ser usado por una librería de R. Cambiaré el nombre una vez termine el refactoring y lance la siguiente versión de la aplicación CLI.
 
-Este es un proyecto en el que llevo trabajando desde 2021 en C++, y más tarde en Java. Empecé a trabajar en el ya que las reglas de divisibilidad me han parecido interesantes desde hace bastante tiempo, y con lo que he investigado y trabajado con ellas para crear estas aplicaciones, me resultan aún más interesantes y me pregunto si hay más tipos de los que aún no he oido hablar.
+Este es un proyecto en el que he estado trabajando desde 2021, inicialmente en C++ y luego en Java. Empecé a trabajar en él porque las reglas de divisibilidad me parecen interesantes. Con la investigación y el desarrollo que he realizado para crear estas aplicaciones, las encuentro aún más fascinantes y me pregunto si existen más tipos que aún no conozco.
 
-La verdad es que tener uno de los 3 repositorios en [divisibility-rules](https://github.com/topics/divisibility-rules) me parece algo increible, en que haya 3 y solo 3, y la verdad es que espero poder tener una aplicación competente, aunque a nadie le importe, porque ahora mismo da algo de pena.
+Es bastante raro que en [divisibility-rules](https://github.com/topics/divisibility-rules) solo haya tres repositorios. Espero poder tener una aplicación competente, aunque a nadie le importe demasiado, porque actualmente está un poco mal.
 
 ## Datos sobre DivCalc
 
-Si os fijais vereis que este repositorio tiene dos colaboradores [inbaluma](https://github.com/inbaluma) y [JonniThorpe](https://github.com/JonniThorpe).
+En este repositorio verás dos colaboradores: [inbaluma](https://github.com/inbaluma) y [JonniThorpe](https://github.com/JonniThorpe).
 
-La lógica de la aplicación la he desarrollado yo por mi cuenta y seguramente seguirá siendo así, pero ellos han desarrollado pruebas unitarias para un trabajo que hicimos juntos para la universidad en la que teníamos que hacerle pruebas a alguna aplicación que tuvieramos. Esto me motivo a terminar la versión 0.1 y a refactorizarla después.
+La lógica de la aplicación la he desarrollado yo por mi cuenta y seguramente seguirá siendo así. Sin embargo, ellos han desarrollado pruebas unitarias para un trabajo universitario en el que teníamos que probar alguna aplicación que tuviéramos. Esto me motivó a terminar la versión 0.1 y a refactorizarla después.
 
 La nota del trabajo sigue pendiente.
 
-# Planes futuros para DivCalc
+## Planes futuros para DivCalc
 
-Si mirais el código en el momento en el que se subió este leéme, vereis que es pequeño pero bastante mal diseñado.
+Si revisas el código en el momento en que se subió este README, verás que es pequeño pero bastante mal diseñado.
 
-Estoy seguro de que podría seguir trabajando con esto pero la verdad es que quiero mejorarla para facilitar el mantenimiento de la aplicación, y la verdad es que me sentí un poco mal dandole este código a mis compañeros de grupo para la uni.
+Podría seguir trabajando con esto, pero quiero mejorarlo para facilitar el mantenimiento de la aplicación. Me sentí un poco mal entregando este código a mis compañeros de grupo para la universidad.
 
-El plan es refactorizar esta aplicación para que tenga las mismas funcionalidades y más, como varios idiomas para no perder lo que ya tengo, usando las buenas prácticas que debería seguir una aplicación de CLI.
-Aquí hay algunos cambios planeados:
-  - Rehacer la clase principal para usar un parseador de argumentos
-  - Cambiar la estructura de los argumentos para que se parezca a otras aplicaciones de CLI
-    - Mantendré la combinación xd por motivos evidentes
-    - En concreto haré que los argumentos no se pasen en el mismo sitio sino que deban ser colocados de una forma más típica
-  - Argumento para cambiar de idioma
-  - Separación del output de la aplicación y la salida de consola
-    - Incluye al formateo del output a JSON
+El plan es refactorizar esta aplicación para que tenga las mismas funcionalidades y más, como soporte para varios idiomas, usando las buenas prácticas que debería seguir una aplicación de CLI. Aquí hay algunos cambios planeados:
+  - Rehacer la clase principal para usar un parseador de argumentos.
+  - Cambiar la estructura de los argumentos para que se parezca a otras aplicaciones de CLI.
+    - Mantendré la combinación `xd` por motivos evidentes.
+    - Haré que los argumentos no se pasen en el mismo sitio sino que deban ser colocados de una forma más típica.
+  - Agregar un argumento para cambiar de idioma.
+  - Separar el output de la aplicación de la salida de consola.
+    - Esto incluye el formateo del output a JSON.
 
-# Como usar e interpretar DivCalc
+## Cómo usar e interpretar DivCalc
 
-Las reglas de divisibilidad se aplican a números en su base, que llamaremos base o "raiz" en varias partes del código, para ver si son divisibles entre un número entero, que llamaremos divisor y en el código aparece a veces como "num".
+Las reglas de divisibilidad se aplican a números en su base, que llamaremos "base" o "raíz" en varias partes del código, para ver si son divisibles entre un número entero, que llamaremos "divisor" y en el código aparece a veces como "num".
 
 Las reglas de coeficientes pueden tener una longitud arbitraria, llamada en varias partes del código como "coeficientes" o "cantidad".
 
 Para aplicar las reglas de coeficientes pondré un ejemplo:
 
-Supongamos que ejecutas: `DivCalc.exe -d 7 10 2`, deberías obtener `2, 3`
+Supongamos que ejecutas: `DivCalc.exe -d 7 10 2`, deberías obtener `2, 3`.
 
-Lo que significa esto es que has buscado la regla de divisibilidad de 7 en base 10 y quieres aplicar una regla de coeficientes de longitud 2.
+Esto significa que has buscado la regla de divisibilidad de 7 en base 10 y quieres aplicar una regla de coeficientes de longitud 2.
 
-Como ejemplo calcularemos si 10534 es divisible entre 7:
+Como ejemplo, calcularemos si 10534 es divisible entre 7:
 
-Separamos 10534 en dos partes, la de la derecha tan larga como la regla.
-
-Obtenemos 105 y 34.
-
-Ahora multiplicamos cada número de la parte derecha por su elemento de la regla en la misma posición y los sumamos todos.
-
-Es decir, tendremos 105 y 3 * 2 + 4 * 3, que es igual a 18, al sumarlo con la parte izquierda nos queda 123.
-
-Una vez sumados vemos si el número obtenido es divisible entre el divisor, si no podemos determinamos repetimos todos los pasos anteriores al número obtenido.
+1. Separamos 10534 en dos partes: la parte derecha tan larga como la regla.
+   - Obtenemos 105 y 34.
+2. Multiplicamos cada número de la parte derecha por su elemento de la regla en la misma posición y los sumamos todos.
+   - Es decir, tendremos 105 y 3 * 2 + 4 * 3, que es igual a 18.
+   - Al sumarlo con la parte izquierda nos queda 123.
+3. Vemos si el número obtenido es divisible entre el divisor.
+   - Si no podemos determinarlo, repetimos todos los pasos anteriores con el número obtenido.
 
 Por brevedad, terminaremos aquí sabiendo que 123 no es divisible entre 7.
 
-Todos los números obtenidos serán divisiblies entre el divisor si, y solo si, el número original lo era.
+Todos los números obtenidos serán divisibles entre el divisor si, y solo si, el número original lo era.
 
-Por lo tanto 10534 en decimal no es divisible entre 7, ya que 123 no lo es.
+Por lo tanto, 10534 en decimal no es divisible entre 7, ya que 123 no lo es.
 
-Hay una cantidad infinita de reglas de coeficientes para cualquier base, divisor y longitud, por defecto se devuelve la de menores valores absolutos.
+Hay una cantidad infinita de reglas de coeficientes para cualquier base, divisor y longitud. Por defecto, se devuelve la de menores valores absolutos.
 
-El resto de reglas obtenidas con -x se explicarán más tarde
+El resto de reglas obtenidas con `-x` se explicarán más tarde.
