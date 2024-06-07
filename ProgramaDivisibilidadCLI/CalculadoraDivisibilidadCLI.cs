@@ -39,7 +39,7 @@ namespace ProgramaDivisibilidad {
 		public static int Main(string[] args) {
 			var resultado = Parser.Default.ParseArguments<Flags>(args) //Parsea los argumentos
 				.WithParsed(options => { flags = options;
-					Console.Error.WriteLine(options.Dump());
+					//Console.Error.WriteLine(options.Dump());
 				})
 				.WithNotParsed(errors => { salida = SALIDA_ENTRADA_MALFORMADA;
 					//Console.Error.WriteLine(errors);
@@ -70,6 +70,7 @@ namespace ProgramaDivisibilidad {
 			(bool exitoExtendido, string mensajeRegla, int informacion) reglas = (false,"",-1);
 			if (flags.Extendido) {
 				reglas = Calculos.ReglaDivisibilidadExtendida(datos[0], datos[1]);
+				Console.WriteLine(reglas.mensajeRegla);
 			}
 			if (!reglas.exitoExtendido && Calculos.Mcd(datos[0], datos[1]) == 1) { //Si falla al obtener reglas alternativas o no se ha buscado, y base y divisor son coprimos
 				Console.Error.WriteLine($"Divisor: {datos[0]}, Base: {datos[1]}, Coeficientes: {datos[2]}");
@@ -127,13 +128,97 @@ namespace ProgramaDivisibilidad {
 		/// Código de la salida de la aplicación.
 		/// </returns>
 		private static void IniciarAplicacion() { //Si no se proporcionan los argumentos de forma directa, se establece un diálogo con el usuario para obtenerlos
-			Console.WriteLine($"El programa se ejecutará de forma normal, escriba {SALIDA} para cerrarlo");
+			Console.WriteLine($"Se pedirá que introduzca los datos por consola, escriba {SALIDA} para cerrar el programa");
+			bool sinFlags = SinFlags();
+			long @base, divisor;
+			int coeficientes;
+			char eleccionExtendido = 'c',eleccionJson = 's',eleccionTodos = 's';
+			string nombre = "";
+			static bool esC(char letra) => letra == 'c' || letra == 'C';
+			static bool esS(char letra) => letra == 's' || letra == 'S';
 			try {
+				do {
+
+					if (sinFlags) {
+						Console.Error.Write("¿Quiere obtener reglas de coeficientes, o reglas de otros tipos? Pulse c para obtener reglas de coeficientes u otra letra para otras letras: ");
+						eleccionExtendido = Console.ReadKey().KeyChar;
+						Console.Error.WriteLine();
+
+						if (esC(eleccionExtendido)) {
+							Console.Error.Write("¿Quiere que la lista se escriba en JSON? En caso afirmativo pulse s, si no, pulse otra letra: ");
+							eleccionJson = Console.ReadKey().KeyChar;
+							Console.Error.WriteLine();
+						}
+						
+					}
+
+					if (!esC(eleccionExtendido)) {
+
+						Console.Error.Write("Escriba la base de los números: ");
+						ObtenerDeUsuario(out @base, 2, "La base debe ser un entero mayor que 1");
+
+						Console.Error.Write("Escriba el divisor de la regla: ");
+						ObtenerDeUsuario(out divisor, 0, "El divisor debe ser un entero no negativo" + Environment.NewLine +
+							"Las reglas de divisibilidad de números negativos son equivalentes a la de los positivos");
+
+						Console.WriteLine(Calculos.ReglaDivisibilidadExtendida(divisor,@base).Item2);
+
+					} else {
+
+						Console.Error.Write("Escriba la base de los números: ");
+						ObtenerDeUsuario(out @base, 2, "La base debe ser un entero mayor que 1");
+
+						Console.Error.Write("Escriba el divisor de la regla: ");
+						ObtenerDeUsuarioCoprimo(out divisor, 0, "El divisor debe ser un entero no negativo y coprimo con la base" + Environment.NewLine +
+							"Las reglas de divisibilidad de números negativos son equivalentes a la de los positivos" + Environment.NewLine +
+							"Dos números son coprimos entre sí si su máximo común divisor es 1", @base);
+
+						Console.Error.Write("Escriba el número de coeficientes de la regla: ");
+						ObtenerDeUsuario(out coeficientes, 1, "Debe ser un entero positivo");
+
+						if (sinFlags) {
+							Console.Error.Write("¿Quiere recibir todas las reglas? En caso afirmativo, pulse s, si no, pulse otra letra: ");
+							eleccionTodos = Console.ReadKey().KeyChar;
+							Console.Error.WriteLine();
+
+							Console.Error.WriteLine("Escriba el nombre de la regla, puede dejarlo vacío: ");
+							nombre = Console.ReadLine() ?? "";
+							Console.Error.WriteLine();
+						}
+
+						if (esS(eleccionTodos)) {
+							Console.Error.WriteLine("Reglas obtenidas: ");
+							if (esS(eleccionJson)) {
+								ListSerie<ListSerie<long>> series = new(nombre);
+								Calculos.ReglasDivisibilidad(series, divisor, coeficientes, @base);
+								Console.Write(Serializar(series));
+							} else {
+								Console.Write(ObtenerReglas(divisor, @base, coeficientes, nombre));
+							}
+						} else {
+							Console.Error.WriteLine("Regla obtenida: ");
+							ListSerie<long> regla = new(nombre);
+							Calculos.ReglaDivisibilidadOptima(regla, divisor, coeficientes, @base);
+							Console.Write(StringSerieConFlags(regla,esS(eleccionJson),nombre == ""));
+						}
+						Console.Error.WriteLine();
+
+					}
+
+					Console.Error.Write("¿Quiere calcular otra regla? En caso afirmativo, pulse s: ");
+					salir = !esS(Console.ReadKey().KeyChar);
+					Console.Error.WriteLine();
+
+				} while (!salir);
 			} catch {
 				salir = true;
 				Console.WriteLine("Se ha interrumpido el programa.");
 			}			
-			salida = salir? SALIDA_VOLUNTARIA : 0;
+			salida = salir? SALIDA_VOLUNTARIA : SALIDA_CORRECTA;
+		}
+
+		private static bool SinFlags() {
+			return !(flags.Todos || flags.SaltarPreguntas || flags.JSON || flags.Extendido || flags.Nombre.Length == 0 || flags.Directo.Any());
 		}
 
 		/// <summary>
@@ -208,6 +293,9 @@ namespace ProgramaDivisibilidad {
 		}
 
 		private static string SerieRectangularString(ListSerie<ListSerie<long>> serie) {
+			if (flags.JSON) {
+				return Serializar(serie);
+			}
 			StringBuilder stringBuilder = new();
 			foreach (var item in serie) {
 				stringBuilder.Append(StringSerieConFlags(item)).Append('\n');
@@ -226,11 +314,24 @@ namespace ProgramaDivisibilidad {
 			if (flags.JSON) {
 				return Serializar(serie);
 			}
-			return flags.Nombre != string.Empty ? serie.ToStringCompleto() : serie.ToString()??"";
+			return serie.Nombre != string.Empty ? serie.ToStringCompleto() : serie.ToString()??"";
+		}
+		private static string StringSerieConFlags(ListSerie<long> serie, bool json, bool nombre) {
+			if (json) {
+				return Serializar(serie);
+			}
+			return nombre ? serie.ToStringCompleto() : serie.ToString() ?? "";
 		}
 
 		private static string Serializar(object o) {
-			return JsonSerializer.Serialize(o, opcionesJson);
+			string res = "{" + Environment.NewLine;
+			if (o is ListSerie<long> lista) {
+				res += "\"Nombre\" : \"" + lista.Nombre + "\", " + Environment.NewLine + "\"Lista\" : ";
+			} else if (o is ListSerie<ListSerie<long>> otra) {
+				res += "\"Nombre\" : \"" + otra.Nombre + "\", " + Environment.NewLine + "\"Lista\" : ";
+			}
+			res += JsonSerializer.Serialize(o, opcionesJson) + Environment.NewLine + "}";
+			return res;
 		}
 	}
 }

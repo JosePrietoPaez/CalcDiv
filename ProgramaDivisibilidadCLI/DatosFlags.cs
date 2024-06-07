@@ -13,15 +13,17 @@ namespace ProgramaDivisibilidad {
 
 		private readonly string nombre;
 
-		private readonly bool json;
+		private readonly bool json,
+			saltarPreguntas;
 
-		public Flags(bool extendido, bool todos,bool ayuda, IEnumerable<long> directo, string nombre, bool json) {
+		public Flags(bool extendido, bool todos,bool ayuda, IEnumerable<long> directo, string nombre, bool json, bool saltarPreguntas) {
 			this.extendido = extendido;
 			this.todos = todos;
 			this.ayuda = ayuda;
 			this.directo = directo;
 			this.nombre = nombre;
 			this.json = json;
+			this.saltarPreguntas = saltarPreguntas;
 		}
 
 		[Option('x',longName: "extended-rules",HelpText ="May return other types of rules, also outputs explanations on how to apply them, ignores all other flags, except -d")]
@@ -41,6 +43,9 @@ namespace ProgramaDivisibilidad {
 
 		[Option('j', longName: "json", HelpText ="Outputs coefficient rule as a JSON object, changes made by other flags are not ignored")]
 		public bool JSON { get { return json; } }
+
+		[Option('s', longName:"skip-additional-input", HelpText ="Used to prevent dialog mode from explicitly asking for binary flags, does not affect output")]
+		public bool SaltarPreguntas { get { return saltarPreguntas; } }
 
 	}
 }
