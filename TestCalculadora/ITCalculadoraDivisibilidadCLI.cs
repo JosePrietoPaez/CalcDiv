@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace TestCalculadora {
 	/// <summary>
@@ -37,10 +39,11 @@ namespace TestCalculadora {
 			Calculos.ReglaDivisibilidadOptima(regla, 7, 4, 10);
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
-			string[] lineas = LineasDeWriter(_lectorSalida);
+			string[] lineasResultado = LineasDeWriter(_lectorSalida);
 
 			Assert.Multiple(() => {
-				Assert.That(lineas[0], Is.EqualTo(regla.ToString()));
+				Assert.That(lineasResultado[0], Is.EqualTo(regla.ToString()));
+				Assert.That(lineasResultado, Has.Length.EqualTo(1));
 				Assert.That(salida, Is.Zero);
 			});
 		}
@@ -52,7 +55,7 @@ namespace TestCalculadora {
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
 
 			Assert.Multiple(() => {
-				Assert.That(_lectorSalida.ToString()?[0..^2], // Hay un \r\n de más
+				Assert.That(_lectorSalida.ToString()?[0..^Environment.NewLine.Length], // Hay un \r\n de más
 					Is.EqualTo(File.ReadAllText("Ayuda.txt")));
 				Assert.That(salida, Is.Zero);
 			});
@@ -71,50 +74,44 @@ namespace TestCalculadora {
 		}
 
 		[Test(Description = "Al llamar a la calculadora en modo directo inverso con base y divisor coprimos devuelve la regla por consola en el orden inverso")]
-		public void Calculadora_DirectoInverso_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
-			_args = ["-dr", "7", "10", "4"];
-			ListSerie<long> regla = new();
-			Calculos.ReglaDivisibilidadOptima(regla, 7, 4, 10);
-			regla.Invertir();
+		public void Calculadora_DirectoTodosNombre_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
+			_args = ["-ad", "5", "13", "5","-n","Nombre"];
+			ListSerie<ListSerie<long>> regla = new("Nombre");
+			Calculos.ReglasDivisibilidad(regla, 5, 5, 13); //Genera 2^cantidad reglas
+			string[] lineasReglas = ReglasToArray(regla);
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
-			string[] lineas = LineasDeWriter(_lectorSalida);
 
+			string[] lineasResultado = LineasDeWriter(_lectorSalida);
 			Assert.Multiple(() => {
-				Assert.That(lineas[1], Is.EqualTo(regla.ToString())); //La segunda porque primero se escriben los argumentos
+				Assert.That(lineasResultado[0..32], Is.EqualTo(lineasReglas)); //La segunda porque primero se escriben los argumentos 
+				Assert.That(lineasResultado, Has.Length.EqualTo(lineasReglas.Length));
 				Assert.That(salida, Is.Zero);
 			});
 		}
 
-		[Test(Description = "Al llamar a la calculadora en modo directo inverso con base y divisor coprimos devuelve la regla por consola en el orden inverso")]
-		public void Calculadora_DirectoTodosNombre_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
-			_args = ["-dtn", "5", "13", "5","Nombre"];
-			ListSerie<ListSerie<long>> regla = new("Nombre");
-			Calculos.ReglasDivisibilidad(regla, 5, 5, 13); //Genera 2^cantidad reglas
-			string[] resultado = regla.Select(regla => regla.ToStringCompleto()).ToArray();
+		private StringReader ReaderDeEjecucion(params string[] datos) {
+			StringBuilder sb = new();
+			foreach (string dato in datos) {
+				sb.AppendLine(dato);
+			}
+			return new StringReader(sb.ToString());
+		}
 
-
-			int salida = CalculadoraDivisibilidadCLI.Main(_args);
-			string[] lineas = LineasDeWriter(_lectorSalida);
-
-			Assert.Multiple(() => {
-				Assert.That(lineas[1..33], Is.EqualTo(resultado)); //La segunda porque primero se escriben los argumentos 
-				Assert.That(salida, Is.Zero);
-			});
+		private string[] ReglasToArray(ListSerie<ListSerie<long>> serie) {
+			return serie.Select(regla => regla.ToStringCompleto()).ToArray();
 		}
 
 		[TearDown]
 		public void RestaurarEntradaYSalida() {
-			if (_lectorEntrada is TextReader) {
-				_lectorEntrada.Dispose();
-			}
+			_lectorEntrada?.Dispose();
 			_lectorSalida.Close();
 			Console.SetOut(_salidaOriginal);
 			Console.SetIn(_entradaOriginal);
 		}
 
 		private static string[] LineasDeWriter(TextWriter writer) {
-			return writer.ToString()?.Replace(Environment.NewLine, "\n").Split('\n') ?? [];
+			return writer.ToString()?.Split(Environment.NewLine) ?? [];
 		}
 	}
 }

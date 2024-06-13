@@ -5,6 +5,7 @@ using Operaciones;
 using System.Text.Json;
 using System.Globalization;
 using ProgramaDivisibilidadCLI;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ProgramaDivisibilidad {
 
@@ -18,6 +19,7 @@ namespace ProgramaDivisibilidad {
 		private const string SALIDA = "/";
 		private static bool salir = false; //Usado para saber si el usuario ha solicitado terminar la ejecución
 		private static int salida = SALIDA_CORRECTA; //Salida del programa
+		[NotNull] //Para que no me den los warnings
 		private static Flags? flags;
 		private static readonly JsonSerializerOptions opcionesJson = new() { WriteIndented=true };
 
@@ -28,9 +30,10 @@ namespace ProgramaDivisibilidad {
 		/// <returns>
 		/// <list type="bullet">
 		/// <item>0, ejecución correcta</item>
-		/// <item>1, argumentos incorrectos en modo directo</item>
-		/// <item>2, el usuario sale voluntariamente durante el diálogo</item>
-		/// <item>3, fracaso al encontrar una regla alternativa en modo directo</item>
+		/// <item>1, código de error general</item>
+		/// <item>2, argumentos incorrectos en modo directo</item>
+		/// <item>3, el usuario sale voluntariamente durante el diálogo</item>
+		/// <item>4, fracaso al encontrar una regla alternativa en modo directo</item>
 		/// </list>
 		/// </returns>
 		public static int Main(string[] args) {
@@ -96,29 +99,10 @@ namespace ProgramaDivisibilidad {
 		/// Escribe por consola lo que sea necesario
 		/// </remarks>
 		private static void CalcularReglaCoeficientes(long divisor, long @base, int coeficientes) {
-			string salidaConsola = "";
-			if (flags.Todos) {
-				ListSerie<ListSerie<long>> reglaSerie = new(Calculos.PotenciaEntera(2, coeficientes)) {
-					Nombre = flags.Nombre
-				};
-				Calculos.ReglasDivisibilidad(reglaSerie, divisor, coeficientes, @base);
-				Console.Error.WriteLine(TextoResource.MensajeFinDirecto);
-				foreach (var regla in reglaSerie) {
-					regla.Nombre = flags.Nombre;
-				}
-				if (flags.JSON) {
-					salidaConsola = Serializar(reglaSerie);
-				} else {
-					salidaConsola = SerieRectangularString(reglaSerie);
-				}
-			} else {
-				ListSerie<long> regla = new(flags.Nombre);
-				Calculos.ReglaDivisibilidadOptima(regla,divisor,coeficientes,@base);
-				Console.Error.WriteLine(TextoResource.MensajeFinDirecto);
-				salidaConsola = StringSerieConFlags(regla);
-			}
+			string salidaConsola = ObtenerReglas(divisor, @base, coeficientes);
+			Console.Error.WriteLine(TextoResource.MensajeFinDirecto);
+			Console.Write(salidaConsola);
 			salida = SALIDA_CORRECTA;
-			Console.Out.Write(salidaConsola);
 			Console.Error.WriteLine();
 		}
 
@@ -188,7 +172,7 @@ namespace ProgramaDivisibilidad {
 						}
 
 						Console.Error.WriteLine(TextoResource.MensajeDialogoResultado);
-						Console.Write(ObtenerReglas(divisor, @base, coeficientes, nombre));
+						Console.Write(ObtenerReglas(divisor, @base, coeficientes));
 						Console.Error.WriteLine();
 
 					}
@@ -205,17 +189,6 @@ namespace ProgramaDivisibilidad {
 
 		private static bool SinFlags() {
 			return !(flags.Todos || flags.SaltarPreguntas || flags.JSON || flags.Extendido || flags.Nombre != string.Empty || flags.Directo.Any());
-		}
-
-		/// <summary>
-		/// Calcula las reglas con los argumentos proporcionados y el usuario lo ha pedido
-		/// </summary>
-		private static string StringReglasConNombre(long divisor, long @base, int coeficientes, int indice) {
-			if (flags.Nombre == string.Empty) {
-				return ObtenerReglas(divisor, @base, coeficientes, flags.Nombre);
-			} else {
-				return ObtenerReglas(divisor, @base, coeficientes);
-			}
 		}
 
 		private static bool ObtenerDeUsuario(string mensaje, Func<char,bool> comparador) {
@@ -273,19 +246,19 @@ namespace ProgramaDivisibilidad {
 			if (linea == SALIDA) throw new Exception(TextoResource.MensajeSalidaVoluntaria);
 		}
 
-		private static string ObtenerReglas(long divisor, long @base, int coeficientes, string nombre = "") {
+		private static string ObtenerReglas(long divisor, long @base, int coeficientes) {
 			string resultado;
 			if (flags.Todos) { //Si se piden las 2^coeficientes reglas
 				ListSerie<ListSerie<long>> series = new();
 				Calculos.ReglasDivisibilidad(series, divisor, coeficientes,@base);
-				if (nombre != "") {
+				if (flags.Nombre != "") {
 					foreach (var serie in series) {
-						serie.Nombre = nombre;
+						serie.Nombre = flags.Nombre;
 					}
 				}
 				resultado = SerieRectangularString(series);
 			} else {
-				ListSerie<long> serie = new(nombre);
+				ListSerie<long> serie = new(flags.Nombre);
 				Calculos.ReglaDivisibilidadOptima(serie, divisor, coeficientes, @base);
 				resultado = StringSerieConFlags(serie);
 			}
@@ -302,9 +275,10 @@ namespace ProgramaDivisibilidad {
 				return Serializar(serie);
 			}
 			StringBuilder stringBuilder = new();
-			foreach (var item in serie) {
-				stringBuilder.Append(StringSerieConFlags(item)).Append('\n');
+			for (int i = 0; i < serie.Longitud - 1; i++) {
+				stringBuilder.AppendLine(StringSerieConFlags(serie[i]));
 			}
+			stringBuilder.Append(StringSerieConFlags(serie[serie.Longitud - 1]));
 			return stringBuilder.ToString();
 		}
 
@@ -320,12 +294,6 @@ namespace ProgramaDivisibilidad {
 				return Serializar(serie);
 			}
 			return serie.Nombre != string.Empty ? serie.ToStringCompleto() : serie.ToString()??"";
-		}
-		private static string StringSerieConFlags(ListSerie<long> serie, bool json, bool nombre) {
-			if (json) {
-				return Serializar(serie);
-			}
-			return nombre ? serie.ToStringCompleto() : serie.ToString() ?? "";
 		}
 
 		private static string Serializar(object o) {
