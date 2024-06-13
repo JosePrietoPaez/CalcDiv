@@ -40,7 +40,7 @@ namespace TestCalculadora {
 			string[] lineas = LineasDeWriter(_lectorSalida);
 
 			Assert.Multiple(() => {
-				Assert.That(lineas[1], Is.EqualTo(regla.ToString())); //La segunda porque primero se escriben los argumentos
+				Assert.That(lineas[0], Is.EqualTo(regla.ToString()));
 				Assert.That(salida, Is.Zero);
 			});
 		}
@@ -89,7 +89,7 @@ namespace TestCalculadora {
 		[Test(Description = "Al llamar a la calculadora en modo directo inverso con base y divisor coprimos devuelve la regla por consola en el orden inverso")]
 		public void Calculadora_DirectoTodosNombre_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
 			_args = ["-dtn", "5", "13", "5","Nombre"];
-			ListSerie<ISerie<long>> regla = new("Nombre");
+			ListSerie<ListSerie<long>> regla = new("Nombre");
 			Calculos.ReglasDivisibilidad(regla, 5, 5, 13); //Genera 2^cantidad reglas
 			string[] resultado = regla.Select(regla => regla.ToStringCompleto()).ToArray();
 

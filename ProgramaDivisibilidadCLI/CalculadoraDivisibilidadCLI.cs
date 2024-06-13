@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.IO;
-using CommandLine;
+﻿using CommandLine;
 using System.Text;
 using Listas;
 using Operaciones;
 using System.Text.Json;
-using System.Text.RegularExpressions;
+using System.Globalization;
+using ProgramaDivisibilidadCLI;
 
 namespace ProgramaDivisibilidad {
 
@@ -17,8 +15,7 @@ namespace ProgramaDivisibilidad {
 		
 		//Inicialización de variables privadas
 		private const int SALIDA_CORRECTA = 0, SALIDA_ERROR = 1, SALIDA_ENTRADA_MALFORMADA = 2, SALIDA_VOLUNTARIA = 3, SALIDA_FRACASO_EXPANDIDA = 4;
-		private const string ERROR_NUEMRICO = "El divisor, base y el número de coeficientes deben ser números enteros positivos\r\ndivisor y base deben ser mayor que 1"
-			,SALIDA = "FIN", ERROR_PRIMO = "La base y el divisor deben ser coprimos";
+		private const string SALIDA = "/";
 		private static bool salir = false; //Usado para saber si el usuario ha solicitado terminar la ejecución
 		private static int salida = SALIDA_CORRECTA; //Salida del programa
 		private static Flags? flags;
@@ -37,6 +34,8 @@ namespace ProgramaDivisibilidad {
 		/// </list>
 		/// </returns>
 		public static int Main(string[] args) {
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
+			Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
 			var resultado = Parser.Default.ParseArguments<Flags>(args) //Parsea los argumentos
 				.WithParsed(options => { flags = options;
 					//Console.Error.WriteLine(options.Dump());
@@ -47,10 +46,16 @@ namespace ProgramaDivisibilidad {
 			if (salida == SALIDA_ENTRADA_MALFORMADA || flags is null) {
 				return SALIDA_ENTRADA_MALFORMADA;
 			}
+			if (flags.Nombre == "-") {
+				flags.Nombre = string.Empty;
+			}
 			if (flags.Ayuda) {
 				EscribirArchivo("Ayuda.txt");
-			}
-			if (flags.Directo.Count() > 1) { //Si se ha activado el modo directo
+				salida = SALIDA_CORRECTA;
+			} else if (flags.AyudaCorta) {
+				EscribirArchivo("AyudaCorta.txt");
+				salida = SALIDA_CORRECTA;
+			} else if (flags.Directo.Count() > 1) { //Si se ha activado el modo directo
 				IntentarDirecto();
 			} else {
 				IniciarAplicacion();
@@ -73,11 +78,11 @@ namespace ProgramaDivisibilidad {
 				Console.WriteLine(reglas.mensajeRegla);
 			}
 			if (!reglas.exitoExtendido && Calculos.Mcd(datos[0], datos[1]) == 1) { //Si falla al obtener reglas alternativas o no se ha buscado, y base y divisor son coprimos
-				Console.Error.WriteLine($"Divisor: {datos[0]}, Base: {datos[1]}, Coeficientes: {datos[2]}");
+				Console.Error.WriteLine(string.Format(TextoResource.MensajeParametrosDirecto, datos[0], datos[1], datos[2]));
 				CalcularReglaCoeficientes(datos[0], datos[1], (int)datos[2]);
 			} else if (Calculos.Mcd(datos[0], datos[1]) != 1) { //Si el divisor y la base no son coprimos
-				Console.Error.WriteLine($"Divisor: {datos[0]}, Base: {datos[1]}, Coeficientes: {datos[2]}");
-				Console.Error.WriteLine(ERROR_PRIMO);
+				Console.Error.WriteLine(string.Format(TextoResource.MensajeParametrosDirecto, datos[0], datos[1], datos[2]));
+				Console.Error.WriteLine(TextoResource.ErrorPrimo);
 				salida = SALIDA_ERROR;
 			} else { //Si se ha obtenido una regla alternativa
 				salida = SALIDA_CORRECTA;
@@ -97,7 +102,7 @@ namespace ProgramaDivisibilidad {
 					Nombre = flags.Nombre
 				};
 				Calculos.ReglasDivisibilidad(reglaSerie, divisor, coeficientes, @base);
-				Console.Error.WriteLine("Se han calculado las reglas.");
+				Console.Error.WriteLine(TextoResource.MensajeFinDirecto);
 				foreach (var regla in reglaSerie) {
 					regla.Nombre = flags.Nombre;
 				}
@@ -109,11 +114,12 @@ namespace ProgramaDivisibilidad {
 			} else {
 				ListSerie<long> regla = new(flags.Nombre);
 				Calculos.ReglaDivisibilidadOptima(regla,divisor,coeficientes,@base);
-				Console.Error.WriteLine("Se ha calculado la regla.");
+				Console.Error.WriteLine(TextoResource.MensajeFinDirecto);
 				salidaConsola = StringSerieConFlags(regla);
 			}
 			salida = SALIDA_CORRECTA;
-			Console.Out.WriteLine(salidaConsola);
+			Console.Out.Write(salidaConsola);
+			Console.Error.WriteLine();
 		}
 
 		/// <summary>
@@ -128,97 +134,77 @@ namespace ProgramaDivisibilidad {
 		/// Código de la salida de la aplicación.
 		/// </returns>
 		private static void IniciarAplicacion() { //Si no se proporcionan los argumentos de forma directa, se establece un diálogo con el usuario para obtenerlos
-			Console.WriteLine($"Se pedirá que introduzca los datos por consola, escriba {SALIDA} para cerrar el programa");
+			Console.WriteLine(string.Format(TextoResource.MensajeInicioDialogo,SALIDA));
 			bool sinFlags = SinFlags();
 			long @base, divisor;
-			int coeficientes;
-			char eleccionExtendido = 'c',eleccionJson = 's',eleccionTodos = 's';
 			string nombre = "";
-			static bool esC(char letra) => letra == 'c' || letra == 'C';
 			static bool esS(char letra) => letra == 's' || letra == 'S';
 			try {
 				do {
-
+					//Si no tiene flags las pedirá durante la ejecución
 					if (sinFlags) {
-						Console.Error.Write("¿Quiere obtener reglas de coeficientes, o reglas de otros tipos? Pulse c para obtener reglas de coeficientes u otra letra para otras letras: ");
-						eleccionExtendido = Console.ReadKey().KeyChar;
-						Console.Error.WriteLine();
+						//Le una tecla de entrada o lanza excepción si es la salida
+						flags.Extendido = !ObtenerDeUsuario(TextoResource.MensajeDialogoExtendido, esS);
 
-						if (esC(eleccionExtendido)) {
-							Console.Error.Write("¿Quiere que la lista se escriba en JSON? En caso afirmativo pulse s, si no, pulse otra letra: ");
-							eleccionJson = Console.ReadKey().KeyChar;
-							Console.Error.WriteLine();
+						if (!flags.Extendido) {
+							flags.JSON = ObtenerDeUsuario(TextoResource.MensajeDialogoJson, esS);
 						}
 						
 					}
 
-					if (!esC(eleccionExtendido)) {
+					if (flags.Extendido) {
 
-						Console.Error.Write("Escriba la base de los números: ");
-						ObtenerDeUsuario(out @base, 2, "La base debe ser un entero mayor que 1");
+						//Pregunta el dato en bucle hasta que sea correcto a lanza excepción si es el mensaje de salida
+						ObtenerDeUsuario(out divisor, 0
+							, TextoResource.ErrorDivisor
+							, TextoResource.MensajeDialogoDivisor);
 
-						Console.Error.Write("Escriba el divisor de la regla: ");
-						ObtenerDeUsuario(out divisor, 0, "El divisor debe ser un entero no negativo" + Environment.NewLine +
-							"Las reglas de divisibilidad de números negativos son equivalentes a la de los positivos");
+						ObtenerDeUsuario(out @base, 2
+							, TextoResource.ErrorBase
+							, TextoResource.MensajeDialogoBase);
 
-						Console.WriteLine(Calculos.ReglaDivisibilidadExtendida(divisor,@base).Item2);
+						//Intenta buscar una regla alternativa
+						Console.Write(Calculos.ReglaDivisibilidadExtendida(divisor,@base).Item2);
+						Console.Error.WriteLine();
 
 					} else {
 
-						Console.Error.Write("Escriba la base de los números: ");
-						ObtenerDeUsuario(out @base, 2, "La base debe ser un entero mayor que 1");
+						ObtenerDeUsuario(out divisor, 0
+							, TextoResource.ErrorDivisor
+							, TextoResource.MensajeDialogoDivisor);
 
-						Console.Error.Write("Escriba el divisor de la regla: ");
-						ObtenerDeUsuarioCoprimo(out divisor, 0, "El divisor debe ser un entero no negativo y coprimo con la base" + Environment.NewLine +
-							"Las reglas de divisibilidad de números negativos son equivalentes a la de los positivos" + Environment.NewLine +
-							"Dos números son coprimos entre sí si su máximo común divisor es 1", @base);
+						ObtenerDeUsuarioCoprimo(out @base, 2, divisor
+							, TextoResource.ErrorBase
+							, TextoResource.MensajeDialogoBase);
 
-						Console.Error.Write("Escriba el número de coeficientes de la regla: ");
-						ObtenerDeUsuario(out coeficientes, 1, "Debe ser un entero positivo");
+						ObtenerDeUsuario(out int coeficientes, 1
+							, TextoResource.ErrorCoeficientes
+							, TextoResource.MensajeDialogoCoeficientes);
 
 						if (sinFlags) {
-							Console.Error.Write("¿Quiere recibir todas las reglas? En caso afirmativo, pulse s, si no, pulse otra letra: ");
-							eleccionTodos = Console.ReadKey().KeyChar;
-							Console.Error.WriteLine();
+							flags.Todos = ObtenerDeUsuario(TextoResource.MensajeDialogoTodas, esS);
 
-							Console.Error.WriteLine("Escriba el nombre de la regla, puede dejarlo vacío: ");
-							nombre = Console.ReadLine() ?? "";
-							Console.Error.WriteLine();
+							ObtenerDeUsuario(out nombre, TextoResource.MensajeDialogoRegla);
 						}
 
-						if (esS(eleccionTodos)) {
-							Console.Error.WriteLine("Reglas obtenidas: ");
-							if (esS(eleccionJson)) {
-								ListSerie<ListSerie<long>> series = new(nombre);
-								Calculos.ReglasDivisibilidad(series, divisor, coeficientes, @base);
-								Console.Write(Serializar(series));
-							} else {
-								Console.Write(ObtenerReglas(divisor, @base, coeficientes, nombre));
-							}
-						} else {
-							Console.Error.WriteLine("Regla obtenida: ");
-							ListSerie<long> regla = new(nombre);
-							Calculos.ReglaDivisibilidadOptima(regla, divisor, coeficientes, @base);
-							Console.Write(StringSerieConFlags(regla,esS(eleccionJson),nombre == ""));
-						}
+						Console.Error.WriteLine(TextoResource.MensajeDialogoResultado);
+						Console.Write(ObtenerReglas(divisor, @base, coeficientes, nombre));
 						Console.Error.WriteLine();
 
 					}
 
-					Console.Error.Write("¿Quiere calcular otra regla? En caso afirmativo, pulse s: ");
-					salir = !esS(Console.ReadKey().KeyChar);
-					Console.Error.WriteLine();
+					salir = !ObtenerDeUsuario(TextoResource.MensajeDialogoRepetir, esS);
 
 				} while (!salir);
 			} catch {
 				salir = true;
-				Console.WriteLine("Se ha interrumpido el programa.");
+				Console.WriteLine(Environment.NewLine + TextoResource.MensajeDialogoInterrumpido);
 			}			
 			salida = salir? SALIDA_VOLUNTARIA : SALIDA_CORRECTA;
 		}
 
 		private static bool SinFlags() {
-			return !(flags.Todos || flags.SaltarPreguntas || flags.JSON || flags.Extendido || flags.Nombre.Length == 0 || flags.Directo.Any());
+			return !(flags.Todos || flags.SaltarPreguntas || flags.JSON || flags.Extendido || flags.Nombre != string.Empty || flags.Directo.Any());
 		}
 
 		/// <summary>
@@ -232,40 +218,59 @@ namespace ProgramaDivisibilidad {
 			}
 		}
 
-		private static void ObtenerDeUsuario(out long dato, long minimo, string mensaje) {
+		private static bool ObtenerDeUsuario(string mensaje, Func<char,bool> comparador) {
+			Console.Error.Write(mensaje);
+			char entrada = Console.ReadKey().KeyChar;
+			if (entrada == SALIDA[0]) throw new Exception(TextoResource.MensajeSalidaVoluntaria);
+			Console.Error.WriteLine();
+			return comparador(entrada);
+		}
+
+		private static void ObtenerDeUsuario(out long dato, long minimo, string mensajeError, string mensajePregunta) {
+			Console.Error.Write(mensajePregunta);
 			string? linea = Console.ReadLine();
 			while (!long.TryParse(linea, out dato) || dato < minimo) {
-				Console.WriteLine(mensaje);
+				Console.Error.WriteLine(Environment.NewLine + mensajeError);
+				Console.Error.Write(mensajePregunta);
 				linea = Console.ReadLine();
+				LanzarExcepcionSiSalida(linea);
 			}
-			if (linea == SALIDA) throw new Exception("Se ha detenido el programa");
+			Console.Error.WriteLine();
 		}
 
-		private static void ObtenerDeUsuario(out int dato, long minimo, string mensaje) {
+		private static void ObtenerDeUsuario(out int dato, long minimo, string mensajeError, string mensajePregunta) {
+			Console.Error.Write(mensajePregunta);
 			string? linea = Console.ReadLine();
 			while (!int.TryParse(linea, out dato) || dato < minimo) {
-				Console.WriteLine(mensaje);
+				Console.Error.WriteLine(Environment.NewLine + mensajeError);
+				Console.Error.Write(mensajePregunta);
 				linea = Console.ReadLine();
-				if (linea == SALIDA) throw new Exception("Se ha detenido el programa");
+				LanzarExcepcionSiSalida(linea);
 			}
+			Console.Error.WriteLine();
 		}
 
-		private static void ObtenerDeUsuarioCoprimo(out long dato, long minimo, string mensaje, long coprimo) {
+		private static void ObtenerDeUsuarioCoprimo(out long dato, long minimo, long coprimo, string mensajeError, string mensajePregunta) {
+			Console.Error.Write(mensajePregunta);
 			string? linea = Console.ReadLine();
 			while (!long.TryParse(linea, out dato) || dato < minimo || Calculos.Mcd(dato,coprimo) > 1) {
-				Console.WriteLine(mensaje);
+				Console.Error.WriteLine(Environment.NewLine + mensajeError);
+				Console.Error.Write(mensajePregunta);
 				linea = Console.ReadLine();
-				if (linea == SALIDA) throw new Exception("Se ha detenido el programa");
+				LanzarExcepcionSiSalida(linea);
 			}
+			Console.Error.WriteLine();
 		}
 
-		private static void ObtenerDeUsuario(out bool dato) {
-			string? linea = Console.ReadLine();
-			while (linea is null) {
-				linea = Console.ReadLine();
-			}
-			if (linea == SALIDA) throw new Exception("Se ha detenido el programa");
-			dato = linea.ToLower().StartsWith('s');
+		private static void ObtenerDeUsuario(out string dato, string mensajePregunta) {
+			Console.Error.Write(mensajePregunta);
+			dato = Console.ReadLine() ?? "";
+			LanzarExcepcionSiSalida(dato);
+			Console.Error.WriteLine();
+		}
+
+		private static void LanzarExcepcionSiSalida(string linea) {
+			if (linea == SALIDA) throw new Exception(TextoResource.MensajeSalidaVoluntaria);
 		}
 
 		private static string ObtenerReglas(long divisor, long @base, int coeficientes, string nombre = "") {
@@ -326,9 +331,9 @@ namespace ProgramaDivisibilidad {
 		private static string Serializar(object o) {
 			string res = "{" + Environment.NewLine;
 			if (o is ListSerie<long> lista) {
-				res += "\"Nombre\" : \"" + lista.Nombre + "\", " + Environment.NewLine + "\"Lista\" : ";
+				res += "\"name\" : \"" + lista.Nombre + "\", " + Environment.NewLine + "\"list\" : ";
 			} else if (o is ListSerie<ListSerie<long>> otra) {
-				res += "\"Nombre\" : \"" + otra.Nombre + "\", " + Environment.NewLine + "\"Lista\" : ";
+				res += "\"name\" : \"" + otra.Nombre + "\", " + Environment.NewLine + "\"list\" : ";
 			}
 			res += JsonSerializer.Serialize(o, opcionesJson) + Environment.NewLine + "}";
 			return res;

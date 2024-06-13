@@ -6,7 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <StartupObject>ProgramaDivisibilidad.CalculadoraDivisibilidadCLI</StartupObject>
-    <AssemblyName>DivCalc</AssemblyName>
+    <AssemblyName>CalcDivCLI</AssemblyName>
+    <AssemblyVersion>0.2.0.0</AssemblyVersion>
+    <NeutralLanguage>es-ES</NeutralLanguage>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +20,24 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Operaciones\Operaciones.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="TextoResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TextoResource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="TextoResource.es.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="TextoResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TextoResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

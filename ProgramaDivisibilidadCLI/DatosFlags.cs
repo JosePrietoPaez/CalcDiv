@@ -1,51 +1,50 @@
 ﻿using CommandLine;
+using ProgramaDivisibilidadCLI;
 using System;
 using System.Collections;
 
 namespace ProgramaDivisibilidad {
 	public class Flags {
 
-		private readonly bool extendido,
-			todos,
-			ayuda;
+		[Option('x',longName: "extended-rules"
+			,HelpText ="HelpExtendido"
+			,ResourceType =typeof(TextoResource))]
+		public bool Extendido { get; set; }
 
-		private readonly IEnumerable<long> directo;
+		[Option('a',longName: "output-all-rules"
+			, HelpText = "HelpTodos"
+			, ResourceType = typeof(TextoResource))]
+		public bool Todos { get; set; }
 
-		private readonly string nombre;
+		[Option('H', longName: "long-help"
+			, HelpText = "HelpAyuda"
+			, ResourceType = typeof(TextoResource))]
+		public bool Ayuda { get; set; }
 
-		private readonly bool json,
-			saltarPreguntas;
+		[Option('h', longName: "short-help"
+			, HelpText = "HelpAyudaCorta"
+			, ResourceType = typeof(TextoResource))]
+		public bool AyudaCorta { get; set; }
 
-		public Flags(bool extendido, bool todos,bool ayuda, IEnumerable<long> directo, string nombre, bool json, bool saltarPreguntas) {
-			this.extendido = extendido;
-			this.todos = todos;
-			this.ayuda = ayuda;
-			this.directo = directo;
-			this.nombre = nombre;
-			this.json = json;
-			this.saltarPreguntas = saltarPreguntas;
-		}
+		[Option('d',longName: "direct-output", Min = 2, Max = 3
+			, HelpText = "HelpDirecto"
+			, ResourceType = typeof(TextoResource))]
+		public IEnumerable<long> Directo { get; set; }
 
-		[Option('x',longName: "extended-rules",HelpText ="May return other types of rules, also outputs explanations on how to apply them, ignores all other flags, except -d")]
-		public bool Extendido { get { return extendido; } }
+		[Option('n', longName: "named-rule", Default = "-"
+			, HelpText = "HelpNombre"
+			, ResourceType = typeof(TextoResource))]
+		public string Nombre { get; set; }
 
-		[Option('a',longName: "output-all-rules", HelpText ="Outputs all coefficient rules with elements whose absolute value is less than the divisor")]
-		public bool Todos { get { return todos; } }
+		[Option('j', longName: "json"
+			, HelpText = "HelpJson"
+			, ResourceType = typeof(TextoResource))]
+		public bool JSON { get; set; }
 
-		[Option('H', longName:"long-help", HelpText ="Outputs a longer help document explaining this application more in-depth")]
-		public bool Ayuda { get { return ayuda; } }
-
-		[Option('d',longName: "direct-output", Min = 2, Max = 3, HelpText ="Reads the divisor, base, and optionally the number of coefficients as arguments, not as input. Must be two or three valid long integers")]
-		public IEnumerable<long> Directo { get { return directo; } }
-
-		[Option('n', longName: "named-rule", Default ="",HelpText ="Gives the coefficient rule a name, which is included in its output")]
-		public string Nombre { get { return nombre; } }
-
-		[Option('j', longName: "json", HelpText ="Outputs coefficient rule as a JSON object, changes made by other flags are not ignored")]
-		public bool JSON { get { return json; } }
-
-		[Option('s', longName:"skip-additional-input", HelpText ="Used to prevent dialog mode from explicitly asking for binary flags, does not affect output")]
-		public bool SaltarPreguntas { get { return saltarPreguntas; } }
+		[Option('s', longName: "skip-additional-input"
+			, HelpText = "HelpSaltar"
+			, ResourceType = typeof(TextoResource))]
+		public bool SaltarPreguntas { get; set; }
 
 	}
 }
