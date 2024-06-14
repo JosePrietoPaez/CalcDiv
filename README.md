@@ -1,14 +1,12 @@
-# Sobre DivCalc (Nombre temporal)
+# Sobre CalcDiv
 
 Aplicación GUI y CLI en C# para calcular reglas de divisibilidad, 3ª revisión.
-
-Seguramente sea cambiado a CalcDiv, ya que existe una aplicación móvil con el mismo nombre, aunque es completamente distinta. Además, CalcDiv solo parece ser usado por una librería de R. Cambiaré el nombre una vez termine el refactoring y lance la siguiente versión de la aplicación CLI.
 
 Este es un proyecto en el que he estado trabajando desde 2021, inicialmente en C++ y luego en Java. Empecé a trabajar en él porque las reglas de divisibilidad me parecen interesantes. Con la investigación y el desarrollo que he realizado para crear estas aplicaciones, las encuentro aún más fascinantes y me pregunto si existen más tipos que aún no conozco.
 
 Es bastante raro que en [divisibility-rules](https://github.com/topics/divisibility-rules) solo haya tres repositorios. Espero poder tener una aplicación competente, aunque a nadie le importe demasiado, porque actualmente está un poco mal.
 
-## Datos sobre DivCalc
+## Datos sobre CalcDiv
 
 En este repositorio verás dos colaboradores: [inbaluma](https://github.com/inbaluma) y [JonniThorpe](https://github.com/JonniThorpe).
 
@@ -16,7 +14,7 @@ La lógica de la aplicación la he desarrollado yo por mi cuenta y seguramente s
 
 La nota del trabajo sigue pendiente.
 
-## Planes futuros para DivCalc
+## Planes futuros para CalcDiv
 
 Si revisas el código en el momento en que se subió este README, verás que es pequeño pero bastante mal diseñado.
 
@@ -31,7 +29,7 @@ El plan es refactorizar esta aplicación para que tenga las mismas funcionalidad
   - Separar el output de la aplicación de la salida de consola.
     - Esto incluye el formateo del output a JSON.
 
-## Cómo usar e interpretar DivCalc
+## Cómo usar e interpretar CalcDiv
 
 Las reglas de divisibilidad se aplican a números en su base, que llamaremos "base" o "raíz" en varias partes del código, para ver si son divisibles entre un número entero, que llamaremos "divisor" y en el código aparece a veces como "num".
 
@@ -39,7 +37,7 @@ Las reglas de coeficientes pueden tener una longitud arbitraria, llamada en vari
 
 Para aplicar las reglas de coeficientes pondré un ejemplo:
 
-Supongamos que ejecutas: `DivCalc.exe -d 7 10 2`, deberías obtener `2, 3`.
+Supongamos que ejecutas: `CalcDivCLI.exe -d 7 10 2`, deberías obtener `2, 3`.
 
 Esto significa que has buscado la regla de divisibilidad de 7 en base 10 y quieres aplicar una regla de coeficientes de longitud 2.
 
