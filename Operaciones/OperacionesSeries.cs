@@ -89,7 +89,7 @@ namespace Operaciones
 				serie.Insertar(num, i + pos);
 				cont += incremento;
 				for (int j = 0; j < incremento; j++) {
-					num = CalculosEstatico.ProductoMod(num, @base, mod);
+					num = Calculos.ProductoMod(num, @base, mod);
 				}
 			}
 		}

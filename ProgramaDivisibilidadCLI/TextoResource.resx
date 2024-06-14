@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrorNumerico" xml:space="preserve">
+    <value>The divisor, the base and coefficient amount must be positive integers.</value>
+  </data>
+  <data name="ErrorPrimo" xml:space="preserve">
+    <value>The divisor and the base must be coprime, their greatest common divisor must be greater than one.</value>
+  </data>
+  <data name="HelpAyuda" xml:space="preserve">
+    <value>Outputs a longer help document explaining this application more in-depth.</value>
+  </data>
+  <data name="HelpAyudaCorta" xml:space="preserve">
+    <value>Outputs short document with information on how to run this program.</value>
+  </data>
+  <data name="HelpDirecto" xml:space="preserve">
+    <value>Reads the divisor, base, and optionally the number of coefficients as arguments, not as dialog input. Must be two or three valid 64-bit integers.</value>
+  </data>
+  <data name="HelpExtendido" xml:space="preserve">
+    <value>May return other types of rules, also outputs explanations on how to apply them, ignores all other flags, except -d.</value>
+  </data>
+  <data name="HelpJson" xml:space="preserve">
+    <value>Outputs coefficient rule as a JSON object, changes made by other flags are not ignored.</value>
+  </data>
+  <data name="HelpNombre" xml:space="preserve">
+    <value>Gives the coefficient rule a name, which is included in its output.</value>
+  </data>
+  <data name="HelpSaltar" xml:space="preserve">
+    <value>Used to prevent dialog mode from explicitly asking for binary flags, does not affect output.</value>
+  </data>
+  <data name="HelpTodos" xml:space="preserve">
+    <value>Outputs all coefficient rules with elements whose absolute value is less than the divisor.</value>
+  </data>
+  <data name="MensajeSalidaVoluntaria" xml:space="preserve">
+    <value>Exit message has been detected, execution was interrupted.</value>
+    <comment>Shown when the user sends the exit sequence in dialog mode</comment>
+  </data>
+  <data name="MensajeParametrosDirecto" xml:space="preserve">
+    <value>Divisor: {0}, Base: {1}, Coefficients: {2}.</value>
+    <comment>The parameters are the arguments passed to the -d flag</comment>
+  </data>
+  <data name="MensajeFinDirecto" xml:space="preserve">
+    <value>The rule was calculated.</value>
+    <comment>Shown at the end of a direct call</comment>
+  </data>
+  <data name="MensajeDialogoExtendido" xml:space="preserve">
+    <value>Type "s" to obtain coefficient rules, type a different letter to obtain rules: </value>
+  </data>
+  <data name="MensajeDialogoJson" xml:space="preserve">
+    <value>Type "s" to output the rule as a JSON, if the rule is not going to be parsed type another letter: </value>
+  </data>
+  <data name="MensajeDialogoTodas" xml:space="preserve">
+    <value>Type "s" to output all the rules derived from the original, type a different letter to obtain the minimum rule: </value>
+  </data>
+  <data name="MensajeDialogoBase" xml:space="preserve">
+    <value>Base of the rule: </value>
+  </data>
+  <data name="ErrorBase" xml:space="preserve">
+    <value>The base must be an integer greater than one.</value>
+  </data>
+  <data name="ErrorDivisor" xml:space="preserve">
+    <value>The divisor must be a non-negative integer.
+Keep in mind that numbers divisible by a negative number are divisible to its absolute value.</value>
+  </data>
+  <data name="ErrorBaseCoprima" xml:space="preserve">
+    <value>The base must be a positive integer greater than one and coprime with the base.
+Two numbers are coprime if their greatest common divisor is greater than one.</value>
+  </data>
+  <data name="MensajeDialogoDivisor" xml:space="preserve">
+    <value>Divisor of the rule: </value>
+  </data>
+  <data name="MensajeDialogoCoeficientes" xml:space="preserve">
+    <value>Number of coefficients in the rule: </value>
+  </data>
+  <data name="ErrorCoeficientes" xml:space="preserve">
+    <value>The number of coefficients must be a positive integer.</value>
+  </data>
+  <data name="MensajeInicioDialogo" xml:space="preserve">
+    <value>You will be asked to input data throught the console, write {0} to interrupt the program.</value>
+    <comment>Shown at the beginning of dialog mode</comment>
+  </data>
+  <data name="MensajeDialogoRegla" xml:space="preserve">
+    <value>Name of the rule, can be left empty: </value>
+  </data>
+  <data name="MensajeDialogoResultado" xml:space="preserve">
+    <value>Obtained the following rule: </value>
+  </data>
+  <data name="MensajeDialogoRepetir" xml:space="preserve">
+    <value>Type "s" to calculate another rule: </value>
+  </data>
+  <data name="MensajeDialogoInterrumpido" xml:space="preserve">
+    <value>The program was interrupted.</value>
+  </data>
+</root>

@@ -2,7 +2,7 @@
   "profiles": {
     "ProgramaDivisibilidadCLI": {
       "commandName": "Project",
-      "commandLineArgs": "-dn 7 10 1 coeficientes"
+      "commandLineArgs": "-xan Nombre"
     }
   }
 }

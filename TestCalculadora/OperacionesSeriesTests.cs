@@ -94,7 +94,7 @@ namespace TestCalculadora {
 			Assert.That(serie, Has.Exactly(10).EqualTo(0)); // No se cumplirá si base es 0
 			Assert.That(serie, Has.Property("Longitud").EqualTo(LONGITUD + fin));
 			for (int i = 0; i < fin; i++) { //Necesito comprobar que se cumple para todos los elementos
-				long elementoI = CalculosEstatico.PotenciaEntera(@base, i+1) % mod; //No se usa PotenciaEntera en la función, pero lo hace más sencillo.
+				long elementoI = Calculos.PotenciaEntera(@base, i+1) % mod; //No se usa PotenciaEntera en la función, pero lo hace más sencillo.
 				Assert.That(serie, Has.ItemAt(pos + i).EqualTo(elementoI));
 			}
 		}

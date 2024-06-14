@@ -1,4 +1,6 @@
-﻿Plantilla de uso: DivCalc -[argumentos] (divisor base coeficientes) (nombre)
+﻿Plantilla de uso: DivCalc.exe (-[flags]) (-d divisor base (coeficientes)) (-n nombre)
 
-Los argumentos con -d deben ser positivos, divisor y base deben ser mayores que uno
-El nombre, con -n, puede no puede ser vacío
+Ejemplo: DivCalc.exe -d 7 10
+Obtiene la regla de divisibilidad de 7 en base 10 usando un coeficiente.
+
+Use --help para ver información de los flags
