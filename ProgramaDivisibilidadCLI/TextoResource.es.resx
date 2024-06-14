@@ -166,7 +166,7 @@
     <value>Pulse &lt;&lt;s&gt;&gt; para obtener todas las reglas derivadas de la original u otra letra obtener solo la menor: </value>
   </data>
   <data name="MensajeDialogoBase" xml:space="preserve">
-    <value>Escriba la base de la regla: </value>
+    <value>Base de la regla: </value>
   </data>
   <data name="ErrorBase" xml:space="preserve">
     <value>La base debe ser un entero mayor que uno.</value>
@@ -180,10 +180,10 @@ Tenga en cuenta que los números divisibles entre un número negativo son divisi
 Dos números son coprimos si su máximo común divisor es mayor que uno.</value>
   </data>
   <data name="MensajeDialogoDivisor" xml:space="preserve">
-    <value>Escriba el divisor de la regla: </value>
+    <value>Divisor de la regla: </value>
   </data>
   <data name="MensajeDialogoCoeficientes" xml:space="preserve">
-    <value>Escriba el número de coeficientes de la regla: </value>
+    <value>Número de coeficientes de la regla: </value>
   </data>
   <data name="ErrorCoeficientes" xml:space="preserve">
     <value>El número de coeficientes debe ser un entero positivo.</value>
@@ -192,7 +192,7 @@ Dos números son coprimos si su máximo común divisor es mayor que uno.</value>
     <value>Se pedirá que introduzca los datos por consola, escriba {0} para interrumpir el programa.</value>
   </data>
   <data name="MensajeDialogoRegla" xml:space="preserve">
-    <value>Escriba el nombre de la regla, puede dejarse vacío: </value>
+    <value>Nombre de la regla, puede dejarse vacío: </value>
   </data>
   <data name="MensajeDialogoResultado" xml:space="preserve">
     <value>Regla obtenida: </value>

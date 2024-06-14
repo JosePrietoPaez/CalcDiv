@@ -90,14 +90,6 @@ namespace TestCalculadora {
 			});
 		}
 
-		private StringReader ReaderDeEjecucion(params string[] datos) {
-			StringBuilder sb = new();
-			foreach (string dato in datos) {
-				sb.AppendLine(dato);
-			}
-			return new StringReader(sb.ToString());
-		}
-
 		private string[] ReglasToArray(ListSerie<ListSerie<long>> serie) {
 			return serie.Select(regla => regla.ToStringCompleto()).ToArray();
 		}

@@ -9,7 +9,7 @@ namespace TestCalculadora
 {
 
 	[TestFixture]
-	public class CalculosEstaticoTests
+	public class CalculosTests
 	{
 
 		[TestCase(-1, TestName = "EsPrimo devuelve false si se le pasa un número negativo")]
@@ -467,7 +467,7 @@ namespace TestCalculadora
 			var result = 
 
 			// Act
-			Assert.Throws<ArgumentException>(() =>
+			Assert.Throws<DivideByZeroException>(() =>
 			Calculos.ProductoMod(
 				fac1,
 				fac2,
@@ -832,8 +832,8 @@ namespace TestCalculadora
 				Assert.Multiple(() =>
 				{
 					Assert.That(result.Item1, Is.True);
-					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} elevado a {potencia} menos uno ({Calculos.PotenciaEntera(raiz, potencia) - 1})" +
-						$".\nUn número en base {raiz} será múltiplo de {divisor} si al separar sus cifras en grupos de {potencia} desde las unidades, la suma de los grupos es múltiplo de {divisor}."));
+					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} elevado a {potencia} menos uno ({Calculos.PotenciaEntera(raiz, potencia) - 1})." +
+						Environment.NewLine + $"Un entero en base {raiz} será divisible entre {divisor} si al separar sus cifras en grupos de {potencia} desde las unidades, la suma de los grupos es múltiplo de {divisor}."));
 				});
 			}
 
@@ -858,7 +858,7 @@ namespace TestCalculadora
 				{
 					Assert.That(result.Item1, Is.True);
 					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} menos uno." +
-						$"\nUn número en base {raiz} será múltiplo de {divisor} si la suma de sus cifras es múltiplo de {divisor}."));
+						Environment.NewLine + $"Un entero en base {raiz} será divisible entre {divisor} si la suma de sus cifras es múltiplo de {divisor}."));
 				});
 			}
 
@@ -885,8 +885,8 @@ namespace TestCalculadora
 				Assert.Multiple(() =>
 				{
 					Assert.That(result.Item1, Is.True);
-					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} elevado a {potencia} más uno ({Calculos.PotenciaEntera(raiz, potencia) + 1})" +
-						$".\nUn número en base {raiz} será múltiplo de {divisor} si al separar sus cifras en grupos de {potencia} desde las unidades, la diferencia de la suma de los grupos pares y la de los grupos impares es múltiplo de {divisor}."));
+					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} elevado a {potencia} más uno ({Calculos.PotenciaEntera(raiz, potencia) + 1})." +
+						Environment.NewLine + $"Un entero en base {raiz} será divisible entre {divisor} si al separar sus cifras en grupos de {potencia} desde las unidades, la diferencia de la suma de los grupos pares y la de los grupos impares es múltiplo de {divisor}."));
 				});
 			}
 
@@ -912,7 +912,7 @@ namespace TestCalculadora
 				{
 					Assert.That(result.Item1, Is.True);
 					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} más uno." +
-						$"\nUn número en base {raiz} será múltiplo de {divisor} si la diferencia de la suma de las cifras pares con la de las impares es múltiplo de {divisor}."));
+						Environment.NewLine + $"Un entero en base {raiz} será divisible entre {divisor} si la diferencia de la suma de las cifras en posiciones pares con la de las posiciones impares es múltiplo de {divisor}."));
 				});
 			}
 
@@ -939,8 +939,8 @@ namespace TestCalculadora
 				Assert.Multiple(() =>
 				{
 					Assert.That(result.Item1, Is.EqualTo(true));
-					Assert.That(result.Item2, Is.EqualTo($"{divisor} está compuesto de potencias de los factores primos de {raiz}" +
-						$".\nUn número en base {raiz} será múltiplo de {divisor} si sus primeras {cifras} cifras son múltiplo de {divisor}."));
+					Assert.That(result.Item2, Is.EqualTo($"{divisor} está compuesto de potencias de los factores primos de {raiz}." +
+						Environment.NewLine + $"Un entero en base {raiz} será divisible entre {divisor} si sus primeras {cifras} cifras son múltiplo de {divisor}."));
 				});
 			}
 
@@ -990,7 +990,7 @@ namespace TestCalculadora
 				Assert.Multiple(() =>
 				{
 					Assert.That(result.Item1, Is.EqualTo(false));
-					Assert.That(result.Item2, Is.EqualTo("No se ha encontrado ninguna regla alternativa, aplique la regla calculada, si se puede calcular."));
+					Assert.That(result.Item2, Is.EqualTo(TextoCalculos.CalculosExtendidaMensajeFracaso));
 				});
 			}
 		}

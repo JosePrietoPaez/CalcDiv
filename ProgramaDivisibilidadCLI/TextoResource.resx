@@ -169,7 +169,7 @@
     <value>Type "s" to output all the rules derived from the original, type a different letter to obtain the minimum rule: </value>
   </data>
   <data name="MensajeDialogoBase" xml:space="preserve">
-    <value>Write the base of the rule: </value>
+    <value>Base of the rule: </value>
   </data>
   <data name="ErrorBase" xml:space="preserve">
     <value>The base must be an integer greater than one.</value>
@@ -183,20 +183,20 @@ Keep in mind that numbers divisible by a negative number are divisible to its ab
 Two numbers are coprime if their greatest common divisor is greater than one.</value>
   </data>
   <data name="MensajeDialogoDivisor" xml:space="preserve">
-    <value>Write the divisor of the rule: </value>
+    <value>Divisor of the rule: </value>
   </data>
   <data name="MensajeDialogoCoeficientes" xml:space="preserve">
-    <value>Write the amount of coefficients in the rule: </value>
+    <value>Number of coefficients in the rule: </value>
   </data>
   <data name="ErrorCoeficientes" xml:space="preserve">
-    <value>The amount of coefficients must be a positive integer.</value>
+    <value>The number of coefficients must be a positive integer.</value>
   </data>
   <data name="MensajeInicioDialogo" xml:space="preserve">
     <value>You will be asked to input data throught the console, write {0} to interrupt the program.</value>
     <comment>Shown at the beginning of dialog mode</comment>
   </data>
   <data name="MensajeDialogoRegla" xml:space="preserve">
-    <value>Write the name of the rule, can be left empty: </value>
+    <value>Name of the rule, can be left empty: </value>
   </data>
   <data name="MensajeDialogoResultado" xml:space="preserve">
     <value>Obtained the following rule: </value>

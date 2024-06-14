@@ -283,9 +283,9 @@ namespace Operaciones
 		/// <returns>
 		/// <c>fac1 * fac2 % @base</c>
 		/// </returns>
-		/// <exception cref="ArgumentException"></exception>
+		/// <exception cref="DivideByZeroException"></exception>
 		public static long ProductoMod(long fac1, long fac2, long @base) {
-			if (@base == 0) throw new ArgumentException("No se puede calcular el resto con divisor 0");
+			if (@base == 0) throw new DivideByZeroException("No se puede calcular el resto con divisor 0");
 			return fac1 * fac2 % @base;
 		}
 
@@ -445,23 +445,22 @@ namespace Operaciones
 				}
 				potencia = resultado.ToString(); //Puede dar overflow si el exponente es grande
 			} catch (OverflowException) {
-				potencia = "Resultado demasiado grande";
+				potencia = TextoCalculos.CalculosExtendidaMensajeExceso;
 			}
 			string mensaje;
 			mensaje = caso.caso switch {
-				CasosDivisibilidad.MIRAR_CIFRAS => CrearMensajeDivisibilidad($"{divisor} está compuesto de potencias de los factores primos de {@base}",
-					$"sus primeras {caso.informacion} cifras son múltiplo de {divisor}",
+				CasosDivisibilidad.MIRAR_CIFRAS => CrearMensajeDivisibilidad(divisor + TextoCalculos.CalculosExtendidaMensajeCifrasPrincipio + @base,
+					string.Format(TextoCalculos.CalculosExtendidaMensajeCifrasFinal,caso.informacion) + divisor,
 					@base, divisor),
-				CasosDivisibilidad.UNO => "Todos los enteros son divisibles entre uno.",
-				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {@base} elevado a {caso.informacion} más uno ({potencia})",
-					$"al separar sus cifras en grupos de {caso.informacion} desde las unidades, la diferencia de la suma de los grupos pares" +
-					$" y la de los grupos impares es múltiplo de {divisor}",
+				CasosDivisibilidad.UNO => TextoCalculos.CalculosExtendidaMensajeUno,
+				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad(divisor + string.Format(TextoCalculos.CalculosExtendidaRestarPrincipio,@base,caso.informacion,potencia),
+					string.Format(TextoCalculos.CalculosExtendidaRestarFinal,caso.informacion) + divisor,
 					@base,divisor),
-				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {@base} elevado a {caso.informacion} menos uno ({potencia})",
-					$"al separar sus cifras en grupos de {caso.informacion} desde las unidades, la suma de los grupos es múltiplo de {divisor}",
+				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad(divisor + string.Format(TextoCalculos.CalculosExtendidaSumarPrincipio,@base,caso.informacion,potencia),
+					string.Format(TextoCalculos.CalculosExtendidaSumarFinal,caso.informacion) + divisor,
 					@base, divisor),
-				CasosDivisibilidad.CERO => "No se le puede aplicar la relación de divisibilidad a cero.",
-				_ => "No se ha encontrado ninguna regla alternativa, aplique la regla calculada, si se puede calcular.",
+				CasosDivisibilidad.CERO => TextoCalculos.CalculosExtendidaMensajeCero,
+				_ => TextoCalculos.CalculosExtendidaMensajeFracaso,
 			};
 			if (caso.informacion == 1) {
 				mensaje = MensajeParaDatoConValorUno(caso.caso,divisor,@base,mensaje);
@@ -472,11 +471,11 @@ namespace Operaciones
 
 		private static string MensajeParaDatoConValorUno(CasosDivisibilidad caso, long divisor, long @base, string mensajeInicial) {
 			return caso switch {
-				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {@base} más uno",
-					$"la diferencia de la suma de las cifras pares con la de las impares es múltiplo de {divisor}",
+				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad(divisor + string.Format(TextoCalculos.CalculosValorUnoRestarPrincipio,@base),
+					TextoCalculos.CalculosValorUnoRestarFinal + divisor,
 					@base, divisor),
-				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad($"{divisor} es divisor de {@base} menos uno",
-					$"la suma de sus cifras es múltiplo de {divisor}",
+				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad(divisor + string.Format(TextoCalculos.CalculosValorUnoSumarPrincipio,@base),
+					TextoCalculos.CalculosValorUnoSumarFinal + divisor,
 					@base, divisor),
 				_ => mensajeInicial
 			};
@@ -583,7 +582,8 @@ namespace Operaciones
 		}
 
 		private static string CrearMensajeDivisibilidad(string motivo, string condicion, long @base, long divisor) {
-			return $"{motivo}.\nUn número en base {@base} será múltiplo de {divisor} si {condicion}.";
+			//motivo\nUn entero en base @base será divisible entre divisor si condicion.
+			return motivo + '.' + Environment.NewLine + string.Format(TextoCalculos.CalculosCrearMensaje,@base,divisor) + condicion + '.';
 		}
 
 		/// <summary>

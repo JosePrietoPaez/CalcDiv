@@ -80,7 +80,7 @@ namespace ProgramaDivisibilidadCLI {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a The amount of coefficients must be a positive integer..
+        ///   Busca una cadena traducida similar a The number of coefficients must be a positive integer..
         /// </summary>
         public static string ErrorCoeficientes {
             get {
@@ -189,7 +189,7 @@ namespace ProgramaDivisibilidadCLI {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Write the base of the rule: .
+        ///   Busca una cadena traducida similar a Base of the rule: .
         /// </summary>
         public static string MensajeDialogoBase {
             get {
@@ -198,7 +198,7 @@ namespace ProgramaDivisibilidadCLI {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Write the amount of coefficients in the rule: .
+        ///   Busca una cadena traducida similar a Number of coefficients in the rule: .
         /// </summary>
         public static string MensajeDialogoCoeficientes {
             get {
@@ -207,7 +207,7 @@ namespace ProgramaDivisibilidadCLI {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Write the divisor of the rule: .
+        ///   Busca una cadena traducida similar a Divisor of the rule: .
         /// </summary>
         public static string MensajeDialogoDivisor {
             get {
@@ -243,7 +243,7 @@ namespace ProgramaDivisibilidadCLI {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Write the name of the rule, can be left empty: .
+        ///   Busca una cadena traducida similar a Name of the rule, can be left empty: .
         /// </summary>
         public static string MensajeDialogoRegla {
             get {

@@ -37,8 +37,8 @@ namespace ProgramaDivisibilidad {
 		/// </list>
 		/// </returns>
 		public static int Main(string[] args) {
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
-			Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
+			//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
+			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
 			var resultado = Parser.Default.ParseArguments<Flags>(args) //Parsea los argumentos
 				.WithParsed(options => { flags = options;
 					//Console.Error.WriteLine(options.Dump());
