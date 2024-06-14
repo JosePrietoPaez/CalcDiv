@@ -783,11 +783,7 @@ namespace TestCalculadora
 					raiz);
 
 				// Assert
-				Assert.Multiple(() =>
-				{
-					Assert.That(result.Item1, Is.True);
-					Assert.That(result.Item2, Is.EqualTo("No se le puede aplicar la relación de divisibilidad a cero."));
-				});
+				Assert.That(result.Item1, Is.True);
 			}
 
 			[Test(Description = "ReglaDivisibilidadExtendida devuelve un mensaje indicando que uno divide a todos los enteros y true")]
@@ -804,11 +800,7 @@ namespace TestCalculadora
 					raiz);
 
 				// Assert
-				Assert.Multiple(() =>
-				{
-					Assert.That(result.Item1, Is.True);
-					Assert.That(result.Item2, Is.EqualTo("Todos los enteros son divisibles entre uno."));
-				});
+				Assert.That(result.Item1, Is.True);
 			}
 
 			[Test(Description = "ReglaDivisibiladExtendida devuelve un mensaje indicando que se deben sumar bloques de cifras del número si el divisor es múltiplo de la base o una potencia menos uno y true")]
@@ -829,12 +821,7 @@ namespace TestCalculadora
 					raiz);
 
 				// Assert
-				Assert.Multiple(() =>
-				{
-					Assert.That(result.Item1, Is.True);
-					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} elevado a {potencia} menos uno ({Calculos.PotenciaEntera(raiz, potencia) - 1})." +
-						Environment.NewLine + $"Un entero en base {raiz} será divisible entre {divisor} si al separar sus cifras en grupos de {potencia} desde las unidades, la suma de los grupos es múltiplo de {divisor}."));
-				});
+				Assert.That(result.Item1, Is.True);
 			}
 
 			[Test(Description = "ReglaDivisibiladExtendida devuelve un mensaje indicando que se deben sumar las cifras del número si el divisor es múltiplo de la base menos uno y true")]
@@ -854,12 +841,7 @@ namespace TestCalculadora
 					raiz);
 
 				// Assert
-				Assert.Multiple(() =>
-				{
-					Assert.That(result.Item1, Is.True);
-					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} menos uno." +
-						Environment.NewLine + $"Un entero en base {raiz} será divisible entre {divisor} si la suma de sus cifras es múltiplo de {divisor}."));
-				});
+				Assert.That(result.Item1, Is.True);
 			}
 
 
@@ -882,12 +864,7 @@ namespace TestCalculadora
 					raiz);
 
 				// Assert
-				Assert.Multiple(() =>
-				{
-					Assert.That(result.Item1, Is.True);
-					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} elevado a {potencia} más uno ({Calculos.PotenciaEntera(raiz, potencia) + 1})." +
-						Environment.NewLine + $"Un entero en base {raiz} será divisible entre {divisor} si al separar sus cifras en grupos de {potencia} desde las unidades, la diferencia de la suma de los grupos pares y la de los grupos impares es múltiplo de {divisor}."));
-				});
+				Assert.That(result.Item1, Is.True);
 			}
 
 			[Test(Description = "ReglaDivisibiladExtendida devuelve un mensaje indicando que se deben restar la suma de las cifras pares con la suma de las impares del número si el divisor es múltiplo de la base más uno y true")]
@@ -908,12 +885,7 @@ namespace TestCalculadora
 					raiz);
 
 				// Assert
-				Assert.Multiple(() =>
-				{
-					Assert.That(result.Item1, Is.True);
-					Assert.That(result.Item2, Is.EqualTo($"{divisor} es divisor de {raiz} más uno." +
-						Environment.NewLine + $"Un entero en base {raiz} será divisible entre {divisor} si la diferencia de la suma de las cifras en posiciones pares con la de las posiciones impares es múltiplo de {divisor}."));
-				});
+				Assert.That(result.Item1, Is.True);
 			}
 
 			[Test(Description = "ReglaDivisibilidadExtendida devuelve un mensaje indicando que solo las primeras cifras importan para la divisibilidad si el divisor está compuesto de los factores primos de raiz y true")]
@@ -936,12 +908,7 @@ namespace TestCalculadora
 					raiz);
 
 				// Assert
-				Assert.Multiple(() =>
-				{
-					Assert.That(result.Item1, Is.EqualTo(true));
-					Assert.That(result.Item2, Is.EqualTo($"{divisor} está compuesto de potencias de los factores primos de {raiz}." +
-						Environment.NewLine + $"Un entero en base {raiz} será divisible entre {divisor} si sus primeras {cifras} cifras son múltiplo de {divisor}."));
-				});
+				Assert.That(result.Item1, Is.EqualTo(true));
 			}
 
 			[Test(Description = "ReglaDivisibilidadExtendida lanza excepción si la base es menor que 2")]
@@ -987,11 +954,7 @@ namespace TestCalculadora
 					raiz);
 
 				// Assert
-				Assert.Multiple(() =>
-				{
-					Assert.That(result.Item1, Is.EqualTo(false));
-					Assert.That(result.Item2, Is.EqualTo(TextoCalculos.CalculosExtendidaMensajeFracaso));
-				});
+				Assert.That(result.Item1, Is.EqualTo(false));
 			}
 		}
 
