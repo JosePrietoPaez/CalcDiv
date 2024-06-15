@@ -118,93 +118,152 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ErrorNumerico" xml:space="preserve">
-    <value>The divisor, the base and coefficient amount must be positive integers.</value>
+    <value>El divisor, la base y el número de coeficientes deben ser números enteros positivos.</value>
   </data>
   <data name="ErrorPrimo" xml:space="preserve">
-    <value>The divisor and the base must be coprime, their greatest common divisor must be greater than one.</value>
+    <value>El divisor y la base deben ser coprimos, su máximo común divisor debe ser mayor que uno.</value>
   </data>
   <data name="HelpAyuda" xml:space="preserve">
-    <value>Outputs a longer help document explaining this application more in-depth.</value>
+    <value>Devuelve por salida un documento de ayuda más largo explicando la aplicación con más detalle.</value>
   </data>
   <data name="HelpAyudaCorta" xml:space="preserve">
-    <value>Outputs short document with information on how to run this program.</value>
+    <value>Devuelve por salida un pequeño documento indicando como ejecutar esta aplicación.</value>
   </data>
   <data name="HelpDirecto" xml:space="preserve">
-    <value>Reads the divisor, base, and optionally the number of coefficients as arguments, not as dialog input. Must be two or three valid 64-bit integers.</value>
+    <value>Lee la base, divisor y, opcionalmente la longitud de las reglas de coeficientes, como argumentos en lugar de preguntarlos en modo diálogo. Deben ser enteros de 64 bits válidos.</value>
   </data>
   <data name="HelpExtendido" xml:space="preserve">
-    <value>May return other types of rules, also outputs explanations on how to apply them, ignores all other flags, except -d.</value>
+    <value>Puede devolver reglas de tipos distintos, también devuelve por pantalla explicaciones sobre como se aplican. Ignora los demás flags, excepto -d.</value>
   </data>
   <data name="HelpJson" xml:space="preserve">
-    <value>Outputs coefficient rule as a JSON object, changes made by other flags are not ignored.</value>
+    <value>Las reglas de coeficientes se devolveran como un objeto JSON, se reflejarán los cambios causados por otros flags.</value>
   </data>
   <data name="HelpNombre" xml:space="preserve">
-    <value>Gives the coefficient rule a name, which is included in its output.</value>
+    <value>Le da un nombre a las reglas de coeficientes, incluido en la salida.</value>
   </data>
   <data name="HelpSaltar" xml:space="preserve">
-    <value>Used to prevent dialog mode from explicitly asking for binary flags, does not affect output.</value>
+    <value>Si no se usan otros flags, evita que el modo diálogo pregunte si quiere activar los flags.</value>
   </data>
   <data name="HelpTodos" xml:space="preserve">
-    <value>Outputs all coefficient rules with elements whose absolute value is less than the divisor.</value>
+    <value>Devuelve todas las reglas con valores absolutos menores al divisor elegido.</value>
   </data>
   <data name="MensajeSalidaVoluntaria" xml:space="preserve">
-    <value>Exit message has been detected, execution was interrupted.</value>
-    <comment>Shown when the user sends the exit sequence in dialog mode</comment>
+    <value>Se ha detectado el mensaje de salida, se ha detenido el programa.</value>
   </data>
   <data name="MensajeParametrosDirecto" xml:space="preserve">
-    <value>Divisor: {0}, Base: {1}, Coefficients: {2}.</value>
-    <comment>The parameters are the arguments passed to the -d flag</comment>
+    <value>Divisor: {0}, Base: {1}, Coeficientes: {2}.</value>
   </data>
   <data name="MensajeFinDirecto" xml:space="preserve">
-    <value>The rule was calculated.</value>
-    <comment>Shown at the end of a direct call</comment>
+    <value>Se ha calculado la regla.</value>
   </data>
   <data name="MensajeDialogoExtendido" xml:space="preserve">
-    <value>Type "s" to obtain coefficient rules, type a different letter to obtain rules: </value>
+    <value>Pulse &lt;&lt;s&gt;&gt; para obtener reglas de coeficientes u otra letra para otras reglas: </value>
   </data>
   <data name="MensajeDialogoJson" xml:space="preserve">
-    <value>Type "s" to output the rule as a JSON, if the rule is not going to be parsed type another letter: </value>
+    <value>Pulse &lt;&lt;s&gt;&gt; para que la regla se escriba en un JSON, si la regla no va a ser pasada a un programa, pulse otra tecla: </value>
   </data>
   <data name="MensajeDialogoTodas" xml:space="preserve">
-    <value>Type "s" to output all the rules derived from the original, type a different letter to obtain the minimum rule: </value>
+    <value>Pulse &lt;&lt;s&gt;&gt; para obtener todas las reglas derivadas de la original u otra letra obtener solo la menor: </value>
   </data>
   <data name="MensajeDialogoBase" xml:space="preserve">
-    <value>Base of the rule: </value>
+    <value>Base de la regla: </value>
   </data>
   <data name="ErrorBase" xml:space="preserve">
-    <value>The base must be an integer greater than one.</value>
+    <value>La base debe ser un entero mayor que uno.</value>
   </data>
   <data name="ErrorDivisor" xml:space="preserve">
-    <value>The divisor must be a non-negative integer.
-Keep in mind that numbers divisible by a negative number are divisible to its absolute value.</value>
+    <value>El divisor debe ser un entero no negativo.
+Tenga en cuenta que los números divisibles entre un número negativo son divisibles entre su valor absoluto.</value>
   </data>
   <data name="ErrorBaseCoprima" xml:space="preserve">
-    <value>The base must be a positive integer greater than one and coprime with the base.
-Two numbers are coprime if their greatest common divisor is greater than one.</value>
+    <value>El divisor debe ser un entero positivo mayor que uno y coprimo con la base.
+Dos números son coprimos si su máximo común divisor es mayor que uno.</value>
   </data>
   <data name="MensajeDialogoDivisor" xml:space="preserve">
-    <value>Divisor of the rule: </value>
+    <value>Divisor de la regla: </value>
   </data>
   <data name="MensajeDialogoCoeficientes" xml:space="preserve">
-    <value>Number of coefficients in the rule: </value>
+    <value>Número de coeficientes de la regla: </value>
   </data>
   <data name="ErrorCoeficientes" xml:space="preserve">
-    <value>The number of coefficients must be a positive integer.</value>
+    <value>El número de coeficientes debe ser un entero positivo.</value>
   </data>
   <data name="MensajeInicioDialogo" xml:space="preserve">
-    <value>You will be asked to input data throught the console, write {0} to interrupt the program.</value>
-    <comment>Shown at the beginning of dialog mode</comment>
+    <value>Se pedirá que introduzca los datos por consola, escriba {0} para interrumpir el programa.</value>
   </data>
   <data name="MensajeDialogoRegla" xml:space="preserve">
-    <value>Name of the rule, can be left empty: </value>
+    <value>Nombre de la regla, puede dejarse vacío: </value>
   </data>
   <data name="MensajeDialogoResultado" xml:space="preserve">
-    <value>Obtained the following rule: </value>
+    <value>Regla obtenida: </value>
   </data>
   <data name="MensajeDialogoRepetir" xml:space="preserve">
-    <value>Type "s" to calculate another rule: </value>
+    <value>Pulse &lt;&lt;s&gt;&gt; para calcular otra regla: </value>
   </data>
   <data name="MensajeDialogoInterrumpido" xml:space="preserve">
-    <value>The program was interrupted.</value>
+    <value>Se ha interrumpido el programa.</value>
+  </data>
+  <data name="SentenceBadFormatConversionErrorOption" xml:space="preserve">
+    <value>Opción '{0}' está definida en un formato erróneo.</value>
+  </data>
+  <data name="SentenceBadFormatConversionErrorValue" xml:space="preserve">
+    <value>Valor separado de una opción está definido en un formato erróneo.</value>
+  </data>
+  <data name="SentenceBadFormatTokenError" xml:space="preserve">
+    <value>Elemento '{0}' no se reconoce.</value>
+  </data>
+  <data name="SentenceBadVerbSelectedError" xml:space="preserve">
+    <value>Verbo '{0}' no se reconoce. (Este error no debería aparecer).</value>
+  </data>
+  <data name="SentenceErrorsHeadingText" xml:space="preserve">
+    <value>ERROR(ES):</value>
+  </data>
+  <data name="SentenceHelpCommandTextOption" xml:space="preserve">
+    <value>Mostrar esta pantalla de ayuda.</value>
+  </data>
+  <data name="SentenceHelpCommandTextVerb" xml:space="preserve">
+    <value>Mostrar más ayuda de un comando en concreto.</value>
+  </data>
+  <data name="SentenceMissingRequiredOptionError" xml:space="preserve">
+    <value>Opción obligatoria '{0}' no proporcionada.</value>
+  </data>
+  <data name="SentenceMissingRequiredValueError" xml:space="preserve">
+    <value>Un valor no vinculado a un nombre de opción no se ha encontrado.</value>
+  </data>
+  <data name="SentenceMissingValueOptionError" xml:space="preserve">
+    <value>Opción '{0}' no tiene valor.</value>
+  </data>
+  <data name="SentenceMutuallyExclusiveSetErrors" xml:space="preserve">
+    <value>Opciones: {0} no son compatibles con {1}.</value>
+  </data>
+  <data name="SentenceNoVerbSelectedError" xml:space="preserve">
+    <value>Ningún verbo seleccionado. (Este error no debería aparecer).</value>
+  </data>
+  <data name="SentenceRepeatedOptionError" xml:space="preserve">
+    <value>Opción '{0}' definida varias veces.</value>
+  </data>
+  <data name="SentenceRequiredWord" xml:space="preserve">
+    <value>Obligatorio.</value>
+  </data>
+  <data name="SentenceSequenceOutOfRangeErrorOption" xml:space="preserve">
+    <value>Una opción de secuencia '{0}' se ha definido con menos elementos de los obligatorios.</value>
+  </data>
+  <data name="SentenceSequenceOutOfRangeErrorValue" xml:space="preserve">
+    <value>Valor de una secuencia no vinculada a un nombre de opción tiene menos elementos de los obligatorios.</value>
+  </data>
+  <data name="SentenceSetValueExceptionError" xml:space="preserve">
+    <value>Error cambiando valor para la opción '{0}': {1}</value>
+  </data>
+  <data name="SentenceUnknownOptionError" xml:space="preserve">
+    <value>No se reconoce la opción '{0}'.</value>
+  </data>
+  <data name="SentenceUsageHeadingText" xml:space="preserve">
+    <value>USO:</value>
+  </data>
+  <data name="SentenceVersionCommandText" xml:space="preserve">
+    <value>Mostrar información de versión.</value>
+  </data>
+  <data name="OptionGroupWord" xml:space="preserve">
+    <value>opción</value>
   </data>
 </root>

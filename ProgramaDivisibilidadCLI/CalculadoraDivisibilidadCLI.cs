@@ -3,9 +3,10 @@ using System.Text;
 using Listas;
 using Operaciones;
 using System.Text.Json;
-using System.Globalization;
-using ProgramaDivisibilidadCLI;
 using System.Diagnostics.CodeAnalysis;
+using CommandLine.Text;
+using ProgramaDivisibilidadCLI.Recursos;
+using ReadText.LocalizedDemo;
 
 namespace ProgramaDivisibilidad {
 
@@ -20,7 +21,7 @@ namespace ProgramaDivisibilidad {
 		private static bool salir = false; //Usado para saber si el usuario ha solicitado terminar la ejecución
 		private static int salida = SALIDA_CORRECTA; //Salida del programa
 		[NotNull] //Para que no me den los warnings
-		private static Flags? flags;
+		private static Flags? flags = null;
 		private static readonly JsonSerializerOptions opcionesJson = new() { WriteIndented=true };
 
 		/// <summary>
@@ -39,31 +40,55 @@ namespace ProgramaDivisibilidad {
 		public static int Main(string[] args) {
 			//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
 			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
-			var resultado = Parser.Default.ParseArguments<Flags>(args) //Parsea los argumentos
+			SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
+			var parser = new Parser(with => with.HelpWriter = null);
+			var resultado = parser.ParseArguments<Flags>(args); //Parsea los argumentos
+				resultado
 				.WithParsed(options => { flags = options;
 					//Console.Error.WriteLine(options.Dump());
 				})
 				.WithNotParsed(errors => { salida = SALIDA_ENTRADA_MALFORMADA;
-					//Console.Error.WriteLine(errors);
+					//Console.Error.WriteLine(resultado);
+					MostrarAyuda(resultado, errors);
 				});
-			if (salida == SALIDA_ENTRADA_MALFORMADA || flags is null) {
-				return SALIDA_ENTRADA_MALFORMADA;
-			}
-			if (flags.Nombre == "-") {
-				flags.Nombre = string.Empty;
-			}
-			if (flags.Ayuda) {
-				EscribirArchivo("Ayuda.txt");
-				salida = SALIDA_CORRECTA;
-			} else if (flags.AyudaCorta) {
-				EscribirArchivo("AyudaCorta.txt");
-				salida = SALIDA_CORRECTA;
-			} else if (flags.Directo.Count() > 1) { //Si se ha activado el modo directo
-				IntentarDirecto();
-			} else {
-				IniciarAplicacion();
+			if (salida != SALIDA_ENTRADA_MALFORMADA) {
+				GestionarFlags();
 			}
 			return salida;
+		}
+
+		private static void GestionarFlags() {
+			if (flags is null) {
+				salida = SALIDA_ENTRADA_MALFORMADA;
+			} else {
+				if (flags.Nombre == "-") { // El valor por defecto es - para que se vea en la pantalla de ayuda
+					flags.Nombre = string.Empty;
+				}
+				if (flags.Ayuda) {
+					EscribirArchivo(@"Recursos\Ayuda.txt");
+					salida = SALIDA_CORRECTA;
+				} else if (flags.AyudaCorta) {
+					EscribirArchivo(@"Recursos\AyudaCorta.txt");
+					salida = SALIDA_CORRECTA;
+				} else { 
+					if (flags.Directo.Count() > 1) { //Si se ha activado el modo directo
+						IntentarDirecto();
+					} else {
+						IniciarAplicacion();
+					}
+				}
+			}
+		}
+
+		private static void MostrarAyuda<T>(ParserResult<T> resultado, IEnumerable<Error> errores) {
+			var textoAyuda = HelpText.AutoBuild(resultado, ayuda => {
+				ayuda.AdditionalNewLineAfterOption = true;
+				ayuda.Heading = $"CalcDiv {typeof(CalculadoraDivisibilidadCLI).Assembly.GetName().Version}";
+				ayuda.Copyright = string.Empty;
+				ayuda.AddEnumValuesToHelpText = true;
+				return HelpText.DefaultParsingErrorsHandler(resultado, ayuda);
+			}, ejemplo => ejemplo);
+			Console.Error.WriteLine(textoAyuda);
 		}
 
 		/// <summary>
@@ -75,10 +100,14 @@ namespace ProgramaDivisibilidad {
 		private static void IntentarDirecto() { //Intenta dar las reglas de forma directa, cambia salida para mostrar el error
 			List<long> datos = flags.Directo.ToList();
 			if (datos.Count == 2) datos.Add(1);
+			salida = SALIDA_CORRECTA;
 			(bool exitoExtendido, string mensajeRegla, int informacion) reglas = (false,"",-1);
 			if (flags.Extendido) {
 				reglas = Calculos.ReglaDivisibilidadExtendida(datos[0], datos[1]);
 				Console.WriteLine(reglas.mensajeRegla);
+				if (!reglas.exitoExtendido) {
+					salida = SALIDA_FRACASO_EXPANDIDA;
+				}
 			}
 			if (!reglas.exitoExtendido && Calculos.Mcd(datos[0], datos[1]) == 1) { //Si falla al obtener reglas alternativas o no se ha buscado, y base y divisor son coprimos
 				Console.Error.WriteLine(string.Format(TextoResource.MensajeParametrosDirecto, datos[0], datos[1], datos[2]));
@@ -242,7 +271,7 @@ namespace ProgramaDivisibilidad {
 			Console.Error.WriteLine();
 		}
 
-		private static void LanzarExcepcionSiSalida(string linea) {
+		private static void LanzarExcepcionSiSalida(string? linea) {
 			if (linea == SALIDA) throw new Exception(TextoResource.MensajeSalidaVoluntaria);
 		}
 

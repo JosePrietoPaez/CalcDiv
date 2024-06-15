@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using ProgramaDivisibilidadCLI;
+using ProgramaDivisibilidadCLI.Recursos;
 using System;
 using System.Collections;
 

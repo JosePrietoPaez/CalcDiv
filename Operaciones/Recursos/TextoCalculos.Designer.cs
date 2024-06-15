@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Operaciones {
+namespace Operaciones.Recursos {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Operaciones {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Operaciones.TextoCalculos", typeof(TextoCalculos).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Operaciones.Recursos.TextoCalculos", typeof(TextoCalculos).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

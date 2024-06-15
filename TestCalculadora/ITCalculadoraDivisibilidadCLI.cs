@@ -56,7 +56,7 @@ namespace TestCalculadora {
 
 			Assert.Multiple(() => {
 				Assert.That(_lectorSalida.ToString()?[0..^Environment.NewLine.Length], // Hay un \r\n de más
-					Is.EqualTo(File.ReadAllText("Ayuda.txt")));
+					Is.EqualTo(File.ReadAllText(@"Recursos\Ayuda.txt")));
 				Assert.That(salida, Is.Zero);
 			});
 		}
@@ -68,7 +68,7 @@ namespace TestCalculadora {
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
 
 			Assert.Multiple(() => {
-				Assert.That(_lectorSalida.ToString()?[0..^Environment.NewLine.Length], Is.EqualTo(File.ReadAllText("AyudaCorta.txt"))); // Hay un \r\n de más
+				Assert.That(_lectorSalida.ToString()?[0..^Environment.NewLine.Length], Is.EqualTo(File.ReadAllText(@"Recursos\AyudaCorta.txt"))); // Hay un \r\n de más
 				Assert.That(salida, Is.Zero);
 			});
 		}

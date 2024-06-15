@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <NeutralLanguage>es-ES</NeutralLanguage>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="TextoCalculos.Designer.cs">
+    <Compile Update="Recursos\TextoCalculos.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>TextoCalculos.resx</DependentUpon>
@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="TextoCalculos.resx">
+    <EmbeddedResource Update="Recursos\TextoCalculos.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TextoCalculos.Designer.cs</LastGenOutput>
     </EmbeddedResource>

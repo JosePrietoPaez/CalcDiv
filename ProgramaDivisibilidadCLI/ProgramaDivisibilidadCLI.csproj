@@ -7,14 +7,18 @@
     <Nullable>enable</Nullable>
     <StartupObject>ProgramaDivisibilidad.CalculadoraDivisibilidadCLI</StartupObject>
     <AssemblyName>CalcDivCLI</AssemblyName>
-    <AssemblyVersion>0.2.0.0</AssemblyVersion>
-    <NeutralLanguage>es-ES</NeutralLanguage>
-    <Version>0.1.0</Version>
+    <AssemblyVersion>0.2.1.0</AssemblyVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Version></Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="jmpp.expanded-lists" Version="0.1.0" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.10.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="ObjectDumper.NET" Version="4.2.7" />
   </ItemGroup>
 
@@ -23,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="TextoResource.Designer.cs">
+    <Compile Update="Recursos\TextoResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>TextoResource.resx</DependentUpon>
@@ -31,20 +35,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="TextoResource.es.resx">
+    <EmbeddedResource Update="Recursos\TextoResource.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="TextoResource.resx">
+    <EmbeddedResource Update="Recursos\TextoResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TextoResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Ayuda.txt">
+    <None Update="Recursos\Ayuda.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="AyudaCorta.txt">
+    <None Update="Recursos\AyudaCorta.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

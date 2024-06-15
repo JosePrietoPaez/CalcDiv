@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProgramaDivisibilidadCLI {
+namespace ProgramaDivisibilidadCLI.Recursos {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ProgramaDivisibilidadCLI {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProgramaDivisibilidadCLI.TextoResource", typeof(TextoResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProgramaDivisibilidadCLI.Recursos.TextoResource", typeof(TextoResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -311,6 +311,195 @@ namespace ProgramaDivisibilidadCLI {
         public static string MensajeSalidaVoluntaria {
             get {
                 return ResourceManager.GetString("MensajeSalidaVoluntaria", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a option.
+        /// </summary>
+        public static string OptionGroupWord {
+            get {
+                return ResourceManager.GetString("OptionGroupWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Option &apos;{0}&apos; is defined in the wrong format..
+        /// </summary>
+        public static string SentenceBadFormatConversionErrorOption {
+            get {
+                return ResourceManager.GetString("SentenceBadFormatConversionErrorOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a A value not bound to option name is defined with a bad format..
+        /// </summary>
+        public static string SentenceBadFormatConversionErrorValue {
+            get {
+                return ResourceManager.GetString("SentenceBadFormatConversionErrorValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Token &apos;{0}&apos; is not recognized..
+        /// </summary>
+        public static string SentenceBadFormatTokenError {
+            get {
+                return ResourceManager.GetString("SentenceBadFormatTokenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Verb &apos;{0}&apos; is not recognized..
+        /// </summary>
+        public static string SentenceBadVerbSelectedError {
+            get {
+                return ResourceManager.GetString("SentenceBadVerbSelectedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a ERROR(S):.
+        /// </summary>
+        public static string SentenceErrorsHeadingText {
+            get {
+                return ResourceManager.GetString("SentenceErrorsHeadingText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Display this help screen..
+        /// </summary>
+        public static string SentenceHelpCommandTextOption {
+            get {
+                return ResourceManager.GetString("SentenceHelpCommandTextOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Display more information on a specific command..
+        /// </summary>
+        public static string SentenceHelpCommandTextVerb {
+            get {
+                return ResourceManager.GetString("SentenceHelpCommandTextVerb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Required option &apos;{0}&apos; is missing..
+        /// </summary>
+        public static string SentenceMissingRequiredOptionError {
+            get {
+                return ResourceManager.GetString("SentenceMissingRequiredOptionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a A required value not bound to option name is missing..
+        /// </summary>
+        public static string SentenceMissingRequiredValueError {
+            get {
+                return ResourceManager.GetString("SentenceMissingRequiredValueError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Option &apos;{0}&apos; has no value..
+        /// </summary>
+        public static string SentenceMissingValueOptionError {
+            get {
+                return ResourceManager.GetString("SentenceMissingValueOptionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Options: {0} are not compatible with {1}..
+        /// </summary>
+        public static string SentenceMutuallyExclusiveSetErrors {
+            get {
+                return ResourceManager.GetString("SentenceMutuallyExclusiveSetErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No verb selected..
+        /// </summary>
+        public static string SentenceNoVerbSelectedError {
+            get {
+                return ResourceManager.GetString("SentenceNoVerbSelectedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Option &apos;{0}&apos; is defined multiple times..
+        /// </summary>
+        public static string SentenceRepeatedOptionError {
+            get {
+                return ResourceManager.GetString("SentenceRepeatedOptionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Required..
+        /// </summary>
+        public static string SentenceRequiredWord {
+            get {
+                return ResourceManager.GetString("SentenceRequiredWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a A sequence option &apos;{0}&apos; is defined with fewer or more items than required..
+        /// </summary>
+        public static string SentenceSequenceOutOfRangeErrorOption {
+            get {
+                return ResourceManager.GetString("SentenceSequenceOutOfRangeErrorOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a A sequence value not bound to option name is defined with fewer items than required..
+        /// </summary>
+        public static string SentenceSequenceOutOfRangeErrorValue {
+            get {
+                return ResourceManager.GetString("SentenceSequenceOutOfRangeErrorValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error setting value to option &apos;{0}&apos;: {1}.
+        /// </summary>
+        public static string SentenceSetValueExceptionError {
+            get {
+                return ResourceManager.GetString("SentenceSetValueExceptionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Option &apos;{0}&apos; is unknown..
+        /// </summary>
+        public static string SentenceUnknownOptionError {
+            get {
+                return ResourceManager.GetString("SentenceUnknownOptionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a USAGE:.
+        /// </summary>
+        public static string SentenceUsageHeadingText {
+            get {
+                return ResourceManager.GetString("SentenceUsageHeadingText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Display version information..
+        /// </summary>
+        public static string SentenceVersionCommandText {
+            get {
+                return ResourceManager.GetString("SentenceVersionCommandText", resourceCulture);
             }
         }
     }
