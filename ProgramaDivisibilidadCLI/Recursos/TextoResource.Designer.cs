@@ -61,6 +61,40 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a CalcDivCLI Help:
+        ///
+        ///- Usage: CalcDivCLI.exe [-&lt;short option name&gt;|--&lt;long option name&gt; [&lt;mandatory arguments ...&gt; [&lt;optional arguments&gt;...]]
+        ///
+        ///Example: *CalcDiv.exe --json --direct-output 7 10 --named-rule Nombre*
+        ///Equivalent to: *CalcDiv.exe -jd 7 10 -n Nombre*
+        ///Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and outputs it in JSON.
+        ///
+        ///- Program options, can be concatenated after a dash: *CalcDiv.exe -ajd 3 4 1* o *CalcDiv.exe -H*, use --help for further info.
+        ///
+        ///-H: shows this  [resto de la cadena truncado]&quot;;.
+        /// </summary>
+        public static string Ayuda {
+            get {
+                return ResourceManager.GetString("Ayuda", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a - Usage: CalcDivCLI.exe [-&amp;lt;short option name&amp;gt;|--&amp;lt;long option name&amp;gt; [&amp;lt;mandatory arguments ...&amp;gt; [&amp;lt;optional arguments&amp;gt;...]]
+        ///
+        ///Example: *CalcDiv.exe --json --direct-output 7 10 --named-rule Nombre*
+        ///Equivalent to: *CalcDiv.exe -jd 7 10 -n Nombre*
+        ///Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and outputs it in JSON.
+        ///
+        ///Use --help for more information about options and arguments or -H for more information about this application..
+        /// </summary>
+        public static string AyudaCorta {
+            get {
+                return ResourceManager.GetString("AyudaCorta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The base must be an integer greater than one..
         /// </summary>
         public static string ErrorBase {

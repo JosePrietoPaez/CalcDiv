@@ -270,4 +270,57 @@ Two numbers are coprime if their greatest common divisor is greater than one.</v
   <data name="OptionGroupWord" xml:space="preserve">
     <value>option</value>
   </data>
+  <data name="Ayuda" xml:space="preserve">
+    <value>CalcDivCLI Help:
+
+- Usage: CalcDivCLI.exe [-&lt;short option name&gt;|--&lt;long option name&gt; [&lt;mandatory arguments ...&gt; [&lt;optional arguments&gt;...]]
+
+Example: *CalcDiv.exe --json --direct-output 7 10 --named-rule Nombre*
+Equivalent to: *CalcDiv.exe -jd 7 10 -n Nombre*
+Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and outputs it in JSON.
+
+- Program options, can be concatenated after a dash: *CalcDiv.exe -ajd 3 4 1* o *CalcDiv.exe -H*, use --help for further info.
+
+-H: shows this message, ignores other options.
+-h: shows a summary of this message, ignores other options.
+-d: allows for the arguments to be passed in the command line instead of keyboard input. 2 or 3 arguments are passed: the divisor, base and optionally the rule length.
+-a: writes all possible rules using the given rule length, the coefficients' absolute value will be lower than the divisor.
+-n: writes the given name before every element or is included in the JSON output.
+-j: outputs the rule in JSON, unless -x is used.
+-x: outputs a different rule, also explains how to apply said rule. Possible cases are similar to the rules of 0, 1, 2, 3 and 11.
+
+All arguments and options must be valid.
+Options with arguments must not be followed by another option in the same combination, for example *CalcDivCLI.exe -na Nombre* is invalid, but the combination -an Nombre is valid.
+
+This program calculates divisibility rules of the given integers for any integer base larger than one.
+Rules are usually expressed as a list of coefficients, these are multiplied to the digits in the same position of a number, these products are added together and this sum is added to the rest of the digits.
+This rule is applied to the resulting number until we can see that it is a multiple of the divisor.
+The length of a rule can be given as an argument if -d is used without -x.
+
+To better understand we will apply the rule [-2, -3], obtained from the divisor 7 and base 10 on the number 1234.
+
+-First, we multiply 3 by -3 and 4 by -2, we get -6 and -12.
+-After that, we add these products to the rest of the number, in this case 12. The result is -6.
+
+Trivially, -6 is not a multiple of 7, therefore 1234 cannot be a multiple of 7.
+If we cannot determine whether the number is a multiple of the divisor, we apply the rule to the number we obtain until we can.
+
+- Output values
+
+0: successful execution.
+1: there were invalid arguments.
+2: there was an error parsing the options or arguments.
+3: the user quit during dialog.
+4: could not find an alternative rule with -x.
+</value>
+  </data>
+  <data name="AyudaCorta" xml:space="preserve">
+    <value>- Usage: CalcDivCLI.exe [-&amp;lt;short option name&amp;gt;|--&amp;lt;long option name&amp;gt; [&amp;lt;mandatory arguments ...&amp;gt; [&amp;lt;optional arguments&amp;gt;...]]
+
+Example: *CalcDiv.exe --json --direct-output 7 10 --named-rule Nombre*
+Equivalent to: *CalcDiv.exe -jd 7 10 -n Nombre*
+Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and outputs it in JSON.
+
+Use --help for more information about options and arguments or -H for more information about this application.</value>
+  </data>
 </root>

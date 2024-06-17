@@ -65,10 +65,10 @@ namespace ProgramaDivisibilidad {
 					flags.Nombre = string.Empty;
 				}
 				if (flags.Ayuda) {
-					EscribirArchivo(@"Recursos\Ayuda.txt");
+					Console.Error.Write(TextoResource.Ayuda);
 					salida = SALIDA_CORRECTA;
 				} else if (flags.AyudaCorta) {
-					EscribirArchivo(@"Recursos\AyudaCorta.txt");
+					Console.Error.WriteLine(TextoResource.AyudaCorta);
 					salida = SALIDA_CORRECTA;
 				} else { 
 					if (flags.Directo.Count() > 1) { //Si se ha activado el modo directo

@@ -266,4 +266,57 @@ Dos números son coprimos si su máximo común divisor es mayor que uno.</value>
   <data name="OptionGroupWord" xml:space="preserve">
     <value>opción</value>
   </data>
+  <data name="Ayuda" xml:space="preserve">
+    <value>Ayuda de CalcDivCLI:
+
+- Plantilla de uso: CalcDivCLI.exe [-&lt;nombre de opción corto&gt;|--&lt;nombre de opción largo&gt; [&lt;argumentos obligatorios ...&gt; [&lt;argumentos opcionales&gt;...]]
+
+Ejemplo: *CalcDiv.exe --json --direct-output 7 10 --named-rule Nombre*
+Equivalente a: *CalcDiv.exe -jd 7 10 -n Nombre*
+Calcula la regla de 7 en base 10, le da el nombre Nombre y lo escribe en JSON.
+
+- Opciones del programa, se concatenan sin el guion, por ejemplo: *CalcDiv.exe -ajd 3 4 1* o *CalcDiv.exe -H*, use --help para obtener más información.
+
+-H: escribe este mensaje por pantalla, ignora las otras opciones.
+-h: muestra una versión reducida de la ayuda, ignora las otras opciones.
+-d: si se pasan todos los datos se obtiene un resultado sin que la aplicación pida datos.
+-a: se escriben todas las reglas posibles con la cantidad de coeficientes proporcionado, el valor absoluto de los coeficientes será menor que el del divisor.
+-n: escribe el nombre introducido como parámetro antes de cada elemento con su indice.
+-j: escribe la regla como en JSON, a no ser que se use -x.
+-x: cambia la salida a una regla alternativa que no usa coeficientes y explica como usarla. Los casos disponibles son como las reglas de 0, 1, 2, 3 y 11.
+
+Todos los argumentos y opciones deben ser correctos.
+Las opciones con argumentos no pueden ir seguidas de otras opciones en una combinación, por ejemplo: *CalcDiv.exe -na Nombre* sería una llamada inválida, pero la combinación -an Nombre es válida.
+
+Este programa permite calcular reglas de divisibilidad de cualquier número natural positivo en cualquier base natural mayor que 1.
+Las reglas se expresan normalmente como una lista de coeficientes, estos se multiplican por las cifras en la misma posición de un número y son sumados al resto de número al que se aplique.
+La regla se aplica recursivamente hasta poder concluir si el número resultante es múltiplo del divisor.
+El número de coeficientes se puede introducir como argumento si se usa -d, pero no con -x.
+
+Por ejemplo, para la regla [-2,-3] con el divisor 7 en base 10, la usamos con 1234.
+
+-Primero, multiplicamos 3 por -3 y 4 por -2, obteniendo -6 y -12.
+-Después, le sumamos estos productos al resto del número, en este caso 12. El resultado es -6.
+
+Trivialmente, -6 no es múltiplo de 7, por lo tanto 1234 tampoco lo es.
+Si no es tan fácil ver si el resultado es múltiplo del divisor, se aplica la regla sobre el hasta llegar a una conclusión.
+
+- Mensajes de salida
+
+0: el programa se ha ejecutado de forma correcta.
+1: no todos los datos introducidos fueron correctos.
+2: se han introducido argumentos de forma errónea.
+3: el usuario ha cerrado el programa de forma voluntaria.
+4: se pidió una regla alternativa con -x, pero no se pudo encontrar.
+</value>
+  </data>
+  <data name="AyudaCorta" xml:space="preserve">
+    <value>- Plantilla de uso: CalcDivCLI.exe [-&lt;nombre de opción corto&gt;|--&lt;nombre de opción largo&gt; [&lt;argumentos obligatorios ...&gt; [&lt;argumentos opcionales&gt;...]]
+
+Ejemplo: *CalcDiv.exe --json --direct-output 7 10 --named-rule Nombre*
+Equivalente a: *CalcDiv.exe -jd 7 10 -n Nombre*
+Calcula la regla de 7 en base 10, le da el nombre Nombre y lo escribe en JSON.
+
+Use --help para ver información de las opciones y argumentos o -H para ver más información sobre la aplicación.</value>
+  </data>
 </root>

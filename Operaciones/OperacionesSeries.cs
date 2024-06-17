@@ -1,7 +1,4 @@
 ﻿using Listas;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Operaciones
 {

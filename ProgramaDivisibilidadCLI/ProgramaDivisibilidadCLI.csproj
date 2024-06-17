@@ -7,9 +7,20 @@
     <Nullable>enable</Nullable>
     <StartupObject>ProgramaDivisibilidad.CalculadoraDivisibilidadCLI</StartupObject>
     <AssemblyName>CalcDivCLI</AssemblyName>
-    <AssemblyVersion>0.2.1.0</AssemblyVersion>
+    <AssemblyVersion>0.2.2.0</AssemblyVersion>
     <NeutralLanguage>en</NeutralLanguage>
-    <Version></Version>
+	<PublishSingleFile>true</PublishSingleFile>
+    <Version>0.2.2.0</Version>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugSymbols>False</DebugSymbols>
+		<DebugType>None</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -42,15 +53,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TextoResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Recursos\Ayuda.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Recursos\AyudaCorta.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
