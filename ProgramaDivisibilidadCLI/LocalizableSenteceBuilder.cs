@@ -3,7 +3,7 @@ using CommandLine.Text;
 using ProgramaDivisibilidadCLI.Recursos;
 
 namespace ReadText.LocalizedDemo {
-	public class LocalizableSentenceBuilder : SentenceBuilder {
+	internal class LocalizableSentenceBuilder : SentenceBuilder {
 		public override Func<string> RequiredWord {
 			get { return () => TextoResource.SentenceRequiredWord; }
 		}

@@ -142,7 +142,7 @@
     <value>Le da un nombre a las reglas de coeficientes, incluido en la salida.</value>
   </data>
   <data name="HelpSaltar" xml:space="preserve">
-    <value>Si no se usan otros flags, evita que el modo diálogo pregunte si quiere activar los flags.</value>
+    <value>Si no se usan otras opciones, salta el dialogo relacionado con el resto de opciones, no afecta a la salida.</value>
   </data>
   <data name="HelpTodos" xml:space="preserve">
     <value>Devuelve todas las reglas con valores absolutos menores al divisor elegido.</value>

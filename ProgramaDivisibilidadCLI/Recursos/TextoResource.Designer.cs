@@ -205,7 +205,7 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Used to prevent dialog mode from explicitly asking for binary flags, does not affect output..
+        ///   Busca una cadena traducida similar a Without any other options, skips dialogue related to other options, does not affect output..
         /// </summary>
         public static string HelpSaltar {
             get {

@@ -103,7 +103,7 @@ namespace ProgramaDivisibilidad {
 			if (datos.Count == 2) datos.Add(1);
 			salida = SALIDA_CORRECTA;
 			(bool exitoExtendido, string mensajeRegla, int informacion) reglas = (false,"",-1);
-			if (flags.Extendido) {
+			if (flags.TipoExtra) {
 				reglas = Calculos.ReglaDivisibilidadExtendida(datos[0], datos[1]);
 				Console.WriteLine(reglas.mensajeRegla);
 				if (!reglas.exitoExtendido) {
@@ -158,15 +158,15 @@ namespace ProgramaDivisibilidad {
 					//Si no tiene flags las pedirá durante la ejecución
 					if (sinFlags) {
 						//Le una tecla de entrada o lanza excepción si es la salida
-						flags.Extendido = !ObtenerDeUsuario(TextoResource.MensajeDialogoExtendido, esS);
+						flags.TipoExtra = !ObtenerDeUsuario(TextoResource.MensajeDialogoExtendido, esS);
 
-						if (!flags.Extendido) {
+						if (!flags.TipoExtra) {
 							flags.JSON = ObtenerDeUsuario(TextoResource.MensajeDialogoJson, esS);
 						}
 						
 					}
 
-					if (flags.Extendido) {
+					if (flags.TipoExtra) {
 
 						//Pregunta el dato en bucle hasta que sea correcto a lanza excepción si es el mensaje de salida
 						ObtenerDeUsuario(out divisor, 0
@@ -218,7 +218,7 @@ namespace ProgramaDivisibilidad {
 		}
 
 		private static bool SinFlags() {
-			return !(flags.Todos || flags.SaltarPreguntas || flags.JSON || flags.Extendido || flags.Nombre != string.Empty || flags.Directo.Any());
+			return !(flags.Todos || flags.DialogoSencillo || flags.JSON || flags.TipoExtra || flags.Nombre != string.Empty || flags.Directo.Any());
 		}
 
 		private static bool ObtenerDeUsuario(string mensaje, Func<char,bool> comparador) {

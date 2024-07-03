@@ -142,7 +142,7 @@
     <value>Gives the coefficient rule a name, which is included in its output.</value>
   </data>
   <data name="HelpSaltar" xml:space="preserve">
-    <value>Used to prevent dialog mode from explicitly asking for binary flags, does not affect output.</value>
+    <value>Without any other options, skips dialogue related to other options, does not affect output.</value>
   </data>
   <data name="HelpTodos" xml:space="preserve">
     <value>Outputs all coefficient rules with elements whose absolute value is less than the divisor.</value>
