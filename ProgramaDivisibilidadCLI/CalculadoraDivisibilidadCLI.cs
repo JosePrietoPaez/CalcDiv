@@ -13,6 +13,7 @@ namespace ProgramaDivisibilidad {
 	/// <summary>
 	/// Esta clase contiene el método principal de la aplicación
 	/// </summary>
+	[RequiresUnreferencedCode("Calls System.Text.Json.JsonSerializer.Serialize<TValue>(TValue, JsonSerializerOptions)")]
 	public static class CalculadoraDivisibilidadCLI {
 		
 		//Inicialización de variables privadas

@@ -1,8 +1,5 @@
 ﻿using Listas;
-using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using Operaciones;
-using System;
 
 namespace TestCalculadora {
 	[TestFixture]

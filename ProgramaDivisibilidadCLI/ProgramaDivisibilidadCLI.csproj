@@ -9,9 +9,11 @@
     <AssemblyName>CalcDivCLI</AssemblyName>
     <AssemblyVersion>0.2.2.0</AssemblyVersion>
     <NeutralLanguage>en</NeutralLanguage>
-	<PublishSingleFile>true</PublishSingleFile>
+    <PublishSingleFile>true</PublishSingleFile>
     <Version>0.2.2.0</Version>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PublishTrimmed>True</PublishTrimmed>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,8 +21,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DebugSymbols>False</DebugSymbols>
-		<DebugType>None</DebugType>
+        <DebugSymbols>False</DebugSymbols>
+        <DebugType>None</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,9 +1,5 @@
 ﻿using Listas;
-using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using Operaciones;
-using System;
-using System.Text.RegularExpressions;
 
 namespace TestCalculadora
 {
