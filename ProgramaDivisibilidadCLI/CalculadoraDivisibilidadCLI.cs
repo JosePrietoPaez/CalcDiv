@@ -6,8 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using CommandLine.Text;
 using ProgramaDivisibilidadCLI.Recursos;
 using ReadText.LocalizedDemo;
-using System.Text.RegularExpressions;
-using System.Collections.Generic;
 
 namespace ProgramaDivisibilidad {
 
@@ -92,20 +90,6 @@ namespace ProgramaDivisibilidad {
 		}
 
 		/// <summary>
-		/// Calcula las reglas de coeficientes especificadas en flags con los argumentos
-		/// </summary>
-		/// <remarks>
-		/// Escribe por consola lo que sea necesario
-		/// </remarks>
-		private static void CalcularReglaCoeficientes(long divisor, long @base, int coeficientes) {
-			string salidaConsola = ObtenerReglas(divisor, @base, coeficientes);
-			Console.Error.WriteLine(TextoResource.MensajeFinDirecto);
-			Console.Write(salidaConsola);
-			salida = SALIDA_CORRECTA;
-			Console.Error.WriteLine();
-		}
-
-		/// <summary>
 		/// Lógica de la aplicación en modo diálogo.
 		/// </summary>
 		/// <remarks>
@@ -156,7 +140,7 @@ namespace ProgramaDivisibilidad {
 							, TextoResource.ErrorDivisor
 							, TextoResource.MensajeDialogoDivisor);
 
-						ObtenerDeUsuarioCoprimo(out @base, 2, divisor
+						ObtenerDeUsuario(out @base, 2
 							, TextoResource.ErrorBase
 							, TextoResource.MensajeDialogoBase);
 
@@ -170,8 +154,7 @@ namespace ProgramaDivisibilidad {
 							ObtenerDeUsuario(out nombre, TextoResource.MensajeDialogoRegla);
 						}
 
-						Console.Error.WriteLine(TextoResource.MensajeDialogoResultado);
-						Console.Write(ObtenerReglas(divisor, @base, coeficientes));
+						ReferirAExtraYCalcularRegla(divisor,@base,coeficientes);
 						Console.Error.WriteLine();
 
 					}
@@ -245,30 +228,6 @@ namespace ProgramaDivisibilidad {
 			if (linea == SALIDA) throw new Exception(TextoResource.MensajeSalidaVoluntaria);
 		}
 
-		private static string ObtenerReglas(long divisor, long @base, int coeficientes) {
-			string resultado;
-			if (flags.Todos) { //Si se piden las 2^coeficientes reglas
-				ListSerie<ListSerie<long>> series = new();
-				Calculos.ReglasDivisibilidad(series, divisor, coeficientes,@base);
-				if (flags.Nombre != "") {
-					foreach (var serie in series) {
-						serie.Nombre = flags.Nombre;
-					}
-				}
-				resultado = SerieRectangularString(series);
-			} else {
-				ListSerie<long> serie = new(flags.Nombre);
-				Calculos.ReglaDivisibilidadOptima(serie, divisor, coeficientes, @base);
-				resultado = StringSerieConFlags(serie);
-			}
-			return resultado;
-		}
-
-		private static void EscribirArchivo(string ruta) {
-			string texto = File.ReadAllText(ruta);
-			Console.WriteLine(texto);
-		}
-
 		private static string SerieRectangularString(ListSerie<ListSerie<long>> serie) {
 			if (flags.JSON) {
 				return Serializar(serie);
@@ -295,6 +254,14 @@ namespace ProgramaDivisibilidad {
 			return serie.Nombre != string.Empty ? serie.ToStringCompleto() : serie.ToString()??"";
 		}
 
+		/// <summary>
+		/// Convierte una lista de <see cref="Listas"/> a un string JSON
+		/// </summary>
+		/// <param name="listas"></param>
+		/// <param name="indentacion"></param>
+		/// <returns>
+		/// JSON que representa la lista
+		/// </returns>
 		private static string Serializar(object listas, int indentacion = 0) {
 			string tabulaciones = Tabulaciones(indentacion)
 				, tabulacionesMas = tabulaciones + '\t';

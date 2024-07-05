@@ -283,20 +283,39 @@ namespace TestCalculadora
 			}
 		}
 
+		[TestFixture]
+		public class MinAbsTest {
 
-		[Test(Description = "Devuelve aquel numero que su absoluto sea el menor de ambos valores pasados por consola")]
-		public void MinAbs_valoresAbsolutos_DevuelveElMenor()
-		{
-			// Arrange
-			long un = -11;
-			long dos = 2;
+			[Test(Description = "Devuelve aquel numero que su absoluto sea menor si este es positivo")]
+			public void MinAbs_MenorPositivo_DevuelveElMenor()
+			{
+				// Arrange
+				long un = -11;
+				long dos = 2;
 
-			// Act
-			var result = Calculos.MinAbs(
-				un,
-				dos);
+				// Act
+				var result = Calculos.MinAbs(
+					un,
+					dos);
 
-			Assert.That(result,Is.EqualTo(2));
+				Assert.That(result,Is.EqualTo(dos));
+
+			}
+
+			[Test(Description = "Devuelve aquel numero que su absoluto sea menor si este es negativo")]
+			public void MinAbs_MenorNegativo_DevuelveElMenor() {
+				// Arrange
+				long un = -11;
+				long dos = 12;
+
+				// Act
+				var result = Calculos.MinAbs(
+					un,
+					dos);
+
+				Assert.That(result, Is.EqualTo(un));
+
+			}
 
 		}
 

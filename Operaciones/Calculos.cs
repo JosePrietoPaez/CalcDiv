@@ -199,7 +199,9 @@ namespace Operaciones
 		/// Devuelve el mínimo de los absolutos entre <c>primero</c> y <c>segundo</c>.
 		/// </summary>
 		public static long MinAbs(long primero, long segundo) {
-			return Math.Min(Math.Abs(primero), Math.Abs(segundo));
+			if (Math.Min(Math.Abs(primero), Math.Abs(segundo)) == Math.Abs(primero))
+				return primero;
+			return segundo;
 		}
 
 		/// <summary>

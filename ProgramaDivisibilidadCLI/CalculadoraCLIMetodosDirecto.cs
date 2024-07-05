@@ -1,4 +1,5 @@
-﻿using Operaciones;
+﻿using Listas;
+using Operaciones;
 using ProgramaDivisibilidadCLI.Recursos;
 
 namespace ProgramaDivisibilidad {
@@ -27,15 +28,15 @@ namespace ProgramaDivisibilidad {
 				CalcularReglaCoeficientes(flags.Divisor, flags.Base, flags.Coeficientes);
 			} else if (mcd != 1) { //Si el divisor y la base no son coprimos
 				Console.Error.WriteLine(string.Format(TextoResource.MensajeParametrosDirecto, flags.Divisor, flags.Base, flags.Coeficientes));
-				(CasosDivisibilidad caso, int) tipoRegla = Calculos.CasoEspecialRegla(flags.Divisor, flags.Base); // Para no tener que comprobarlos por separado
-				ReferirAExtraYCalcularRegla(tipoRegla.caso, flags.Divisor, flags.Base, flags.Coeficientes);
+				ReferirAExtraYCalcularRegla(flags.Divisor, flags.Base, flags.Coeficientes);
 			} else { //Si se ha obtenido una regla alternativa
 				salida = SALIDA_CORRECTA;
 			}
 		}
 
-		private static void ReferirAExtraYCalcularRegla(CasosDivisibilidad caso, long divisor, long @base, int coeficientes) {
+		private static void ReferirAExtraYCalcularRegla(long divisor, long @base, int coeficientes) {
 			string comando = $"-xd {divisor} {@base}";
+			CasosDivisibilidad caso = Calculos.CasoEspecialRegla(divisor, @base).caso; // Para no tener que comprobarlos por separado
 			if (flags.TipoExtra)
 				switch (caso) {
 					case CasosDivisibilidad.USAR_NORMAL:
@@ -65,6 +66,39 @@ namespace ProgramaDivisibilidad {
 						Console.Error.WriteLine(TextoResource.DirectoReferirExtendidoErrorInesperado + comando);
 						break;
 				}
+		}
+
+		/// <summary>
+		/// Calcula las reglas de coeficientes especificadas en flags con los argumentos
+		/// </summary>
+		/// <remarks>
+		/// Escribe por consola lo que sea necesario
+		/// </remarks>
+		private static void CalcularReglaCoeficientes(long divisor, long @base, int coeficientes) {
+			string salidaConsola = ObtenerReglas(divisor, @base, coeficientes);
+			Console.Error.WriteLine(TextoResource.MensajeFinDirecto);
+			Console.Write(salidaConsola);
+			salida = SALIDA_CORRECTA;
+			Console.Error.WriteLine();
+		}
+
+		private static string ObtenerReglas(long divisor, long @base, int coeficientes) {
+			string resultado;
+			if (flags.Todos) { //Si se piden las 2^coeficientes reglas
+				ListSerie<ListSerie<long>> series = new();
+				Calculos.ReglasDivisibilidad(series, divisor, coeficientes, @base);
+				if (flags.Nombre != "") {
+					foreach (var serie in series) {
+						serie.Nombre = flags.Nombre;
+					}
+				}
+				resultado = SerieRectangularString(series);
+			} else {
+				ListSerie<long> serie = new(flags.Nombre);
+				Calculos.ReglaDivisibilidadOptima(serie, divisor, coeficientes, @base);
+				resultado = StringSerieConFlags(serie);
+			}
+			return resultado;
 		}
 	}
 }
