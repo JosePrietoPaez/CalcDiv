@@ -95,6 +95,42 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Cannot calculate this rule due to an unexpected error, try running with -x option, like: .
+        /// </summary>
+        public static string DirectoReferirExtendidoErrorInesperado {
+            get {
+                return ResourceManager.GetString("DirectoReferirExtendidoErrorInesperado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Cannot calculate coefficient rule, the divisor is composed of the prime factors of the base, a rule can be calculated running with -x option, like: .
+        /// </summary>
+        public static string DirectoReferirExtendidoPotencias {
+            get {
+                return ResourceManager.GetString("DirectoReferirExtendidoPotencias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Coefficient rule can be calculated, however, in this case it is recommended to run with -x option, like: .
+        /// </summary>
+        public static string DirectoReferirExtendidoUsable {
+            get {
+                return ResourceManager.GetString("DirectoReferirExtendidoUsable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Coefficient rule can be calculated, in this case it is not recommended to use the -x option..
+        /// </summary>
+        public static string DirectoReferirExtendidoValido {
+            get {
+                return ResourceManager.GetString("DirectoReferirExtendidoValido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The base must be an integer greater than one..
         /// </summary>
         public static string ErrorBase {
@@ -142,7 +178,8 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a The divisor and the base must be coprime, their greatest common divisor must be greater than one..
+        ///   Busca una cadena traducida similar a The divisor and the base are not coprime, the divisor was simplified.
+        ///The number must be divisible by {0} and the rule must be applied for the divisor {1}..
         /// </summary>
         public static string ErrorPrimo {
             get {

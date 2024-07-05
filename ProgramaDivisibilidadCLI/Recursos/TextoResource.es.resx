@@ -121,7 +121,8 @@
     <value>El divisor, la base y el número de coeficientes deben ser números enteros positivos.</value>
   </data>
   <data name="ErrorPrimo" xml:space="preserve">
-    <value>El divisor y la base deben ser coprimos, su máximo común divisor debe ser mayor que uno.</value>
+    <value>El divisor y la base no son coprimos, se ha simplificado el divisor.
+El número debe ser divisible entre {0} y se debe aplicar la regla con el divisor {1}.</value>
   </data>
   <data name="HelpAyuda" xml:space="preserve">
     <value>Devuelve por salida un documento de ayuda más largo explicando la aplicación con más detalle.</value>
@@ -318,5 +319,17 @@ Equivalente a: *CalcDiv.exe -jd 7 10 -n Nombre*
 Calcula la regla de 7 en base 10, le da el nombre Nombre y lo escribe en JSON.
 
 Use --help para ver información de las opciones y argumentos o -H para ver más información sobre la aplicación.</value>
+  </data>
+  <data name="DirectoReferirExtendidoPotencias" xml:space="preserve">
+    <value>No se puede calcular una regla de coeficientes, el divisor está compuesto de los factores primos de la base, para obtener una regla en este caso ejecute con la opción -x, por ejemplo: </value>
+  </data>
+  <data name="DirectoReferirExtendidoErrorInesperado" xml:space="preserve">
+    <value>No se puede calcular una regla de coeficientes debido a un error inesperado, pruebe a ejecutar con la opción -x, por ejemplo: </value>
+  </data>
+  <data name="DirectoReferirExtendidoUsable" xml:space="preserve">
+    <value>Se puede calcular una regla de coeficientes, pero en estos casos se recomienda ejecutar con la opción -x, por ejemplo: </value>
+  </data>
+  <data name="DirectoReferirExtendidoValido" xml:space="preserve">
+    <value>Se puede calcular la regla de coeficientes, en este caso no se recomienda usar la opción -x.</value>
   </data>
 </root>

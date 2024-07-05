@@ -41,7 +41,7 @@ namespace ProgramaDivisibilidad {
 		[Option('j', longName: "json"
 			, HelpText = "HelpJson"
 			, ResourceType = typeof(TextoResource)
-			,SetName = "coef")]
+			, SetName = "coef")]
 		public bool JSON { get; set; }
 
 	}
@@ -119,12 +119,12 @@ namespace ProgramaDivisibilidad {
 		/// <summary>
 		/// Devuelve el tercer elemento de <see cref="Directo"/> o <c>-1</c> si es nulo
 		/// </summary>
-		public long Coeficientes {
+		public int Coeficientes {
 			get {
 				if (Directo is null || Directo.Count() < 3)
 					return -1;
 				else
-					return Directo.ElementAt(2);
+					return (int)Directo.ElementAt(2);
 			}
 		}
 

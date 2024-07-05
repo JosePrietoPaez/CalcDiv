@@ -121,7 +121,10 @@
     <value>The divisor, the base and coefficient amount must be positive integers.</value>
   </data>
   <data name="ErrorPrimo" xml:space="preserve">
-    <value>The divisor and the base must be coprime, their greatest common divisor must be greater than one.</value>
+    <value>The divisor and the base are not coprime, the divisor was simplified.
+The number must be divisible by {0} and the rule must be applied for the divisor {1}.</value>
+    <comment>1 is the divisior divided by the gcd of itself and the base.
+0 is the gcd.</comment>
   </data>
   <data name="HelpAyuda" xml:space="preserve">
     <value>Outputs a longer help document explaining this application more in-depth.</value>
@@ -322,5 +325,17 @@ Equivalent to: *CalcDiv.exe -jd 7 10 -n Nombre*
 Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and outputs it in JSON.
 
 Use --help for more information about options and arguments or -H for more information about this application.</value>
+  </data>
+  <data name="DirectoReferirExtendidoPotencias" xml:space="preserve">
+    <value>Cannot calculate coefficient rule, the divisor is composed of the prime factors of the base, a rule can be calculated running with -x option, like: </value>
+  </data>
+  <data name="DirectoReferirExtendidoErrorInesperado" xml:space="preserve">
+    <value>Cannot calculate this rule due to an unexpected error, try running with -x option, like: </value>
+  </data>
+  <data name="DirectoReferirExtendidoUsable" xml:space="preserve">
+    <value>Coefficient rule can be calculated, however, in this case it is recommended to run with -x option, like: </value>
+  </data>
+  <data name="DirectoReferirExtendidoValido" xml:space="preserve">
+    <value>Coefficient rule can be calculated, in this case it is not recommended to use the -x option.</value>
   </data>
 </root>

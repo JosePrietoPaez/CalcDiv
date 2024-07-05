@@ -2,19 +2,19 @@
 using System.Text;
 using Listas;
 using Operaciones;
-using System.Text.Json;
 using System.Diagnostics.CodeAnalysis;
 using CommandLine.Text;
 using ProgramaDivisibilidadCLI.Recursos;
 using ReadText.LocalizedDemo;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace ProgramaDivisibilidad {
 
 	/// <summary>
 	/// Esta clase contiene el método principal de la aplicación
 	/// </summary>
-	[RequiresUnreferencedCode("Calls System.Text.Json.JsonSerializer.Serialize<TValue>(TValue, JsonSerializerOptions)")]
-	public static class CalculadoraDivisibilidadCLI {
+	public static partial class CalculadoraDivisibilidadCLI {
 		
 		//Inicialización de variables privadas
 		private const int SALIDA_CORRECTA = 0, SALIDA_ERROR = 1, SALIDA_ENTRADA_MALFORMADA = 2, SALIDA_VOLUNTARIA = 3, SALIDA_FRACASO_EXPANDIDA = 4;
@@ -23,10 +23,9 @@ namespace ProgramaDivisibilidad {
 		private static int salida = SALIDA_CORRECTA; //Salida del programa
 		[NotNull] //Para que no me den los warnings
 		private static Flags? flags = null;
-		private static readonly JsonSerializerOptions opcionesJson = new() { WriteIndented=true };
 
 		/// <summary>
-		/// Este método calcula la regla de divisibilidad, obteniendo los datos desde la consola o desde los argumentos.
+		/// Este método calcula la regla de divisibilidad, obteniendo los datos desde la consola listas desde los argumentos.
 		/// </summary>
 		/// <param name="args"></param>
 		/// <returns>
@@ -93,36 +92,6 @@ namespace ProgramaDivisibilidad {
 		}
 
 		/// <summary>
-		/// Lógica de la aplicación en modo directo.
-		/// </summary>
-		/// <returns>
-		/// booleano que indica si ha conseguido calcular la regla.
-		/// </returns>
-		private static void IntentarDirecto() { //Intenta dar las reglas de forma directa, cambia salida para mostrar el error
-			List<long> datos = flags.Directo.ToList();
-			if (datos.Count == 2) datos.Add(1);
-			salida = SALIDA_CORRECTA;
-			(bool exitoExtendido, string mensajeRegla, int informacion) reglas = (false,"",-1);
-			if (flags.TipoExtra) {
-				reglas = Calculos.ReglaDivisibilidadExtendida(datos[0], datos[1]);
-				Console.WriteLine(reglas.mensajeRegla);
-				if (!reglas.exitoExtendido) {
-					salida = SALIDA_FRACASO_EXPANDIDA;
-				}
-			}
-			if (!reglas.exitoExtendido && Calculos.Mcd(datos[0], datos[1]) == 1) { //Si falla al obtener reglas alternativas o no se ha buscado, y base y divisor son coprimos
-				Console.Error.WriteLine(string.Format(TextoResource.MensajeParametrosDirecto, datos[0], datos[1], datos[2]));
-				CalcularReglaCoeficientes(datos[0], datos[1], (int)datos[2]);
-			} else if (Calculos.Mcd(datos[0], datos[1]) != 1) { //Si el divisor y la base no son coprimos
-				Console.Error.WriteLine(string.Format(TextoResource.MensajeParametrosDirecto, datos[0], datos[1], datos[2]));
-				Console.Error.WriteLine(TextoResource.ErrorPrimo);
-				salida = SALIDA_ERROR;
-			} else { //Si se ha obtenido una regla alternativa
-				salida = SALIDA_CORRECTA;
-			}
-		}
-
-		/// <summary>
 		/// Calcula las reglas de coeficientes especificadas en flags con los argumentos
 		/// </summary>
 		/// <remarks>
@@ -157,7 +126,7 @@ namespace ProgramaDivisibilidad {
 				do {
 					//Si no tiene flags las pedirá durante la ejecución
 					if (sinFlags) {
-						//Le una tecla de entrada o lanza excepción si es la salida
+						//Le una tecla de entrada listas lanza excepción si es la salida
 						flags.TipoExtra = !ObtenerDeUsuario(TextoResource.MensajeDialogoExtendido, esS);
 
 						if (!flags.TipoExtra) {
@@ -326,15 +295,55 @@ namespace ProgramaDivisibilidad {
 			return serie.Nombre != string.Empty ? serie.ToStringCompleto() : serie.ToString()??"";
 		}
 
-		private static string Serializar(object o) {
-			string res = "{" + Environment.NewLine;
-			if (o is ListSerie<long> lista) {
-				res += "\"name\" : \"" + lista.Nombre + "\", " + Environment.NewLine + "\"list\" : ";
-			} else if (o is ListSerie<ListSerie<long>> otra) {
-				res += "\"name\" : \"" + otra.Nombre + "\", " + Environment.NewLine + "\"list\" : ";
+		private static string Serializar(object listas, int indentacion = 0) {
+			string tabulaciones = Tabulaciones(indentacion)
+				, tabulacionesMas = tabulaciones + '\t';
+			StringBuilder listasJson = new(tabulaciones + '{' + Environment.NewLine);
+			InsertarPropiedadesLista(listasJson,tabulacionesMas);
+			listasJson.Append(ObjetoAJSON(listas, indentacion + 1));
+			listasJson.Append(tabulacionesMas + ']' + Environment.NewLine + tabulaciones + '}');
+			return listasJson.ToString();
+		}
+
+		private static string ObjetoAJSON(object objeto, int indentacion = 0) {
+			StringBuilder objetoJSON = new();
+			string tabulacion = Tabulaciones(indentacion)
+				, tabulacionesMas = tabulacion + '\t';
+			if (objeto is ListSerie<long> lista) {
+				objetoJSON.Append(tabulacionesMas + "\"coefficients\" : " + Environment.NewLine + tabulacionesMas + '[' + Environment.NewLine);
+				for (int i = 0; i < lista.Longitud; i++) {
+					if (i == lista.Longitud - 1) {
+						objetoJSON.Append(tabulacionesMas + lista.UltimoElemento + Environment.NewLine);
+					} else {
+						objetoJSON.Append(tabulacionesMas + lista[i] + ',' + Environment.NewLine);
+					}
+				}
+			} else if (objeto is ListSerie<ListSerie<long>> listas) {
+				for (int i = 0; i < listas.Longitud; i++) {
+					objetoJSON.Append(tabulacionesMas + "\"rules\" : " + Environment.NewLine + tabulacionesMas + '[' + Environment.NewLine);
+					if (i == listas.Longitud - 1) {
+						objetoJSON.Append(Serializar(listas.UltimoElemento, indentacion + 1) + Environment.NewLine);
+					} else {
+						objetoJSON.Append(Serializar(listas[i], indentacion + 1) + ',' + Environment.NewLine);
+					}
+				}
 			}
-			res += JsonSerializer.Serialize(o, opcionesJson) + Environment.NewLine + "}";
-			return res;
+			return objetoJSON.ToString();
+		}
+
+		private static string Tabulaciones(int cantidad) {
+			string tabulaciones = "";
+			while (cantidad > 0) {
+				tabulaciones += '\t';
+				cantidad--;
+			}
+			return tabulaciones;
+		}
+
+		private static void InsertarPropiedadesLista(StringBuilder stringBuilder, string tabulaciones = "") {
+			stringBuilder.Append(tabulaciones + "\"divisor\" : " + flags.Divisor + ',' + Environment.NewLine);
+			stringBuilder.Append(tabulaciones + "\"base\" : " + flags.Base + ',' + Environment.NewLine);
+			stringBuilder.Append(tabulaciones + "\"name\" : " + '\"' + flags.Nombre + '\"' + ',' + Environment.NewLine);
 		}
 	}
 }
