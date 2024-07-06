@@ -95,6 +95,16 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a An unexpected error ocurred, consider creating a new Issue on GitHub if it isn&apos;t present, include the trace above and the arguments provided:
+        ///https://github.com/JosePrietoPaez/CalcDiv/issues.
+        /// </summary>
+        public static string DialogoExcepcionInesperada {
+            get {
+                return ResourceManager.GetString("DialogoExcepcionInesperada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Cannot calculate this rule due to an unexpected error, try running with -x option, like: .
         /// </summary>
         public static string DirectoReferirExtendidoErrorInesperado {

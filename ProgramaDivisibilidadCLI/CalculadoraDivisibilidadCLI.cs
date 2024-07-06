@@ -69,7 +69,7 @@ namespace ProgramaDivisibilidad {
 					Console.Error.WriteLine(TextoResource.AyudaCorta);
 					salida = SALIDA_CORRECTA;
 				} else { 
-					if (flags.Directo.Count() > 1) { //Si se ha activado el modo directo
+					if (flags.DatosRegla.Count() > 1) { //Si se ha activado el modo directo
 						IntentarDirecto();
 					} else {
 						IniciarAplicacion();
@@ -102,10 +102,11 @@ namespace ProgramaDivisibilidad {
 		/// </returns>
 		private static void IniciarAplicacion() { //Si no se proporcionan los argumentos de forma directa, se establece un diálogo con el usuario para obtenerlos
 			Console.WriteLine(string.Format(TextoResource.MensajeInicioDialogo,SALIDA));
-			bool sinFlags = SinFlags();
+			bool sinFlags = flags.FlagsInactivos;
 			long @base, divisor;
 			string nombre = "";
 			static bool esS(char letra) => letra == 's' || letra == 'S';
+			flags.DatosRegla = [0,0,0];
 			try {
 				do {
 					//Si no tiene flags las pedirá durante la ejecución
@@ -116,37 +117,31 @@ namespace ProgramaDivisibilidad {
 						if (!flags.TipoExtra) {
 							flags.JSON = ObtenerDeUsuario(TextoResource.MensajeDialogoJson, esS);
 						}
-						
+
 					}
+
+					//Pregunta el dato en bucle hasta que sea correcto a lanza excepción si es el mensaje de salida
+					ObtenerDeUsuario(out divisor, 0
+						, TextoResource.ErrorDivisor
+						, TextoResource.MensajeDialogoDivisor);
+
+					ObtenerDeUsuario(out @base, 2
+						, TextoResource.ErrorBase
+						, TextoResource.MensajeDialogoBase);
 
 					if (flags.TipoExtra) {
 
-						//Pregunta el dato en bucle hasta que sea correcto a lanza excepción si es el mensaje de salida
-						ObtenerDeUsuario(out divisor, 0
-							, TextoResource.ErrorDivisor
-							, TextoResource.MensajeDialogoDivisor);
-
-						ObtenerDeUsuario(out @base, 2
-							, TextoResource.ErrorBase
-							, TextoResource.MensajeDialogoBase);
+						flags.DatosRegla = [divisor, @base, 1];
 
 						//Intenta buscar una regla alternativa
-						Console.Write(Calculos.ReglaDivisibilidadExtendida(divisor,@base).Item2);
-						Console.Error.WriteLine();
+						Console.Write(Calculos.ReglaDivisibilidadExtendida(divisor, @base).Item2);
 
 					} else {
-
-						ObtenerDeUsuario(out divisor, 0
-							, TextoResource.ErrorDivisor
-							, TextoResource.MensajeDialogoDivisor);
-
-						ObtenerDeUsuario(out @base, 2
-							, TextoResource.ErrorBase
-							, TextoResource.MensajeDialogoBase);
 
 						ObtenerDeUsuario(out int coeficientes, 1
 							, TextoResource.ErrorCoeficientes
 							, TextoResource.MensajeDialogoCoeficientes);
+						flags.DatosRegla = [divisor, @base, coeficientes];
 
 						if (sinFlags) {
 							flags.Todos = ObtenerDeUsuario(TextoResource.MensajeDialogoTodas, esS);
@@ -154,23 +149,25 @@ namespace ProgramaDivisibilidad {
 							ObtenerDeUsuario(out nombre, TextoResource.MensajeDialogoRegla);
 						}
 
-						ReferirAExtraYCalcularRegla(divisor,@base,coeficientes);
-						Console.Error.WriteLine();
+						ReferirAExtraYCalcularRegla(divisor, @base, coeficientes);
 
 					}
+					Console.Error.WriteLine();
 
 					salir = !ObtenerDeUsuario(TextoResource.MensajeDialogoRepetir, esS);
+					salida = salir? SALIDA_VOLUNTARIA : SALIDA_CORRECTA;
 
 				} while (!salir);
-			} catch {
-				salir = true;
-				Console.WriteLine(Environment.NewLine + TextoResource.MensajeDialogoInterrumpido);
-			}			
-			salida = salir? SALIDA_VOLUNTARIA : SALIDA_CORRECTA;
-		}
-
-		private static bool SinFlags() {
-			return !(flags.Todos || flags.DialogoSencillo || flags.JSON || flags.TipoExtra || flags.Nombre != string.Empty || flags.Directo.Any());
+			}
+			catch (SalidaException) {
+				salida = SALIDA_VOLUNTARIA;
+				Console.Error.WriteLine(Environment.NewLine + TextoResource.MensajeDialogoInterrumpido);
+			}
+			catch (Exception e) {
+				salida = SALIDA_ERROR;
+				Console.Error.WriteLine(e.StackTrace);
+				Console.Error.WriteLine(TextoResource.DialogoExcepcionInesperada);
+			}
 		}
 
 		private static bool ObtenerDeUsuario(string mensaje, Func<char,bool> comparador) {
@@ -225,19 +222,7 @@ namespace ProgramaDivisibilidad {
 		}
 
 		private static void LanzarExcepcionSiSalida(string? linea) {
-			if (linea == SALIDA) throw new Exception(TextoResource.MensajeSalidaVoluntaria);
-		}
-
-		private static string SerieRectangularString(ListSerie<ListSerie<long>> serie) {
-			if (flags.JSON) {
-				return Serializar(serie);
-			}
-			StringBuilder stringBuilder = new();
-			for (int i = 0; i < serie.Longitud - 1; i++) {
-				stringBuilder.AppendLine(StringSerieConFlags(serie[i]));
-			}
-			stringBuilder.Append(StringSerieConFlags(serie[serie.Longitud - 1]));
-			return stringBuilder.ToString();
+			if (linea == SALIDA) throw new SalidaException(TextoResource.MensajeSalidaVoluntaria);
 		}
 
 		/// <summary>

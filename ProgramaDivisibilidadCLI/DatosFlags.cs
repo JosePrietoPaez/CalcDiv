@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using ProgramaDivisibilidadCLI.Recursos;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProgramaDivisibilidad {
 
@@ -93,38 +94,53 @@ namespace ProgramaDivisibilidad {
 		public IEnumerable<long> Directo { get; set; }
 
 		/// <summary>
-		/// Devuelve el primer elemento de <see cref="Directo"/> o <c>-1</c> si es nulo
+		/// Propiedad auxiliar a <see cref="Directo"/>, permite gestionar los elementos como una lista.
+		/// </summary>
+		/// <remarks>
+		/// Para guardar los cambios se debe usar el setter.
+		/// </remarks>
+		public List<long> DatosRegla {
+			get {
+				return Directo.ToList();
+			}
+			set {
+				Directo = value.AsEnumerable();
+			}
+		}
+
+		/// <summary>
+		/// Devuelve el primer elemento de <see cref="DatosRegla"/> o <c>-1</c> si es nulo
 		/// </summary>
 		public long Divisor {
 			get {
-				if (Directo is null)
+				if (DatosRegla is null)
 					return -1;
 				else
-					return Directo.ElementAt(0);
+					return DatosRegla.ElementAt(0);
 			}
 		}
 
 		/// <summary>
-		/// Devuelve el segundo elemento de <see cref="Directo"/> o <c>-1</c> si es nulo
+		/// Devuelve el segundo elemento de <see cref="DatosRegla"/> o <c>-1</c> si es nulo
 		/// </summary>
 		public long Base {
 			get {
-				if (Directo is null)
+				if (DatosRegla is null)
 					return -1;
 				else
-					return Directo.ElementAt(1);
+					return DatosRegla.ElementAt(1);
 			}
 		}
 
 		/// <summary>
-		/// Devuelve el tercer elemento de <see cref="Directo"/> o <c>-1</c> si es nulo
+		/// Devuelve el tercer elemento de <see cref="DatosRegla"/> o <c>-1</c> si es nulo
 		/// </summary>
 		public int Coeficientes {
 			get {
-				if (Directo is null || Directo.Count() < 3)
+				if (DatosRegla is null || DatosRegla.Count() < 3)
 					return -1;
 				else
-					return (int)Directo.ElementAt(2);
+					return (int)DatosRegla.ElementAt(2);
 			}
 		}
 
@@ -148,6 +164,15 @@ namespace ProgramaDivisibilidad {
 			, HelpText = "HelpSaltar"
 			, ResourceType = typeof(TextoResource))]
 		public bool DialogoSencillo { get; set; }
+
+		/// <summary>
+		/// Esta propiedad devuelve si hay algún flag activo.
+		/// </summary>
+		public bool FlagsInactivos { 
+			get {
+				return !(DialogoSencillo || JSON || Ayuda || Ayuda || AyudaCorta || TipoExtra || Todos || Nombre.Length != 0 || DatosRegla.Any());
+			} 
+		}
 
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using Listas;
 using Operaciones;
 using ProgramaDivisibilidadCLI.Recursos;
+using System.Text;
 
 namespace ProgramaDivisibilidad {
 	public static partial class CalculadoraDivisibilidadCLI {
@@ -13,7 +14,7 @@ namespace ProgramaDivisibilidad {
 		/// </returns>
 		private static void IntentarDirecto() { //Intenta dar las reglas de forma directa, cambia salida para mostrar el error
 			salida = SALIDA_CORRECTA;
-			if (flags.Directo.Count() == 2) flags.Directo = flags.Directo.Append(1);
+			if (flags.DatosRegla.Count == 2) flags.Directo = flags.Directo.Append(1);
 			(bool exitoExtendido, string mensajeRegla, int informacion) reglas = (false, "", -1);
 			if (flags.TipoExtra) {
 				reglas = Calculos.ReglaDivisibilidadExtendida(flags.Divisor, flags.Base);
@@ -99,6 +100,18 @@ namespace ProgramaDivisibilidad {
 				resultado = StringSerieConFlags(serie);
 			}
 			return resultado;
+		}
+
+		private static string SerieRectangularString(ListSerie<ListSerie<long>> serie) {
+			if (flags.JSON) {
+				return Serializar(serie);
+			}
+			StringBuilder stringBuilder = new();
+			for (int i = 0; i < serie.Longitud - 1; i++) {
+				stringBuilder.AppendLine(StringSerieConFlags(serie[i]));
+			}
+			stringBuilder.Append(StringSerieConFlags(serie[serie.Longitud - 1]));
+			return stringBuilder.ToString();
 		}
 	}
 }

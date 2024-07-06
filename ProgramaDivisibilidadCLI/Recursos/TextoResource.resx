@@ -338,4 +338,8 @@ Use --help for more information about options and arguments or -H for more infor
   <data name="DirectoReferirExtendidoValido" xml:space="preserve">
     <value>Coefficient rule can be calculated, in this case it is not recommended to use the -x option.</value>
   </data>
+  <data name="DialogoExcepcionInesperada" xml:space="preserve">
+    <value>An unexpected error ocurred, consider creating a new Issue on GitHub if it isn't present, include the trace above and the arguments provided:
+https://github.com/JosePrietoPaez/CalcDiv/issues</value>
+  </data>
 </root>

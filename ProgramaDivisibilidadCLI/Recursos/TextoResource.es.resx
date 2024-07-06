@@ -332,4 +332,8 @@ Use --help para ver información de las opciones y argumentos o -H para ver más
   <data name="DirectoReferirExtendidoValido" xml:space="preserve">
     <value>Se puede calcular la regla de coeficientes, en este caso no se recomienda usar la opción -x.</value>
   </data>
+  <data name="DialogoExcepcionInesperada" xml:space="preserve">
+    <value>Ha ocurrido un error inesperado, considere crear un Issue en GitHub si no existe, incluya la traza de error de arrbia y los argumentos del programa:
+https://github.com/JosePrietoPaez/CalcDiv/issues</value>
+  </data>
 </root>
