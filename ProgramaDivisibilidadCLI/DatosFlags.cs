@@ -1,6 +1,5 @@
 ﻿using CommandLine;
-using ProgramaDivisibilidadCLI.Recursos;
-using System.ComponentModel.DataAnnotations;
+using ProgramaDivisibilidad.Recursos;
 
 namespace ProgramaDivisibilidad {
 
@@ -166,12 +165,113 @@ namespace ProgramaDivisibilidad {
 		public bool DialogoSencillo { get; set; }
 
 		/// <summary>
+		/// Esta propiedad indica si la opción -m está activa y cuales.
+		/// </summary>
+		[Option('m', longName: "multiple-rules"
+			, HelpText = "HelpVarias"
+			, Min = 2
+			, Max = 3
+			, ResourceType = typeof(TextoResource))]
+		public IEnumerable<string> VariasReglas { get; set; }
+
+		private const char SEPARADOR = ',';
+
+		private List<long>? _listaDivisores = null
+			, _listaBases = null;
+		private List<int>? _listaCoeficientes = null;
+
+		/// <summary>
+		/// Devuelve la lista de divisores pasada por <see cref="VariasReglas"/>.
+		/// </summary>
+		/// <remarks>
+		/// Se inicializa una única vez.
+		/// </remarks>
+		public List<long> ListaDivisores { 
+			get {
+				if (_listaDivisores == null) {
+					string[] lista = VariasReglas.First().Split(SEPARADOR);
+					List<long> result = ParsearStringsLong(lista, TextoResource.ErrorBase);
+					_listaDivisores = new(result);
+					return result;
+				} else {
+					return _listaDivisores;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Devuelve la lista de bases pasada por <see cref="VariasReglas"/>.
+		/// </summary>
+		/// <remarks>
+		/// Se inicializa una única vez.
+		/// </remarks>
+		public List<long> ListaBases {
+			get {
+				if (_listaBases == null) {
+					string[] lista = VariasReglas.ElementAt(1).Split(SEPARADOR);
+					List<long> result = ParsearStringsLong(lista, TextoResource.ErrorBase);
+					_listaBases = new(result);
+					return result;
+				} else {
+					return _listaBases;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Devuelve la lista de coeficientes pasada por <see cref="VariasReglas"/>.
+		/// </summary>
+		/// <remarks>
+		/// Se inicializa una única vez.
+		/// </remarks>
+		public List<int> ListaCoeficientes {
+			get {
+				if (_listaCoeficientes == null) {
+					string[] lista = VariasReglas.Last().Split(SEPARADOR);
+					List<int> result = ParsearStringsInt(lista,TextoResource.ErrorCoeficientes);
+					_listaCoeficientes = new(result);
+					return result;
+				} else {
+					return _listaCoeficientes;
+				}
+			}
+		}
+
+		private List<long> ParsearStringsLong(string[] numeros, string mensajeError = "") {
+			List<long> result = [];
+			long numeroParseado;
+			foreach (string s in numeros) {
+				if (long.TryParse(s, out numeroParseado)) {
+					if (!result.Contains(numeroParseado)) {
+						result.Add(numeroParseado);
+					}
+				} else {
+					throw new FormatException(mensajeError);
+				}
+			}
+			return result;
+		}
+
+		private List<int> ParsearStringsInt(string[] numeros, string mensajeError = "") {
+			return ParsearStringsLong(numeros,mensajeError).Select(numero => (int) numero).ToList();
+		}
+
+		/// <summary>
 		/// Esta propiedad devuelve si hay algún flag activo.
 		/// </summary>
 		public bool FlagsInactivos { 
 			get {
-				return !(DialogoSencillo || JSON || Ayuda || Ayuda || AyudaCorta || TipoExtra || Todos || Nombre.Length != 0 || DatosRegla.Any());
+				return !(DialogoSencillo || JSON || Ayuda || Ayuda || AyudaCorta || TipoExtra || Todos || Nombre.Length != 0 || Directo.Any());
 			} 
+		}
+
+		/// <summary>
+		/// Esta propiedad indica si se debería usar el modo directo según las opciones habilitadas
+		/// </summary>
+		public bool ActivarDirecto {
+			get {
+				return Directo.Any() || VariasReglas.Any();
+			}
 		}
 
 	}

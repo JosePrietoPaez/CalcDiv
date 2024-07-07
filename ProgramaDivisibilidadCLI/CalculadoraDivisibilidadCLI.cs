@@ -1,11 +1,10 @@
 ﻿using CommandLine;
 using System.Text;
 using Listas;
-using Operaciones;
+using static Operaciones.Calculos;
+using static ProgramaDivisibilidad.Recursos.TextoResource;
 using System.Diagnostics.CodeAnalysis;
 using CommandLine.Text;
-using ProgramaDivisibilidadCLI.Recursos;
-using ReadText.LocalizedDemo;
 
 namespace ProgramaDivisibilidad {
 
@@ -63,13 +62,13 @@ namespace ProgramaDivisibilidad {
 					flags.Nombre = string.Empty;
 				}
 				if (flags.Ayuda) {
-					Console.Error.Write(TextoResource.Ayuda);
+					Console.Error.Write(Ayuda);
 					salida = SALIDA_CORRECTA;
 				} else if (flags.AyudaCorta) {
-					Console.Error.WriteLine(TextoResource.AyudaCorta);
+					Console.Error.WriteLine(AyudaCorta);
 					salida = SALIDA_CORRECTA;
 				} else { 
-					if (flags.DatosRegla.Count() > 1) { //Si se ha activado el modo directo
+					if (flags.ActivarDirecto) { //Si se ha activado el modo directo
 						IntentarDirecto();
 					} else {
 						IniciarAplicacion();
@@ -101,10 +100,8 @@ namespace ProgramaDivisibilidad {
 		/// Código de la salida de la aplicación.
 		/// </returns>
 		private static void IniciarAplicacion() { //Si no se proporcionan los argumentos de forma directa, se establece un diálogo con el usuario para obtenerlos
-			Console.WriteLine(string.Format(TextoResource.MensajeInicioDialogo,SALIDA));
+			Console.WriteLine(string.Format(MensajeInicioDialogo,SALIDA));
 			bool sinFlags = flags.FlagsInactivos;
-			long @base, divisor;
-			string nombre = "";
 			static bool esS(char letra) => letra == 's' || letra == 'S';
 			flags.DatosRegla = [0,0,0];
 			try {
@@ -112,68 +109,77 @@ namespace ProgramaDivisibilidad {
 					//Si no tiene flags las pedirá durante la ejecución
 					if (sinFlags) {
 						//Le una tecla de entrada listas lanza excepción si es la salida
-						flags.TipoExtra = !ObtenerDeUsuario(TextoResource.MensajeDialogoExtendido, esS);
+						flags.TipoExtra = !ObtenerDeUsuario(MensajeDialogoExtendido, esS);
 
 						if (!flags.TipoExtra) {
-							flags.JSON = ObtenerDeUsuario(TextoResource.MensajeDialogoJson, esS);
+							flags.JSON = ObtenerDeUsuario(MensajeDialogoJson, esS);
 						}
 
 					}
 
 					//Pregunta el dato en bucle hasta que sea correcto a lanza excepción si es el mensaje de salida
-					ObtenerDeUsuario(out divisor, 0
-						, TextoResource.ErrorDivisor
-						, TextoResource.MensajeDialogoDivisor);
 
-					ObtenerDeUsuario(out @base, 2
-						, TextoResource.ErrorBase
-						, TextoResource.MensajeDialogoBase);
+					ObtenerDeUsuario(out long @base, 2
+						, ErrorBase
+						, MensajeDialogoBase);
 
-					if (flags.TipoExtra) {
+					if (flags.TipoExtra) { //Si la regla es de algún tipo extra
+
+						ObtenerDeUsuario(out long divisor, 0
+							, ErrorDivisor
+							, MensajeDialogoDivisor);
 
 						flags.DatosRegla = [divisor, @base, 1];
 
 						//Intenta buscar una regla alternativa
-						Console.Write(Calculos.ReglaDivisibilidadExtendida(divisor, @base).Item2);
+						Console.Write(ReglaDivisibilidadExtendida(divisor, @base).Item2);
 
-					} else {
+					} else { //Si la regla debe ser de coeficientes
+
+						//Pregunta hasta que sea coprimo con base o sea salida
+						ObtenerDeUsuarioCoprimo(out long divisor, 2
+							, @base
+							, ErrorDivisorCoprimo
+							, MensajeDialogoDivisor);
 
 						ObtenerDeUsuario(out int coeficientes, 1
-							, TextoResource.ErrorCoeficientes
-							, TextoResource.MensajeDialogoCoeficientes);
+							, ErrorCoeficientes
+							, MensajeDialogoCoeficientes);
+
 						flags.DatosRegla = [divisor, @base, coeficientes];
 
 						if (sinFlags) {
-							flags.Todos = ObtenerDeUsuario(TextoResource.MensajeDialogoTodas, esS);
+							flags.Todos = ObtenerDeUsuario(MensajeDialogoTodas, esS);
 
-							ObtenerDeUsuario(out nombre, TextoResource.MensajeDialogoRegla);
+							ObtenerDeUsuario(out string nombre, MensajeDialogoRegla);
+							flags.Nombre = nombre;
 						}
-
-						ReferirAExtraYCalcularRegla(divisor, @base, coeficientes);
+						
+						CalcularReglaCoeficientes(divisor, @base, coeficientes);
 
 					}
 					Console.Error.WriteLine();
 
-					salir = !ObtenerDeUsuario(TextoResource.MensajeDialogoRepetir, esS);
+					salir = !ObtenerDeUsuario(MensajeDialogoRepetir, esS);
 					salida = salir? SALIDA_VOLUNTARIA : SALIDA_CORRECTA;
 
 				} while (!salir);
 			}
 			catch (SalidaException) {
 				salida = SALIDA_VOLUNTARIA;
-				Console.Error.WriteLine(Environment.NewLine + TextoResource.MensajeDialogoInterrumpido);
+				Console.Error.WriteLine(Environment.NewLine + MensajeDialogoInterrumpido);
 			}
 			catch (Exception e) {
 				salida = SALIDA_ERROR;
 				Console.Error.WriteLine(e.StackTrace);
-				Console.Error.WriteLine(TextoResource.DialogoExcepcionInesperada);
+				Console.Error.WriteLine(DialogoExcepcionInesperada);
 			}
 		}
 
 		private static bool ObtenerDeUsuario(string mensaje, Func<char,bool> comparador) {
 			Console.Error.Write(mensaje);
 			char entrada = Console.ReadKey().KeyChar;
-			if (entrada == SALIDA[0]) throw new Exception(TextoResource.MensajeSalidaVoluntaria);
+			if (entrada == SALIDA[0]) throw new Exception(MensajeSalidaVoluntaria);
 			Console.Error.WriteLine();
 			return comparador(entrada);
 		}
@@ -205,7 +211,7 @@ namespace ProgramaDivisibilidad {
 		private static void ObtenerDeUsuarioCoprimo(out long dato, long minimo, long coprimo, string mensajeError, string mensajePregunta) {
 			Console.Error.Write(mensajePregunta);
 			string? linea = Console.ReadLine();
-			while (!long.TryParse(linea, out dato) || dato < minimo || Calculos.Mcd(dato,coprimo) > 1) {
+			while (!long.TryParse(linea, out dato) || dato < minimo || Mcd(dato,coprimo) > 1) {
 				Console.Error.WriteLine(Environment.NewLine + mensajeError);
 				Console.Error.Write(mensajePregunta);
 				linea = Console.ReadLine();
@@ -222,7 +228,7 @@ namespace ProgramaDivisibilidad {
 		}
 
 		private static void LanzarExcepcionSiSalida(string? linea) {
-			if (linea == SALIDA) throw new SalidaException(TextoResource.MensajeSalidaVoluntaria);
+			if (linea == SALIDA) throw new SalidaException(MensajeSalidaVoluntaria);
 		}
 
 		/// <summary>

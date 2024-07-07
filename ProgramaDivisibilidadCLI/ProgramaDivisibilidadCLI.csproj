@@ -14,6 +14,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PublishTrimmed>True</PublishTrimmed>
     <SignAssembly>False</SignAssembly>
+    <RootNamespace>ProgramaDivisibilidad</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

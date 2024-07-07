@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProgramaDivisibilidadCLI.Recursos {
+namespace ProgramaDivisibilidad.Recursos {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProgramaDivisibilidadCLI.Recursos.TextoResource", typeof(TextoResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProgramaDivisibilidad.Recursos.TextoResource", typeof(TextoResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -150,16 +150,6 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a The base must be a positive integer greater than one and coprime with the base.
-        ///Two numbers are coprime if their greatest common divisor is greater than one..
-        /// </summary>
-        public static string ErrorBaseCoprima {
-            get {
-                return ResourceManager.GetString("ErrorBaseCoprima", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a The number of coefficients must be a positive integer..
         /// </summary>
         public static string ErrorCoeficientes {
@@ -170,11 +160,21 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         
         /// <summary>
         ///   Busca una cadena traducida similar a The divisor must be a non-negative integer.
-        ///Keep in mind that numbers divisible by a negative number are divisible to its absolute value..
+        ///Keep in mind that numbers divisible by a negative number are divisible by its absolute value..
         /// </summary>
         public static string ErrorDivisor {
             get {
                 return ResourceManager.GetString("ErrorDivisor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The divisor must be a positive integer greater than one and coprime with the base.
+        ///Two numbers are coprime if their greatest common divisor is greater than one..
+        /// </summary>
+        public static string ErrorDivisorCoprimo {
+            get {
+                return ResourceManager.GetString("ErrorDivisorCoprimo", resourceCulture);
             }
         }
         
@@ -188,12 +188,23 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a The divisor and the base are not coprime, the divisor was simplified.
-        ///The number must be divisible by {0} and the rule must be applied for the divisor {1}..
+        ///   Busca una cadena traducida similar a The divisor and the base are not coprime.
+        ///Calculating a coefficient in this case will not be implemented.
+        ///Run this program with the option-x to obtain a different type of rule, or activate it in dialog mode..
         /// </summary>
         public static string ErrorPrimo {
             get {
                 return ResourceManager.GetString("ErrorPrimo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The divisor and the base are not coprime.
+        ///Calculating a coefficient in this case will not be implemented..
+        /// </summary>
+        public static string ErrorPrimoExtra {
+            get {
+                return ResourceManager.GetString("ErrorPrimoExtra", resourceCulture);
             }
         }
         
@@ -266,6 +277,17 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         public static string HelpTodos {
             get {
                 return ResourceManager.GetString("HelpTodos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Recieves multiple bases, divisors and coefficients as arguments and outputs the rule formed by every (divisor,base,coefficient) tuple.
+        ///All bases, divisors and coefficients must be valid.
+        ///Activates direct output mode..
+        /// </summary>
+        public static string HelpVarias {
+            get {
+                return ResourceManager.GetString("HelpVarias", resourceCulture);
             }
         }
         

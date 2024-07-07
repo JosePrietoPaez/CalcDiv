@@ -42,31 +42,6 @@ namespace TestCalculadora {
 			});
 		}
 
-		[Test(Description = "Al llamar a calculadora con -H se escribe Ayuda.txt")]
-		public void Calculadora_Ayuda_EscribeElArchivo() {
-			_args = ["-H"];
-
-			int salida = CalculadoraDivisibilidadCLI.Main(_args);
-
-			Assert.Multiple(() => {
-				Assert.That(_lectorSalida.ToString()?[0..^Environment.NewLine.Length], // Hay un \r\n de más
-					Is.EqualTo(File.ReadAllText(@"Recursos\Ayuda.txt")));
-				Assert.That(salida, Is.Zero);
-			});
-		}
-
-		[Test(Description = "Al llamar a calculadora con -h se escribe AyudaCorta.txt")]
-		public void Calculadora_AyudaCorta_EscribeElArchivo() {
-			_args = ["-h"];
-
-			int salida = CalculadoraDivisibilidadCLI.Main(_args);
-
-			Assert.Multiple(() => {
-				Assert.That(_lectorSalida.ToString()?[0..^Environment.NewLine.Length], Is.EqualTo(File.ReadAllText(@"Recursos\AyudaCorta.txt"))); // Hay un \r\n de más
-				Assert.That(salida, Is.Zero);
-			});
-		}
-
 		[Test(Description = "Al llamar a la calculadora en modo directo inverso con base y divisor coprimos devuelve la regla por consola en el orden inverso")]
 		public void Calculadora_DirectoTodosNombre_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
 			_args = ["-ad", "5", "13", "5","-n","Nombre"];

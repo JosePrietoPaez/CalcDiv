@@ -1,8 +1,8 @@
 ﻿using CommandLine;
 using CommandLine.Text;
-using ProgramaDivisibilidadCLI.Recursos;
+using ProgramaDivisibilidad.Recursos;
 
-namespace ReadText.LocalizedDemo {
+namespace ProgramaDivisibilidad {
 	internal class LocalizableSentenceBuilder : SentenceBuilder {
 		public override Func<string> RequiredWord {
 			get { return () => TextoResource.SentenceRequiredWord; }
