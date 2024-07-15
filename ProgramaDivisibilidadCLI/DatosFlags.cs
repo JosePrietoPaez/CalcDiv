@@ -30,7 +30,7 @@ namespace ProgramaDivisibilidad {
 			, HelpText = "HelpNombre"
 			, ResourceType = typeof(TextoResource)
 			, SetName = "coef")]
-		public string Nombre { get; set; }
+		public string? Nombre { get; set; }
 
 		[Option('a', longName: "all-rules"
 			, HelpText = "HelpTodos"
@@ -43,6 +43,8 @@ namespace ProgramaDivisibilidad {
 			, ResourceType = typeof(TextoResource)
 			, SetName = "coef")]
 		public bool JSON { get; set; }
+
+		public int[] ListaCoeficientes { get; set; }
 
 	}
 
@@ -62,7 +64,7 @@ namespace ProgramaDivisibilidad {
 	/// <summary>
 	/// Clase usada por el parser para inicializar las pociones
 	/// </summary>
-	public class Flags : IAyudaCortaOpciones, IAyudaLargaOpciones, ICoeficientesOpciones, IExtraOpciones {
+	internal class Flags : IAyudaCortaOpciones, IAyudaLargaOpciones, ICoeficientesOpciones, IExtraOpciones {
 
 		/// <summary>
 		/// Esta propiedad indica si la opción -x está activa.
@@ -90,7 +92,7 @@ namespace ProgramaDivisibilidad {
 		[Option('d',longName: "direct-output", Min = 2, Max = 3
 			, HelpText = "HelpDirecto"
 			, ResourceType = typeof(TextoResource))]
-		public IEnumerable<long> Directo { get; set; }
+		public IEnumerable<long>? Directo { get; set; }
 
 		/// <summary>
 		/// Propiedad auxiliar a <see cref="Directo"/>, permite gestionar los elementos como una lista.
@@ -100,7 +102,7 @@ namespace ProgramaDivisibilidad {
 		/// </remarks>
 		public List<long> DatosRegla {
 			get {
-				return Directo.ToList();
+				return Directo!.ToList();
 			}
 			set {
 				Directo = value.AsEnumerable();
@@ -149,7 +151,7 @@ namespace ProgramaDivisibilidad {
 		/// <remarks>
 		/// Al principio del programa se cambia al string vacío si su valor es "-".
 		/// </remarks>
-		public string Nombre { get; set; }
+		public string? Nombre { get; set; }
 
 		/// <summary>
 		/// Esta propiedad indica si la opción -j está activa.
@@ -172,11 +174,11 @@ namespace ProgramaDivisibilidad {
 			, Min = 2
 			, Max = 3
 			, ResourceType = typeof(TextoResource))]
-		public IEnumerable<string> VariasReglas { get; set; }
+		public IEnumerable<string>? VariasReglas { get; set; }
 
 		private const char SEPARADOR = ',';
 
-		private List<long>? _listaDivisores = null
+		private long[]? _listaDivisores = null
 			, _listaBases = null;
 		private List<int>? _listaCoeficientes = null;
 
@@ -185,16 +187,19 @@ namespace ProgramaDivisibilidad {
 		/// </summary>
 		/// <remarks>
 		/// Se inicializa una única vez.
+		/// <para>
+		/// Siempre se devuelve una nueva copia para evitar la modificación indirecta.
+		/// </para>
 		/// </remarks>
-		public List<long> ListaDivisores { 
+		public long[] ListaDivisores { 
 			get {
 				if (_listaDivisores == null) {
-					string[] lista = VariasReglas.First().Split(SEPARADOR);
-					List<long> result = ParsearStringsLong(lista, TextoResource.ErrorBase);
-					_listaDivisores = new(result);
+					string[] lista = VariasReglas!.First().Split(SEPARADOR);
+					long[] result = ParsearStringsLong(lista, TextoResource.ErrorBase);
+					_listaDivisores = [.. result];
 					return result;
 				} else {
-					return _listaDivisores;
+					return [.._listaDivisores];
 				}
 			}
 		}
@@ -204,16 +209,19 @@ namespace ProgramaDivisibilidad {
 		/// </summary>
 		/// <remarks>
 		/// Se inicializa una única vez.
+		/// <para>
+		/// Siempre se devuelve una nueva copia para evitar la modificación indirecta.
+		/// </para>
 		/// </remarks>
-		public List<long> ListaBases {
+		public long[] ListaBases {
 			get {
 				if (_listaBases == null) {
-					string[] lista = VariasReglas.ElementAt(1).Split(SEPARADOR);
-					List<long> result = ParsearStringsLong(lista, TextoResource.ErrorBase);
-					_listaBases = new(result);
+					string[] lista = VariasReglas!.ElementAt(1).Split(SEPARADOR);
+					long[] result = ParsearStringsLong(lista, TextoResource.ErrorBase);
+					_listaBases = [..result];
 					return result;
 				} else {
-					return _listaBases;
+					return [.._listaBases];
 				}
 			}
 		}
@@ -223,27 +231,33 @@ namespace ProgramaDivisibilidad {
 		/// </summary>
 		/// <remarks>
 		/// Se inicializa una única vez.
+		/// <para>
+		/// Siempre se devuelve una nueva copia para evitar la modificación indirecta.
+		/// </para>
+		/// Tiene un setter para permitir la modificación.
 		/// </remarks>
-		public List<int> ListaCoeficientes {
+		public int[] ListaCoeficientes {
 			get {
 				if (_listaCoeficientes == null) {
-					string[] lista = VariasReglas.Last().Split(SEPARADOR);
-					List<int> result = ParsearStringsInt(lista,TextoResource.ErrorCoeficientes);
+					string[] lista = VariasReglas!.Last().Split(SEPARADOR);
+					int[] result = ParsearStringsInt(lista,TextoResource.ErrorCoeficientes);
 					_listaCoeficientes = new(result);
 					return result;
 				} else {
-					return _listaCoeficientes;
+					return [.._listaCoeficientes];
 				}
+			}
+			set {
+				_listaCoeficientes = new(value);
 			}
 		}
 
-		private List<long> ParsearStringsLong(string[] numeros, string mensajeError = "") {
-			List<long> result = [];
-			long numeroParseado;
+		private long[] ParsearStringsLong(string[] numeros, string mensajeError = "") {
+			long[] result = [];
 			foreach (string s in numeros) {
-				if (long.TryParse(s, out numeroParseado)) {
+				if (long.TryParse(s, out long numeroParseado)) {
 					if (!result.Contains(numeroParseado)) {
-						result.Add(numeroParseado);
+						result = [.. result, numeroParseado];
 					}
 				} else {
 					throw new FormatException(mensajeError);
@@ -252,8 +266,8 @@ namespace ProgramaDivisibilidad {
 			return result;
 		}
 
-		private List<int> ParsearStringsInt(string[] numeros, string mensajeError = "") {
-			return ParsearStringsLong(numeros,mensajeError).Select(numero => (int) numero).ToList();
+		private int[] ParsearStringsInt(string[] numeros, string mensajeError = "") {
+			return ParsearStringsLong(numeros,mensajeError).Select(numero => (int) numero).ToArray();
 		}
 
 		/// <summary>
@@ -261,7 +275,7 @@ namespace ProgramaDivisibilidad {
 		/// </summary>
 		public bool FlagsInactivos { 
 			get {
-				return !(DialogoSencillo || JSON || Ayuda || Ayuda || AyudaCorta || TipoExtra || Todos || Nombre.Length != 0 || Directo.Any());
+				return !(DialogoSencillo || JSON || Ayuda || Ayuda || AyudaCorta || TipoExtra || Todos || (Nombre?.Length ?? 0) != 0 || (Directo?.Any() ?? false));
 			} 
 		}
 
@@ -270,7 +284,7 @@ namespace ProgramaDivisibilidad {
 		/// </summary>
 		public bool ActivarDirecto {
 			get {
-				return Directo.Any() || VariasReglas.Any();
+				return (Directo?.Any() ?? false) || (VariasReglas?.Any() ?? false);
 			}
 		}
 

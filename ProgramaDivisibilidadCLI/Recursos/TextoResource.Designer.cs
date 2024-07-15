@@ -605,5 +605,27 @@ namespace ProgramaDivisibilidad.Recursos {
                 return ResourceManager.GetString("SentenceVersionCommandText", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Some rules couldn&apos;t be calculated.
+        ///Probably caused by a divisor, base pair not being coprime.
+        ///Check the error stream for more information..
+        /// </summary>
+        public static string VariasMensajeError {
+            get {
+                return ResourceManager.GetString("VariasMensajeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No rules were calculated.
+        ///Might be caused by none of the divisors being coprime with the bases.
+        ///Check the error stream for more information..
+        /// </summary>
+        public static string VariasMensajeErrorTotal {
+            get {
+                return ResourceManager.GetString("VariasMensajeErrorTotal", resourceCulture);
+            }
+        }
     }
 }

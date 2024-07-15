@@ -316,6 +316,8 @@ If we cannot determine whether the number is a multiple of the divisor, we apply
 2: there was an error parsing the options or arguments.
 3: the user quit during dialog.
 4: could not find an alternative rule with -x.
+5: multiple rules were requested, some weren't calculated.
+6: multiple rules were requested, none were calculated.
 </value>
   </data>
   <data name="AyudaCorta" xml:space="preserve">
@@ -351,5 +353,15 @@ Activates direct output mode.</value>
   <data name="ErrorPrimoExtra" xml:space="preserve">
     <value>The divisor and the base are not coprime.
 Calculating a coefficient in this case will not be implemented.</value>
+  </data>
+  <data name="VariasMensajeError" xml:space="preserve">
+    <value>Some rules couldn't be calculated.
+Probably caused by a divisor, base pair not being coprime.
+Check the error stream for more information.</value>
+  </data>
+  <data name="VariasMensajeErrorTotal" xml:space="preserve">
+    <value>No rules were calculated.
+Might be caused by none of the divisors being coprime with the bases.
+Check the error stream for more information.</value>
   </data>
 </root>

@@ -12,44 +12,97 @@ namespace ProgramaDivisibilidad {
 		/// <returns>
 		/// booleano que indica si ha conseguido calcular la regla.
 		/// </returns>
-		private static void IntentarDirecto() { //Intenta dar las reglas de forma directa, cambia salida para mostrar el error
-			salida = SALIDA_CORRECTA;
-			if (flags.DatosRegla.Count == 2) flags.Directo = flags.Directo.Append(1);
-			if (flags.TipoExtra) {
-				MostrarReglaExtra(flags.Divisor, flags.Base);
+		private static void IntentarDirecto() { //Intenta dar las reglas de forma directa, cambia _salida para mostrar el error
+			_salida = SALIDA_CORRECTA;
+			Func<long[],int> funcionEjecutada = SeleccionarFuncionYAjustarFlags();
+			if (flags.VariasReglas?.Any() ?? false) {
+				flags.DatosRegla = [1,1,1];
+				EjectutarVarias(funcionEjecutada, flags.ListaDivisores, flags.ListaBases, flags.ListaCoeficientes);
 			} else {
-				MostrarReglaCoeficientes(flags.Divisor, flags.Base, flags.Coeficientes);
+				if (flags.DatosRegla.Count == 2) flags.Directo = flags.Directo!.Append(1);
+				_salida = funcionEjecutada([.. flags.DatosRegla]);
 			}
 		}
 
-		private static void MostrarReglaExtra(long divisor, long @base) {
+		private static Func<long[], int> SeleccionarFuncionYAjustarFlags() {
+			Func<long[], int> resultado;
+			if (flags.TipoExtra) { // Para separar la funcion de las llamadas en VariasReglas
+				resultado = MostrarReglaExtra;
+				flags.ListaCoeficientes = [-1];
+			} else {
+				resultado = MostrarReglaCoeficientes;
+			}
+			return resultado;
+		}
+
+		private static int EjectutarVarias(Func<long[], int> funcionEjecutada, long[] divisores, long[] bases, int[] coeficientes) {
+			int valorEjecucion = SALIDA_CORRECTA;
+			bool hayFallo = false, hayExito = false;
+			for (int i = 0; i < divisores.Length; i++) {
+				List<long> datos = [ // Para no hacer un set de una nueva lista cada iteración
+					divisores[i],
+					bases[0],
+					coeficientes[0]
+				];
+				for (int j = 0; j < bases.Length; j++) {
+					datos[1] = bases[j];
+					for (int k = 0; k < coeficientes.Length; k++) { // Bucle para todas las posibilidades
+						datos[2] = coeficientes[k];
+						flags.DatosRegla = new(datos);
+						valorEjecucion = funcionEjecutada([divisores[i], bases[j], coeficientes[k]]); // La divisibilidad se maneja en el método
+						if (!hayExito && valorEjecucion == SALIDA_CORRECTA) {
+							hayExito = true;
+						} else if (!hayFallo && valorEjecucion == SALIDA_ERROR) {
+							hayFallo = true;
+						}
+					}
+				}
+			}
+			if (!hayExito) {
+				_escritorError.WriteLine(VariasMensajeErrorTotal);
+				valorEjecucion = SALIDA_VARIAS_ERROR_TOTAL;
+			} else if (hayFallo) {
+				_escritorError.WriteLine(VariasMensajeError);
+				valorEjecucion = SALIDA_VARIAS_ERROR;
+			}
+			return valorEjecucion;
+		}
+
+		private static int MostrarReglaExtra(long[] datos) {
+			long divisor = datos[0], @base = datos[1];
+			int valorEjecucion;
 			(bool exitoExtendido, string mensajeRegla, int informacion) reglas;
 			reglas = ReglaDivisibilidadExtendida(divisor, @base);
-			Console.WriteLine(reglas.mensajeRegla);
+			_escritorSalida.WriteLine(reglas.mensajeRegla);
+			_escritorSalida.WriteLine();
 			if (!reglas.exitoExtendido) {
 				long mcd = Mcd(divisor, @base);
 				if (mcd != 1) {
-					Console.Error.WriteLine(ErrorPrimo);
+					_escritorError.WriteLine(ErrorPrimo);
 				}
-				Console.Error.WriteLine(string.Format(MensajeParametrosDirecto, divisor/mcd, @base, 1));
+				_escritorError.WriteLine(string.Format(MensajeParametrosDirecto, divisor/mcd, @base, 1));
 				CalcularReglaCoeficientes(divisor, @base);
-				salida = SALIDA_FRACASO_EXPANDIDA;
+				valorEjecucion = SALIDA_FRACASO_EXPANDIDA;
 			} else {
-				salida = SALIDA_CORRECTA;
+				valorEjecucion = SALIDA_CORRECTA;
 			}
+			return valorEjecucion;
 		}
 
-		private static void MostrarReglaCoeficientes(long divisor, long @base, int coeficientes) {
-			long mcd = Mcd(flags.Divisor, flags.Base);
-			if (mcd == 1) { //Si base y divisor son coprimos
-				Console.Error.WriteLine(string.Format(MensajeParametrosDirecto, divisor, @base, coeficientes));
-				CalcularReglaCoeficientes(flags.Divisor, flags.Base, flags.Coeficientes);
-				salida = SALIDA_CORRECTA;
-			} else { //Si el divisor y la base no son coprimos
-				Console.Error.WriteLine(string.Format(MensajeParametrosDirecto, divisor, @base, coeficientes));
-				Console.Error.WriteLine(ErrorPrimo);
-				salida = SALIDA_ERROR;
+		private static int MostrarReglaCoeficientes(long[] datos) {
+			long divisor = datos[0], @base = datos[1];
+			int coeficientes = (int)datos[2], valorEjecucion;
+			long mcd = Mcd(divisor, @base);
+			if (mcd == 1) { //Si j y i son coprimos
+				_escritorError.WriteLine(string.Format(MensajeParametrosDirecto, divisor, @base, coeficientes));
+				CalcularReglaCoeficientes(divisor, @base, coeficientes);
+				valorEjecucion = SALIDA_CORRECTA;
+			} else { //Si el i y la j no son coprimos
+				_escritorError.WriteLine(string.Format(MensajeParametrosDirecto, divisor, @base, coeficientes));
+				_escritorError.WriteLine(ErrorPrimo);
+				valorEjecucion = SALIDA_ERROR;
 			}
+			return valorEjecucion;
 		}
 
 		/// <summary>
@@ -60,9 +113,8 @@ namespace ProgramaDivisibilidad {
 		/// </remarks>
 		private static void CalcularReglaCoeficientes(long divisor, long @base, int coeficientes = 1) {
 			string salidaConsola = ObtenerReglas(divisor, @base, coeficientes);
-			Console.Error.WriteLine(MensajeFinDirecto);
-			Console.Write(salidaConsola);
-			Console.Error.WriteLine();
+			_escritorError.WriteLine(MensajeFinDirecto);
+			_escritorSalida.WriteLine(salidaConsola);
 		}
 
 		private static string ObtenerReglas(long divisor, long @base, int coeficientes) {
@@ -72,12 +124,12 @@ namespace ProgramaDivisibilidad {
 				ReglasDivisibilidad(series, divisor, coeficientes, @base);
 				if (flags.Nombre != "") {
 					foreach (var serie in series) {
-						serie.Nombre = flags.Nombre;
+						serie.Nombre = flags.Nombre ?? "";
 					}
 				}
 				resultado = SerieRectangularString(series);
 			} else {
-				ListSerie<long> serie = new(flags.Nombre);
+				ListSerie<long> serie = new(flags.Nombre ?? "");
 				ReglaDivisibilidadOptima(serie, divisor, coeficientes, @base);
 				resultado = StringSerieConFlags(serie);
 			}

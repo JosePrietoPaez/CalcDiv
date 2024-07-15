@@ -310,6 +310,8 @@ Si no es tan fácil ver si el resultado es múltiplo del divisor, se aplica la r
 2: se han introducido argumentos de forma errónea.
 3: el usuario ha cerrado el programa de forma voluntaria.
 4: se pidió una regla alternativa con -x, pero no se pudo encontrar.
+5: se pidieron varias reglas, pero no todas se calcularon.
+6: se pidieron varias reglas, pero ninguna se calculó.
 </value>
   </data>
   <data name="AyudaCorta" xml:space="preserve">
@@ -345,5 +347,15 @@ Activa el modo directo.</value>
   <data name="ErrorPrimoExtra" xml:space="preserve">
     <value>El divisor y la base no son coprimos.
 El calculo de reglas de coeficientes en este caso no sera implementado.</value>
+  </data>
+  <data name="VariasMensajeError" xml:space="preserve">
+    <value>No se pudieron calcular algunas reglas.
+Probablemente causado por algún par divisor, base no coprimo.
+Compruebe la salida de errores para obtener más información.</value>
+  </data>
+  <data name="VariasMensajeErrorTotal" xml:space="preserve">
+    <value>No se pudo calcular ninguna regla.
+Puede ser debido a que ningún divisor sea coprimo con la base.
+Compruebe la salida de errores para obtener más información.</value>
   </data>
 </root>
