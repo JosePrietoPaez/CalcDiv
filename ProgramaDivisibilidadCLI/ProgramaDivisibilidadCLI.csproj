@@ -7,14 +7,18 @@
     <Nullable>enable</Nullable>
     <StartupObject>ProgramaDivisibilidad.CalculadoraDivisibilidadCLI</StartupObject>
     <AssemblyName>CalcDivCLI</AssemblyName>
-    <AssemblyVersion>0.2.2.0</AssemblyVersion>
+    <AssemblyVersion>0.2.3.0</AssemblyVersion>
     <NeutralLanguage>en</NeutralLanguage>
     <PublishSingleFile>true</PublishSingleFile>
-    <Version>0.2.2.0</Version>
+    <Version>0.2.3.0</Version>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <PublishTrimmed>True</PublishTrimmed>
+    <PublishTrimmed>False</PublishTrimmed>
     <SignAssembly>False</SignAssembly>
     <RootNamespace>ProgramaDivisibilidad</RootNamespace>
+    <Authors>JosePrietoPaez</Authors>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>IconoCalcDiv.png</PackageIcon>
+    <ApplicationIcon>Recursos\IconoCalcDiv0.3.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -25,6 +29,17 @@
         <DebugSymbols>False</DebugSymbols>
         <DebugType>None</DebugType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Recursos\IconoCalcDiv0.3.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
@@ -56,6 +71,13 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TextoResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Recursos\IconoCalcDiv.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
