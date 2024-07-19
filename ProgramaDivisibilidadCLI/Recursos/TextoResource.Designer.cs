@@ -418,6 +418,15 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Object is null..
+        /// </summary>
+        public static string ObjetoNuloMensaje {
+            get {
+                return ResourceManager.GetString("ObjetoNuloMensaje", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a option.
         /// </summary>
         public static string OptionGroupWord {
@@ -625,6 +634,16 @@ namespace ProgramaDivisibilidad.Recursos {
         public static string VariasMensajeErrorTotal {
             get {
                 return ResourceManager.GetString("VariasMensajeErrorTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The rule wasn&apos;t calculated, should be caused bv the divisor and base not being coprime.
+        ///This rule can be ignored..
+        /// </summary>
+        public static string VariasMensajeVacio {
+            get {
+                return ResourceManager.GetString("VariasMensajeVacio", resourceCulture);
             }
         }
     }

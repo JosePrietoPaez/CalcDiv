@@ -364,4 +364,11 @@ Check the error stream for more information.</value>
 Might be caused by none of the divisors being coprime with the bases.
 Check the error stream for more information.</value>
   </data>
+  <data name="ObjetoNuloMensaje" xml:space="preserve">
+    <value>Object is null.</value>
+  </data>
+  <data name="VariasMensajeVacio" xml:space="preserve">
+    <value>The rule wasn't calculated, should be caused bv the divisor and base not being coprime.
+This rule can be ignored.</value>
+  </data>
 </root>

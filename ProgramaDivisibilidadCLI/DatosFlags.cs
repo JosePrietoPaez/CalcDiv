@@ -44,8 +44,6 @@ namespace ProgramaDivisibilidad {
 			, SetName = "coef")]
 		public bool JSON { get; set; }
 
-		public int[] ListaCoeficientes { get; set; }
-
 	}
 
 	/// <summary>
@@ -89,7 +87,7 @@ namespace ProgramaDivisibilidad {
 		/// <summary>
 		/// Esta propiedad indica los argumentos pasados a -d, si no se ha indicado estará vacía.
 		/// </summary>
-		[Option('d',longName: "direct-output", Min = 2, Max = 3
+		[Option('d', longName: "direct-output", Min = 2, Max = 3
 			, HelpText = "HelpDirecto"
 			, ResourceType = typeof(TextoResource))]
 		public IEnumerable<long>? Directo { get; set; }
@@ -180,7 +178,7 @@ namespace ProgramaDivisibilidad {
 
 		private long[]? _listaDivisores = null
 			, _listaBases = null;
-		private List<int>? _listaCoeficientes = null;
+		private int? _coeficientesVarias = null;
 
 		/// <summary>
 		/// Devuelve la lista de divisores pasada por <see cref="VariasReglas"/>.
@@ -191,7 +189,7 @@ namespace ProgramaDivisibilidad {
 		/// Siempre se devuelve una nueva copia para evitar la modificación indirecta.
 		/// </para>
 		/// </remarks>
-		public long[] ListaDivisores { 
+		public long[] ListaDivisores {
 			get {
 				if (_listaDivisores == null) {
 					string[] lista = VariasReglas!.First().Split(SEPARADOR);
@@ -199,7 +197,7 @@ namespace ProgramaDivisibilidad {
 					_listaDivisores = [.. result];
 					return result;
 				} else {
-					return [.._listaDivisores];
+					return [.. _listaDivisores];
 				}
 			}
 		}
@@ -218,41 +216,37 @@ namespace ProgramaDivisibilidad {
 				if (_listaBases == null) {
 					string[] lista = VariasReglas!.ElementAt(1).Split(SEPARADOR);
 					long[] result = ParsearStringsLong(lista, TextoResource.ErrorBase);
-					_listaBases = [..result];
+					_listaBases = [.. result];
 					return result;
 				} else {
-					return [.._listaBases];
+					return [.. _listaBases];
 				}
 			}
 		}
 
 		/// <summary>
-		/// Devuelve la lista de coeficientes pasada por <see cref="VariasReglas"/>.
+		/// Esta propiedad devuelve el número de coeficientes deseado para las reglas con -m
 		/// </summary>
-		/// <remarks>
-		/// Se inicializa una única vez.
-		/// <para>
-		/// Siempre se devuelve una nueva copia para evitar la modificación indirecta.
-		/// </para>
-		/// Tiene un setter para permitir la modificación.
-		/// </remarks>
-		public int[] ListaCoeficientes {
+		public int CoeficientesVarias {
 			get {
-				if (_listaCoeficientes == null) {
-					string[] lista = VariasReglas!.Last().Split(SEPARADOR);
-					int[] result = ParsearStringsInt(lista,TextoResource.ErrorCoeficientes);
-					_listaCoeficientes = new(result);
-					return result;
-				} else {
-					return [.._listaCoeficientes];
+				if (_coeficientesVarias is null) {
+					if (VariasReglas!.Count() == 2) { // Es opcional, así que se pone el valor por defecto
+						_coeficientesVarias = 1;
+						VariasReglas = VariasReglas!.Append("1");
+					} else {
+						if (int.TryParse(VariasReglas!.ElementAt(2), out int numeroParseado)) {
+							_coeficientesVarias = numeroParseado;
+						} else {
+							throw new FormatException(TextoResource.ErrorCoeficientes);
+						}
+					}
 				}
-			}
-			set {
-				_listaCoeficientes = new(value);
-			}
+				return _coeficientesVarias ?? 1;
+			} 
+			set => _coeficientesVarias = value;
 		}
 
-		private long[] ParsearStringsLong(string[] numeros, string mensajeError = "") {
+		private static long[] ParsearStringsLong(string[] numeros, string mensajeError = "") {
 			long[] result = [];
 			foreach (string s in numeros) {
 				if (long.TryParse(s, out long numeroParseado)) {
@@ -266,27 +260,19 @@ namespace ProgramaDivisibilidad {
 			return result;
 		}
 
-		private int[] ParsearStringsInt(string[] numeros, string mensajeError = "") {
-			return ParsearStringsLong(numeros,mensajeError).Select(numero => (int) numero).ToArray();
-		}
-
 		/// <summary>
 		/// Esta propiedad devuelve si hay algún flag activo.
 		/// </summary>
-		public bool FlagsInactivos { 
-			get {
-				return !(DialogoSencillo || JSON || Ayuda || Ayuda || AyudaCorta || TipoExtra || Todos || (Nombre?.Length ?? 0) != 0 || (Directo?.Any() ?? false));
-			} 
-		}
+		public bool FlagsInactivos => !(DialogoSencillo || JSON || Ayuda || Ayuda || AyudaCorta || TipoExtra || Todos || (Nombre?.Length ?? 0) != 0 || (Directo?.Any() ?? false));
 
 		/// <summary>
 		/// Esta propiedad indica si se debería usar el modo directo según las opciones habilitadas
 		/// </summary>
-		public bool ActivarDirecto {
-			get {
-				return (Directo?.Any() ?? false) || (VariasReglas?.Any() ?? false);
-			}
-		}
+		public bool ActivarDirecto => (Directo?.Any() ?? false) || (VariasReglas?.Any() ?? false);
 
+		/// <summary>
+		/// Esta propiedad indica si se debería evitar la escritura de mensajes intermedios a la consola de error
+		/// </summary>
+		public bool ActivarMensajesIntermedios => !JSON || !(VariasReglas?.Any() ?? false);
 	}
 }

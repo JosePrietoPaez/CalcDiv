@@ -433,7 +433,7 @@ namespace Operaciones
 		/// <param name="divisor"></param>
 		/// <param name="@base"></param>
 		/// <returns>
-		/// Tupla con primero booleano indicando el éxito del método y primero mensaje explicando la regla obtenida.
+		/// Tupla con primero booleano indicando el éxito del método, segundo mensaje explicando la regla obtenida y tercero con información.
 		/// </returns>
 		public static (bool,string,int) ReglaDivisibilidadExtendida(long divisor, long @base) {
 			var caso = CasoEspecialRegla(divisor, @base);

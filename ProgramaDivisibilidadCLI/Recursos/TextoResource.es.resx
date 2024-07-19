@@ -122,7 +122,7 @@
   </data>
   <data name="ErrorPrimo" xml:space="preserve">
     <value>El divisor y la base no son coprimos.
-El calculo de reglas de coeficientes en este caso no será implementado.
+El cálculo de reglas de coeficientes en este caso no será implementado.
 Ejecute este programa con la opción -x o actívela en el diálogo para obtener una regla de otro tipo.</value>
   </data>
   <data name="HelpAyuda" xml:space="preserve">
@@ -346,7 +346,7 @@ Activa el modo directo.</value>
   </data>
   <data name="ErrorPrimoExtra" xml:space="preserve">
     <value>El divisor y la base no son coprimos.
-El calculo de reglas de coeficientes en este caso no sera implementado.</value>
+El cálculo de reglas de coeficientes en este caso no sera implementado.</value>
   </data>
   <data name="VariasMensajeError" xml:space="preserve">
     <value>No se pudieron calcular algunas reglas.
@@ -357,5 +357,12 @@ Compruebe la salida de errores para obtener más información.</value>
     <value>No se pudo calcular ninguna regla.
 Puede ser debido a que ningún divisor sea coprimo con la base.
 Compruebe la salida de errores para obtener más información.</value>
+  </data>
+  <data name="ObjetoNuloMensaje" xml:space="preserve">
+    <value>El objeto es nulo.</value>
+  </data>
+  <data name="VariasMensajeVacio" xml:space="preserve">
+    <value>La regla no se calculó, seguramente sea causado porque el divisor no sea coprimo con la base.
+Puede ignorar esta regla.</value>
   </data>
 </root>
