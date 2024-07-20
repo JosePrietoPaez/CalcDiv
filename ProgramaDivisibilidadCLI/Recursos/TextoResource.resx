@@ -292,6 +292,7 @@ Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and o
 -n: writes the given name before every element or is included in the JSON output.
 -j: outputs the rule in JSON, unless -x is used.
 -x: outputs a different rule, also explains how to apply said rule. Possible cases are similar to the rules of 0, 1, 2, 3 and 11.
+-m: receives divisors and bases separated by commas and returns all the rules of every divisor,base pair. May also receive the length of the rules.
 
 All arguments and options must be valid.
 Options with arguments must not be followed by another option in the same combination, for example *CalcDivCLI.exe -na Nombre* is invalid, but the combination -an Nombre is valid.

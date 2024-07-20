@@ -21,7 +21,10 @@ namespace ProgramaDivisibilidad {
 				if (flags.DatosRegla.Count == 2) flags.Directo = flags.Directo!.Append(1);
 				(_salida, object elementoCreado) = funcionEjecutada(flags.Divisor, flags.Base, flags.Coeficientes);
 				string textoResultado = ObjetoAString(elementoCreado);
-				EscribirReglaPorWriter(textoResultado, _escritorSalida, flags.Divisor, flags.Base, flags.Coeficientes);
+				EscribirReglaPorWriter(textoResultado, _escritorSalida, _escritorError, flags.Divisor, flags.Base, flags.Coeficientes);
+				if (Mcd(flags.Divisor, flags.Base) > 1) {
+					_escritorError.WriteLine(ErrorPrimo);
+				}
 			}
 		}
 

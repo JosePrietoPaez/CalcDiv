@@ -286,6 +286,7 @@ Calcula la regla de 7 en base 10, le da el nombre Nombre y lo escribe en JSON.
 -n: escribe el nombre introducido como parámetro antes de cada elemento con su indice.
 -j: escribe la regla como en JSON, a no ser que se use -x.
 -x: cambia la salida a una regla alternativa que no usa coeficientes y explica como usarla. Los casos disponibles son como las reglas de 0, 1, 2, 3 y 11.
+-m: recibe divisores y bases separados por comas y devuelve las reglas de todos los pares divisor, base. Puede recibir opcionalmente la longitud de las reglas.
 
 Todos los argumentos y opciones deben ser correctos.
 Las opciones con argumentos no pueden ir seguidas de otras opciones en una combinación, por ejemplo: *CalcDiv.exe -na Nombre* sería una llamada inválida, pero la combinación -an Nombre es válida.

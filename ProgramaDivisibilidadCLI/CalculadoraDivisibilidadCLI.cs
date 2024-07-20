@@ -38,9 +38,12 @@ namespace ProgramaDivisibilidad {
 		/// </list>
 		/// </returns>
 		public static int Main(string[] args) {
-			//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
-			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
-			SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
+		_escritorSalida = Console.Out; // Si se ejecutaba y se cambiaba de consola, no se actualizaba
+		_escritorError = Console.Error;
+		_lectorEntrada = Console.In;
+		//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
+		//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
+		SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
 			var parser = new Parser(with => with.HelpWriter = null);
 			var resultado = parser.ParseArguments<Flags>(args); //Parsea los argumentos
 				resultado
@@ -81,12 +84,12 @@ namespace ProgramaDivisibilidad {
 		}
 
 		private static void EscribirAyudaLarga() {
-			_escritorError.WriteLine(Ayuda);
+			_escritorSalida.Write(Ayuda);
 			_salida = SALIDA_CORRECTA;
 		}
 
 		private static void EscribirAyudaCorta() {
-			_escritorError.WriteLine(AyudaCorta);
+			_escritorSalida.Write(AyudaCorta);
 			_salida = SALIDA_CORRECTA;
 		}
 
@@ -113,7 +116,7 @@ namespace ProgramaDivisibilidad {
 		/// Código de la _salida de la aplicación.
 		/// </returns>
 		private static void IniciarAplicacion() { //Si no se proporcionan los argumentos de forma directa, se establece un diálogo con el usuario para obtenerlos
-			_escritorSalida.WriteLine(string.Format(MensajeInicioDialogo,SALIDA));
+			_escritorError.WriteLine(string.Format(MensajeInicioDialogo,SALIDA));
 			bool sinFlags = flags.FlagsInactivos;
 			static bool esS(char letra) => letra == 's' || letra == 'S';
 			flags.DatosRegla = [0,0,0];
@@ -169,7 +172,7 @@ namespace ProgramaDivisibilidad {
 						}
 
 						string resultado = ObtenerReglas(divisor, @base, coeficientes);
-						EscribirReglaPorWriter(resultado + Environment.NewLine, _escritorSalida, divisor, @base, coeficientes);
+						EscribirReglaPorWriter(resultado + Environment.NewLine, _escritorSalida, _escritorError, divisor, @base, coeficientes);
 
 					}
 
@@ -338,10 +341,11 @@ namespace ProgramaDivisibilidad {
 		/// <summary>
 		/// Escribe la regla de coeficientes por el <see cref="TextWriter"/> proporcionado
 		/// </summary>
-		private static void EscribirReglaPorWriter(string reglaCoeficientes, TextWriter writer, long divisor, long @base, int coeficientes = 1) {
-			writer.WriteLine(string.Format(MensajeParametrosDirecto, divisor, @base, coeficientes));
+		private static void EscribirReglaPorWriter(string reglaCoeficientes, TextWriter writerSalida, TextWriter writerError, long divisor, long @base, int coeficientes = 1) {
+			writerError.WriteLine(string.Format(MensajeParametrosDirecto, divisor, @base, coeficientes));
 			EscribirLineaErrorCondicional(MensajeFinDirecto);
-			writer.WriteLine(reglaCoeficientes);
+			writerSalida.Write(reglaCoeficientes);
+			writerError.WriteLine();
 		}
 
 		/// <summary>
