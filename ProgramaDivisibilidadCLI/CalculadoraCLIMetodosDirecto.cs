@@ -16,7 +16,7 @@ namespace ProgramaDivisibilidad {
 			Func<long, long, int, (int, object)> funcionEjecutada = SeleccionarFuncionYAjustarFlags();
 			if (flags.VariasReglas?.Any() ?? false) {
 				flags.DatosRegla = [1,1,1];
-				EjectutarVarias(funcionEjecutada, flags.ListaDivisores, flags.ListaBases, flags.CoeficientesVarias);
+				_salida = EjectutarVarias(funcionEjecutada, flags.ListaDivisores, flags.ListaBases, flags.CoeficientesVarias);
 			} else {
 				if (flags.DatosRegla.Count == 2) flags.Directo = flags.Directo!.Append(1);
 				(_salida, object elementoCreado) = funcionEjecutada(flags.Divisor, flags.Base, flags.Coeficientes);
@@ -46,32 +46,35 @@ namespace ProgramaDivisibilidad {
 					}
 				}
 			}
-			if (flags.ActivarMensajesIntermedios) {
-				IntercalarMensajesParametros(reglas, tuplas, coeficiente);
-			} else {
-				string resultadoString = ObjetoAString(reglas,false);
-				_escritorSalida.WriteLine(resultadoString);
-			}
-			if (!hayExito) {
+			if (!hayExito) { // Si no hay reglas, no se escriben
 				_escritorError.WriteLine(VariasMensajeErrorTotal);
 				valorEjecucion = SALIDA_VARIAS_ERROR_TOTAL;
-			} else if (hayFallo) {
-				_escritorError.WriteLine(VariasMensajeError);
-				valorEjecucion = SALIDA_VARIAS_ERROR;
+			} else {
+				if (flags.ActivarMensajesIntermedios) {
+					IntercalarMensajesParametros(reglas, tuplas, coeficiente);
+				} else {
+					string resultadoString = ObjetoAString(reglas,false);
+					_escritorSalida.WriteLine(resultadoString);
+				}
+				if (hayFallo) {
+					_escritorError.WriteLine(VariasMensajeError);
+					valorEjecucion = SALIDA_VARIAS_ERROR;
+				}
 			}
 			return valorEjecucion;
 		}
 
 		private static void IntercalarMensajesParametros(List<object> reglas, List<(long divisor,long @base)> tuplas, int coeficiente) {
-			string salidaReglas = ObjetoAString(reglas);
+			string salidaReglas = ObjetoAString(reglas).Trim();
 			string[] lineas = salidaReglas.Split(Environment.NewLine);
-			int indiceLinea = 0, lineasPorRegla = flags.Todos ? PotenciaEntera(2, coeficiente) : 1, indiceTupla = -1, saltados = 0;
+			int indiceLinea = 0, lineasPorRegla = flags.Todos ? PotenciaEntera(2, coeficiente) : 1
+				, indiceTupla = -1, saltados = 0;
 			while (indiceLinea < lineas.Length) {
 				if ((indiceLinea - saltados) % lineasPorRegla == 0) {
 					indiceTupla++;
 				}
-				_escritorError.WriteLine(string.Format(MensajeParametrosDirecto, tuplas[indiceTupla].divisor, tuplas[indiceTupla].@base, coeficiente));
-				if (lineas[indiceLinea].Equals(string.Empty)) { // Si la regla falla
+				_escritorError.WriteLine(MensajeParametrosDirecto, tuplas[indiceTupla].divisor, tuplas[indiceTupla].@base, coeficiente);
+				if (lineas[indiceLinea].Equals(string.Empty)) { // Si la regla falla se salta
 					if (Mcd(tuplas[indiceTupla].divisor, tuplas[indiceTupla].@base) > 1) {
 						_escritorError.WriteLine(ErrorPrimo);
 					}
@@ -79,15 +82,23 @@ namespace ProgramaDivisibilidad {
 					saltados++;
 					continue;
 				}
-				if (flags.Todos) { // Porque cada regla tendrá varias líneas
+				if (flags.Todos) { // Porque cada regla tendrá varias líneas se escriben todas antes de ir a la siguentes
 					for (int j = 0; j < lineasPorRegla; j++, indiceLinea++) {
-						_escritorSalida.WriteLine(lineas[indiceLinea]);
+						if (indiceLinea >= lineas.Length - 1) {
+							_escritorSalida.Write(lineas[indiceLinea]);
+						} else {
+							_escritorSalida.WriteLine(lineas[indiceLinea]);
+						}
+					}
+				} else {
+					if (indiceLinea >= lineas.Length - 1) {
+						_escritorSalida.Write(lineas[indiceLinea++]);
+					} else {
+						_escritorSalida.WriteLine(lineas[indiceLinea++]);
 					}
 				}
-				else {
-					_escritorSalida.WriteLine(lineas[indiceLinea++]);
-				}
 			}
+			_escritorError.WriteLine();
 		}
 
 		private static Func<long, long, int, (int, object)> SeleccionarFuncionYAjustarFlags() {

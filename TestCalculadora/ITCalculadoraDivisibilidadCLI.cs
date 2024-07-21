@@ -2,6 +2,7 @@
 using NUnit.Framework.Legacy;
 using Operaciones;
 using ProgramaDivisibilidad;
+using ProgramaDivisibilidad.Recursos;
 using System.Globalization;
 using System.Text.Json.Nodes;
 
@@ -36,14 +37,19 @@ namespace TestCalculadora {
 			Console.SetError(_escritorError);
 		}
 
+		[Test(Description = "Aunque no haya usado NUnit demasiado quiero dejar un test con Assert.Charlie(), además si falla sabré que pasa algo")]
+		public void Charlie() {
+			Assert.Charlie();
+		}
+
 		[Test(Description = "Al llamar con -h se escribirá el texto de ayuda de los recursos")]
 		public void Calculadora_AyudaCorta_EscribeLaAyuda() {
 			_args = ["-h"];
-			string[] textoEsperado = ProgramaDivisibilidad.Recursos.TextoResource.AyudaCorta.Split(Environment.NewLine);
+			string[] textoEsperado = TextoResource.AyudaCorta.Split(Environment.NewLine);
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
-			string[] lineasResultado = LineasDeWriter(_escritorSalida);
 
+			string[] lineasResultado = LineasDeWriter(_escritorSalida);
 			Assert.Multiple(() => {
 				Assert.That(lineasResultado, Is.EqualTo(textoEsperado));
 				Assert.That(salida, Is.Zero);
@@ -55,18 +61,16 @@ namespace TestCalculadora {
 			Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en");
 			Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en");
 			_args = ["-H"];
-			string[] textoEsperado = ProgramaDivisibilidad.Recursos.TextoResource.Ayuda.Split(Environment.NewLine);
+			string[] textoEsperado = TextoResource.Ayuda.Split(Environment.NewLine);
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
-			string[] lineasResultado = LineasDeWriter(_escritorSalida);
 
+			string[] lineasResultado = LineasDeWriter(_escritorSalida);
 			Assert.Multiple(() => {
 				Assert.That(lineasResultado, Is.EqualTo(textoEsperado));
 				Assert.That(salida, Is.Zero);
 				Assert.That(lineasResultado[0], Contains.Substring("Help"));
 			});
-			Thread.CurrentThread.CurrentUICulture = _culturaActual;
-			Thread.CurrentThread.CurrentCulture = _culturaActual;
 		}
 
 		[Test(Description = "Al llamar a la calculadora en modo directo con base y divisor coprimos devuelve la regla por consola")]
@@ -76,8 +80,8 @@ namespace TestCalculadora {
 			Calculos.ReglaDivisibilidadOptima(regla, 7, 4, 10);
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
-			string[] lineasResultado = LineasDeWriter(_escritorSalida);
 
+			string[] lineasResultado = LineasDeWriter(_escritorSalida);
 			Assert.Multiple(() => {
 				Assert.That(lineasResultado[0], Is.EqualTo(regla.ToString()));
 				Assert.That(lineasResultado, Has.Length.EqualTo(1));
@@ -96,8 +100,8 @@ namespace TestCalculadora {
 			JsonNode? nodo = null;
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
-			string[] lineasResultado = LineasDeWriter(_escritorSalida);
 
+			string[] lineasResultado = LineasDeWriter(_escritorSalida);
 			Assert.Multiple(() => {
 				Assert.DoesNotThrow(() => nodo = JsonValue.Parse(_escritorSalida.ToString()!));
 				Assert.That(nodo, Is.Not.Null);
@@ -124,8 +128,8 @@ namespace TestCalculadora {
 			JsonNode? nodo = null;
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
-			string[] lineasResultado = LineasDeWriter(_escritorSalida);
 
+			string[] lineasResultado = LineasDeWriter(_escritorSalida);
 			Assert.Multiple(() => {
 				Assert.DoesNotThrow(() => nodo = JsonValue.Parse(_escritorSalida.ToString()!));
 				Assert.That(nodo, Is.Not.Null);
@@ -143,14 +147,26 @@ namespace TestCalculadora {
 			});
 		}
 
+		[Test(Description = "Al llamar a la calculadora en modo directo con datos no numéricos devuelve una pantalla de error y 2")]
+		public void Calculadora_Directo_ArgumentosInvalidos_SalidaDosYError() {
+			_args = ["-d", "sd", "5", "3"];
+
+			int salida = CalculadoraDivisibilidadCLI.Main(_args);
+
+			Assert.Multiple(() => {
+				Assert.That(salida, Is.EqualTo(2));
+				Assert.That(_escritorError.ToString(), Contains.Substring(TextoResource.SentenceErrorsHeadingText));
+			});
+		}
+
 		[Test(Description = "Al llamar a la calculadora en modo directo con base y divisor coprimos devuelve la regla por consola")]
 		public void Calculadora_Directo_ArgumentosNoCoprimos_SalidaUnoYSinRegla() {
 			_args = ["-d", "7", "14"]; //Mcd = 7
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
+
 			string[] lineasResultado = LineasDeWriter(_escritorSalida)
 				, lineasError = LineasDeWriter(_escritorError);
-
 			Assert.Multiple(() => {
 				Assert.That(lineasResultado[0], Is.Empty);
 				Assert.That(lineasResultado, Has.Length.EqualTo(1));
@@ -176,12 +192,68 @@ namespace TestCalculadora {
 			});
 		}
 
+		[Test(Description = "Al llamar con -m y dos strings de longs separados por comas, todos coprimos entre sí, devuelve todas las reglas de divisibilidad")]
+		public void Calculadora_VariasReglas_ArgumentosValidos_DevuelveTodasLasReglasYCero() { //Se comprueba la salida en otra prueba
+			_args = ["-m", "3,7,11,101", "10,20", "3"];
+			int longitudEsperada = 8;
+
+			int salida = CalculadoraDivisibilidadCLI.Main(_args);
+
+			string[] lineasResultado = LineasDeWriter(_escritorSalida);
+			Assert.Multiple(() => {
+				Assert.That(salida, Is.EqualTo(0));
+				Assert.That(lineasResultado, Has.Length.EqualTo(longitudEsperada));
+			});
+		}
+
+		[Test(Description = "Al llamar con -m y dos strings de longs separados por comas, todos coprimos entre sí, devuelve todas las reglas de divisibilidad")]
+		public void Calculadora_VariasReglas_ArgumentosParcialmenteCoprimos_DevuelveTodasLasReglasPosiblesYCinco() { //Se comprueba la salida en otra prueba
+			_args = ["-m", "3,7,11,101,20,10", "10,20", "3"];
+			int longitudEsperada = 8;
+
+			int salida = CalculadoraDivisibilidadCLI.Main(_args);
+
+			string[] lineasResultado = LineasDeWriter(_escritorSalida);
+			Assert.Multiple(() => {
+				Assert.That(salida, Is.EqualTo(5));
+				Assert.That(lineasResultado, Has.Length.EqualTo(longitudEsperada));
+			});
+		}
+
+		[Test(Description = "Al llamar con -m y dos strings de longs separados por comas, todos coprimos entre sí, devuelve todas las reglas de divisibilidad")]
+		public void Calculadora_VariasReglas_ArgumentosNoCoprimos_NoDevuelveReglasYSeis() { //Se comprueba la salida en otra prueba
+			_args = ["-m", "2,4,5,10", "10,20", "3"];
+
+			int salida = CalculadoraDivisibilidadCLI.Main(_args);
+
+			Assert.Multiple(() => {
+				Assert.That(salida, Is.EqualTo(6));
+				Assert.That(_escritorSalida.ToString(), Is.Empty);
+			});
+		}
+
+		[Test(Description = "Al llamar con -m y dos strings de longs separados por comas, todos coprimos entre sí, devuelve todas las reglas de divisibilidad")]
+		public void Calculadora_VariasReglasTodas_ArgumentosParcialmenteCoprimos_DevuelveTodasLasReglasPosiblesYCinco() {
+			_args = ["-am", "3,7,101,20", "10,20", "3"];
+			int longitudEsperada = 48;
+
+			int salida = CalculadoraDivisibilidadCLI.Main(_args);
+
+			string[] lineasResultado = LineasDeWriter(_escritorSalida);
+			Assert.Multiple(() => {
+				Assert.That(salida, Is.EqualTo(5));
+				Assert.That(lineasResultado, Has.Length.EqualTo(longitudEsperada));
+			});
+		}
+
 		private string[] ReglasToArray(ListSerie<ListSerie<long>> serie) {
 			return serie.Select(regla => regla.ToStringCompleto()).ToArray();
 		}
 
 		[TearDown]
 		public void RestaurarEntradaYSalida() {
+			Thread.CurrentThread.CurrentUICulture = _culturaActual;
+			Thread.CurrentThread.CurrentCulture = _culturaActual;
 			_lectorEntrada?.Close();
 			_escritorSalida.Close();
 			_escritorError.Close();

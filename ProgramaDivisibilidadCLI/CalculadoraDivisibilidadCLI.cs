@@ -17,9 +17,9 @@ namespace ProgramaDivisibilidad {
 		private const int SALIDA_CORRECTA = 0, SALIDA_ERROR = 1, SALIDA_ENTRADA_MALFORMADA = 2, SALIDA_VOLUNTARIA = 3, SALIDA_FRACASO_EXPANDIDA = 4
 			, SALIDA_VARIAS_ERROR = 5, SALIDA_VARIAS_ERROR_TOTAL = 6;
 		private const string SALIDA = "/";
-		private static bool _salir = false; //Usado para saber si el usuario ha solicitado terminar la ejecución
-		private static int _salida = SALIDA_CORRECTA; //Salida del programa
-		[NotNull] //Para que no me den los warnings
+		private static bool _salir; //Usado para saber si el usuario ha solicitado terminar la ejecución
+		private static int _salida; //Salida del programa
+		[NotNull] //Para que no me den los warnings, no debería ser null durante las partes relevantes del código
 		private static Flags? flags = null;
 		private static TextWriter _escritorSalida = Console.Out, _escritorError = Console.Error;
 		private static TextReader _lectorEntrada = Console.In;
@@ -38,12 +38,15 @@ namespace ProgramaDivisibilidad {
 		/// </list>
 		/// </returns>
 		public static int Main(string[] args) {
-		_escritorSalida = Console.Out; // Si se ejecutaba y se cambiaba de consola, no se actualizaba
-		_escritorError = Console.Error;
-		_lectorEntrada = Console.In;
-		//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
-		//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
-		SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
+			flags = null;
+			_salir = false;
+			_salida = SALIDA_CORRECTA;
+			_escritorSalida = Console.Out; // Si se ejecutaba y se cambiaba de consola, no se actualizaba
+			_escritorError = Console.Error;
+			_lectorEntrada = Console.In;
+			//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
+			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
+			SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
 			var parser = new Parser(with => with.HelpWriter = null);
 			var resultado = parser.ParseArguments<Flags>(args); //Parsea los argumentos
 				resultado
@@ -116,7 +119,7 @@ namespace ProgramaDivisibilidad {
 		/// Código de la _salida de la aplicación.
 		/// </returns>
 		private static void IniciarAplicacion() { //Si no se proporcionan los argumentos de forma directa, se establece un diálogo con el usuario para obtenerlos
-			_escritorError.WriteLine(string.Format(MensajeInicioDialogo,SALIDA));
+			_escritorError.WriteLine(MensajeInicioDialogo,SALIDA);
 			bool sinFlags = flags.FlagsInactivos;
 			static bool esS(char letra) => letra == 's' || letra == 'S';
 			flags.DatosRegla = [0,0,0];
@@ -342,7 +345,7 @@ namespace ProgramaDivisibilidad {
 		/// Escribe la regla de coeficientes por el <see cref="TextWriter"/> proporcionado
 		/// </summary>
 		private static void EscribirReglaPorWriter(string reglaCoeficientes, TextWriter writerSalida, TextWriter writerError, long divisor, long @base, int coeficientes = 1) {
-			writerError.WriteLine(string.Format(MensajeParametrosDirecto, divisor, @base, coeficientes));
+			writerError.WriteLine(MensajeParametrosDirecto, divisor, @base, coeficientes);
 			EscribirLineaErrorCondicional(MensajeFinDirecto);
 			writerSalida.Write(reglaCoeficientes);
 			writerError.WriteLine();
