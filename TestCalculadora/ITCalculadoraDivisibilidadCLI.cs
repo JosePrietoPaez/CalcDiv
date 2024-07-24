@@ -125,13 +125,13 @@ namespace TestCalculadora {
 			int coeficientes = 3;
 			ListSerie<ListSerie<long>> reglas = new();
 			Calculos.ReglasDivisibilidad(reglas, divisor, coeficientes, @base);
-			JsonNode? nodo = null;
+			JsonNode nodo = new JsonObject();
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
 
-			string[] lineasResultado = LineasDeWriter(_escritorSalida);
+			Assert.DoesNotThrow(() => nodo = JsonValue.Parse(_escritorSalida.ToString()!));
 			Assert.Multiple(() => {
-				Assert.DoesNotThrow(() => nodo = JsonValue.Parse(_escritorSalida.ToString()!));
+				Assert.That(salida, Is.Zero);
 				Assert.That(nodo, Is.Not.Null);
 				Assert.That((string?)nodo["name"], Is.Not.Null.And.EqualTo(nombre));
 				Assert.That((long?)nodo["base"], Is.EqualTo(@base));
@@ -246,7 +246,38 @@ namespace TestCalculadora {
 			});
 		}
 
-		private string[] ReglasToArray(ListSerie<ListSerie<long>> serie) {
+		[Test]
+		public void Calculadora_VariasJSON_ArgumentosParcialmenteCorrectos_DevuelveLasCorrectasJSONCorrectoYCinco() {
+			int[] divisores = [3, 7, 101, 20], bases = [10, 13];
+			_args = ["-jm", "3,7,101,20", "10,13", "3"];
+			JsonArray jsonReglas = [];
+			List<ListSerie<long>> reglas = [];
+			foreach (int i in divisores) {
+				foreach (int j in bases) {
+					ListSerie<long> serie = new();
+					if (Calculos.Mcd(i, j) > 1) {
+						Calculos.ReglaDivisibilidadOptima(serie, i, 3, j);
+					}
+					reglas.Add(serie);
+				}
+			}
+
+			int salida = CalculadoraDivisibilidadCLI.Main(_args);
+			Assert.DoesNotThrow(() => jsonReglas = (JsonArray)JsonNode.Parse(_escritorSalida.ToString())!); // Debe devolver una lista de objetos
+			Assert.Multiple(() => {
+				Assert.That(salida, Is.EqualTo(5));
+				Assert.That(jsonReglas, Is.Not.Null);
+				for (int indiceReglas = 0; indiceReglas < reglas.Count; indiceReglas++) { // Comprobamos en cada regla que los elementos están en el mismo orden
+					Assert.That((string)jsonReglas[indiceReglas]["name"]!, Is.Empty);
+					Assert.That((long)jsonReglas[indiceReglas]["base"]!, Is.EqualTo(indiceReglas);
+					for (int indiceCoeficientes = 0; indiceCoeficientes < reglas[indiceReglas].Longitud; indiceCoeficientes++) { // Comprobamos cada regla
+						Assert.That((long)jsonReglas[indiceReglas]["coefficients"][indiceCoeficientes]!, Is.EqualTo(reglas[indiceReglas][indiceCoeficientes]));
+					}
+				}
+			});
+		}
+
+		private static string[] ReglasToArray(ListSerie<ListSerie<long>> serie) {
 			return serie.Select(regla => regla.ToStringCompleto()).ToArray();
 		}
 

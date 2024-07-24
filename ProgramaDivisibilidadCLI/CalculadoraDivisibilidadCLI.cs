@@ -309,8 +309,6 @@ namespace ProgramaDivisibilidad {
 				objetoJSON.Append(tabulacion + "\"coefficients\" : [" + Environment.NewLine);
 				if (!regla.Vacia) {
 					AppendListaCasoFinalDistinto(objetoJSON, regla, tabulacionesMas + regla.UltimoElemento, (i) => tabulacionesMas + regla[i] + ',' + Environment.NewLine);
-				} else {
-					_escritorError.WriteLine(VariasMensajeVacio);
 				}
 				objetoJSON.Append(Environment.NewLine + tabulacion + ']');
 			} else if (objeto is ListSerie<ListSerie<long>> reglas) { // Para conjuntos de reglas derivadas
