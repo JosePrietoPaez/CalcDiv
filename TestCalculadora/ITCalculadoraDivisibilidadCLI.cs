@@ -269,7 +269,7 @@ namespace TestCalculadora {
 				Assert.That(jsonReglas, Is.Not.Null);
 				for (int indiceReglas = 0; indiceReglas < reglas.Count; indiceReglas++) { // Comprobamos en cada regla que los elementos están en el mismo orden
 					Assert.That((string)jsonReglas[indiceReglas]["name"]!, Is.Empty);
-					Assert.That((long)jsonReglas[indiceReglas]["base"]!, Is.EqualTo(indiceReglas);
+					Assert.That((long)jsonReglas[indiceReglas]["base"]!, Is.EqualTo(indiceReglas));
 					for (int indiceCoeficientes = 0; indiceCoeficientes < reglas[indiceReglas].Longitud; indiceCoeficientes++) { // Comprobamos cada regla
 						Assert.That((long)jsonReglas[indiceReglas]["coefficients"][indiceCoeficientes]!, Is.EqualTo(reglas[indiceReglas][indiceCoeficientes]));
 					}
