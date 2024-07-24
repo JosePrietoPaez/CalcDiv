@@ -1,32 +1,31 @@
 ﻿using CommandLine;
 using System.Text;
 using Listas;
-using Operaciones;
-using System.Text.Json;
+using static Operaciones.Calculos;
+using static ProgramaDivisibilidad.Recursos.TextoResource;
 using System.Diagnostics.CodeAnalysis;
 using CommandLine.Text;
-using ProgramaDivisibilidadCLI.Recursos;
-using ReadText.LocalizedDemo;
 
 namespace ProgramaDivisibilidad {
 
 	/// <summary>
 	/// Esta clase contiene el método principal de la aplicación
 	/// </summary>
-	[RequiresUnreferencedCode("Calls System.Text.Json.JsonSerializer.Serialize<TValue>(TValue, JsonSerializerOptions)")]
-	public static class CalculadoraDivisibilidadCLI {
+	public static partial class CalculadoraDivisibilidadCLI {
 		
 		//Inicialización de variables privadas
-		private const int SALIDA_CORRECTA = 0, SALIDA_ERROR = 1, SALIDA_ENTRADA_MALFORMADA = 2, SALIDA_VOLUNTARIA = 3, SALIDA_FRACASO_EXPANDIDA = 4;
+		private const int SALIDA_CORRECTA = 0, SALIDA_ERROR = 1, SALIDA_ENTRADA_MALFORMADA = 2, SALIDA_VOLUNTARIA = 3, SALIDA_FRACASO_EXPANDIDA = 4
+			, SALIDA_VARIAS_ERROR = 5, SALIDA_VARIAS_ERROR_TOTAL = 6;
 		private const string SALIDA = "/";
-		private static bool salir = false; //Usado para saber si el usuario ha solicitado terminar la ejecución
-		private static int salida = SALIDA_CORRECTA; //Salida del programa
-		[NotNull] //Para que no me den los warnings
+		private static bool _salir; //Usado para saber si el usuario ha solicitado terminar la ejecución
+		private static int _salida; //Salida del programa
+		[NotNull] //Para que no me den los warnings, no debería ser null durante las partes relevantes del código
 		private static Flags? flags = null;
-		private static readonly JsonSerializerOptions opcionesJson = new() { WriteIndented=true };
+		private static TextWriter _escritorSalida = Console.Out, _escritorError = Console.Error;
+		private static TextReader _lectorEntrada = Console.In;
 
 		/// <summary>
-		/// Este método calcula la regla de divisibilidad, obteniendo los datos desde la consola o desde los argumentos.
+		/// Este método calcula la regla de divisibilidad, obteniendo los datos desde la consola reglas desde los argumentos.
 		/// </summary>
 		/// <param name="args"></param>
 		/// <returns>
@@ -39,6 +38,12 @@ namespace ProgramaDivisibilidad {
 		/// </list>
 		/// </returns>
 		public static int Main(string[] args) {
+			flags = null;
+			_salir = false;
+			_salida = SALIDA_CORRECTA;
+			_escritorSalida = Console.Out; // Si se ejecutaba y se cambiaba de consola, no se actualizaba
+			_escritorError = Console.Error;
+			_lectorEntrada = Console.In;
 			//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
 			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
 			SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
@@ -46,39 +51,49 @@ namespace ProgramaDivisibilidad {
 			var resultado = parser.ParseArguments<Flags>(args); //Parsea los argumentos
 				resultado
 				.WithParsed(options => { flags = options;
-					//Console.Error.WriteLine(options.Dump());
+					//_escritorError.WriteLine(options.Dump());
 				})
-				.WithNotParsed(errors => { salida = SALIDA_ENTRADA_MALFORMADA;
-					//Console.Error.WriteLine(resultado);
+				.WithNotParsed(errors => { _salida = SALIDA_ENTRADA_MALFORMADA;
+					//_escritorError.WriteLine(resultado);
 					MostrarAyuda(resultado, errors);
 				});
-			if (salida != SALIDA_ENTRADA_MALFORMADA) {
-				GestionarFlags();
+			if (_salida != SALIDA_ENTRADA_MALFORMADA) {
+				SeleccionarModo();
 			}
-			return salida;
+			return _salida;
 		}
 
-		private static void GestionarFlags() {
+		private static void SeleccionarModo() {
 			if (flags is null) {
-				salida = SALIDA_ENTRADA_MALFORMADA;
+				_salida = SALIDA_ENTRADA_MALFORMADA;
 			} else {
 				if (flags.Nombre == "-") { // El valor por defecto es - para que se vea en la pantalla de ayuda
 					flags.Nombre = string.Empty;
 				}
+				Action modoElegido;
 				if (flags.Ayuda) {
-					Console.Error.Write(TextoResource.Ayuda);
-					salida = SALIDA_CORRECTA;
+					modoElegido = EscribirAyudaLarga;
 				} else if (flags.AyudaCorta) {
-					Console.Error.WriteLine(TextoResource.AyudaCorta);
-					salida = SALIDA_CORRECTA;
+					modoElegido = EscribirAyudaCorta;
 				} else { 
-					if (flags.Directo.Count() > 1) { //Si se ha activado el modo directo
-						IntentarDirecto();
+					if (flags.ActivarDirecto) { //Si se ha activado el modo directo
+						modoElegido = IntentarDirecto;
 					} else {
-						IniciarAplicacion();
+						modoElegido = IniciarAplicacion;
 					}
 				}
+				modoElegido();
 			}
+		}
+
+		private static void EscribirAyudaLarga() {
+			_escritorSalida.Write(Ayuda);
+			_salida = SALIDA_CORRECTA;
+		}
+
+		private static void EscribirAyudaCorta() {
+			_escritorSalida.Write(AyudaCorta);
+			_salida = SALIDA_CORRECTA;
 		}
 
 		private static void MostrarAyuda<T>(ParserResult<T> resultado, IEnumerable<Error> errores) {
@@ -89,51 +104,7 @@ namespace ProgramaDivisibilidad {
 				ayuda.AddEnumValuesToHelpText = true;
 				return HelpText.DefaultParsingErrorsHandler(resultado, ayuda);
 			}, ejemplo => ejemplo);
-			Console.Error.WriteLine(textoAyuda);
-		}
-
-		/// <summary>
-		/// Lógica de la aplicación en modo directo.
-		/// </summary>
-		/// <returns>
-		/// booleano que indica si ha conseguido calcular la regla.
-		/// </returns>
-		private static void IntentarDirecto() { //Intenta dar las reglas de forma directa, cambia salida para mostrar el error
-			List<long> datos = flags.Directo.ToList();
-			if (datos.Count == 2) datos.Add(1);
-			salida = SALIDA_CORRECTA;
-			(bool exitoExtendido, string mensajeRegla, int informacion) reglas = (false,"",-1);
-			if (flags.Extendido) {
-				reglas = Calculos.ReglaDivisibilidadExtendida(datos[0], datos[1]);
-				Console.WriteLine(reglas.mensajeRegla);
-				if (!reglas.exitoExtendido) {
-					salida = SALIDA_FRACASO_EXPANDIDA;
-				}
-			}
-			if (!reglas.exitoExtendido && Calculos.Mcd(datos[0], datos[1]) == 1) { //Si falla al obtener reglas alternativas o no se ha buscado, y base y divisor son coprimos
-				Console.Error.WriteLine(string.Format(TextoResource.MensajeParametrosDirecto, datos[0], datos[1], datos[2]));
-				CalcularReglaCoeficientes(datos[0], datos[1], (int)datos[2]);
-			} else if (Calculos.Mcd(datos[0], datos[1]) != 1) { //Si el divisor y la base no son coprimos
-				Console.Error.WriteLine(string.Format(TextoResource.MensajeParametrosDirecto, datos[0], datos[1], datos[2]));
-				Console.Error.WriteLine(TextoResource.ErrorPrimo);
-				salida = SALIDA_ERROR;
-			} else { //Si se ha obtenido una regla alternativa
-				salida = SALIDA_CORRECTA;
-			}
-		}
-
-		/// <summary>
-		/// Calcula las reglas de coeficientes especificadas en flags con los argumentos
-		/// </summary>
-		/// <remarks>
-		/// Escribe por consola lo que sea necesario
-		/// </remarks>
-		private static void CalcularReglaCoeficientes(long divisor, long @base, int coeficientes) {
-			string salidaConsola = ObtenerReglas(divisor, @base, coeficientes);
-			Console.Error.WriteLine(TextoResource.MensajeFinDirecto);
-			Console.Write(salidaConsola);
-			salida = SALIDA_CORRECTA;
-			Console.Error.WriteLine();
+			_escritorError.WriteLine(textoAyuda);
 		}
 
 		/// <summary>
@@ -142,199 +113,285 @@ namespace ProgramaDivisibilidad {
 		/// <remarks>
 		/// Véase la documentación de 
 		/// <see cref="Main(string[])"/>
-		/// para ver el significado de la salida.
+		/// para ver el significado de la _salida.
 		/// </remarks>
 		/// <returns>
-		/// Código de la salida de la aplicación.
+		/// Código de la _salida de la aplicación.
 		/// </returns>
 		private static void IniciarAplicacion() { //Si no se proporcionan los argumentos de forma directa, se establece un diálogo con el usuario para obtenerlos
-			Console.WriteLine(string.Format(TextoResource.MensajeInicioDialogo,SALIDA));
-			bool sinFlags = SinFlags();
-			long @base, divisor;
-			string nombre = "";
+			_escritorError.WriteLine(MensajeInicioDialogo,SALIDA);
+			bool sinFlags = flags.FlagsInactivos;
 			static bool esS(char letra) => letra == 's' || letra == 'S';
+			flags.DatosRegla = [0,0,0];
 			try {
 				do {
 					//Si no tiene flags las pedirá durante la ejecución
 					if (sinFlags) {
-						//Le una tecla de entrada o lanza excepción si es la salida
-						flags.Extendido = !ObtenerDeUsuario(TextoResource.MensajeDialogoExtendido, esS);
+						//Le una tecla de entrada reglas lanza excepción si es la _salida
+						flags.TipoExtra = !ObtenerDeUsuario(MensajeDialogoExtendido, esS);
 
-						if (!flags.Extendido) {
-							flags.JSON = ObtenerDeUsuario(TextoResource.MensajeDialogoJson, esS);
+						if (!flags.TipoExtra) {
+							flags.JSON = ObtenerDeUsuario(MensajeDialogoJson, esS);
 						}
-						
+
 					}
 
-					if (flags.Extendido) {
+					//Pregunta el dato en bucle hasta que sea correcto a lanza excepción si es el mensaje de _salida
 
-						//Pregunta el dato en bucle hasta que sea correcto a lanza excepción si es el mensaje de salida
-						ObtenerDeUsuario(out divisor, 0
-							, TextoResource.ErrorDivisor
-							, TextoResource.MensajeDialogoDivisor);
+					ObtenerDeUsuario(out long @base, 2
+						, ErrorBase
+						, MensajeDialogoBase);
 
-						ObtenerDeUsuario(out @base, 2
-							, TextoResource.ErrorBase
-							, TextoResource.MensajeDialogoBase);
+					if (flags.TipoExtra) { //Si la regla es de algún tipo extra
+
+						ObtenerDeUsuario(out long divisor, 0
+							, ErrorDivisor
+							, MensajeDialogoDivisor);
+
+						flags.DatosRegla = [divisor, @base, 1];
 
 						//Intenta buscar una regla alternativa
-						Console.Write(Calculos.ReglaDivisibilidadExtendida(divisor,@base).Item2);
-						Console.Error.WriteLine();
+						_escritorSalida.WriteLine(ReglaDivisibilidadExtendida(divisor, @base).Item2 + Environment.NewLine);
 
-					} else {
+					} else { //Si la regla debe ser de coeficientes
 
-						ObtenerDeUsuario(out divisor, 0
-							, TextoResource.ErrorDivisor
-							, TextoResource.MensajeDialogoDivisor);
-
-						ObtenerDeUsuarioCoprimo(out @base, 2, divisor
-							, TextoResource.ErrorBase
-							, TextoResource.MensajeDialogoBase);
+						//Pregunta hasta que sea coprimo con base o sea _salida
+						ObtenerDeUsuarioCoprimo(out long divisor, 2
+							, @base
+							, ErrorDivisorCoprimo
+							, MensajeDialogoDivisor);
 
 						ObtenerDeUsuario(out int coeficientes, 1
-							, TextoResource.ErrorCoeficientes
-							, TextoResource.MensajeDialogoCoeficientes);
+							, ErrorCoeficientes
+							, MensajeDialogoCoeficientes);
+
+						flags.DatosRegla = [divisor, @base, coeficientes];
 
 						if (sinFlags) {
-							flags.Todos = ObtenerDeUsuario(TextoResource.MensajeDialogoTodas, esS);
+							flags.Todos = ObtenerDeUsuario(MensajeDialogoTodas, esS);
 
-							ObtenerDeUsuario(out nombre, TextoResource.MensajeDialogoRegla);
+							ObtenerDeUsuario(out string nombre, MensajeDialogoRegla);
+							flags.Nombre = nombre;
 						}
 
-						Console.Error.WriteLine(TextoResource.MensajeDialogoResultado);
-						Console.Write(ObtenerReglas(divisor, @base, coeficientes));
-						Console.Error.WriteLine();
+						string resultado = ObtenerReglas(divisor, @base, coeficientes);
+						EscribirReglaPorWriter(resultado + Environment.NewLine, _escritorSalida, _escritorError, divisor, @base, coeficientes);
 
 					}
 
-					salir = !ObtenerDeUsuario(TextoResource.MensajeDialogoRepetir, esS);
+					_salir = !ObtenerDeUsuario(MensajeDialogoRepetir, esS);
+					_salida = SALIDA_CORRECTA;
 
-				} while (!salir);
-			} catch {
-				salir = true;
-				Console.WriteLine(Environment.NewLine + TextoResource.MensajeDialogoInterrumpido);
-			}			
-			salida = salir? SALIDA_VOLUNTARIA : SALIDA_CORRECTA;
-		}
-
-		private static bool SinFlags() {
-			return !(flags.Todos || flags.SaltarPreguntas || flags.JSON || flags.Extendido || flags.Nombre != string.Empty || flags.Directo.Any());
+				} while (!_salir);
+			}
+			catch (SalidaException) {
+				_salida = SALIDA_VOLUNTARIA;
+				_escritorError.WriteLine(Environment.NewLine + MensajeDialogoInterrumpido);
+			}
+			catch (Exception e) {
+				_salida = SALIDA_ERROR;
+				_escritorError.WriteLine(e.StackTrace);
+				_escritorError.WriteLine(DialogoExcepcionInesperada);
+			}
 		}
 
 		private static bool ObtenerDeUsuario(string mensaje, Func<char,bool> comparador) {
-			Console.Error.Write(mensaje);
-			char entrada = Console.ReadKey().KeyChar;
-			if (entrada == SALIDA[0]) throw new Exception(TextoResource.MensajeSalidaVoluntaria);
-			Console.Error.WriteLine();
+			_escritorError.Write(mensaje);
+			char entrada = Console.ReadKey().KeyChar; //Necesario usar la consola
+			LanzarExcepcionSiSalida(entrada.ToString());
+			_escritorError.WriteLine();
 			return comparador(entrada);
 		}
 
 		private static void ObtenerDeUsuario(out long dato, long minimo, string mensajeError, string mensajePregunta) {
-			Console.Error.Write(mensajePregunta);
-			string? linea = Console.ReadLine();
+			_escritorError.Write(mensajePregunta);
+			string? linea = _lectorEntrada.ReadLine();
 			while (!long.TryParse(linea, out dato) || dato < minimo) {
-				Console.Error.WriteLine(Environment.NewLine + mensajeError);
-				Console.Error.Write(mensajePregunta);
-				linea = Console.ReadLine();
 				LanzarExcepcionSiSalida(linea);
+				_escritorError.WriteLine(Environment.NewLine + mensajeError);
+				_escritorError.Write(mensajePregunta);
+				linea = _lectorEntrada.ReadLine();
 			}
-			Console.Error.WriteLine();
+			_escritorError.WriteLine();
 		}
 
 		private static void ObtenerDeUsuario(out int dato, long minimo, string mensajeError, string mensajePregunta) {
-			Console.Error.Write(mensajePregunta);
-			string? linea = Console.ReadLine();
+			_escritorError.Write(mensajePregunta);
+			string? linea = _lectorEntrada.ReadLine();
 			while (!int.TryParse(linea, out dato) || dato < minimo) {
-				Console.Error.WriteLine(Environment.NewLine + mensajeError);
-				Console.Error.Write(mensajePregunta);
-				linea = Console.ReadLine();
 				LanzarExcepcionSiSalida(linea);
+				_escritorError.WriteLine(Environment.NewLine + mensajeError);
+				_escritorError.Write(mensajePregunta);
+				linea = _lectorEntrada.ReadLine();
 			}
-			Console.Error.WriteLine();
+			_escritorError.WriteLine();
 		}
 
 		private static void ObtenerDeUsuarioCoprimo(out long dato, long minimo, long coprimo, string mensajeError, string mensajePregunta) {
-			Console.Error.Write(mensajePregunta);
-			string? linea = Console.ReadLine();
-			while (!long.TryParse(linea, out dato) || dato < minimo || Calculos.Mcd(dato,coprimo) > 1) {
-				Console.Error.WriteLine(Environment.NewLine + mensajeError);
-				Console.Error.Write(mensajePregunta);
-				linea = Console.ReadLine();
+			_escritorError.Write(mensajePregunta);
+			string? linea = _lectorEntrada.ReadLine();
+			while (!long.TryParse(linea, out dato) || dato < minimo || Mcd(dato,coprimo) > 1) {
 				LanzarExcepcionSiSalida(linea);
+				_escritorError.WriteLine(Environment.NewLine + mensajeError);
+				_escritorError.Write(mensajePregunta);
+				linea = _lectorEntrada.ReadLine();
 			}
-			Console.Error.WriteLine();
+			_escritorError.WriteLine();
 		}
 
 		private static void ObtenerDeUsuario(out string dato, string mensajePregunta) {
-			Console.Error.Write(mensajePregunta);
-			dato = Console.ReadLine() ?? "";
+			_escritorError.Write(mensajePregunta);
+			dato = _lectorEntrada.ReadLine() ?? "";
 			LanzarExcepcionSiSalida(dato);
-			Console.Error.WriteLine();
+			_escritorError.WriteLine();
 		}
 
 		private static void LanzarExcepcionSiSalida(string? linea) {
-			if (linea == SALIDA) throw new Exception(TextoResource.MensajeSalidaVoluntaria);
-		}
-
-		private static string ObtenerReglas(long divisor, long @base, int coeficientes) {
-			string resultado;
-			if (flags.Todos) { //Si se piden las 2^coeficientes reglas
-				ListSerie<ListSerie<long>> series = new();
-				Calculos.ReglasDivisibilidad(series, divisor, coeficientes,@base);
-				if (flags.Nombre != "") {
-					foreach (var serie in series) {
-						serie.Nombre = flags.Nombre;
-					}
-				}
-				resultado = SerieRectangularString(series);
-			} else {
-				ListSerie<long> serie = new(flags.Nombre);
-				Calculos.ReglaDivisibilidadOptima(serie, divisor, coeficientes, @base);
-				resultado = StringSerieConFlags(serie);
-			}
-			return resultado;
-		}
-
-		private static void EscribirArchivo(string ruta) {
-			string texto = File.ReadAllText(ruta);
-			Console.WriteLine(texto);
-		}
-
-		private static string SerieRectangularString(ListSerie<ListSerie<long>> serie) {
-			if (flags.JSON) {
-				return Serializar(serie);
-			}
-			StringBuilder stringBuilder = new();
-			for (int i = 0; i < serie.Longitud - 1; i++) {
-				stringBuilder.AppendLine(StringSerieConFlags(serie[i]));
-			}
-			stringBuilder.Append(StringSerieConFlags(serie[serie.Longitud - 1]));
-			return stringBuilder.ToString();
+			if (linea == SALIDA) throw new SalidaException(MensajeSalidaVoluntaria);
 		}
 
 		/// <summary>
-		/// Devuelve el ToString adecuado de <c>serie</c>.
+		/// Devuelve un string para la consola, depende del tipo del objeto
 		/// </summary>
-		/// <param name="serie"></param>
 		/// <returns>
-		/// String que representa a <c>serie</c> dependiendo de los flags.
+		/// String apropiado según el tipo del objeto y el estado del programa
 		/// </returns>
-		private static string StringSerieConFlags(ListSerie<long> serie) {
-			if (flags.JSON) {
-				return Serializar(serie);
-			}
-			return serie.Nombre != string.Empty ? serie.ToStringCompleto() : serie.ToString()??"";
+		private static string ObjetoAString(object? obj, bool escribirDatos = true) {
+			if (obj == null) return ObjetoNuloMensaje;
+			if (flags.JSON) return Serializar(obj,escribirDatos: escribirDatos);
+			string resultadoObjeto = obj switch {
+				// Para una regla de coeficientes única
+				ListSerie<long> regla => regla.Nombre != string.Empty ? regla.ToStringCompleto() : regla.ToString() ?? "",
+				// Para una regla de reglas de coeficientes obtenidas de una regla, usa recursión
+				ListSerie<ListSerie<long>> or List<string> or List<object> => EnumerableStringSeparadoLinea((IEnumerable<object>)obj),//Se juntan los casos para que sean separados por la recursión
+				_ => obj.ToString() ?? ObjetoNuloMensaje,
+			};
+			return resultadoObjeto;
 		}
 
-		private static string Serializar(object o) {
-			string res = "{" + Environment.NewLine;
-			if (o is ListSerie<long> lista) {
-				res += "\"name\" : \"" + lista.Nombre + "\", " + Environment.NewLine + "\"list\" : ";
-			} else if (o is ListSerie<ListSerie<long>> otra) {
-				res += "\"name\" : \"" + otra.Nombre + "\", " + Environment.NewLine + "\"list\" : ";
+		private static string EnumerableStringSeparadoLinea<T>(IEnumerable<T> enumerable) {
+			StringBuilder stringBuilder = new();
+			foreach (T item in enumerable) {
+				stringBuilder.AppendLine(ObjetoAString(item));
 			}
-			res += JsonSerializer.Serialize(o, opcionesJson) + Environment.NewLine + "}";
-			return res;
+			stringBuilder.Remove(stringBuilder.Length - Environment.NewLine.Length, Environment.NewLine.Length); // Podría cambiar el foreach para no hacer esto pero seria mas complicado
+			return stringBuilder.ToString();
+
+		}
+
+		/// <summary>
+		/// Convierte una regla de <see cref="Listas"/> a un string JSON
+		/// </summary>
+		/// <param name="listas">reglas que serializar a JSON</param>
+		/// <param name="indentacion">número de tabulaciones en cada línea</param>
+		/// <param name="escribirDatos">indica si se deben escribir los datos de la regla</param>
+		/// <returns>
+		/// JSON que representa la regla
+		/// </returns>
+		private static string Serializar(object listas, int indentacion = 0, bool escribirDatos = true) {
+			string tabulaciones = Tabulaciones(indentacion);
+			bool encapsular = listas is not List<object>;
+			StringBuilder listasJson = new();
+			if (encapsular) listasJson.Append(tabulaciones + '{' + Environment.NewLine);
+			listasJson.Append(ObjetoAJSON(listas, indentacion + (encapsular ? 1 : 0), escribirDatos));
+			if (encapsular) listasJson.Append(Environment.NewLine + tabulaciones + '}');
+			return listasJson.ToString();
+		}
+
+		private static string ObjetoAJSON(object objeto, int indentacion = 0, bool escribirDatos = true) {
+			StringBuilder objetoJSON = new();
+			string tabulacion = Tabulaciones(indentacion)
+				, tabulacionesMas = tabulacion + '\t';
+			if (escribirDatos) {
+				InsertarPropiedadesLista(objetoJSON,tabulacion);
+			}
+			if (objeto is ListSerie<long> regla) { // Para una regla
+				objetoJSON.Append(tabulacion + "\"coefficients\" : [" + Environment.NewLine);
+				if (!regla.Vacia) {
+					AppendListaCasoFinalDistinto(objetoJSON, regla, tabulacionesMas + regla.UltimoElemento, (i) => tabulacionesMas + regla[i] + ',' + Environment.NewLine);
+				}
+				objetoJSON.Append(Environment.NewLine + tabulacion + ']');
+			} else if (objeto is ListSerie<ListSerie<long>> reglas) { // Para conjuntos de reglas derivadas
+				objetoJSON.Append(tabulacion + "\"rules\" : [" + Environment.NewLine);
+				if (!reglas.Vacia) {
+					AppendListaCasoFinalDistinto(objetoJSON, reglas, Serializar(reglas.UltimoElemento, indentacion + 1, false), (i) => Serializar(reglas[i], indentacion + 1, false) + ',');
+				}
+				objetoJSON.Append(Environment.NewLine + tabulacion + ']');
+			} else if (objeto is List<object> lista) {
+				objetoJSON.Append(tabulacion + "[" + Environment.NewLine);
+				if (lista.Count > 0) {
+					AppendListaCasoFinalDistinto(objetoJSON, lista, Serializar(lista[^1], indentacion + 1, true), (i) => Serializar(lista[i], indentacion + 1, true) + ',');
+				}
+				objetoJSON.Append(Environment.NewLine + tabulacion + ']');
+			}
+			return objetoJSON.ToString();
+		}
+
+		private static void AppendListaCasoFinalDistinto<T>(StringBuilder builder, IEnumerable<T> lista, string casoFinal, Func<int,string> generadorNormal) {
+			IEnumerator<T> enumerator = lista.GetEnumerator();
+			int longitud = lista.Count();
+			for (int i = 0; enumerator.MoveNext(); i++) {
+				if (i == longitud - 1) {
+					builder.Append(casoFinal);
+				} else {
+					builder.Append(generadorNormal(i));
+				}
+			}
+		}
+
+		/// <summary>
+		/// Escribe la regla de coeficientes por el <see cref="TextWriter"/> proporcionado
+		/// </summary>
+		private static void EscribirReglaPorWriter(string reglaCoeficientes, TextWriter writerSalida, TextWriter writerError, long divisor, long @base, int coeficientes = 1) {
+			writerError.WriteLine(MensajeParametrosDirecto, divisor, @base, coeficientes);
+			EscribirLineaErrorCondicional(MensajeFinDirecto);
+			writerSalida.Write(reglaCoeficientes);
+			writerError.WriteLine();
+		}
+
+		/// <summary>
+		/// Obtiene el string de una regla de coeficientes a partir de su base, divisor y coeficientes.
+		/// </summary>
+		/// <param name="divisor"></param>
+		/// <param name="base"></param>
+		/// <param name="coeficientes"></param>
+		/// <returns>
+		/// String apropiado para la regla según los datos proporcionados.
+		/// </returns>
+		private static string ObtenerReglas(long divisor, long @base, int coeficientes) {
+			string resultado;
+			object? reglas = null;
+			if (flags.Todos) { //Si se piden las 2^coeficientes reglas
+				ListSerie<ListSerie<long>> series = new();
+				ReglasDivisibilidad(series, divisor, coeficientes, @base);
+				if (flags.Nombre != "") {
+					foreach (var serie in series) {
+						serie.Nombre = flags.Nombre ?? "";
+					}
+				}
+				reglas = series;
+			} else {
+				ListSerie<long> serie = new(flags.Nombre ?? "");
+				ReglaDivisibilidadOptima(serie, divisor, coeficientes, @base);
+				reglas = serie;
+			}
+			resultado = ObjetoAString(reglas);
+			return resultado;
+		}
+
+		private static string Tabulaciones(int cantidad) {
+			string tabulaciones = "";
+			while (cantidad > 0) {
+				tabulaciones += '\t';
+				cantidad--;
+			}
+			return tabulaciones;
+		}
+
+		private static void InsertarPropiedadesLista(StringBuilder stringBuilder, string tabulaciones = "") {
+			stringBuilder.Append(tabulaciones + "\"divisor\" : " + flags.Divisor + ',' + Environment.NewLine);
+			stringBuilder.Append(tabulaciones + "\"base\" : " + flags.Base + ',' + Environment.NewLine);
+			stringBuilder.Append(tabulaciones + "\"name\" : " + '\"' + flags.Nombre + '\"' + ',' + Environment.NewLine);
 		}
 	}
 }

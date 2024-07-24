@@ -1,6 +1,7 @@
 ﻿using Listas;
 using Operaciones.Recursos;
 using System.Diagnostics.CodeAnalysis;
+using static System.Math;
 using System.Text;
 
 namespace Operaciones
@@ -30,7 +31,7 @@ namespace Operaciones
 			if (numero <= 1) return false; //Por definición
 			if (numero == 2) return true; //Porque si no, no va
 			long cont = 2;
-			double raizT = ((long)Math.Sqrt(numero)) + 1;
+			double raizT = ((long)Sqrt(numero)) + 1;
 			while (cont < raizT && numero % cont != 0) {
 				cont++;
 			}
@@ -199,7 +200,9 @@ namespace Operaciones
 		/// Devuelve el mínimo de los absolutos entre <c>primero</c> y <c>segundo</c>.
 		/// </summary>
 		public static long MinAbs(long primero, long segundo) {
-			return Math.Min(Math.Abs(primero), Math.Abs(segundo));
+			if (Min(Abs(primero), Abs(segundo)) == Abs(primero))
+				return primero;
+			return segundo;
 		}
 
 		/// <summary>
@@ -207,7 +210,7 @@ namespace Operaciones
 		/// </summary>
 		public static short Cifras(long num, long @base) { 
 			if (num == 0) return 1;
-			return (short)Math.Ceiling(Math.Log(Math.Abs(num) + 1L) / Math.Log(@base));
+			return (short)Ceiling(Log(Abs(num) + 1L) / Log(@base));
 		}
 
 		/// <summary>
@@ -215,7 +218,7 @@ namespace Operaciones
 		/// </summary>
 		public static short Cifras(double num, double @base) {
 			if (num == 0) return 1;
-			return (short)Math.Ceiling(Math.Log(Math.BitIncrement(Math.Abs(num))) / Math.Log(@base));
+			return (short)Ceiling(Log(BitIncrement(Abs(num))) / Log(@base));
 		}
 		
 		/// <summary>
@@ -236,7 +239,7 @@ namespace Operaciones
 		/// </returns>
 		public static short Cifra(long num, long pos, long @base) { //Recemos para que nadie ponga primero número de base mayor a 32767
 			if (pos >= Cifras(num, @base) || pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
-			return (short)(Math.Abs(num) / PotenciaEntera(@base,pos) % @base);	
+			return (short)(Abs(num) / PotenciaEntera(@base,pos) % @base);	
 		}
 
 		/**
@@ -430,7 +433,7 @@ namespace Operaciones
 		/// <param name="divisor"></param>
 		/// <param name="@base"></param>
 		/// <returns>
-		/// Tupla con primero booleano indicando el éxito del método y primero mensaje explicando la regla obtenida.
+		/// Tupla con primero booleano indicando el éxito del método, segundo mensaje explicando la regla obtenida y tercero con información.
 		/// </returns>
 		public static (bool,string,int) ReglaDivisibilidadExtendida(long divisor, long @base) {
 			var caso = CasoEspecialRegla(divisor, @base);
@@ -572,10 +575,10 @@ namespace Operaciones
 		private static (bool cumpleCondicion,int dato) ProductoDePotenciasDeBases(ILista<long> divisor, ILista<long> @base, long valorRaiz) {
 			if (@base.Vacia) return (false, -1);
 			int maxPotencia = 0;
-			for (int i = 0; i < Math.Min(divisor.Longitud,@base.Longitud); i++) { //Comprueba que todos los valores de divisor estén en @base
+			for (int i = 0; i < Min(divisor.Longitud,@base.Longitud); i++) { //Comprueba que todos los valores de divisor estén en @base
 				//Si en divisor es mayor que cero, pero en @base es cero, tiene primero componente primo que no esta en @base y no se le puede aplicar la regla
 				if (divisor[i] != 0 && @base[i] == 0) return (false, -1);
-				maxPotencia = Math.Max(maxPotencia, @base[i] == 0 ? 0 : (int)Math.Ceiling(divisor[i] / (double)@base[i]));
+				maxPotencia = Max(maxPotencia, @base[i] == 0 ? 0 : (int)Ceiling(divisor[i] / (double)@base[i]));
 			}
 			return (true, maxPotencia);
 		}

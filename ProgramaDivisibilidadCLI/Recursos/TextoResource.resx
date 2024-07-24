@@ -121,7 +121,11 @@
     <value>The divisor, the base and coefficient amount must be positive integers.</value>
   </data>
   <data name="ErrorPrimo" xml:space="preserve">
-    <value>The divisor and the base must be coprime, their greatest common divisor must be greater than one.</value>
+    <value>The divisor and the base are not coprime.
+Calculating a coefficient in this case will not be implemented.
+Run this program with the option-x to obtain a different type of rule, or activate it in dialog mode.</value>
+    <comment>1 is the divisior divided by the gcd of itself and the base.
+0 is the gcd.</comment>
   </data>
   <data name="HelpAyuda" xml:space="preserve">
     <value>Outputs a longer help document explaining this application more in-depth.</value>
@@ -142,7 +146,7 @@
     <value>Gives the coefficient rule a name, which is included in its output.</value>
   </data>
   <data name="HelpSaltar" xml:space="preserve">
-    <value>Used to prevent dialog mode from explicitly asking for binary flags, does not affect output.</value>
+    <value>Without any other options, skips dialogue related to other options, does not affect output.</value>
   </data>
   <data name="HelpTodos" xml:space="preserve">
     <value>Outputs all coefficient rules with elements whose absolute value is less than the divisor.</value>
@@ -176,10 +180,10 @@
   </data>
   <data name="ErrorDivisor" xml:space="preserve">
     <value>The divisor must be a non-negative integer.
-Keep in mind that numbers divisible by a negative number are divisible to its absolute value.</value>
+Keep in mind that numbers divisible by a negative number are divisible by its absolute value.</value>
   </data>
-  <data name="ErrorBaseCoprima" xml:space="preserve">
-    <value>The base must be a positive integer greater than one and coprime with the base.
+  <data name="ErrorDivisorCoprimo" xml:space="preserve">
+    <value>The divisor must be a positive integer greater than one and coprime with the base.
 Two numbers are coprime if their greatest common divisor is greater than one.</value>
   </data>
   <data name="MensajeDialogoDivisor" xml:space="preserve">
@@ -288,6 +292,7 @@ Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and o
 -n: writes the given name before every element or is included in the JSON output.
 -j: outputs the rule in JSON, unless -x is used.
 -x: outputs a different rule, also explains how to apply said rule. Possible cases are similar to the rules of 0, 1, 2, 3 and 11.
+-m: receives divisors and bases separated by commas and returns all the rules of every divisor,base pair. May also receive the length of the rules.
 
 All arguments and options must be valid.
 Options with arguments must not be followed by another option in the same combination, for example *CalcDivCLI.exe -na Nombre* is invalid, but the combination -an Nombre is valid.
@@ -312,6 +317,8 @@ If we cannot determine whether the number is a multiple of the divisor, we apply
 2: there was an error parsing the options or arguments.
 3: the user quit during dialog.
 4: could not find an alternative rule with -x.
+5: multiple rules were requested, some weren't calculated.
+6: multiple rules were requested, none were calculated.
 </value>
   </data>
   <data name="AyudaCorta" xml:space="preserve">
@@ -322,5 +329,47 @@ Equivalent to: *CalcDiv.exe -jd 7 10 -n Nombre*
 Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and outputs it in JSON.
 
 Use --help for more information about options and arguments or -H for more information about this application.</value>
+  </data>
+  <data name="DirectoReferirExtendidoPotencias" xml:space="preserve">
+    <value>Cannot calculate coefficient rule, the divisor is composed of the prime factors of the base, a rule can be calculated running with -x option, like: </value>
+  </data>
+  <data name="DirectoReferirExtendidoErrorInesperado" xml:space="preserve">
+    <value>Cannot calculate this rule due to an unexpected error, try running with -x option, like: </value>
+  </data>
+  <data name="DirectoReferirExtendidoUsable" xml:space="preserve">
+    <value>Coefficient rule can be calculated, however, in this case it is recommended to run with -x option, like: </value>
+  </data>
+  <data name="DirectoReferirExtendidoValido" xml:space="preserve">
+    <value>Coefficient rule can be calculated, in this case it is not recommended to use the -x option.</value>
+  </data>
+  <data name="DialogoExcepcionInesperada" xml:space="preserve">
+    <value>An unexpected error ocurred, consider creating a new Issue on GitHub if it isn't present, include the trace above and the arguments provided:
+https://github.com/JosePrietoPaez/CalcDiv/issues</value>
+  </data>
+  <data name="HelpVarias" xml:space="preserve">
+    <value>Recieves multiple bases, divisors and coefficients as arguments and outputs the rule formed by every (divisor,base,coefficient) tuple.
+All bases, divisors and coefficients must be valid.
+Activates direct output mode.</value>
+  </data>
+  <data name="ErrorPrimoExtra" xml:space="preserve">
+    <value>The divisor and the base are not coprime.
+Calculating a coefficient in this case will not be implemented.</value>
+  </data>
+  <data name="VariasMensajeError" xml:space="preserve">
+    <value>Some rules couldn't be calculated.
+Probably caused by a divisor, base pair not being coprime.
+Check the error stream for more information.</value>
+  </data>
+  <data name="VariasMensajeErrorTotal" xml:space="preserve">
+    <value>No rules were calculated.
+Might be caused by none of the divisors being coprime with the bases.
+Check the error stream for more information.</value>
+  </data>
+  <data name="ObjetoNuloMensaje" xml:space="preserve">
+    <value>Object is null.</value>
+  </data>
+  <data name="VariasMensajeVacio" xml:space="preserve">
+    <value>The rule wasn't calculated, should be caused bv the divisor and base not being coprime.
+This rule can be ignored.</value>
   </data>
 </root>

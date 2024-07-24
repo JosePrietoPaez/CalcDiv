@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProgramaDivisibilidadCLI.Recursos {
+namespace ProgramaDivisibilidad.Recursos {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProgramaDivisibilidadCLI.Recursos.TextoResource", typeof(TextoResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProgramaDivisibilidad.Recursos.TextoResource", typeof(TextoResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -95,21 +95,57 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a An unexpected error ocurred, consider creating a new Issue on GitHub if it isn&apos;t present, include the trace above and the arguments provided:
+        ///https://github.com/JosePrietoPaez/CalcDiv/issues.
+        /// </summary>
+        public static string DialogoExcepcionInesperada {
+            get {
+                return ResourceManager.GetString("DialogoExcepcionInesperada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Cannot calculate this rule due to an unexpected error, try running with -x option, like: .
+        /// </summary>
+        public static string DirectoReferirExtendidoErrorInesperado {
+            get {
+                return ResourceManager.GetString("DirectoReferirExtendidoErrorInesperado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Cannot calculate coefficient rule, the divisor is composed of the prime factors of the base, a rule can be calculated running with -x option, like: .
+        /// </summary>
+        public static string DirectoReferirExtendidoPotencias {
+            get {
+                return ResourceManager.GetString("DirectoReferirExtendidoPotencias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Coefficient rule can be calculated, however, in this case it is recommended to run with -x option, like: .
+        /// </summary>
+        public static string DirectoReferirExtendidoUsable {
+            get {
+                return ResourceManager.GetString("DirectoReferirExtendidoUsable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Coefficient rule can be calculated, in this case it is not recommended to use the -x option..
+        /// </summary>
+        public static string DirectoReferirExtendidoValido {
+            get {
+                return ResourceManager.GetString("DirectoReferirExtendidoValido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The base must be an integer greater than one..
         /// </summary>
         public static string ErrorBase {
             get {
                 return ResourceManager.GetString("ErrorBase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a The base must be a positive integer greater than one and coprime with the base.
-        ///Two numbers are coprime if their greatest common divisor is greater than one..
-        /// </summary>
-        public static string ErrorBaseCoprima {
-            get {
-                return ResourceManager.GetString("ErrorBaseCoprima", resourceCulture);
             }
         }
         
@@ -124,11 +160,21 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         
         /// <summary>
         ///   Busca una cadena traducida similar a The divisor must be a non-negative integer.
-        ///Keep in mind that numbers divisible by a negative number are divisible to its absolute value..
+        ///Keep in mind that numbers divisible by a negative number are divisible by its absolute value..
         /// </summary>
         public static string ErrorDivisor {
             get {
                 return ResourceManager.GetString("ErrorDivisor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The divisor must be a positive integer greater than one and coprime with the base.
+        ///Two numbers are coprime if their greatest common divisor is greater than one..
+        /// </summary>
+        public static string ErrorDivisorCoprimo {
+            get {
+                return ResourceManager.GetString("ErrorDivisorCoprimo", resourceCulture);
             }
         }
         
@@ -142,11 +188,23 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a The divisor and the base must be coprime, their greatest common divisor must be greater than one..
+        ///   Busca una cadena traducida similar a The divisor and the base are not coprime.
+        ///Calculating a coefficient in this case will not be implemented.
+        ///Run this program with the option-x to obtain a different type of rule, or activate it in dialog mode..
         /// </summary>
         public static string ErrorPrimo {
             get {
                 return ResourceManager.GetString("ErrorPrimo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The divisor and the base are not coprime.
+        ///Calculating a coefficient in this case will not be implemented..
+        /// </summary>
+        public static string ErrorPrimoExtra {
+            get {
+                return ResourceManager.GetString("ErrorPrimoExtra", resourceCulture);
             }
         }
         
@@ -205,7 +263,7 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Used to prevent dialog mode from explicitly asking for binary flags, does not affect output..
+        ///   Busca una cadena traducida similar a Without any other options, skips dialogue related to other options, does not affect output..
         /// </summary>
         public static string HelpSaltar {
             get {
@@ -219,6 +277,17 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         public static string HelpTodos {
             get {
                 return ResourceManager.GetString("HelpTodos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Recieves multiple bases, divisors and coefficients as arguments and outputs the rule formed by every (divisor,base,coefficient) tuple.
+        ///All bases, divisors and coefficients must be valid.
+        ///Activates direct output mode..
+        /// </summary>
+        public static string HelpVarias {
+            get {
+                return ResourceManager.GetString("HelpVarias", resourceCulture);
             }
         }
         
@@ -345,6 +414,15 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         public static string MensajeSalidaVoluntaria {
             get {
                 return ResourceManager.GetString("MensajeSalidaVoluntaria", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Object is null..
+        /// </summary>
+        public static string ObjetoNuloMensaje {
+            get {
+                return ResourceManager.GetString("ObjetoNuloMensaje", resourceCulture);
             }
         }
         
@@ -534,6 +612,38 @@ namespace ProgramaDivisibilidadCLI.Recursos {
         public static string SentenceVersionCommandText {
             get {
                 return ResourceManager.GetString("SentenceVersionCommandText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Some rules couldn&apos;t be calculated.
+        ///Probably caused by a divisor, base pair not being coprime.
+        ///Check the error stream for more information..
+        /// </summary>
+        public static string VariasMensajeError {
+            get {
+                return ResourceManager.GetString("VariasMensajeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No rules were calculated.
+        ///Might be caused by none of the divisors being coprime with the bases.
+        ///Check the error stream for more information..
+        /// </summary>
+        public static string VariasMensajeErrorTotal {
+            get {
+                return ResourceManager.GetString("VariasMensajeErrorTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The rule wasn&apos;t calculated, should be caused bv the divisor and base not being coprime.
+        ///This rule can be ignored..
+        /// </summary>
+        public static string VariasMensajeVacio {
+            get {
+                return ResourceManager.GetString("VariasMensajeVacio", resourceCulture);
             }
         }
     }

@@ -121,7 +121,9 @@
     <value>El divisor, la base y el número de coeficientes deben ser números enteros positivos.</value>
   </data>
   <data name="ErrorPrimo" xml:space="preserve">
-    <value>El divisor y la base deben ser coprimos, su máximo común divisor debe ser mayor que uno.</value>
+    <value>El divisor y la base no son coprimos.
+El cálculo de reglas de coeficientes en este caso no será implementado.
+Ejecute este programa con la opción -x o actívela en el diálogo para obtener una regla de otro tipo.</value>
   </data>
   <data name="HelpAyuda" xml:space="preserve">
     <value>Devuelve por salida un documento de ayuda más largo explicando la aplicación con más detalle.</value>
@@ -142,7 +144,7 @@
     <value>Le da un nombre a las reglas de coeficientes, incluido en la salida.</value>
   </data>
   <data name="HelpSaltar" xml:space="preserve">
-    <value>Si no se usan otros flags, evita que el modo diálogo pregunte si quiere activar los flags.</value>
+    <value>Si no se usan otras opciones, salta el dialogo relacionado con el resto de opciones, no afecta a la salida.</value>
   </data>
   <data name="HelpTodos" xml:space="preserve">
     <value>Devuelve todas las reglas con valores absolutos menores al divisor elegido.</value>
@@ -175,7 +177,7 @@
     <value>El divisor debe ser un entero no negativo.
 Tenga en cuenta que los números divisibles entre un número negativo son divisibles entre su valor absoluto.</value>
   </data>
-  <data name="ErrorBaseCoprima" xml:space="preserve">
+  <data name="ErrorDivisorCoprimo" xml:space="preserve">
     <value>El divisor debe ser un entero positivo mayor que uno y coprimo con la base.
 Dos números son coprimos si su máximo común divisor es mayor que uno.</value>
   </data>
@@ -284,6 +286,7 @@ Calcula la regla de 7 en base 10, le da el nombre Nombre y lo escribe en JSON.
 -n: escribe el nombre introducido como parámetro antes de cada elemento con su indice.
 -j: escribe la regla como en JSON, a no ser que se use -x.
 -x: cambia la salida a una regla alternativa que no usa coeficientes y explica como usarla. Los casos disponibles son como las reglas de 0, 1, 2, 3 y 11.
+-m: recibe divisores y bases separados por comas y devuelve las reglas de todos los pares divisor, base. Puede recibir opcionalmente la longitud de las reglas.
 
 Todos los argumentos y opciones deben ser correctos.
 Las opciones con argumentos no pueden ir seguidas de otras opciones en una combinación, por ejemplo: *CalcDiv.exe -na Nombre* sería una llamada inválida, pero la combinación -an Nombre es válida.
@@ -308,6 +311,8 @@ Si no es tan fácil ver si el resultado es múltiplo del divisor, se aplica la r
 2: se han introducido argumentos de forma errónea.
 3: el usuario ha cerrado el programa de forma voluntaria.
 4: se pidió una regla alternativa con -x, pero no se pudo encontrar.
+5: se pidieron varias reglas, pero no todas se calcularon.
+6: se pidieron varias reglas, pero ninguna se calculó.
 </value>
   </data>
   <data name="AyudaCorta" xml:space="preserve">
@@ -318,5 +323,47 @@ Equivalente a: *CalcDiv.exe -jd 7 10 -n Nombre*
 Calcula la regla de 7 en base 10, le da el nombre Nombre y lo escribe en JSON.
 
 Use --help para ver información de las opciones y argumentos o -H para ver más información sobre la aplicación.</value>
+  </data>
+  <data name="DirectoReferirExtendidoPotencias" xml:space="preserve">
+    <value>No se puede calcular una regla de coeficientes, el divisor está compuesto de los factores primos de la base, para obtener una regla en este caso ejecute con la opción -x, por ejemplo: </value>
+  </data>
+  <data name="DirectoReferirExtendidoErrorInesperado" xml:space="preserve">
+    <value>No se puede calcular una regla de coeficientes debido a un error inesperado, pruebe a ejecutar con la opción -x, por ejemplo: </value>
+  </data>
+  <data name="DirectoReferirExtendidoUsable" xml:space="preserve">
+    <value>Se puede calcular una regla de coeficientes, pero en estos casos se recomienda ejecutar con la opción -x, por ejemplo: </value>
+  </data>
+  <data name="DirectoReferirExtendidoValido" xml:space="preserve">
+    <value>Se puede calcular la regla de coeficientes, en este caso no se recomienda usar la opción -x.</value>
+  </data>
+  <data name="DialogoExcepcionInesperada" xml:space="preserve">
+    <value>Ha ocurrido un error inesperado, considere crear un Issue en GitHub si no existe, incluya la traza de error de arrbia y los argumentos del programa:
+https://github.com/JosePrietoPaez/CalcDiv/issues</value>
+  </data>
+  <data name="HelpVarias" xml:space="preserve">
+    <value>Recibe varias bases, divisores y coeficientes como argumentos y devuelve la regla de cada tupla (divisor, base, coeficiente).
+Todas las bases, divisores y coeficientes deben ser válidos.
+Activa el modo directo.</value>
+  </data>
+  <data name="ErrorPrimoExtra" xml:space="preserve">
+    <value>El divisor y la base no son coprimos.
+El cálculo de reglas de coeficientes en este caso no sera implementado.</value>
+  </data>
+  <data name="VariasMensajeError" xml:space="preserve">
+    <value>No se pudieron calcular algunas reglas.
+Probablemente causado por algún par divisor, base no coprimo.
+Compruebe la salida de errores para obtener más información.</value>
+  </data>
+  <data name="VariasMensajeErrorTotal" xml:space="preserve">
+    <value>No se pudo calcular ninguna regla.
+Puede ser debido a que ningún divisor sea coprimo con la base.
+Compruebe la salida de errores para obtener más información.</value>
+  </data>
+  <data name="ObjetoNuloMensaje" xml:space="preserve">
+    <value>El objeto es nulo.</value>
+  </data>
+  <data name="VariasMensajeVacio" xml:space="preserve">
+    <value>La regla no se calculó, seguramente sea causado porque el divisor no sea coprimo con la base.
+Puede ignorar esta regla.</value>
   </data>
 </root>
