@@ -194,5 +194,32 @@ namespace Operaciones.Recursos {
                 return ResourceManager.GetString("CalculosValorUnoSumarPrincipio", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The base must be greater than one.
+        /// </summary>
+        public static string ReglaBaseMenorError {
+            get {
+                return ResourceManager.GetString("ReglaBaseMenorError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The divisor cannot be negative.
+        /// </summary>
+        public static string ReglaDivisorNegativoError {
+            get {
+                return ResourceManager.GetString("ReglaDivisorNegativoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The given rule was empty.
+        /// </summary>
+        public static string ReglaVaciaError {
+            get {
+                return ResourceManager.GetString("ReglaVaciaError", resourceCulture);
+            }
+        }
     }
 }

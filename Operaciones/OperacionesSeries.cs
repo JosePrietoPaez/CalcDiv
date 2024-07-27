@@ -92,6 +92,37 @@ namespace Operaciones
 		}
 
 		/// <summary>
+		/// Escribe, a partir de la posición <c>0</c>, las potencias de <c>base</c> en aumento desde <c>0</c> hasta <c>fin</c>.
+		/// </summary>
+		/// <remarks>
+		/// Ambos <c>0</c> y <c>fin</c> están incluidos.
+		/// <para>
+		/// <c>fin</c> no puede ser menor que <c>0</c> y no puede ser menor que 0.
+		/// </para>
+		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException"></exception>
+		/// <exception cref="ArgumentException"></exception>
+		/// <param name="longitud">exponente de la última potencia</param>
+		/// <param name="incremento">diferencia entre el exponente en cada posición adyacente</param>
+		/// <param name="mod">modulo que aplicar a la potencia</param>
+		/// <param name="base">la base de la potencia</param>
+		/// <returns>
+		/// Lista con los coeficientes de las potencias
+		/// </returns>
+		public static List<long> PotenciaModProgresiva(long @base, long mod, int longitud) {
+			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(mod, nameof(mod));
+			ArgumentOutOfRangeException.ThrowIfNegative(longitud, nameof(longitud));
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(0, longitud, nameof(longitud));
+			List<long> resultado = new(longitud);
+			long num = (long)Math.Pow(@base, 1) % mod;
+			for (int i = 0; i < longitud; i++) {
+				resultado.Insert(i, num);
+				num = Calculos.ProductoMod(num, @base, mod);
+			}
+			return resultado;
+		}
+
+		/// <summary>
 		/// Escribe, a partir de la posición <c>pos</c>, las potencias de <c>base</c> en aumento desde 1 hasta <c>fin</c>.
 		/// </summary>
 		/// <remarks>

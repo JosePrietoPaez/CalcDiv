@@ -152,4 +152,13 @@
   <data name="CalculosValorUnoSumarFinal" xml:space="preserve">
     <value>the sum of its digits is a multiple of </value>
   </data>
+  <data name="ReglaDivisorNegativoError" xml:space="preserve">
+    <value>The divisor cannot be negative</value>
+  </data>
+  <data name="ReglaBaseMenorError" xml:space="preserve">
+    <value>The base must be greater than one</value>
+  </data>
+  <data name="ReglaVaciaError" xml:space="preserve">
+    <value>The given rule was empty</value>
+  </data>
 </root>

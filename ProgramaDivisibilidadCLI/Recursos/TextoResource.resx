@@ -372,4 +372,7 @@ Check the error stream for more information.</value>
     <value>The rule wasn't calculated, should be caused bv the divisor and base not being coprime.
 This rule can be ignored.</value>
   </data>
+  <data name="ErrorDivisorExtra" xml:space="preserve">
+    <value>The divisor must be a non-negative integer.</value>
+  </data>
 </root>

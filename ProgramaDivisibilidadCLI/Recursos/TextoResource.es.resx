@@ -366,4 +366,7 @@ Compruebe la salida de errores para obtener más información.</value>
     <value>La regla no se calculó, seguramente sea causado porque el divisor no sea coprimo con la base.
 Puede ignorar esta regla.</value>
   </data>
+  <data name="ErrorDivisorExtra" xml:space="preserve">
+    <value>El divisor debe ser un entero no negativo.</value>
+  </data>
 </root>

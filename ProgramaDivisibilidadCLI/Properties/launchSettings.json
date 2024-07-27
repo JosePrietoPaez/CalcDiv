@@ -2,7 +2,7 @@
   "profiles": {
     "ProgramaDivisibilidadCLI": {
       "commandName": "Project",
-      "commandLineArgs": "-ad 3 5 2"
+      "commandLineArgs": "-ajd 1 5 2 -n Nombre"
     }
   }
 }

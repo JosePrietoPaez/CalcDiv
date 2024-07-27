@@ -179,6 +179,15 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The divisor must be a non-negative integer..
+        /// </summary>
+        public static string ErrorDivisorExtra {
+            get {
+                return ResourceManager.GetString("ErrorDivisorExtra", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The divisor, the base and coefficient amount must be positive integers..
         /// </summary>
         public static string ErrorNumerico {

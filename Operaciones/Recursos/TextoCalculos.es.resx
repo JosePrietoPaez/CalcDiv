@@ -142,4 +142,13 @@
   <data name="CalculosValorUnoSumarFinal" xml:space="preserve">
     <value>la suma de sus cifras es múltiplo de </value>
   </data>
+  <data name="ReglaDivisorNegativoError" xml:space="preserve">
+    <value>El divisor no puede ser negativo</value>
+  </data>
+  <data name="ReglaBaseMenorError" xml:space="preserve">
+    <value>La base debe ser mayor que uno</value>
+  </data>
+  <data name="ReglaVaciaError" xml:space="preserve">
+    <value>La regla recibida está vacía</value>
+  </data>
 </root>

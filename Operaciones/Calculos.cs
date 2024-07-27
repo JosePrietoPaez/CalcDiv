@@ -71,7 +71,7 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Devuelve una serie que contiene la descomposición en números primos de <c>num</c>.
+		/// Devuelve una serie que contiene la descomposición en números primos de <c>divisor</c>.
 		/// </summary>
 		/// <remarks>
 		/// Los elementos de la serie son los exponentes de los números primos en orden ascendente hasta llegar al último con coeficiente positivo.
@@ -107,7 +107,7 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Devuelve una lista con los números primos hasta <c>num</c> incluido
+		/// Devuelve una lista con los números primos hasta <c>divisor</c> incluido
 		/// </summary>
 		public static IListaDinamica<long> PrimosHasta(long num) {
 			long cont;
@@ -186,10 +186,10 @@ namespace Operaciones
 		}
 
 		/**
-		 * Calcula la progresión aritmética que empieza en inicio, acaba en fin y tiene num números
+		 * Calcula la progresión aritmética que empieza en inicio, acaba en fin y tiene divisor números
 		 * @param inicio primer número del sumatorio
 		 * @param fin último número del sumatorio
-		 * @param num número de elementos de la progresión
+		 * @param divisor número de elementos de la progresión
 		 * @return valor de la progresión aritmética
 		 */
 		public static long SumatorioIntervalo(long inicio, long fin, long num) {
@@ -206,7 +206,7 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Calcula el número de cifras de <c>num</c> en base <c>@base</c>.
+		/// Calcula el número de cifras de <c>divisor</c> en base <c>@base</c>.
 		/// </summary>
 		public static short Cifras(long num, long @base) { 
 			if (num == 0) return 1;
@@ -214,7 +214,7 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Calcula el número de cifras de <c>num</c> en base <c>@base</c>.
+		/// Calcula el número de cifras de <c>divisor</c> en base <c>@base</c>.
 		/// </summary>
 		public static short Cifras(double num, double @base) {
 			if (num == 0) return 1;
@@ -222,20 +222,20 @@ namespace Operaciones
 		}
 		
 		/// <summary>
-		/// Calcula el número de cifras de <c>num</c> en base 10.
+		/// Calcula el número de cifras de <c>divisor</c> en base 10.
 		/// </summary>
 		public static short Cifras10(long num) {
 			return Cifras(num, 10);
 		}
 
 		/// <summary>
-		/// Calcula la cifra en la posición <c>pos</c> de <c>num</c> en base <c>@base</c>.
+		/// Calcula la cifra en la posición <c>pos</c> de <c>divisor</c> en base <c>@base</c>.
 		/// </summary>
 		/// <remarks>
 		/// La cifra 0 es la menos significativa.
 		/// </remarks>
 		/// <returns>
-		/// Cifra <c>pos</c> de <c>num</c> en base <c>@base</c>
+		/// Cifra <c>pos</c> de <c>divisor</c> en base <c>@base</c>
 		/// </returns>
 		public static short Cifra(long num, long pos, long @base) { //Recemos para que nadie ponga primero número de base mayor a 32767
 			if (pos >= Cifras(num, @base) || pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
@@ -243,8 +243,8 @@ namespace Operaciones
 		}
 
 		/**
-		 * Devuelve primero objeto {@code String} que contiene {@code num} escrito con subíndices de sus cifras en @base 10
-		 * @return {@code num} en subíndices
+		 * Devuelve primero objeto {@code String} que contiene {@code divisor} escrito con subíndices de sus cifras en @base 10
+		 * @return {@code divisor} en subíndices
 		 */
 		public static string NumASubindice(long num) {
 			StringBuilder res = new();
@@ -261,13 +261,13 @@ namespace Operaciones
 		public static char CifraASubindice(long num) { return (char)(num + 0x2080); }
 
 		/**
-		 * Calcula {@code num}^{@code exp} en módulo {@code @base} multiplicando {@code num} por sí mismo y haciendo el módulo en cada paso
+		 * Calcula {@code divisor}^{@code exp} en módulo {@code @base} multiplicando {@code divisor} por sí mismo y haciendo el módulo en cada paso
 		 * <p>Intenta evitar el overflow que se produciría al hacer la potencia antes del módulo,
 		 * pero esto no se garantiza</p>
-		 * @param num @base de la potencia
+		 * @param divisor @base de la potencia
 		 * @param exp exponente
 		 * @param @base @base del módulo
-		 * @return {@code num}^{@code exp} en módulo {@code @base}
+		 * @return {@code divisor}^{@code exp} en módulo {@code @base}
 		 */
 		public static long PotenciaMod(long num, long exp, long @base) {
 			long res = 1;
@@ -291,7 +291,7 @@ namespace Operaciones
 			return fac1 * fac2 % @base;
 		}
 
-		//Guarda en desc la descomposicion de num, usando los primos de primos
+		//Guarda en desc la descomposicion de divisor, usando los primos de primos
 		internal static void Descomposicion(IListaDinamica<long> primos, IListaDinamica<long> desc, long num) {
 			for (int j = 0; j < primos.Longitud && num > 1; j++) {
 				while (num % primos[j] == 0) {
@@ -302,64 +302,123 @@ namespace Operaciones
 		}
 
 		/**
-		 * Devuelve todas las reglas de divisibilidad de {@code num} en @base {@code @base} con {@code cantidad} coeficientes cuyo valor absoluto no supera @base
+		 * Devuelve todas las reglas de divisibilidad de {@code divisor} en @base {@code @base} con {@code longitud} longitud cuyo valor absoluto no supera @base
 		 * <p>reglas se borra antes de calcular las reglas</p>
 		 * @param reglas serie donde guardar las series que guardan las reglas
-		 * @param cantidad número de coeficientes de la regla
+		 * @param longitud número de longitud de la regla
 		 * @param @base @base que se usa para crear la regla
 		 */
-		public static void ReglasDivisibilidad(ISerie<ListSerie<long>> reglas, long num, int cantidad, long @base) {
+		public static void ReglasDivisibilidad(ISerie<ListSerie<long>> reglas, long divisor, int longitud, long @base) {
 			reglas.BorrarTodos(); //Se borra la serie
 			string nombre = reglas.Nombre;
-			reglas.InsertarUltimo(new ListSerie<long>(nombre, cantidad));
-			ReglaDivisibilidadBase(reglas[0], num, cantidad, @base); //Se calcula la regla de positivos
+			reglas.InsertarUltimo(new ListSerie<long>(nombre, longitud));
+			ReglaDivisibilidadBase(reglas[0], divisor, longitud, @base); //Se calcula la regla de positivos
 			ListSerie<long> aux, atajo = reglas[0]; //aux guarda la serie que se añadirá y atajo es primero atajo
-			bool[] producto = new bool[cantidad]; //guarda si el elemento i de atajo se le resta num
-			int iteracionesMaximas = PotenciaEntera(2, cantidad), //Antes se usaba ArrayFalso, pero eso significaba una operación O(cantidad) en cada iteración
+			bool[] producto = new bool[longitud]; //guarda si el elemento i de atajo se le resta divisor
+			int iteracionesMaximas = PotenciaEntera(2, longitud), //Antes se usaba ArrayFalso, pero eso significaba una operación O(longitud) en cada iteración
 				iteracionesActuales = 1;
 			OperacionesSeries.IncrementarArray(producto); //Como el primero ya está se incrementa
 			do {
-				aux = new ListSerie<long>(nombre, cantidad);
+				aux = new ListSerie<long>(nombre, longitud);
 				for (int i = 0; i < atajo.Longitud; i++) {
-					aux.InsertarUltimo(atajo[i] - (producto[i] ? num : 0)); //Se añade en la serie de regla
+					aux.InsertarUltimo(atajo[i] - (producto[i] ? divisor : 0)); //Se añade en la serie de regla
 				}
 				reglas.InsertarUltimo(aux);
 				OperacionesSeries.IncrementarArray(producto); //Itera el bucle
 				iteracionesActuales++;
 			} while (iteracionesMaximas > iteracionesActuales);
 		}
-		/**
-		 * Calcula la regla de divisibilidad de {@code num} en @base {@code @base} con {@code cantidad} coeficiente
-		 * tal que todos los coeficientes tienen el menor valor absoluto y la guarda en serie
-		 * <p>{@code serie} se borra antes de crear la regla</p>
-		 * @param serie serie donde guardar la regla
-		 * @param cantidad número de coeficientes de la regla
-		 * @param @base @base que se usa para crear la regla
-		 */
-		public static void ReglaDivisibilidadOptima(IListaDinamica<long> serie, long num, int cantidad, long @base) {
-			ReglaDivisibilidadBase(serie, num, cantidad, @base);
-			for (int i = 0; i < serie.Longitud; i++) {
-				serie[i] = MinAbs(serie[i], serie[i] - num);
+
+		/// <summary>
+		/// Devuelve todas las reglas de divisibilidad de <c>divisor</c> en base <c>@base</c> con longitud <c>longitud</c> cuyo valor absoluto no supera <c>@base</c>.
+		/// </summary>
+		/// <returns>
+		/// <see cref="List"/> de <see cref="Regla"/> con todas las combinaciones de reglas.
+		/// </returns>
+		public static List<Regla> ReglasDivisibilidad(long divisor, int longitud, long @base) {
+			List<long> reglaInicial = ReglaDivisibilidadBase(divisor, longitud, @base), //Se calcula la regla de positivos
+				listaAuxiliar = [];
+			for (int i = 0; i < longitud; i++) {
+				listaAuxiliar.Add(0);
 			}
+			bool[] producto = new bool[longitud]; //guarda si el elemento i de atajo se le resta divisor
+			int iteracionesMaximas = PotenciaEntera(2, longitud), //Antes se usaba ArrayFalso, pero eso significaba una operación O(longitud) en cada iteración
+				iteracionesActuales = 1;
+			List<Regla> reglas = new(iteracionesMaximas);
+			Func<long, long, bool, long> restaCondicional = (coeficiente, divisorResta, resta) => resta ? coeficiente - divisorResta : coeficiente;
+			OperacionesSeries.IncrementarArray(producto); //Como el primero ya está se incrementa
+			do {
+				for (int i = 0; i < reglaInicial.Count; i++) {
+					listaAuxiliar[i] = restaCondicional(reglaInicial[i], divisor, producto[i]);
+				}
+				reglas.Add(new Regla(divisor, @base, new List<long>(listaAuxiliar)));
+				OperacionesSeries.IncrementarArray(producto); //Itera el bucle
+				iteracionesActuales++;
+			} while (iteracionesMaximas > iteracionesActuales);
+			return reglas;
 		}
 
 		/**
-		 * Calcula una regla de divisibilidad de {@code num} en @base {@code @base} con {@code cantidad} coeficientes
-		 * y la guarda en serie
+		 * Calcula la regla de divisibilidad de {@code divisor} en @base {@code @base} con {@code longitud} coeficiente
+		 * tal que todos los longitud tienen el menor valor absoluto y la guarda en serie
 		 * <p>{@code serie} se borra antes de crear la regla</p>
-		 * Los coeficientes son positivos siempre
 		 * @param serie serie donde guardar la regla
-		 * @param cantidad número de coeficientes de la regla
+		 * @param longitud número de longitud de la regla
 		 * @param @base @base que se usa para crear la regla
 		 */
-		public static void ReglaDivisibilidadBase(IListaDinamica<long> serie, long num, int cantidad, long @base) {
-			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(num,nameof(num));
+		public static void ReglaDivisibilidadOptima(IListaDinamica<long> serie, long divisor, int longitud, long @base) {
+			ReglaDivisibilidadBase(serie, divisor, longitud, @base);
+			for (int i = 0; i < serie.Longitud; i++) {
+				serie[i] = MinAbs(serie[i], serie[i] - divisor);
+			}
+		}
+
+		/// <summary>
+		/// Calcula la regla de divisibilidad óptima de <c>divisor</c> para la base <c>@base</c> con longitud <c>longitud</c>.
+		/// </summary>
+		/// <remarks>
+		/// <c>divisor</c> y <c>@base</c> deben ser coprimos
+		/// </remarks>
+		public static List<long> ReglaDivisibilidadOptima(long divisor, int longitud, long @base) {
+			List<long> regla = ReglaDivisibilidadBase(divisor, longitud, @base);
+			for (int i = 0; i < regla.Count; i++) {
+				regla[i] = MinAbs(regla[i], regla[i] - divisor);
+			}
+			return regla;
+		}
+
+		/**
+		 * Calcula una regla de divisibilidad de {@code divisor} en @base {@code @base} con {@code longitud} longitud
+		 * y la guarda en serie
+		 * <p>{@code serie} se borra antes de crear la regla</p>
+		 * Los longitud son positivos siempre
+		 * @param serie serie donde guardar la regla
+		 * @param longitud número de longitud de la regla
+		 * @param @base @base que se usa para crear la regla
+		 */
+		public static void ReglaDivisibilidadBase(IListaDinamica<long> serie, long divisor, int longitud, long @base) {
+			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(divisor,nameof(divisor));
 			ArgumentOutOfRangeException.ThrowIfLessThan(@base, 2,nameof(@base));
-			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(cantidad, nameof(cantidad));
-			long inv = InversoMod(@base, num);
+			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(longitud, nameof(longitud));
+			long inv = InversoMod(@base, divisor);
 			if (inv == 0) throw new ArithmeticException("num debe ser coprimo con @base");
 			serie.Vacia = true;
-			OperacionesSeries.PotenciaModProgresiva(serie, inv, num, cantidad, 0);
+			OperacionesSeries.PotenciaModProgresiva(serie, inv, divisor, longitud, 0);
+		}
+
+		/// <summary>
+		/// Calcula la regla de divisibilidad positiva de <c>divisor</c> para la base <c>@base</c> con longitud <c>longitud</c>.
+		/// </summary>
+		/// <remarks>
+		/// <c>divisor</c> y <c>@base</c> deben ser coprimos
+		/// </remarks>
+		public static List<long> ReglaDivisibilidadBase(long divisor, int longitud, long @base) {
+			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(divisor, nameof(divisor));
+			ArgumentOutOfRangeException.ThrowIfLessThan(@base, 2, nameof(@base));
+			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(longitud, nameof(longitud));
+			long inv = InversoMod(@base, divisor);
+			if (inv == 0) throw new ArithmeticException("num debe ser coprimo con @base");
+			return OperacionesSeries.PotenciaModProgresiva(inv, divisor, longitud);
 		}
 
 		/// <summary>
