@@ -1,98 +1,42 @@
-﻿using Listas;
-using Operaciones;
+﻿using Operaciones;
 
 namespace TestCalculadora {
 	[TestFixture]
 	public class OperacionesSeriesTests {
 
-		private static readonly int LONGITUD = 10;
-		
-		[Test(Description = "PotenciaModProgresiva lanza excepción si el módulo es cero")] //Iba a hacer que comprobase negativos, pero al parecer el operador % funciona con divisores negativos
-		public void PotenciaModProgresiva_ModuloCero_LanzaExcepcion() {
-			// Arrange
-			IListaDinamica<long> serie = new ListSerie<long>() {
-				Longitud = LONGITUD //Longitud tiene un setter, pone el elemento por defecto de la clase en las posiciones nuevas
-			};
-			long @base = 10;
-			long mod = 0;
-			int fin = 5;
-			int pos = 0;
+		[TestFixture]
+		public class PotenciaModProgresivaTests {
 
-			// Assert
-			Assert.Throws<ArgumentOutOfRangeException>(() => OperacionesSeries.PotenciaModProgresiva(
-				serie,
-				@base,
-				mod,
-				fin,
-				pos));
-		}
+			[TestCase(0, TestName = "PotenciaModProgresiva lanza excepción si el módulo es 0")]
+			[TestCase(-1, TestName = "PotenciaModProgresiva lanza excepción si el módulo es negativo")]
+			public void PotenciaModProgresiva_ModuloNoPositivo_LanzaExcepcion(long mod) {
+				long @base = 5;
+				int longitud = 4;
 
-		[TestCase(0,TestName = "PotenciaModProgresiva lanza excepción si la última potencia es cero")]
-		[TestCase(-1,TestName = "PotenciaModProgresiva lanza excepción si la última potencia es negativa")]
-		public void PotenciaModProgresiva_FinNoPositivo_LanzaExcepcion(int argumento) {
-			// Arrange
-			IListaDinamica<long> serie = new ListSerie<long>() {
-				Longitud = LONGITUD
-			};
-			long @base = 10;
-			long mod = 3;
-			int fin = argumento;
-			int pos = 0;
+				Assert.Throws<ArgumentOutOfRangeException>(() => OperacionesListas.PotenciaModProgresiva(@base, mod, longitud));
+			}
 
-			// Assert
-			Assert.Throws<ArgumentOutOfRangeException>(() => OperacionesSeries.PotenciaModProgresiva(
-				serie,
-				@base,
-				mod,
-				fin,
-				pos));
-		}
+			[TestCase(-1, TestName = "PotenciaModProgresiva lanza excepción si la longitud es negativa")]
+			public void PotenciaModProgresiva_LongitudNegativa_LanzaExcepcion(int longitud) {
+				long mod = 5, @base = 5;
 
-		[TestCase(-1,TestName = "PotenciaModProgresiva lanza excepción si la posición es negativa")]
-		[TestCase(100,TestName = "PotenciaModProgresiva lanza excepción si la posición mayor a la longitud")] //Si es igual a la longitud funciona
-		public void PotenciaModProgresiva_PosicionInvalida_LanzaExcepcion(int argumento) {
-			// Arrange
-			IListaDinamica<long> serie = new ListSerie<long>() {
-				Longitud = LONGITUD
-			};
-			long @base = 10;
-			long mod = 3;
-			int fin = 5;
-			int pos = argumento;
+				Assert.Throws<ArgumentOutOfRangeException>(() => OperacionesListas.PotenciaModProgresiva(@base, mod, longitud));
+			}
 
-			// Assert
-			Assert.Throws<ArgumentOutOfRangeException>(() => OperacionesSeries.PotenciaModProgresiva(
-				serie,
-				@base,
-				mod,
-				fin,
-				pos));
-		}
+			[TestCase(0)]
+			[TestCase(1)]
+			[TestCase(2)]
+			[TestCase(5)]
+			[TestCase(-3)]
+			public void PotenciaModProgresiva_ArgumentosCorrectos_DevuelveListaConPotencias(int @base) {
+				long mod = 10;
+				int longitud = 10;
 
-		[Test(Description = "Cuando los argumentos son correctos, PotenciaModProgresiva inserta el resto las potencias de base desde 1 a fin entre mod en serie, a partir de pos")]
-		public void PotenciaModProgresiva_ArgumentosValidos_IntroduceLasPotencias() {
-			// Arrange
-			IListaDinamica<long> serie = new ListSerie<long>() {
-				Longitud = LONGITUD
-			};
-			long @base = 11;
-			long mod = 7;
-			int fin = 6;
-			int pos = 4;
+				List<long> resultado = OperacionesListas.PotenciaModProgresiva(@base, mod, longitud);
 
-			// Act
-			OperacionesSeries.PotenciaModProgresiva(serie,
-				@base,
-				mod,
-				fin,
-				pos);
-
-			// Assert
-			Assert.That(serie, Has.Exactly(10).EqualTo(0)); // No se cumplirá si base es 0
-			Assert.That(serie, Has.Property("Longitud").EqualTo(LONGITUD + fin));
-			for (int i = 0; i < fin; i++) { //Necesito comprobar que se cumple para todos los elementos
-				long elementoI = Calculos.PotenciaEntera(@base, i+1) % mod; //No se usa PotenciaEntera en la función, pero lo hace más sencillo.
-				Assert.That(serie, Has.ItemAt(pos + i).EqualTo(elementoI));
+				for (int i = 0; i < resultado.Count; i++) {
+					Assert.That(resultado[i], Is.EqualTo(Calculos.ProductoMod(Calculos.PotenciaEntera(@base, i), @base, mod)));
+				}
 			}
 		}
 
@@ -102,7 +46,7 @@ namespace TestCalculadora {
 			bool[] arr = new bool[10];
 
 			// Act
-			var result = OperacionesSeries.ArrayFalso(
+			var result = OperacionesListas.ArrayFalso(
 				arr);
 
 			// Assert
@@ -110,12 +54,12 @@ namespace TestCalculadora {
 		}
 
 		[Test]
-		public void ArrayFalso_ArrayConTrue_DevuelveTrue() {
+		public void ArrayFalso_ArrayConTrue_DevuelveFalse() {
 			// Arrange
 			bool[] arr = {true,false,false,false,false};
 
 			// Act
-			var result = OperacionesSeries.ArrayFalso(
+			var result = OperacionesListas.ArrayFalso(
 				arr);
 
 			// Assert
@@ -129,7 +73,7 @@ namespace TestCalculadora {
 			bool[] arr = new bool[longitud];
 
 			// Act
-			OperacionesSeries.IncrementarArray(
+			OperacionesListas.IncrementarArray(
 				arr);
 
 			// Assert
@@ -146,7 +90,7 @@ namespace TestCalculadora {
 			bool[] arr = [true,false,false,false,false,false,false,false,false,false];
 
 			// Act
-			OperacionesSeries.IncrementarArray(
+			OperacionesListas.IncrementarArray(
 				arr);
 
 			// Assert
@@ -164,7 +108,7 @@ namespace TestCalculadora {
 			bool[] arr = [true, true, false, false, false, false, false, false, false, false];
 
 			// Act
-			OperacionesSeries.IncrementarArray(
+			OperacionesListas.IncrementarArray(
 				arr);
 
 			// Assert
@@ -183,7 +127,7 @@ namespace TestCalculadora {
 			bool[] arr = [true, true, true, true, true, true, true, true, true, true];
 
 			// Act
-			OperacionesSeries.IncrementarArray(
+			OperacionesListas.IncrementarArray(
 				arr);
 
 			// Assert

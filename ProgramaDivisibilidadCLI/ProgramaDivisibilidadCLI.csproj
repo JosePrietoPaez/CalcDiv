@@ -49,7 +49,6 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="jmpp.expanded-lists" Version="0.1.0" />
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.10.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -19,14 +19,15 @@ namespace Operaciones {
 		/// <param name="base">Base de la representación de los dividendos</param>
 		/// <param name="coeficientes">Lista de coeficientes</param>
 		/// <param name="nombre"></param>
-		public Regla(long divisor, long @base, List<long> coeficientes, string nombre = "") : this(divisor, @base, coeficientes.Count, nombre) {
-			if (coeficientes.Count == 0) throw new ArgumentException(TextoCalculos.ReglaVaciaError, nameof(coeficientes));
+		public Regla(long divisor, long @base, IEnumerable<long> coeficientes, string nombre = "") : this(divisor, @base, coeficientes.Count(), nombre) {
+			if (!coeficientes.Any()) throw new ArgumentException(TextoCalculos.ReglaVaciaError, nameof(coeficientes));
 			_coeficientes = new(coeficientes);
 		}
 
 		private List<long>? _coeficientes = null;
 
 		private string _reglaExtra = string.Empty;
+		private int _longitud = coeficientes;
 
 		/// <summary>
 		/// Esta propiedad permite obtener el divisor y recalcular la regla al cambiarlo
@@ -41,8 +42,20 @@ namespace Operaciones {
 		[Range(2, long.MaxValue)]
 		public long Base => @base;
 
-		public int Longitud { get; set; } = coeficientes;
-
+		/// <summary>
+		/// Esta propiedad indica la longitud de la regla, será 0 siempre que no se pueda calcular
+		/// </summary>
+		/// <remarks>
+		/// Al cambiar la longitud, se tendrá que volver a acceder a <see cref="Coeficientes"/> para actualizarlo
+		/// </remarks>
+		[JsonIgnore]
+		public int Longitud { 
+			get {
+				if (Calculos.Mcd(Divisor, Base) > 1)
+					return 0;
+				return _longitud;
+			}
+			set => _longitud = value; }
 		/// <summary>
 		/// Esta propiedad permite obtener y cambiar el nombre de la regla
 		/// </summary>
@@ -74,7 +87,9 @@ namespace Operaciones {
 		}
 
 		private List<long> CalcularRegla() {
-			return Calculos.ReglaDivisibilidadOptima(Divisor, Longitud, Base);
+			List<long> regla = Calculos.ReglaDivisibilidadOptima(Divisor, Longitud, Base).Coeficientes;
+			Longitud = regla.Count;
+			return regla;
 		}
 
 		public override bool Equals(object? obj) {
@@ -94,9 +109,10 @@ namespace Operaciones {
 		}
 
 		public string ToStringCompleto() {
+			if (Nombre.Equals(string.Empty)) return ToString();
 			StringBuilder sb = new();
 			for (int i = 0; i < Longitud; i++) {
-				sb.Append(Nombre).Append(Calculos.NumASubindice(i)).Append('=').Append(Coeficientes[i]);
+				sb.Append(Nombre).Append(Calculos.NumASubindice(i)).Append(" = ").Append(Coeficientes[i]);
 				if (i + 1 != Longitud) {
 					sb.Append(", ");
 				}

@@ -1,4 +1,4 @@
-﻿using Listas;
+﻿using Operaciones;
 using static Operaciones.Calculos;
 using static ProgramaDivisibilidad.Recursos.TextoResource;
 
@@ -18,12 +18,18 @@ namespace ProgramaDivisibilidad {
 				flags.DatosRegla = [1,1,1];
 				_salida = EjectutarVarias(funcionEjecutada, flags.ListaDivisores, flags.ListaBases, flags.CoeficientesVarias);
 			} else {
-				if (flags.DatosRegla.Count == 2) flags.Directo = flags.Directo!.Append(1);
-				(_salida, object elementoCreado) = funcionEjecutada(flags.Divisor, flags.Base, flags.Coeficientes);
-				string textoResultado = ObjetoAString(elementoCreado);
-				EscribirReglaPorWriter(textoResultado, _escritorSalida, _escritorError, flags.Divisor, flags.Base, flags.Coeficientes);
-				if (Mcd(flags.Divisor, flags.Base) > 1) {
-					_escritorError.WriteLine(ErrorPrimo);
+				if (flags.Divisor < 2 || flags.Base < 2 || Mcd(flags.Base, flags.Divisor) > 1) {
+					_escritorError.WriteLine(ErrorDivisorCoprimo);
+					_escritorError.WriteLine(ErrorBase);
+					_salida = SALIDA_ERROR;
+				} else {
+					if (flags.DatosRegla.Count == 2) flags.Directo = flags.Directo!.Append(1);
+					(_salida, object elementoCreado) = funcionEjecutada(flags.Divisor, flags.Base, flags.Coeficientes);
+					string textoResultado = ObjetoAString(elementoCreado);
+					EscribirReglaPorWriter(textoResultado, _escritorSalida, _escritorError, flags.Divisor, flags.Base, flags.Coeficientes);
+					if (Mcd(flags.Divisor, flags.Base) > 1) {
+						_escritorError.WriteLine(ErrorPrimo);
+					}
 				}
 			}
 		}
@@ -53,7 +59,7 @@ namespace ProgramaDivisibilidad {
 				if (flags.ActivarMensajesIntermedios) {
 					IntercalarMensajesParametros(reglas, tuplas, coeficiente);
 				} else {
-					string resultadoString = ObjetoAString(reglas,false);
+					string resultadoString = ObjetoAString(reglas);
 					_escritorSalida.WriteLine(resultadoString);
 				}
 				if (hayFallo) {
@@ -113,23 +119,20 @@ namespace ProgramaDivisibilidad {
 
 		private static (int, object) CrearReglaCoeficientes(long divisor, long @base, int coefientes) {
 			int salida;
-			object elementoCreado = new ListSerie<long>();
+			object elementoCreado = new Regla(divisor, @base, coefientes);
 			if (Mcd(divisor, @base) > 1) {
 				salida = SALIDA_ERROR;
 			} else if (flags.Todos) {
-				ListSerie<ListSerie<long>> listaAuxiliar = new(PotenciaEntera(2, coefientes));
-				ReglasDivisibilidad(listaAuxiliar, divisor, coefientes, @base);
-				listaAuxiliar.Nombre = flags.Nombre!;
+				List<Regla> listaAuxiliar = ReglasDivisibilidad(divisor, coefientes, @base);
 				foreach (var item in listaAuxiliar) {
-					item.Nombre = flags.Nombre!;
+					item.Nombre = flags.Nombre;
 				}
 				elementoCreado = listaAuxiliar;
 				salida = SALIDA_CORRECTA;
 			} else {
-				ListSerie<long> listaAuxiliar = new(coefientes);
-				ReglaDivisibilidadOptima(listaAuxiliar, divisor, coefientes, @base);
-				listaAuxiliar.Nombre = flags.Nombre!;
-				elementoCreado = listaAuxiliar;
+				Regla reglaAuxiliar = ReglaDivisibilidadOptima(divisor, coefientes, @base);
+				reglaAuxiliar.Nombre = flags.Nombre!;
+				elementoCreado = reglaAuxiliar;
 				salida = SALIDA_CORRECTA;
 			}
 			return (salida, elementoCreado);

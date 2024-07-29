@@ -9,7 +9,7 @@ namespace Operaciones
 	public static class Calculos {
 
 		private static int _longitudPrimos = 0;
-		private static readonly ListSerie<long> _primosCalculados = new ListSerie<long>();
+		private static readonly List<long> _primosCalculados = [];
 
 		/// <summary>
 		/// Esta propiedad devuelve primero clon de la lista de primos más larga que ha sido calculada para no tener que calcular todos los primos siempre.
@@ -17,7 +17,7 @@ namespace Operaciones
 		/// <remarks>
 		/// Asegúrese de que PrimosHasta ha sido llamado con argumento mayor o igual al número que espera.
 		/// </remarks>
-		internal static IListaDinamica<long> PrimosCalculados => _primosCalculados.ClonarDinamica();
+		internal static List<long> PrimosCalculados => new(_primosCalculados);
 
 		/// <summary>
 		/// Devuelve true si el número es primo, si no false
@@ -120,19 +120,19 @@ namespace Operaciones
 					return serie;
 				}
 				cont = 3;
-				_primosCalculados.Insertar(2L); //Es más complicado si se introduce en el primer if
+				_primosCalculados.Add(2L); //Es más complicado si se introduce en el primer if
 				_longitudPrimos = 1;
 			} else {
-				for (int i = 0; i < _primosCalculados.Longitud && _primosCalculados[i] <= num; i++) { //Se insertan todos los que se necesiten para no tener que buscarlos otra vez
+				for (int i = 0; i < _primosCalculados.Count && _primosCalculados[i] <= num; i++) { //Se insertan todos los que se necesiten para no tener que buscarlos otra vez
 					serie.InsertarUltimo(_primosCalculados[i]);
 				}
-				cont = _primosCalculados.UltimoElemento + 2; //Se le suma 2 para evitar que se inserte otra vez en el while
+				cont = _primosCalculados[^1] + 2; //Se le suma 2 para evitar que se inserte otra vez en el while
 			}
 
 			while (cont <= num) {
 				if (EsPrimo(cont)) {
 					serie.InsertarUltimo(cont);
-					_primosCalculados.InsertarUltimo(cont);
+					_primosCalculados.Add(cont);
 				}
 				cont += 2;
 			}
@@ -301,34 +301,6 @@ namespace Operaciones
 			}
 		}
 
-		/**
-		 * Devuelve todas las reglas de divisibilidad de {@code divisor} en @base {@code @base} con {@code longitud} longitud cuyo valor absoluto no supera @base
-		 * <p>reglas se borra antes de calcular las reglas</p>
-		 * @param reglas serie donde guardar las series que guardan las reglas
-		 * @param longitud número de longitud de la regla
-		 * @param @base @base que se usa para crear la regla
-		 */
-		public static void ReglasDivisibilidad(ISerie<ListSerie<long>> reglas, long divisor, int longitud, long @base) {
-			reglas.BorrarTodos(); //Se borra la serie
-			string nombre = reglas.Nombre;
-			reglas.InsertarUltimo(new ListSerie<long>(nombre, longitud));
-			ReglaDivisibilidadBase(reglas[0], divisor, longitud, @base); //Se calcula la regla de positivos
-			ListSerie<long> aux, atajo = reglas[0]; //aux guarda la serie que se añadirá y atajo es primero atajo
-			bool[] producto = new bool[longitud]; //guarda si el elemento i de atajo se le resta divisor
-			int iteracionesMaximas = PotenciaEntera(2, longitud), //Antes se usaba ArrayFalso, pero eso significaba una operación O(longitud) en cada iteración
-				iteracionesActuales = 1;
-			OperacionesSeries.IncrementarArray(producto); //Como el primero ya está se incrementa
-			do {
-				aux = new ListSerie<long>(nombre, longitud);
-				for (int i = 0; i < atajo.Longitud; i++) {
-					aux.InsertarUltimo(atajo[i] - (producto[i] ? divisor : 0)); //Se añade en la serie de regla
-				}
-				reglas.InsertarUltimo(aux);
-				OperacionesSeries.IncrementarArray(producto); //Itera el bucle
-				iteracionesActuales++;
-			} while (iteracionesMaximas > iteracionesActuales);
-		}
-
 		/// <summary>
 		/// Devuelve todas las reglas de divisibilidad de <c>divisor</c> en base <c>@base</c> con longitud <c>longitud</c> cuyo valor absoluto no supera <c>@base</c>.
 		/// </summary>
@@ -344,33 +316,20 @@ namespace Operaciones
 			bool[] producto = new bool[longitud]; //guarda si el elemento i de atajo se le resta divisor
 			int iteracionesMaximas = PotenciaEntera(2, longitud), //Antes se usaba ArrayFalso, pero eso significaba una operación O(longitud) en cada iteración
 				iteracionesActuales = 1;
-			List<Regla> reglas = new(iteracionesMaximas);
+			List<Regla> reglas = new(iteracionesMaximas) {
+				new(divisor, @base, reglaInicial)
+			};
 			Func<long, long, bool, long> restaCondicional = (coeficiente, divisorResta, resta) => resta ? coeficiente - divisorResta : coeficiente;
-			OperacionesSeries.IncrementarArray(producto); //Como el primero ya está se incrementa
+			OperacionesListas.IncrementarArray(producto); //Como el primero ya está se incrementa
 			do {
 				for (int i = 0; i < reglaInicial.Count; i++) {
 					listaAuxiliar[i] = restaCondicional(reglaInicial[i], divisor, producto[i]);
 				}
 				reglas.Add(new Regla(divisor, @base, new List<long>(listaAuxiliar)));
-				OperacionesSeries.IncrementarArray(producto); //Itera el bucle
+				OperacionesListas.IncrementarArray(producto); //Itera el bucle
 				iteracionesActuales++;
 			} while (iteracionesMaximas > iteracionesActuales);
 			return reglas;
-		}
-
-		/**
-		 * Calcula la regla de divisibilidad de {@code divisor} en @base {@code @base} con {@code longitud} coeficiente
-		 * tal que todos los longitud tienen el menor valor absoluto y la guarda en serie
-		 * <p>{@code serie} se borra antes de crear la regla</p>
-		 * @param serie serie donde guardar la regla
-		 * @param longitud número de longitud de la regla
-		 * @param @base @base que se usa para crear la regla
-		 */
-		public static void ReglaDivisibilidadOptima(IListaDinamica<long> serie, long divisor, int longitud, long @base) {
-			ReglaDivisibilidadBase(serie, divisor, longitud, @base);
-			for (int i = 0; i < serie.Longitud; i++) {
-				serie[i] = MinAbs(serie[i], serie[i] - divisor);
-			}
 		}
 
 		/// <summary>
@@ -379,31 +338,12 @@ namespace Operaciones
 		/// <remarks>
 		/// <c>divisor</c> y <c>@base</c> deben ser coprimos
 		/// </remarks>
-		public static List<long> ReglaDivisibilidadOptima(long divisor, int longitud, long @base) {
+		public static Regla ReglaDivisibilidadOptima(long divisor, int longitud, long @base) {
 			List<long> regla = ReglaDivisibilidadBase(divisor, longitud, @base);
 			for (int i = 0; i < regla.Count; i++) {
 				regla[i] = MinAbs(regla[i], regla[i] - divisor);
 			}
-			return regla;
-		}
-
-		/**
-		 * Calcula una regla de divisibilidad de {@code divisor} en @base {@code @base} con {@code longitud} longitud
-		 * y la guarda en serie
-		 * <p>{@code serie} se borra antes de crear la regla</p>
-		 * Los longitud son positivos siempre
-		 * @param serie serie donde guardar la regla
-		 * @param longitud número de longitud de la regla
-		 * @param @base @base que se usa para crear la regla
-		 */
-		public static void ReglaDivisibilidadBase(IListaDinamica<long> serie, long divisor, int longitud, long @base) {
-			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(divisor,nameof(divisor));
-			ArgumentOutOfRangeException.ThrowIfLessThan(@base, 2,nameof(@base));
-			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(longitud, nameof(longitud));
-			long inv = InversoMod(@base, divisor);
-			if (inv == 0) throw new ArithmeticException("num debe ser coprimo con @base");
-			serie.Vacia = true;
-			OperacionesSeries.PotenciaModProgresiva(serie, inv, divisor, longitud, 0);
+			return new(divisor, @base, regla);
 		}
 
 		/// <summary>
@@ -418,7 +358,7 @@ namespace Operaciones
 			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(longitud, nameof(longitud));
 			long inv = InversoMod(@base, divisor);
 			if (inv == 0) throw new ArithmeticException("num debe ser coprimo con @base");
-			return OperacionesSeries.PotenciaModProgresiva(inv, divisor, longitud);
+			return OperacionesListas.PotenciaModProgresiva(inv, divisor, longitud);
 		}
 
 		/// <summary>
@@ -483,7 +423,7 @@ namespace Operaciones
 		/// <remarks>
 		/// <c>divisor</c> y <c>@base</c> deben ser mayores que uno.
 		/// <para>
-		/// Si no se encuentra una regla debería usarse <see cref="ReglasDivisibilidad(ISerie{ISerie{long}}, long, int, long)"/>
+		/// Si no se encuentra una regla debería usarse <see cref="ReglasDivisibilidad(long, int, long)"/>
 		/// para calcularlas.
 		/// </para>
 		/// El divisor debe ser mayor o igual que 2.
@@ -616,18 +556,18 @@ namespace Operaciones
 		/// <returns></returns>
 		private static (bool,int) UnoMasQuePotencia(long divisor, long @base) {
 			if (Mcd(divisor, @base) > 1) return (false, -1);
-			ListSerie<long> modulos = new(); // Para evitar que entre en primero bucle
+			List<long> modulos = new(); // Para evitar que entre en primero bucle
 			long raizModulo = @base % divisor;
 			int potencia = 1;
 			bool restoUno = @base % divisor == 1;
 			if (!restoUno)
 				do {
-					modulos.Insertar(raizModulo);
-					raizModulo *= modulos.PrimerElemento;
+					modulos.Add(raizModulo);
+					raizModulo *= modulos[0];
 					raizModulo %= divisor; //Para evitar overflow se calcula el modulo divisor
 					restoUno |= raizModulo == 1;
 					potencia++;
-				} while (!restoUno && !modulos.Contiene(raizModulo));
+				} while (!restoUno && !modulos.Contains(raizModulo));
 			return (restoUno, potencia);
 		}
 
@@ -645,46 +585,6 @@ namespace Operaciones
 		private static string CrearMensajeDivisibilidad(string motivo, string condicion, long @base, long divisor) {
 			//motivo\nUn entero en base @base será divisible entre divisor si condicion.
 			return motivo + '.' + Environment.NewLine + string.Format(TextoCalculos.CalculosCrearMensaje,@base,divisor) + condicion + '.';
-		}
-
-		/// <summary>
-		/// Extensión para <see cref="ISerie{T}"/> que calcula su ToString con otro formato.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="lista"></param>
-		/// <returns>
-		/// Un <c>string</c> con el formato <c>lista.Nombre<see cref="NumASubindice(long)"/>(i)=lista[i]</c>, para cada elemento
-		/// </returns>
-		public static string ToStringCompleto<T>(this ISerie<T> lista) {
-			if (lista.Longitud == 0) return "Serie vacía";
-			StringBuilder sb = new();
-			for (int i = 0; i < lista.Longitud; i++) {
-				sb.Append(lista.Nombre).Append(NumASubindice(i)).Append('=').Append(lista[i]);
-				if (i + 1 != lista.Longitud) {
-					sb.Append(", ");
-				}
-			}
-			return sb.ToString();
-		}
-
-		/// <summary>
-		/// Extensión para <see cref="ISerie{T}"/> que calcula su ToString con otro formato, con los elementos en el orden inverso.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="lista"></param>
-		/// <returns>
-		/// Un <c>string</c> con el formato <c>lista.Nombre<see cref="NumASubindice(long)"/>(i)=lista[i]</c>, para cada elemento
-		/// </returns>
-		public static string ToStringCompletoInverso<T>(this ISerie<T> lista) {
-			if (lista.Longitud == 0) return "Serie vacía";
-			StringBuilder sb = new();
-			for (int i = lista.Longitud - 1; i >= 0; i--) {
-				sb.Append(lista.Nombre).Append(NumASubindice(i)).Append('=').Append(lista[i]);
-				if (i > 0) {
-					sb.Append(", ");
-				}
-			}
-			return sb.ToString();
 		}
 	}
 }

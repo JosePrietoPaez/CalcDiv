@@ -5,6 +5,10 @@ using static Operaciones.Calculos;
 using static ProgramaDivisibilidad.Recursos.TextoResource;
 using System.Diagnostics.CodeAnalysis;
 using CommandLine.Text;
+using System.Text.Json;
+using Operaciones;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace ProgramaDivisibilidad {
 
@@ -23,9 +27,10 @@ namespace ProgramaDivisibilidad {
 		private static Flags? flags = null;
 		private static TextWriter _escritorSalida = Console.Out, _escritorError = Console.Error;
 		private static TextReader _lectorEntrada = Console.In;
+		private readonly static JsonSerializerOptions opcionesJson = new() { WriteIndented = true, Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement) };
 
 		/// <summary>
-		/// Este método calcula la regla de divisibilidad, obteniendo los datos desde la consola reglas desde los argumentos.
+		/// Este método calcula la regla de divisibilidad, obteniendo los datos desde la consola reglasObj desde los argumentos.
 		/// </summary>
 		/// <param name="args"></param>
 		/// <returns>
@@ -127,7 +132,7 @@ namespace ProgramaDivisibilidad {
 				do {
 					//Si no tiene flags las pedirá durante la ejecución
 					if (sinFlags) {
-						//Le una tecla de entrada reglas lanza excepción si es la _salida
+						//Le una tecla de entrada reglasObj lanza excepción si es la _salida
 						flags.TipoExtra = !ObtenerDeUsuario(MensajeDialogoExtendido, esS);
 
 						if (!flags.TipoExtra) {
@@ -256,14 +261,13 @@ namespace ProgramaDivisibilidad {
 		/// <returns>
 		/// String apropiado según el tipo del objeto y el estado del programa
 		/// </returns>
-		private static string ObjetoAString(object? obj, bool escribirDatos = true) {
+		private static string ObjetoAString(object? obj) {
 			if (obj == null) return ObjetoNuloMensaje;
-			if (flags.JSON) return Serializar(obj,escribirDatos: escribirDatos);
+			if (flags.JSON) return JsonSerializer.Serialize(obj, opcionesJson);
 			string resultadoObjeto = obj switch {
-				// Para una regla de coeficientes única
-				ListSerie<long> regla => regla.Nombre != string.Empty ? regla.ToStringCompleto() : regla.ToString() ?? "",
-				// Para una regla de reglas de coeficientes obtenidas de una regla, usa recursión
-				ListSerie<ListSerie<long>> or List<string> or List<object> => EnumerableStringSeparadoLinea((IEnumerable<object>)obj),//Se juntan los casos para que sean separados por la recursión
+				// Para una regla de reglasObj de coeficientes obtenidas de una regla, usa recursión
+				IEnumerable<object?> or IEnumerable<object> => EnumerableStringSeparadoLinea((IEnumerable<object>)obj),//Se juntan los casos para que sean separados por la recursión
+				Regla regla => regla.ToStringCompleto(),
 				_ => obj.ToString() ?? ObjetoNuloMensaje,
 			};
 			return resultadoObjeto;
@@ -277,66 +281,6 @@ namespace ProgramaDivisibilidad {
 			stringBuilder.Remove(stringBuilder.Length - Environment.NewLine.Length, Environment.NewLine.Length); // Podría cambiar el foreach para no hacer esto pero seria mas complicado
 			return stringBuilder.ToString();
 
-		}
-
-		/// <summary>
-		/// Convierte una regla de <see cref="Listas"/> a un string JSON
-		/// </summary>
-		/// <param name="listas">reglas que serializar a JSON</param>
-		/// <param name="indentacion">número de tabulaciones en cada línea</param>
-		/// <param name="escribirDatos">indica si se deben escribir los datos de la regla</param>
-		/// <returns>
-		/// JSON que representa la regla
-		/// </returns>
-		private static string Serializar(object listas, int indentacion = 0, bool escribirDatos = true) {
-			string tabulaciones = Tabulaciones(indentacion);
-			bool encapsular = listas is not List<object>;
-			StringBuilder listasJson = new();
-			if (encapsular) listasJson.Append(tabulaciones + '{' + Environment.NewLine);
-			listasJson.Append(ObjetoAJSON(listas, indentacion + (encapsular ? 1 : 0), escribirDatos));
-			if (encapsular) listasJson.Append(Environment.NewLine + tabulaciones + '}');
-			return listasJson.ToString();
-		}
-
-		private static string ObjetoAJSON(object objeto, int indentacion = 0, bool escribirDatos = true) {
-			StringBuilder objetoJSON = new();
-			string tabulacion = Tabulaciones(indentacion)
-				, tabulacionesMas = tabulacion + '\t';
-			if (escribirDatos) {
-				InsertarPropiedadesLista(objetoJSON,tabulacion);
-			}
-			if (objeto is ListSerie<long> regla) { // Para una regla
-				objetoJSON.Append(tabulacion + "\"coefficients\" : [" + Environment.NewLine);
-				if (!regla.Vacia) {
-					AppendListaCasoFinalDistinto(objetoJSON, regla, tabulacionesMas + regla.UltimoElemento, (i) => tabulacionesMas + regla[i] + ',' + Environment.NewLine);
-				}
-				objetoJSON.Append(Environment.NewLine + tabulacion + ']');
-			} else if (objeto is ListSerie<ListSerie<long>> reglas) { // Para conjuntos de reglas derivadas
-				objetoJSON.Append(tabulacion + "\"rules\" : [" + Environment.NewLine);
-				if (!reglas.Vacia) {
-					AppendListaCasoFinalDistinto(objetoJSON, reglas, Serializar(reglas.UltimoElemento, indentacion + 1, false), (i) => Serializar(reglas[i], indentacion + 1, false) + ',');
-				}
-				objetoJSON.Append(Environment.NewLine + tabulacion + ']');
-			} else if (objeto is List<object> lista) {
-				objetoJSON.Append(tabulacion + "[" + Environment.NewLine);
-				if (lista.Count > 0) {
-					AppendListaCasoFinalDistinto(objetoJSON, lista, Serializar(lista[^1], indentacion + 1, true), (i) => Serializar(lista[i], indentacion + 1, true) + ',');
-				}
-				objetoJSON.Append(Environment.NewLine + tabulacion + ']');
-			}
-			return objetoJSON.ToString();
-		}
-
-		private static void AppendListaCasoFinalDistinto<T>(StringBuilder builder, IEnumerable<T> lista, string casoFinal, Func<int,string> generadorNormal) {
-			IEnumerator<T> enumerator = lista.GetEnumerator();
-			int longitud = lista.Count();
-			for (int i = 0; enumerator.MoveNext(); i++) {
-				if (i == longitud - 1) {
-					builder.Append(casoFinal);
-				} else {
-					builder.Append(generadorNormal(i));
-				}
-			}
 		}
 
 		/// <summary>
@@ -360,22 +304,21 @@ namespace ProgramaDivisibilidad {
 		/// </returns>
 		private static string ObtenerReglas(long divisor, long @base, int coeficientes) {
 			string resultado;
-			object? reglas = null;
-			if (flags.Todos) { //Si se piden las 2^coeficientes reglas
-				ListSerie<ListSerie<long>> series = new();
-				ReglasDivisibilidad(series, divisor, coeficientes, @base);
+			object? reglasObj = null;
+			if (flags.Todos) { //Si se piden las 2^coeficientes reglasObj
+				List<Regla> reglas = ReglasDivisibilidad(divisor, coeficientes, @base);
 				if (flags.Nombre != "") {
-					foreach (var serie in series) {
+					foreach (var serie in reglas) {
 						serie.Nombre = flags.Nombre ?? "";
 					}
 				}
-				reglas = series;
+				reglasObj = reglas;
 			} else {
-				ListSerie<long> serie = new(flags.Nombre ?? "");
-				ReglaDivisibilidadOptima(serie, divisor, coeficientes, @base);
-				reglas = serie;
+				Regla serie = ReglaDivisibilidadOptima(divisor, coeficientes, @base);
+				serie.Nombre = flags.Nombre;
+				reglasObj = serie;
 			}
-			resultado = ObjetoAString(reglas);
+			resultado = ObjetoAString(reglasObj);
 			return resultado;
 		}
 

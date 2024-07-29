@@ -12,7 +12,7 @@ namespace TestCalculadora {
 			long divisor = 10, @base = 7;
 			int longitud = 3;
 			string nombre = "Nombre";
-			List<long> coeficientes = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
+			List<long> coeficientes = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base).Coeficientes;
 
 			Regla reglaObtenida = new(divisor, @base, longitud, nombre);
 
@@ -31,7 +31,7 @@ namespace TestCalculadora {
 			long divisor = 30, @base = 17;
 			int longitud = 4;
 			string nombre = "Nombre";
-			List<long> coeficientes = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
+			List<long> coeficientes = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base).Coeficientes;
 
 			Regla reglaObtenida = new(divisor, @base, coeficientes, nombre);
 
@@ -50,11 +50,11 @@ namespace TestCalculadora {
 			long divisor = 10, @base = 13;
 			int longitud = 5;
 			string nombre = "Nombre";
-			List<long> regla = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
-
+			List<long> regla = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base).Coeficientes;
 			Regla reglaObtenida = new(divisor, @base, regla, nombre);
 
 			JsonNode nodo = JsonNode.Parse(JsonSerializer.Serialize(reglaObtenida))!;
+			
 			Assert.Multiple(() => {
 				Assert.That((long)nodo["base"], Is.EqualTo(@base));
 				Assert.That((long)nodo["divisor"], Is.EqualTo(divisor));
@@ -65,6 +65,30 @@ namespace TestCalculadora {
 					Assert.That((long)coeficientes[i]!, Is.EqualTo(regla[i]));
 				}
 			});
+		}
+
+		[Test]
+		public void Regla_ToString_DevuelveElementosSeparadosPorComaYEspacio() {
+			long div = 10, bas = 7;
+			List<long> coeficientes = [1, 2, 3];
+			string esperado = "1, 2, 3";
+			Regla regla = new(div, bas, coeficientes);
+
+			string resultado = regla.ToString();
+
+			Assert.That(resultado, Is.EqualTo(esperado));
+		}
+
+		[Test]
+		public void Regla_ToStringCompleto_DevuelveElementosSeparadosPorComaYEspacio() {
+			long div = 10, bas = 7;
+			List<long> coeficientes = [1, 2, 3];
+			string nombre = "Ejemplo", esperado = "Ejemplo₀ = 1, Ejemplo₁ = 2, Ejemplo₂ = 3";
+			Regla regla = new(div, bas, coeficientes,nombre);
+
+			string resultado = regla.ToStringCompleto();
+
+			Assert.That(resultado, Is.EqualTo(esperado));
 		}
 
 	}

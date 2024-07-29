@@ -30,7 +30,7 @@ namespace ProgramaDivisibilidad {
 			, HelpText = "HelpNombre"
 			, ResourceType = typeof(TextoResource)
 			, SetName = "coef")]
-		public string? Nombre { get; set; }
+		public string Nombre { get; set; }
 
 		[Option('a', longName: "all-rules"
 			, HelpText = "HelpTodos"
@@ -149,7 +149,7 @@ namespace ProgramaDivisibilidad {
 		/// <remarks>
 		/// Al principio del programa se cambia al string vacío si su valor es "-".
 		/// </remarks>
-		public string? Nombre { get; set; }
+		public string Nombre { get; set; }
 
 		/// <summary>
 		/// Esta propiedad indica si la opción -j está activa.

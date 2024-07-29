@@ -1,12 +1,11 @@
-﻿using Listas;
-using NUnit.Framework.Legacy;
+﻿using NUnit.Framework.Legacy;
 using Operaciones;
 using ProgramaDivisibilidad;
 using ProgramaDivisibilidad.Recursos;
 using System.Globalization;
 using System.Text.Json.Nodes;
 
-namespace TestCalculadora {
+namespace TestCalculadoraIT {
 	/// <summary>
 	/// Esta clase contendrá pruebas de integración en la que usaremos la salida por consola para determinar si funciona correctamente
 	/// </summary>
@@ -76,8 +75,7 @@ namespace TestCalculadora {
 		[Test(Description = "Al llamar a la calculadora en modo directo con base y divisor coprimos devuelve la regla por consola")]
 		public void Calculadora_Directo_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
 			_args = ["-d","7","10","4"];
-			ListSerie<long> regla = new();
-			Calculos.ReglaDivisibilidadOptima(regla, 7, 4, 10);
+			Regla regla = Calculos.ReglaDivisibilidadOptima(7, 4, 10);
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
 
@@ -95,8 +93,7 @@ namespace TestCalculadora {
 			_args = ["-jd", "17", "10", "3"];
 			long @base = 10, divisor = 17;
 			int coeficientes = 3;
-			ListSerie<long> regla = new();
-			Calculos.ReglaDivisibilidadOptima(regla, divisor, coeficientes, @base);
+			Regla regla = Calculos.ReglaDivisibilidadOptima(divisor, coeficientes, @base);
 			JsonNode? nodo = null;
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
@@ -112,7 +109,7 @@ namespace TestCalculadora {
 				Assert.That(nodo["rules"], Is.Null);
 				JsonArray array = (JsonArray)nodo["coefficients"]!;
 				for (int i = 0; i < regla.Longitud; i++) {
-					Assert.That((long)array[i], Is.EqualTo(regla[i]));
+					Assert.That((long)array[i], Is.EqualTo(regla.Coeficientes[i]));
 				}
 			});
 		}
@@ -123,8 +120,7 @@ namespace TestCalculadora {
 			_args = ["-ajd", "17", "5", "3", "-n", nombre];
 			long @base = 5, divisor = 17;
 			int coeficientes = 3;
-			ListSerie<ListSerie<long>> reglas = new();
-			Calculos.ReglasDivisibilidad(reglas, divisor, coeficientes, @base);
+			List<Regla> reglas = Calculos.ReglasDivisibilidad(divisor, coeficientes, @base);
 			JsonNode nodo = new JsonObject();
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
@@ -133,15 +129,13 @@ namespace TestCalculadora {
 			Assert.Multiple(() => {
 				Assert.That(salida, Is.Zero);
 				Assert.That(nodo, Is.Not.Null);
-				Assert.That((string?)nodo["name"], Is.Not.Null.And.EqualTo(nombre));
-				Assert.That((long?)nodo["base"], Is.EqualTo(@base));
-				Assert.That((long?)nodo["divisor"], Is.EqualTo(divisor));
-				Assert.That(nodo["coefficients"], Is.Null);
-				Assert.That((JsonArray?)nodo["rules"], Is.Not.Null.And.Property("Count").EqualTo(Calculos.PotenciaEntera(2,coeficientes)));
-				JsonArray array = (JsonArray)nodo["rules"]!;
-				for (int i = 0; i < reglas.Longitud; i++) {
+				for (int i = 0; i < reglas.Count; i++) {
+					JsonNode regla = nodo[i]!;
+					Assert.That((string?)regla["name"], Is.Not.Null.And.EqualTo(nombre));
+					Assert.That((long?)regla["base"], Is.EqualTo(@base));
+					Assert.That((long?)regla["divisor"], Is.EqualTo(divisor));
 					for (int j = 0; j < reglas[0].Longitud; j++) {
-						Assert.That((long)array[i]["coefficients"][j], Is.EqualTo(reglas[i][j]));
+						Assert.That((long)regla["coefficients"][j]!, Is.EqualTo(reglas[i].Coeficientes[j]));
 					}
 				}
 			});
@@ -178,8 +172,8 @@ namespace TestCalculadora {
 		[Test(Description = "Al llamar a la calculadora en modo directo inverso con base y divisor coprimos devuelve la regla por consola en el orden inverso")]
 		public void Calculadora_DirectoTodosNombre_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
 			_args = ["-ad", "5", "13", "5","-n","Nombre"];
-			ListSerie<ListSerie<long>> regla = new("Nombre");
-			Calculos.ReglasDivisibilidad(regla, 5, 5, 13); //Genera 2^cantidad reglas
+			List<Regla> regla = Calculos.ReglasDivisibilidad(5, 5, 13); //Genera 2^cantidad reglas
+			regla = regla.Select(regla => { regla.Nombre = "Nombre"; return regla; }).ToList();
 			string[] lineasReglas = ReglasToArray(regla);
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
@@ -251,14 +245,10 @@ namespace TestCalculadora {
 			int[] divisores = [3, 7, 101, 20], bases = [10, 13];
 			_args = ["-jm", "3,7,101,20", "10,13", "3"];
 			JsonArray jsonReglas = [];
-			List<ListSerie<long>> reglas = [];
+			List<Regla> reglas = [];
 			foreach (int i in divisores) {
 				foreach (int j in bases) {
-					ListSerie<long> serie = new();
-					if (Calculos.Mcd(i, j) > 1) {
-						Calculos.ReglaDivisibilidadOptima(serie, i, 3, j);
-					}
-					reglas.Add(serie);
+					reglas.Add(new(i,j,3));
 				}
 			}
 
@@ -269,16 +259,17 @@ namespace TestCalculadora {
 				Assert.That(jsonReglas, Is.Not.Null);
 				for (int indiceReglas = 0; indiceReglas < reglas.Count; indiceReglas++) { // Comprobamos en cada regla que los elementos están en el mismo orden
 					Assert.That((string)jsonReglas[indiceReglas]["name"]!, Is.Empty);
-					Assert.That((long)jsonReglas[indiceReglas]["base"]!, Is.EqualTo(indiceReglas));
+					Assert.That((long)jsonReglas[indiceReglas]["base"]!, Is.EqualTo(reglas[indiceReglas].Base));
+					Assert.That((long)jsonReglas[indiceReglas]["divisor"]!, Is.EqualTo(reglas[indiceReglas].Divisor));
 					for (int indiceCoeficientes = 0; indiceCoeficientes < reglas[indiceReglas].Longitud; indiceCoeficientes++) { // Comprobamos cada regla
-						Assert.That((long)jsonReglas[indiceReglas]["coefficients"][indiceCoeficientes]!, Is.EqualTo(reglas[indiceReglas][indiceCoeficientes]));
+						Assert.That((long)jsonReglas[indiceReglas]["coefficients"][indiceCoeficientes]!, Is.EqualTo(reglas[indiceReglas].Coeficientes[indiceCoeficientes]));
 					}
 				}
 			});
 		}
 
-		private static string[] ReglasToArray(ListSerie<ListSerie<long>> serie) {
-			return serie.Select(regla => regla.ToStringCompleto()).ToArray();
+		private static string[] ReglasToArray(List<Regla> reglas) {
+			return reglas.Select(regla => regla.ToStringCompleto()).ToArray();
 		}
 
 		[TearDown]
