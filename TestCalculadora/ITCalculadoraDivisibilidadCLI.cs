@@ -1,5 +1,4 @@
-﻿using NUnit.Framework.Legacy;
-using Operaciones;
+﻿using Operaciones;
 using ProgramaDivisibilidad;
 using ProgramaDivisibilidad.Recursos;
 using System.Globalization;

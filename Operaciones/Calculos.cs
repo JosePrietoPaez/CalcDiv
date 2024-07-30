@@ -1,5 +1,4 @@
-﻿using Listas;
-using Operaciones.Recursos;
+﻿using Operaciones.Recursos;
 using System.Diagnostics.CodeAnalysis;
 using static System.Math;
 using System.Text;
@@ -63,11 +62,22 @@ namespace Operaciones
 				(segundo, primero) = (primero, segundo);
 			}
 			while (segundo != 0) {
-				long aux = primero;
-				primero = segundo;
-				segundo = aux % segundo;
+				(primero,segundo) = (segundo, primero % segundo);
 			}
 			return primero;
+		}
+
+		/// <summary>
+		/// Indica si <c>primero</c> y <c>segundo</c> son coprimos.
+		/// </summary>
+		/// <remarks>
+		/// Ambos parámetros deben ser mayores o iguales que 0.
+		/// </remarks>
+		/// <returns>
+		/// <c>true</c> si primero y segundo son coprimos, si no <c>false</c>.
+		/// </returns>
+		public static bool SonCoprimos(long primero, long segundo) {
+			return Mcd(primero,segundo) == 1;
 		}
 
 		/// <summary>
@@ -76,17 +86,16 @@ namespace Operaciones
 		/// <remarks>
 		/// Los elementos de la serie son los exponentes de los números primos en orden ascendente hasta llegar al último con coeficiente positivo.
 		/// </remarks>
-		public static IListaDinamica<long> DescompsicionEnPrimos(long num) {
-			if (num < 0 ) throw new ArgumentException("El argumento debe ser positivo");
-			IListaDinamica<long> primos = PrimosHasta(num);
-			ListSerie<long> res = new(primos.Longitud) {
-				FuncionDeGeneracion = num => 0L,
-				Longitud = primos.Longitud
-			};
+		public static List<long> DescompsicionEnPrimos(long num) {
+			if (num < 0) throw new ArgumentException("El argumento debe ser positivo");
+			List<long> primos = PrimosHasta(num);
+			List<long> res = new(primos.Count);
+			while (res.Count < primos.Count) res.Add(0);
+
 			Descomposicion(primos, res, num);
-			while (res.UltimoElemento == 0L) {
-				res.BorrarUltimo();
-			}
+
+			while (res[^1] == 0) res.RemoveAt(res.Count - 1);
+
 			return res;
 		}
 
@@ -109,12 +118,12 @@ namespace Operaciones
 		/// <summary>
 		/// Devuelve una lista con los números primos hasta <c>divisor</c> incluido
 		/// </summary>
-		public static IListaDinamica<long> PrimosHasta(long num) {
+		public static List<long> PrimosHasta(long num) {
 			long cont;
-			ListSerie<long> serie = new();
+			List<long> serie = [];
 			if (_longitudPrimos == 0) { //Si no se ha calculado ninguno hace los cálculos completos
 				if (num >= 2) {
-					serie.InsertarUltimo(2L);
+					serie.Add(2L);
 				}
 				if (num <= 2) {
 					return serie;
@@ -124,14 +133,14 @@ namespace Operaciones
 				_longitudPrimos = 1;
 			} else {
 				for (int i = 0; i < _primosCalculados.Count && _primosCalculados[i] <= num; i++) { //Se insertan todos los que se necesiten para no tener que buscarlos otra vez
-					serie.InsertarUltimo(_primosCalculados[i]);
+					serie.Add(_primosCalculados[i]);
 				}
 				cont = _primosCalculados[^1] + 2; //Se le suma 2 para evitar que se inserte otra vez en el while
 			}
 
 			while (cont <= num) {
 				if (EsPrimo(cont)) {
-					serie.InsertarUltimo(cont);
+					serie.Add(cont);
 					_primosCalculados.Add(cont);
 				}
 				cont += 2;
@@ -292,8 +301,8 @@ namespace Operaciones
 		}
 
 		//Guarda en desc la descomposicion de divisor, usando los primos de primos
-		internal static void Descomposicion(IListaDinamica<long> primos, IListaDinamica<long> desc, long num) {
-			for (int j = 0; j < primos.Longitud && num > 1; j++) {
+		internal static void Descomposicion(List<long> primos, List<long> desc, long num) {
+			for (int j = 0; j < primos.Count && num > 1; j++) {
 				while (num % primos[j] == 0) {
 					num /= primos[j];
 					desc[j]++;
@@ -353,7 +362,7 @@ namespace Operaciones
 		/// <c>divisor</c> y <c>@base</c> deben ser coprimos
 		/// </remarks>
 		public static List<long> ReglaDivisibilidadBase(long divisor, int longitud, long @base) {
-			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(divisor, nameof(divisor));
+			ArgumentOutOfRangeException.ThrowIfLessThan(divisor, 2, nameof(divisor));
 			ArgumentOutOfRangeException.ThrowIfLessThan(@base, 2, nameof(@base));
 			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(longitud, nameof(longitud));
 			long inv = InversoMod(@base, divisor);
@@ -512,16 +521,17 @@ namespace Operaciones
 			if (divisor == 0) return (CasosDivisibilidad.CERO, -1);
 			if (divisor == 1) return (CasosDivisibilidad.UNO, -1);
 
-			IListaDinamica<long> descomposicionDivisor = DescompsicionEnPrimos(divisor),
+			List<long> descomposicionDivisor = DescompsicionEnPrimos(divisor),
 				descomposicionRaiz = DescompsicionEnPrimos(@base);
-			if (descomposicionDivisor.Longitud > descomposicionRaiz.Longitud) {
-				descomposicionRaiz.Longitud = descomposicionDivisor.Longitud;
-			} else {
-				descomposicionDivisor.Longitud = descomposicionRaiz.Longitud;
-			}
+			while (descomposicionDivisor.Count > descomposicionRaiz.Count)
+				descomposicionRaiz.Add(0);
+
+			while (descomposicionDivisor.Count < descomposicionRaiz.Count)
+				descomposicionDivisor.Add(0);
+
 			var tuplaCaso = ProductoDePotenciasDeBases(descomposicionDivisor, descomposicionRaiz, @base);
 
-			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.MIRAR_CIFRAS,tuplaCaso.dato);
+			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.MIRAR_CIFRAS, tuplaCaso.dato);
 			tuplaCaso = UnoMenosQuePotencia(divisor, @base);
 			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.RESTAR_BLOQUES, tuplaCaso.dato);
 			tuplaCaso = UnoMasQuePotencia(divisor, @base);
@@ -534,19 +544,19 @@ namespace Operaciones
 		/// </summary>
 		/// <returns></returns>
 		private static (bool, int) UnoMenosQuePotencia(long divisor, long @base) {
-			if (Mcd(divisor, @base) > 1) return (false, -1);
-			ListSerie<long> modulos = new(); // Para evitar que entre en primero bucle
+			if (!SonCoprimos(divisor, @base)) return (false, -1);
+			List<long> modulos = []; // Para evitar que entre en primero bucle
 			long raizModulo = @base % divisor;
 			int potencia = 1;
 			bool restoDivisorMenosUno = @base % divisor == divisor - 1;
 			if (!restoDivisorMenosUno)
 				do {
-					modulos.Insertar(raizModulo);
-					raizModulo *= modulos.PrimerElemento;
+					modulos.Add(raizModulo);
+					raizModulo *= modulos[0];
 					raizModulo %= divisor; //Para evitar overflow se calcula el modulo divisor
 					restoDivisorMenosUno |= raizModulo == divisor - 1;
 					potencia++;
-				} while (!restoDivisorMenosUno && !modulos.Contiene(raizModulo));
+				} while (!restoDivisorMenosUno && !modulos.Contains(raizModulo));
 			return (restoDivisorMenosUno, potencia);
 		}
 
@@ -555,8 +565,8 @@ namespace Operaciones
 		/// </summary>
 		/// <returns></returns>
 		private static (bool,int) UnoMasQuePotencia(long divisor, long @base) {
-			if (Mcd(divisor, @base) > 1) return (false, -1);
-			List<long> modulos = new(); // Para evitar que entre en primero bucle
+			if (!SonCoprimos(divisor, @base)) return (false, -1);
+			List<long> modulos = []; // Para evitar que entre en primero bucle
 			long raizModulo = @base % divisor;
 			int potencia = 1;
 			bool restoUno = @base % divisor == 1;
@@ -571,10 +581,10 @@ namespace Operaciones
 			return (restoUno, potencia);
 		}
 
-		private static (bool cumpleCondicion,int dato) ProductoDePotenciasDeBases(ILista<long> divisor, ILista<long> @base, long valorRaiz) {
-			if (@base.Vacia) return (false, -1);
+		private static (bool cumpleCondicion,int dato) ProductoDePotenciasDeBases(List<long> divisor, List<long> @base, long valorRaiz) {
+			if (@base.Count == 0) return (false, -1);
 			int maxPotencia = 0;
-			for (int i = 0; i < Min(divisor.Longitud,@base.Longitud); i++) { //Comprueba que todos los valores de divisor estén en @base
+			for (int i = 0; i < Min(divisor.Count,@base.Count); i++) { //Comprueba que todos los valores de divisor estén en @base
 				//Si en divisor es mayor que cero, pero en @base es cero, tiene primero componente primo que no esta en @base y no se le puede aplicar la regla
 				if (divisor[i] != 0 && @base[i] == 0) return (false, -1);
 				maxPotencia = Max(maxPotencia, @base[i] == 0 ? 0 : (int)Ceiling(divisor[i] / (double)@base[i]));

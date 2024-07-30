@@ -18,7 +18,7 @@ namespace ProgramaDivisibilidad {
 				flags.DatosRegla = [1,1,1];
 				_salida = EjectutarVarias(funcionEjecutada, flags.ListaDivisores, flags.ListaBases, flags.CoeficientesVarias);
 			} else {
-				if (flags.Divisor < 2 || flags.Base < 2 || Mcd(flags.Base, flags.Divisor) > 1) {
+				if (flags.Divisor < 2 || flags.Base < 2 || !SonCoprimos(flags.Divisor, flags.Base)) {
 					_escritorError.WriteLine(ErrorDivisorCoprimo);
 					_escritorError.WriteLine(ErrorBase);
 					_salida = SALIDA_ERROR;
@@ -27,7 +27,7 @@ namespace ProgramaDivisibilidad {
 					(_salida, object elementoCreado) = funcionEjecutada(flags.Divisor, flags.Base, flags.Coeficientes);
 					string textoResultado = ObjetoAString(elementoCreado);
 					EscribirReglaPorWriter(textoResultado, _escritorSalida, _escritorError, flags.Divisor, flags.Base, flags.Coeficientes);
-					if (Mcd(flags.Divisor, flags.Base) > 1) {
+					if (!SonCoprimos(flags.Divisor, flags.Base)) {
 						_escritorError.WriteLine(ErrorPrimo);
 					}
 				}
@@ -81,7 +81,7 @@ namespace ProgramaDivisibilidad {
 				}
 				_escritorError.WriteLine(MensajeParametrosDirecto, tuplas[indiceTupla].divisor, tuplas[indiceTupla].@base, coeficiente);
 				if (lineas[indiceLinea].Equals(string.Empty)) { // Si la regla falla se salta
-					if (Mcd(tuplas[indiceTupla].divisor, tuplas[indiceTupla].@base) > 1) {
+					if (!SonCoprimos(tuplas[indiceTupla].divisor, tuplas[indiceTupla].@base)) {
 						_escritorError.WriteLine(ErrorPrimo);
 					}
 					indiceLinea++;
@@ -120,7 +120,7 @@ namespace ProgramaDivisibilidad {
 		private static (int, object) CrearReglaCoeficientes(long divisor, long @base, int coefientes) {
 			int salida;
 			object elementoCreado = new Regla(divisor, @base, coefientes);
-			if (Mcd(divisor, @base) > 1) {
+			if (!SonCoprimos(divisor,@base)) {
 				salida = SALIDA_ERROR;
 			} else if (flags.Todos) {
 				List<Regla> listaAuxiliar = ReglasDivisibilidad(divisor, coefientes, @base);

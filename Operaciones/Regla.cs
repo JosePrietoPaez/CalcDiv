@@ -51,7 +51,7 @@ namespace Operaciones {
 		[JsonIgnore]
 		public int Longitud { 
 			get {
-				if (Calculos.Mcd(Divisor, Base) > 1)
+				if (!Calculos.SonCoprimos(Divisor, Base))
 					return 0;
 				return _longitud;
 			}
@@ -65,7 +65,7 @@ namespace Operaciones {
 		[JsonPropertyName("coefficients")]
 		public List<long> Coeficientes { 
 			get {
-				if (Calculos.Mcd(Base, Divisor) == 1) {
+				if (Calculos.SonCoprimos(Divisor, Base)) {
 					if (_coeficientes is null || _coeficientes.Count < Longitud) {
 						if (Divisor < 1) throw new InvalidOperationException();
 						_coeficientes = CalcularRegla();

@@ -1,5 +1,4 @@
-﻿using Listas;
-using Operaciones;
+﻿using Operaciones;
 
 namespace TestCalculadora
 {
@@ -156,6 +155,38 @@ namespace TestCalculadora
 		}
 
 		[TestFixture]
+		public class SonCoprimosTest {
+
+			[TestCase(10,-3, TestName = "SonCoprimos lanza excepción si segundo es negativo")]
+			[TestCase(-10,-3, TestName = "SonCoprimos lanza excepción si primero y segundo son negativos")]
+			[TestCase(-10,3, TestName = "SonCoprimos lanza excepción si primero es negativo")]
+			public void SonCoprimos_ArgumentosNegativos_LanzaExcepcion(long primero, long segundo) {
+				long argumento1 = primero
+					,argumento2 = segundo;
+
+				Assert.Throws<ArgumentException>(() => Calculos.SonCoprimos(argumento1, argumento2));
+			}
+
+			[Test(Description = "SonCoprimos devuelve false si los argumentos no lo son")]
+			public void SonCoprimos_ArgumentosNoCoprimos_DevuelveFalse() {
+				long primero = 15, segundo = 35;
+
+				bool resultado = Calculos.SonCoprimos(primero, segundo);
+
+				Assert.That(resultado, Is.False);
+			}
+
+			[Test(Description = "SonCoprimos devuelve false si los argumentos no lo son")]
+			public void SonCoprimos_ArgumentosCoprimos_DevuelveTrue() {
+				long primero = 101, segundo = 4023;
+
+				bool resultado = Calculos.SonCoprimos(primero, segundo);
+
+				Assert.That(resultado, Is.True);
+			}
+		}
+
+		[TestFixture]
 		public class DescompsicionEnPrimosTest
 		{
 			[Test(Description = "DescomposicionEnPrimos de un número negativo lanza una excepción")]
@@ -184,9 +215,22 @@ namespace TestCalculadora
 					num);
 
 				// Assert
-				ListSerie<long> primos = new();
-				primos.Insertar(0L);
-				primos.Insertar(1L);
+				List<long> primos = [0, 1];
+				Assert.That(result, Is.EqualTo(primos));
+			}
+
+			[Test(Description = "DescomposicionEnPrimos de un primo devuelve la lista correcta")]
+			public void DescompsicionEnPrimos_NumeroPrimoCaso2_DevuelveListaDePotencias() {
+				// Arrange
+
+				long num = 700;
+
+				// Act
+				var result = Calculos.DescompsicionEnPrimos(
+					num);
+
+				// Assert
+				List<long> primos = [2, 0, 2, 1];
 				Assert.That(result, Is.EqualTo(primos));
 			}
 
@@ -202,7 +246,7 @@ namespace TestCalculadora
 
 				// Assert
 				// Calculamos el resultado
-				IListaDinamica<long> primos = Calculos.PrimosHasta(num);
+				List<long> primos = Calculos.PrimosHasta(num);
 				long res = 1;
 				var eprimos = primos.GetEnumerator();
 				var eresult = result.GetEnumerator();
@@ -219,8 +263,8 @@ namespace TestCalculadora
 		{
 			long num = 18;
 			// Act
-			IListaDinamica<long> primos = Calculos.PrimosHasta(num);
-			long[] numerosPrim = new long[] { 2, 3, 5, 7, 11, 13, 17, 18 };
+			List<long> primos = Calculos.PrimosHasta(num);
+			long[] numerosPrim = [2, 3, 5, 7, 11, 13, 17, 18];
 			
 			int contador = 0;
 			foreach(long value in primos){
@@ -489,21 +533,7 @@ namespace TestCalculadora
 				raiz));
 		}
 
-		[TestFixture]
-		public class ReglasDivisibilidadTests
-		{
-			
-		}
-
-		[TestFixture]
-		public class ReglaDivisibilidadOptimaTests
-		{
-
-			
-
-		}
-
-		[Test(Description ="Devuelve de forma acertada el valor de la base segun su exponente")]
+		[Test(Description ="Devuelve de forma acertada el valor de la base según su exponente")]
 		public void PotenciaEntera_LongValues_ValorDeLaPotencia()
 		{
 			// Arrange
@@ -517,6 +547,90 @@ namespace TestCalculadora
 				exp);
 
 				Assert.That(result, Is.EqualTo(65536));
+
+		}
+
+		[TestFixture]
+		public class ReglasDivisibilidadTests
+		{
+			
+		}
+
+		[TestFixture]
+		public class ReglaDivisibilidadOptimaTests {
+
+			[Test(Description = "ReglaDivisibilidadOptima lanza excepción si base o divisor son menores que 2 o longitud no es positiva"), Combinatorial]
+			public void ReglaDivisibilidadOptima_ArgumentosNoValidos_LanzaExcepcion(
+				[Values(1, -1)] long divisor, [Values(0, -1)] int longitud, [Values(1, -1)] long @base) {
+				Assume.That(divisor <= 1 || longitud <= 0 || @base <= 1);
+
+				Assert.Throws<ArgumentOutOfRangeException>(() => Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base));
+			}
+
+			[Test(Description = "ReglaDivisibilidadOptima lanza excepción si base o divisor son menores que 2 o longitud no es positiva"), Combinatorial]
+			public void ReglaDivisibilidadOptima_ArgumentosNoCoprimos_LanzaExcepcion(
+				[Values(2, 4)] long divisor, [Values(6, 10)] long @base) {
+				int longitud = 2;
+
+				Assert.Throws<ArithmeticException>(() => Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base));
+			}
+
+
+			[Test(Description = "ReglaDivisibilidadOptima lanza excepción si base o divisor son menores que 2 o longitud no es positiva"), Combinatorial]
+			public void ReglaDivisibilidadOptima_ArgumentosCoprimos_DevuelveRegla(
+				[Values(3, 7)] long divisor, [Values(10, 20)] long @base) {
+				int longitud = 5;
+				long inverso = Calculos.InversoMod(@base, divisor);
+
+				Regla resultado = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
+
+				Assert.Multiple(() => {
+					Assert.That(resultado.Longitud, Is.EqualTo(longitud));
+					Assert.That(resultado.Coeficientes, Has.Count.EqualTo(longitud));
+					Assert.That(resultado.Base, Is.EqualTo(@base));
+					Assert.That(resultado.Divisor, Is.EqualTo(divisor));
+					for (int i = 0; i < resultado.Coeficientes.Count; i++) {
+						long potencia = Calculos.PotenciaEntera(inverso, i + 1) % divisor;
+						Assert.That(resultado.Coeficientes[i], Is.EqualTo(Calculos.MinAbs(potencia, potencia - divisor)));
+					}
+				});
+			}
+
+		}
+
+		[TestFixture]
+		public class ReglaDivisibilidadBaseTests {
+
+			[Test(Description = "ReglaDivisibilidadBase lanza excepción si base o divisor son menores que 2 o longitud no es positiva"), Combinatorial]
+			public void ReglaDivisibilidadBase_ArgumentosNoValidos_LanzaExcepcion(
+				[Values(1,-1)] long divisor, [Values(0,-1)] int longitud, [Values(1,-1)] long @base) {
+				Assume.That(divisor <= 1 || longitud <= 0 || @base <= 1);
+
+				Assert.Throws<ArgumentOutOfRangeException>(() => Calculos.ReglaDivisibilidadBase(divisor, longitud, @base));
+			}
+
+			[Test(Description = "ReglaDivisibilidadBase lanza excepción si base o divisor son menores que 2 o longitud no es positiva"), Combinatorial]
+			public void ReglaDivisibilidadBase_ArgumentosNoCoprimos_LanzaExcepcion(
+				[Values(2,4)] long divisor, [Values(6,10)] long @base) {
+				int longitud = 2;
+
+				Assert.Throws<ArithmeticException>(() => Calculos.ReglaDivisibilidadBase(divisor, longitud, @base));
+			}
+
+
+			[Test(Description = "ReglaDivisibilidadBase lanza excepción si base o divisor son menores que 2 o longitud no es positiva"), Combinatorial]
+			public void ReglaDivisibilidadBase_ArgumentosCoprimos_DevuelveLista(
+				[Values(3, 7)] long divisor, [Values(10, 20)] long @base) {
+				int longitud = 5;
+				long inverso = Calculos.InversoMod(@base,divisor);
+
+				List<long> resultado = Calculos.ReglaDivisibilidadBase(divisor, longitud, @base);
+
+				Assert.That(resultado, Has.Count.EqualTo(longitud));
+				for (int i = 0; i < resultado.Count; i++) {
+					Assert.That(resultado[i], Is.EqualTo(Calculos.PotenciaEntera(inverso, i + 1) % divisor));
+				}
+			}
 
 		}
 

@@ -17,10 +17,6 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="jmpp.expanded-lists" Version="0.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Recursos\TextoCalculos.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

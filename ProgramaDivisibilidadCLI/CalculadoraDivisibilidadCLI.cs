@@ -1,6 +1,5 @@
 ﻿using CommandLine;
 using System.Text;
-using Listas;
 using static Operaciones.Calculos;
 using static ProgramaDivisibilidad.Recursos.TextoResource;
 using System.Diagnostics.CodeAnalysis;
@@ -235,7 +234,7 @@ namespace ProgramaDivisibilidad {
 		private static void ObtenerDeUsuarioCoprimo(out long dato, long minimo, long coprimo, string mensajeError, string mensajePregunta) {
 			_escritorError.Write(mensajePregunta);
 			string? linea = _lectorEntrada.ReadLine();
-			while (!long.TryParse(linea, out dato) || dato < minimo || Mcd(dato,coprimo) > 1) {
+			while (!long.TryParse(linea, out dato) || dato < minimo || !SonCoprimos(dato, coprimo)) {
 				LanzarExcepcionSiSalida(linea);
 				_escritorError.WriteLine(Environment.NewLine + mensajeError);
 				_escritorError.Write(mensajePregunta);
