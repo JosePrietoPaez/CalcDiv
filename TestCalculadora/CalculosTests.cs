@@ -523,7 +523,6 @@ namespace TestCalculadora
 			long raiz = 0;
 
 			// Act
-			var result = 
 
 			// Act
 			Assert.Throws<DivideByZeroException>(() =>
@@ -546,14 +545,48 @@ namespace TestCalculadora
 				@base,
 				exp);
 
-				Assert.That(result, Is.EqualTo(65536));
+			Assert.That(result, Is.EqualTo(65536));
 
 		}
 
 		[TestFixture]
-		public class ReglasDivisibilidadTests
-		{
-			
+		public class ReglasDivisibilidadTests {
+
+			[Test(Description = "ReglasDivisibilidad lanza excepción si base o divisor son menores que 2 o longitud no es positiva"), Combinatorial]
+			public void ReglasDivisibilidad_ArgumentosNoValidos_LanzaExcepcion(
+				[Values(1, -1)] long divisor, [Values(0, -1)] int longitud, [Values(1, -1)] long @base) {
+				Assume.That(divisor <= 1 || longitud <= 0 || @base <= 1);
+
+				Assert.Throws<ArgumentOutOfRangeException>(() => Calculos.ReglasDivisibilidad(divisor, longitud, @base));
+			}
+
+			[Test(Description = "ReglasDivisibilidad lanza excepción si base o divisor son menores que 2 o longitud no es positiva"), Combinatorial]
+			public void ReglasDivisibilidad_ArgumentosNoCoprimos_LanzaExcepcion(
+				[Values(2, 4)] long divisor, [Values(6, 10)] long @base) {
+				int longitud = 2;
+
+				Assert.Throws<ArithmeticException>(() => Calculos.ReglasDivisibilidad(divisor, longitud, @base));
+			}
+
+			[Test(Description = "ReglasDivisibilidad lanza excepción")]
+			public void ReglasDivisibilidad_ArgumentosCoprimos_DevuelveTodasLasReglasDeDivisibilidad(
+				[Values(6, 15)] long divisor, [Values(13,77)] long @base) {
+				int longitud = 5;
+				long inverso = Calculos.InversoMod(@base, divisor);
+				List<long> listaPotencias = [];
+				for (int i = 0; i < longitud; i++) {
+					listaPotencias.Add(Calculos.PotenciaEntera(inverso, i) % divisor);
+				}
+
+				List<Regla> resultado = Calculos.ReglasDivisibilidad(divisor, longitud, @base);
+
+				Assert.Multiple(() => {
+					Assert.That(resultado, Has.Count.EqualTo(Calculos.PotenciaEntera(2, longitud)));
+					Assert.That(resultado, Is.Unique);
+					Assert.That(resultado, Is.All.Property("Coeficientes").All.Matches<long>(coeficiente => listaPotencias.Contains(coeficiente) || listaPotencias.Contains(coeficiente + divisor)));
+				});
+			}
+
 		}
 
 		[TestFixture]

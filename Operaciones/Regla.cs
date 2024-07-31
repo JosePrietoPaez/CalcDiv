@@ -10,7 +10,7 @@ namespace Operaciones {
 	/// <remarks>
 	/// Esta clase contiene propiedades y métodos para gestionar su tipo y propiedades.
 	/// </remarks>
-	public class Regla([Range(0, long.MaxValue)] long divisor, [Range(2, long.MaxValue)] long @base, [Range(0,int.MaxValue)] int coeficientes, string nombre = "") {
+	public class Regla([Range(0, long.MaxValue)] long divisor, [Range(2, long.MaxValue)] long @base, [Range(0,int.MaxValue)] int coeficientes, string nombre = "") : IEquatable<Regla?> {
 
 		/// <summary>
 		/// Crea una regla con los coeficientes ya obtenidos, no se comprueba que sean correctos
@@ -92,18 +92,6 @@ namespace Operaciones {
 			return regla;
 		}
 
-		public override bool Equals(object? obj) {
-			return obj is Regla regla &&
-				   Divisor == regla.Divisor &&
-				   Base == regla.Base &&
-				   Longitud == regla.Longitud &&
-				   Nombre == regla.Nombre;
-		}
-
-		public override int GetHashCode() {
-			return HashCode.Combine(Divisor, Base, Longitud, Nombre);
-		}
-
 		public override string ToString() {
 			return string.Join(", ", Coeficientes);
 		}
@@ -118,6 +106,27 @@ namespace Operaciones {
 				}
 			}
 			return sb.ToString();
+		}
+
+		public override bool Equals(object? obj) {
+			return Equals(obj as Regla);
+		}
+
+		public bool Equals(Regla? other) {
+			return other is not null &&
+				   EqualityComparer<List<long>>.Default.Equals(Coeficientes, other.Coeficientes);
+		}
+
+		public override int GetHashCode() {
+			return HashCode.Combine(Coeficientes);
+		}
+
+		public static bool operator ==(Regla? left, Regla? right) {
+			return EqualityComparer<Regla>.Default.Equals(left, right);
+		}
+
+		public static bool operator !=(Regla? left, Regla? right) {
+			return !(left == right);
 		}
 	}
 }
