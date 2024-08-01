@@ -62,7 +62,7 @@ namespace ProgramaDivisibilidad {
 	/// <summary>
 	/// Clase usada por el parser para inicializar las pociones
 	/// </summary>
-	internal class Flags : IAyudaCortaOpciones, IAyudaLargaOpciones, ICoeficientesOpciones, IExtraOpciones {
+	internal class Opciones : IAyudaCortaOpciones, IAyudaLargaOpciones, ICoeficientesOpciones, IExtraOpciones {
 
 		/// <summary>
 		/// Esta propiedad indica si la opción -x está activa.
@@ -110,7 +110,7 @@ namespace ProgramaDivisibilidad {
 		/// <summary>
 		/// Devuelve el primer elemento de <see cref="DatosRegla"/> o <c>-1</c> si es nulo
 		/// </summary>
-		public long Divisor {
+		public long DivisorDirecto {
 			get {
 				if (DatosRegla is null)
 					return -1;
@@ -122,7 +122,7 @@ namespace ProgramaDivisibilidad {
 		/// <summary>
 		/// Devuelve el segundo elemento de <see cref="DatosRegla"/> o <c>-1</c> si es nulo
 		/// </summary>
-		public long Base {
+		public long BaseDirecto {
 			get {
 				if (DatosRegla is null)
 					return -1;
@@ -134,7 +134,7 @@ namespace ProgramaDivisibilidad {
 		/// <summary>
 		/// Devuelve el tercer elemento de <see cref="DatosRegla"/> o <c>-1</c> si es nulo
 		/// </summary>
-		public int Coeficientes {
+		public int LongitudDirecta {
 			get {
 				if (DatosRegla is null || DatosRegla.Count() < 3)
 					return -1;
@@ -180,7 +180,7 @@ namespace ProgramaDivisibilidad {
 
 		private long[]? _listaDivisores = null
 			, _listaBases = null;
-		private int? _coeficientesVarias = null;
+		private int? _longitudVarias = null;
 
 		/// <summary>
 		/// Devuelve la lista de divisores pasada por <see cref="VariasReglas"/>.
@@ -231,21 +231,21 @@ namespace ProgramaDivisibilidad {
 		/// </summary>
 		public int CoeficientesVarias {
 			get {
-				if (_coeficientesVarias is null) {
+				if (_longitudVarias is null) {
 					if (VariasReglas!.Count() == 2) { // Es opcional, así que se pone el valor por defecto
-						_coeficientesVarias = 1;
+						_longitudVarias = 1;
 						VariasReglas = VariasReglas!.Append("1");
 					} else {
 						if (int.TryParse(VariasReglas!.ElementAt(2), out int numeroParseado)) {
-							_coeficientesVarias = numeroParseado;
+							_longitudVarias = numeroParseado;
 						} else {
 							throw new FormatException(TextoResource.ErrorCoeficientes);
 						}
 					}
 				}
-				return _coeficientesVarias ?? 1;
+				return _longitudVarias ?? 1;
 			} 
-			set => _coeficientesVarias = value;
+			set => _longitudVarias = value;
 		}
 
 		private static long[] ParsearStringsLong(string[] numeros, string mensajeError = "") {

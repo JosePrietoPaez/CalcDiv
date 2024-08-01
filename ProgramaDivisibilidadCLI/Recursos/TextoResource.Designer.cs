@@ -301,7 +301,7 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Base of the rule: .
+        ///   Busca una cadena traducida similar a BaseDirecto of the rule: .
         /// </summary>
         public static string MensajeDialogoBase {
             get {
@@ -319,7 +319,7 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Divisor of the rule: .
+        ///   Busca una cadena traducida similar a DivisorDirecto of the rule: .
         /// </summary>
         public static string MensajeDialogoDivisor {
             get {
@@ -409,7 +409,7 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Divisor: {0}, Base: {1}, Coefficients: {2}..
+        ///   Busca una cadena traducida similar a DivisorDirecto: {0}, BaseDirecto: {1}, Coefficients: {2}..
         /// </summary>
         public static string MensajeParametrosDirecto {
             get {

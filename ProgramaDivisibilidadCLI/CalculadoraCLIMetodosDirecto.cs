@@ -1,6 +1,8 @@
 ﻿using Operaciones;
+using ExpandedLists;
 using static Operaciones.Calculos;
 using static ProgramaDivisibilidad.Recursos.TextoResource;
+using ExpandedLists.Blocks;
 
 namespace ProgramaDivisibilidad {
 	public static partial class CalculadoraDivisibilidadCLI {
@@ -18,16 +20,16 @@ namespace ProgramaDivisibilidad {
 				flags.DatosRegla = [1,1,1];
 				_salida = EjectutarVarias(funcionEjecutada, flags.ListaDivisores, flags.ListaBases, flags.CoeficientesVarias);
 			} else {
-				if (flags.Divisor < 2 || flags.Base < 2 || !SonCoprimos(flags.Divisor, flags.Base)) {
+				if (flags.DivisorDirecto < 2 || flags.BaseDirecto < 2 || !SonCoprimos(flags.DivisorDirecto, flags.BaseDirecto)) {
 					_escritorError.WriteLine(ErrorDivisorCoprimo);
 					_escritorError.WriteLine(ErrorBase);
 					_salida = SALIDA_ERROR;
 				} else {
 					if (flags.DatosRegla.Count == 2) flags.Directo = flags.Directo!.Append(1);
-					(_salida, object elementoCreado) = funcionEjecutada(flags.Divisor, flags.Base, flags.Coeficientes);
+					(_salida, object elementoCreado) = funcionEjecutada(flags.DivisorDirecto, flags.BaseDirecto, flags.LongitudDirecta);
 					string textoResultado = ObjetoAString(elementoCreado);
-					EscribirReglaPorWriter(textoResultado, _escritorSalida, _escritorError, flags.Divisor, flags.Base, flags.Coeficientes);
-					if (!SonCoprimos(flags.Divisor, flags.Base)) {
+					EscribirReglaPorWriter(textoResultado, _escritorSalida, _escritorError, flags.DivisorDirecto, flags.BaseDirecto, flags.LongitudDirecta);
+					if (!SonCoprimos(flags.DivisorDirecto, flags.BaseDirecto)) {
 						_escritorError.WriteLine(ErrorPrimo);
 					}
 				}

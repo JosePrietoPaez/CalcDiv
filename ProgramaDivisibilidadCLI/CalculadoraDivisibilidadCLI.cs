@@ -23,7 +23,7 @@ namespace ProgramaDivisibilidad {
 		private static bool _salir; //Usado para saber si el usuario ha solicitado terminar la ejecución
 		private static int _salida; //Salida del programa
 		[NotNull] //Para que no me den los warnings, no debería ser null durante las partes relevantes del código
-		private static Flags? flags = null;
+		private static Opciones? flags = null;
 		private static TextWriter _escritorSalida = Console.Out, _escritorError = Console.Error;
 		private static TextReader _lectorEntrada = Console.In;
 		private readonly static JsonSerializerOptions opcionesJson = new() { WriteIndented = true, Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement) };
@@ -52,7 +52,7 @@ namespace ProgramaDivisibilidad {
 			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
 			SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
 			var parser = new Parser(with => with.HelpWriter = null);
-			var resultado = parser.ParseArguments<Flags>(args); //Parsea los argumentos
+			var resultado = parser.ParseArguments<Opciones>(args); //Parsea los argumentos
 				resultado
 				.WithParsed(options => { flags = options;
 					//_escritorError.WriteLine(options.Dump());
@@ -331,8 +331,8 @@ namespace ProgramaDivisibilidad {
 		}
 
 		private static void InsertarPropiedadesLista(StringBuilder stringBuilder, string tabulaciones = "") {
-			stringBuilder.Append(tabulaciones + "\"divisor\" : " + flags.Divisor + ',' + Environment.NewLine);
-			stringBuilder.Append(tabulaciones + "\"base\" : " + flags.Base + ',' + Environment.NewLine);
+			stringBuilder.Append(tabulaciones + "\"divisor\" : " + flags.DivisorDirecto + ',' + Environment.NewLine);
+			stringBuilder.Append(tabulaciones + "\"base\" : " + flags.BaseDirecto + ',' + Environment.NewLine);
 			stringBuilder.Append(tabulaciones + "\"name\" : " + '\"' + flags.Nombre + '\"' + ',' + Environment.NewLine);
 		}
 	}
