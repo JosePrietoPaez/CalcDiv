@@ -176,6 +176,21 @@ namespace ProgramaDivisibilidad {
 			, ResourceType = typeof(TextoResource))]
 		public IEnumerable<string>? VariasReglas { get; set; }
 
+		[Option("base"
+			, HelpText = "HelpBaseDialogo"
+			, ResourceType = typeof(TextoResource))]
+		public long? BaseDialogo { get; set; }
+
+		[Option("divisor"
+			, HelpText = "HelpDivisorDialogo"
+			, ResourceType = typeof(TextoResource))]
+		public long? DivisorDialogo { get; set; }
+
+		[Option("length"
+			, HelpText = "HelpLongitudDialogo"
+			, ResourceType = typeof(TextoResource))]
+		public int? LongitudDialogo { get; set; }
+
 		private const char SEPARADOR = ',';
 
 		private long[]? _listaDivisores = null
@@ -263,7 +278,7 @@ namespace ProgramaDivisibilidad {
 		}
 
 		/// <summary>
-		/// Esta propiedad devuelve si hay algún flag activo.
+		/// Esta propiedad devuelve si todos los flags, excepto los de valores de diálogo están inactivos.
 		/// </summary>
 		public bool FlagsInactivos => !(DialogoSencillo || JSON || Ayuda || Ayuda || AyudaCorta || TipoExtra || Todos || (Nombre?.Length ?? 0) != 0 || (Directo?.Any() ?? false));
 

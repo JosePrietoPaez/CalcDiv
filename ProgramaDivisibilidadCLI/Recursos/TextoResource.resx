@@ -375,4 +375,21 @@ This rule can be ignored.</value>
   <data name="ErrorDivisorExtra" xml:space="preserve">
     <value>The divisor must be a non-negative integer.</value>
   </data>
+  <data name="HelpBaseDialogo" xml:space="preserve">
+    <value>Sets a default base for dialog, skipping input.
+Must be a valid integer greater than 1.</value>
+  </data>
+  <data name="HelpDivisorDialogo" xml:space="preserve">
+    <value>Sets a default divisor for dialog, skipping input.
+Must be a valid non-negative integer.
+If the base is specified, will default to extra rules, unless the divisor and base are coprime.</value>
+  </data>
+  <data name="HelpLongitudDialogo" xml:space="preserve">
+    <value>Sets a default rule length for dialog, skipping input.
+Must be a valid positive integer.
+Defaults to coefficient rules, unless extra rules are activated.</value>
+  </data>
+  <data name="ErrorBaseCoprima" xml:space="preserve">
+    <value>The base must be an integer greater than one and coprime with the divisor.</value>
+  </data>
 </root>

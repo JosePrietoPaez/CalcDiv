@@ -150,6 +150,15 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The base must be an integer greater than one and coprime with the divisor..
+        /// </summary>
+        public static string ErrorBaseCoprima {
+            get {
+                return ResourceManager.GetString("ErrorBaseCoprima", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The number of coefficients must be a positive integer..
         /// </summary>
         public static string ErrorCoeficientes {
@@ -236,11 +245,32 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Sets a default base for dialog, skipping input.
+        ///Must be a valid integer greater than 1..
+        /// </summary>
+        public static string HelpBaseDialogo {
+            get {
+                return ResourceManager.GetString("HelpBaseDialogo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Reads the divisor, base, and optionally the number of coefficients as arguments, not as dialog input. Must be two or three valid 64-bit integers..
         /// </summary>
         public static string HelpDirecto {
             get {
                 return ResourceManager.GetString("HelpDirecto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Sets a default divisor for dialog, skipping input.
+        ///Must be a valid non-negative integer.
+        ///If the base is specified, will default to extra rules, unless the divisor and base are coprime..
+        /// </summary>
+        public static string HelpDivisorDialogo {
+            get {
+                return ResourceManager.GetString("HelpDivisorDialogo", resourceCulture);
             }
         }
         
@@ -259,6 +289,17 @@ namespace ProgramaDivisibilidad.Recursos {
         public static string HelpJson {
             get {
                 return ResourceManager.GetString("HelpJson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Sets a default rule length for dialog, skipping input.
+        ///Must be a valid positive integer.
+        ///Defaults to coefficient rules, unless extra rules are activated..
+        /// </summary>
+        public static string HelpLongitudDialogo {
+            get {
+                return ResourceManager.GetString("HelpLongitudDialogo", resourceCulture);
             }
         }
         
@@ -301,7 +342,7 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a BaseDirecto of the rule: .
+        ///   Busca una cadena traducida similar a Base of the rule: .
         /// </summary>
         public static string MensajeDialogoBase {
             get {
@@ -319,7 +360,7 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a DivisorDirecto of the rule: .
+        ///   Busca una cadena traducida similar a Divisor of the rule: .
         /// </summary>
         public static string MensajeDialogoDivisor {
             get {
@@ -409,7 +450,7 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a DivisorDirecto: {0}, BaseDirecto: {1}, Coefficients: {2}..
+        ///   Busca una cadena traducida similar a Divisor: {0}, Base: {1}, Coefficients: {2}..
         /// </summary>
         public static string MensajeParametrosDirecto {
             get {

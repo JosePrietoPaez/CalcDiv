@@ -111,6 +111,27 @@ namespace ProgramaDivisibilidad {
 			_escritorError.WriteLine(textoAyuda);
 		}
 
+		private static bool GestionarOpcionesDialogo() {
+			bool saltarPreguntaExtra = flags.TipoExtra;
+			if (flags.BaseDialogo.HasValue && flags.DivisorDialogo.HasValue) {
+				if (!SonCoprimos(flags.BaseDialogo.Value, flags.DivisorDialogo.Value)) {
+					if (!flags.TipoExtra && !flags.FlagsInactivos) throw new ArgumentException(ErrorDivisorCoprimo, nameof(flags.DivisorDialogo));
+					flags.TipoExtra = true; // No se pueden usar las de coeficientes, como se cambia después de evaluar para sinFlags, se sigue preguntando
+					saltarPreguntaExtra = true;
+				} else {
+					if (flags.BaseDialogo < 2) {
+						throw new ArgumentOutOfRangeException(nameof(flags.BaseDialogo), ErrorBase);
+					} else if (flags.DivisorDialogo < 2) {
+						throw new ArgumentOutOfRangeException(nameof(flags.DivisorDialogo), ErrorDivisor);
+					}
+				}
+			}
+			if (flags.LongitudDialogo.HasValue && flags.LongitudDialogo.Value < 1) {
+				throw new ArgumentOutOfRangeException(nameof(flags.LongitudDialogo), ErrorCoeficientes);
+			}
+			return saltarPreguntaExtra;
+		}
+
 		/// <summary>
 		/// Lógica de la aplicación en modo diálogo.
 		/// </summary>
@@ -125,63 +146,28 @@ namespace ProgramaDivisibilidad {
 		private static void IniciarAplicacion() { //Si no se proporcionan los argumentos de forma directa, se establece un diálogo con el usuario para obtenerlos
 			_escritorError.WriteLine(MensajeInicioDialogo,SALIDA);
 			bool sinFlags = flags.FlagsInactivos;
-			static bool esS(char letra) => letra == 's' || letra == 'S';
-			flags.DatosRegla = [0,0,0];
+			static bool esS(char letra) => letra == 's' | letra == 'S';
 			try {
+				bool saltarPreguntaExtra = GestionarOpcionesDialogo();
+				flags.DatosRegla = [0,0,0];
 				do {
 					//Si no tiene flags las pedirá durante la ejecución
 					if (sinFlags) {
 						//Le una tecla de entrada reglasObj lanza excepción si es la _salida
-						flags.TipoExtra = !ObtenerDeUsuario(MensajeDialogoExtendido, esS);
 
-						if (!flags.TipoExtra) {
+						if (!saltarPreguntaExtra) {
+							flags.TipoExtra = !ObtenerDeUsuario(MensajeDialogoExtendido, esS);
+						}
+
+						if (!flags.TipoExtra && !flags.JSON) {
 							flags.JSON = ObtenerDeUsuario(MensajeDialogoJson, esS);
 						}
 
 					}
 
-					//Pregunta el dato en bucle hasta que sea correcto a lanza excepción si es el mensaje de _salida
+					var resultado = FlujoDatosRegla(flags.DivisorDialogo, flags.BaseDialogo, flags.LongitudDialogo, sinFlags);
 
-					ObtenerDeUsuario(out long @base, 2
-						, ErrorBase
-						, MensajeDialogoBase);
-
-					if (flags.TipoExtra) { //Si la regla es de algún tipo extra
-
-						ObtenerDeUsuario(out long divisor, 0
-							, ErrorDivisor
-							, MensajeDialogoDivisor);
-
-						flags.DatosRegla = [divisor, @base, 1];
-
-						//Intenta buscar una regla alternativa
-						_escritorSalida.WriteLine(ReglaDivisibilidadExtendida(divisor, @base).Item2 + Environment.NewLine);
-
-					} else { //Si la regla debe ser de coeficientes
-
-						//Pregunta hasta que sea coprimo con base o sea _salida
-						ObtenerDeUsuarioCoprimo(out long divisor, 2
-							, @base
-							, ErrorDivisorCoprimo
-							, MensajeDialogoDivisor);
-
-						ObtenerDeUsuario(out int coeficientes, 1
-							, ErrorCoeficientes
-							, MensajeDialogoCoeficientes);
-
-						flags.DatosRegla = [divisor, @base, coeficientes];
-
-						if (sinFlags) {
-							flags.Todos = ObtenerDeUsuario(MensajeDialogoTodas, esS);
-
-							ObtenerDeUsuario(out string nombre, MensajeDialogoRegla);
-							flags.Nombre = nombre;
-						}
-
-						string resultado = ObtenerReglas(divisor, @base, coeficientes);
-						EscribirReglaPorWriter(resultado + Environment.NewLine, _escritorSalida, _escritorError, divisor, @base, coeficientes);
-
-					}
+					EscribirReglaPorWriter(resultado.Item1 + Environment.NewLine, _escritorSalida, _escritorError, resultado.Item2, resultado.Item3, resultado.Item4);
 
 					_salir = !ObtenerDeUsuario(MensajeDialogoRepetir, esS);
 					_salida = SALIDA_CORRECTA;
@@ -194,9 +180,59 @@ namespace ProgramaDivisibilidad {
 			}
 			catch (Exception e) {
 				_salida = SALIDA_ERROR;
+				_escritorError.WriteLine(e.Message);
 				_escritorError.WriteLine(e.StackTrace);
 				_escritorError.WriteLine(DialogoExcepcionInesperada);
 			}
+		}
+
+		/// <summary>
+		/// Separa la obtención de los datos de la regla del resto del diálogo para mejorar la lectura
+		/// </summary>
+		/// <param name="divisorNull"></param>
+		/// <param name="baseNull"></param>
+		/// <param name="longitudNull"></param>
+		/// <param name="sinFlags"></param>
+		private static (string, long, long, int) FlujoDatosRegla(long? divisorNull, long? baseNull, int? longitudNull, bool sinFlags) {
+			long divisor, @base;
+			int longitud = 1;
+			// Se carga la base primero, necesaria en todos los casos
+			@base = ObtenerValorODefecto(baseNull,
+				() => ObtenerDeUsuarioLong(2, ErrorDivisor, MensajeDialogoDivisor));
+
+			if (flags.TipoExtra) {
+				divisor = ObtenerValorODefecto(divisorNull,
+					() => ObtenerDeUsuarioLong(2, ErrorDivisor, MensajeDialogoDivisor));
+
+			} else {
+				divisor = ObtenerValorODefecto(divisorNull,
+					() => ObtenerDeUsuarioCoprimo(2, @base, ErrorDivisorCoprimo, MensajeDialogoDivisor));
+
+				longitud = ObtenerValorODefecto(longitudNull,
+					() => ObtenerDeUsuario(0, ErrorCoeficientes, MensajeDialogoCoeficientes));
+
+				if (sinFlags) {
+
+					if (flags.Nombre.Equals(string.Empty)) {
+
+						flags.Nombre = ObtenerDeUsuario(MensajeDialogoRegla);
+
+					}
+
+					if (!flags.Todos) {
+
+						flags.Todos = ObtenerDeUsuario(MensajeDialogoTodas, c => c == 's' | c == 'S');
+
+					}
+
+				}
+			}
+
+			return (ObtenerReglas(divisor, @base, longitud), divisor, @base, longitud);
+		}
+
+		private static T ObtenerValorODefecto<T>(T? valorDefecto, Func<T> funcionCasoNulo) where T : struct {
+			return valorDefecto is null ? funcionCasoNulo() : valorDefecto.Value;
 		}
 
 		private static bool ObtenerDeUsuario(string mensaje, Func<char,bool> comparador) {
@@ -207,7 +243,8 @@ namespace ProgramaDivisibilidad {
 			return comparador(entrada);
 		}
 
-		private static void ObtenerDeUsuario(out long dato, long minimo, string mensajeError, string mensajePregunta) {
+		private static long ObtenerDeUsuarioLong(long minimo, string mensajeError, string mensajePregunta) {
+			long dato;
 			_escritorError.Write(mensajePregunta);
 			string? linea = _lectorEntrada.ReadLine();
 			while (!long.TryParse(linea, out dato) || dato < minimo) {
@@ -217,9 +254,11 @@ namespace ProgramaDivisibilidad {
 				linea = _lectorEntrada.ReadLine();
 			}
 			_escritorError.WriteLine();
+			return dato;
 		}
 
-		private static void ObtenerDeUsuario(out int dato, long minimo, string mensajeError, string mensajePregunta) {
+		private static int ObtenerDeUsuario(long minimo, string mensajeError, string mensajePregunta) {
+			int dato;
 			_escritorError.Write(mensajePregunta);
 			string? linea = _lectorEntrada.ReadLine();
 			while (!int.TryParse(linea, out dato) || dato < minimo) {
@@ -229,9 +268,11 @@ namespace ProgramaDivisibilidad {
 				linea = _lectorEntrada.ReadLine();
 			}
 			_escritorError.WriteLine();
+			return dato;	
 		}
 
-		private static void ObtenerDeUsuarioCoprimo(out long dato, long minimo, long coprimo, string mensajeError, string mensajePregunta) {
+		private static long ObtenerDeUsuarioCoprimo(long minimo, long coprimo, string mensajeError, string mensajePregunta) {
+			long dato;
 			_escritorError.Write(mensajePregunta);
 			string? linea = _lectorEntrada.ReadLine();
 			while (!long.TryParse(linea, out dato) || dato < minimo || !SonCoprimos(dato, coprimo)) {
@@ -241,13 +282,16 @@ namespace ProgramaDivisibilidad {
 				linea = _lectorEntrada.ReadLine();
 			}
 			_escritorError.WriteLine();
+			return dato;
 		}
 
-		private static void ObtenerDeUsuario(out string dato, string mensajePregunta) {
+		private static string ObtenerDeUsuario(string mensajePregunta) {
+			string dato;
 			_escritorError.Write(mensajePregunta);
 			dato = _lectorEntrada.ReadLine() ?? "";
 			LanzarExcepcionSiSalida(dato);
 			_escritorError.WriteLine();
+			return dato;
 		}
 
 		private static void LanzarExcepcionSiSalida(string? linea) {
@@ -297,27 +341,31 @@ namespace ProgramaDivisibilidad {
 		/// </summary>
 		/// <param name="divisor"></param>
 		/// <param name="base"></param>
-		/// <param name="coeficientes"></param>
+		/// <param name="longitud"></param>
 		/// <returns>
 		/// String apropiado para la regla según los datos proporcionados.
 		/// </returns>
-		private static string ObtenerReglas(long divisor, long @base, int coeficientes) {
+		private static string ObtenerReglas(long divisor, long @base, int longitud = 1) {
 			string resultado;
-			object? reglasObj = null;
-			if (flags.Todos) { //Si se piden las 2^coeficientes reglasObj
-				List<Regla> reglas = ReglasDivisibilidad(divisor, coeficientes, @base);
-				if (flags.Nombre != "") {
-					foreach (var serie in reglas) {
-						serie.Nombre = flags.Nombre ?? "";
-					}
-				}
-				reglasObj = reglas;
+			if (flags.TipoExtra) {
+				resultado = ReglaDivisibilidadExtendida(divisor, @base).Item2;
 			} else {
-				Regla serie = ReglaDivisibilidadOptima(divisor, coeficientes, @base);
-				serie.Nombre = flags.Nombre;
-				reglasObj = serie;
+				object? reglasObj = null;
+				if (flags.Todos) { //Si se piden las 2^coeficientes reglasObj
+					List<Regla> reglas = ReglasDivisibilidad(divisor, longitud, @base);
+					if (flags.Nombre != "") {
+						foreach (var serie in reglas) {
+							serie.Nombre = flags.Nombre ?? "";
+						}
+					}
+					reglasObj = reglas;
+				} else {
+					Regla serie = ReglaDivisibilidadOptima(divisor, longitud, @base);
+					serie.Nombre = flags.Nombre;
+					reglasObj = serie;
+				}
+				resultado = ObjetoAString(reglasObj);
 			}
-			resultado = ObjetoAString(reglasObj);
 			return resultado;
 		}
 

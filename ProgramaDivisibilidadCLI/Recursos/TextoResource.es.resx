@@ -369,4 +369,21 @@ Puede ignorar esta regla.</value>
   <data name="ErrorDivisorExtra" xml:space="preserve">
     <value>El divisor debe ser un entero no negativo.</value>
   </data>
+  <data name="HelpBaseDialogo" xml:space="preserve">
+    <value>Inicializa un valor para la base en modo diálogo, salta la pregunta por consola.
+Debe ser un entero válido mayor que 1.</value>
+  </data>
+  <data name="HelpDivisorDialogo" xml:space="preserve">
+    <value>Inicializa un valor para el divisor en modo diálogo, salta la pregunta por consola.
+Debe ser un entero válido no negativo.
+Si se especifica la base, se activarán las reglas extra, a no ser que la base y el divisor sean coprimos.</value>
+  </data>
+  <data name="HelpLongitudDialogo" xml:space="preserve">
+    <value>Inicializa la longitud de las reglas en modo diálogo, salta la pregunta por consola.
+Debe ser un entero positivo válido.
+Activa las reglas de coeficientes, a no ser que se activen las extra.</value>
+  </data>
+  <data name="ErrorBaseCoprima" xml:space="preserve">
+    <value>La base debe ser un entero mayor que uno y coprima con el divisor.</value>
+  </data>
 </root>
