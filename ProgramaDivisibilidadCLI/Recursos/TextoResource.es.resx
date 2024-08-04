@@ -386,4 +386,7 @@ Activa las reglas de coeficientes, a no ser que se activen las extra.</value>
   <data name="ErrorBaseCoprima" xml:space="preserve">
     <value>La base debe ser un entero mayor que uno y coprima con el divisor.</value>
   </data>
+  <data name="HelpAnularBucle" xml:space="preserve">
+    <value>Anula el bucle del modo diálogo. Solo hará un calculo de reglas.</value>
+  </data>
 </root>

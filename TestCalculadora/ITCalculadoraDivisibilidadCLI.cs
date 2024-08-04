@@ -267,6 +267,28 @@ namespace TestCalculadoraIT {
 			});
 		}
 
+		[Test]
+		public void Calculadora_DialogoSinBuclesCoeficientesCorrectos_DevuelveReglaYCero() {
+			_args = ["-s", "--no-loop"];
+			int longitud = 5;
+			long divisor = 7, @base = 10;
+			Regla reglaEsperada = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
+			_lectorEntrada =
+				new StringReader(@base + _escritorError.NewLine
+				 + divisor + _escritorError.NewLine
+				 + longitud + _escritorError.NewLine
+				 + "-");
+			Console.SetIn(_lectorEntrada);
+
+			int salida = CalculadoraDivisibilidadCLI.Main(_args);
+
+			List<long> coeficientes = _escritorSalida.ToString()!.Split(", ").Select(long.Parse).ToList();
+			Assert.Multiple(() => {
+				Assert.That(salida, Is.Zero);
+				Assert.That(coeficientes, Is.EquivalentTo(reglaEsperada.Coeficientes));
+			});
+		}
+
 		private static string[] ReglasToArray(List<Regla> reglas) {
 			return reglas.Select(regla => regla.ToStringCompleto()).ToArray();
 		}

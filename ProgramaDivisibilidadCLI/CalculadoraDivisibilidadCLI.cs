@@ -43,11 +43,10 @@ namespace ProgramaDivisibilidad {
 		/// </returns>
 		public static int Main(string[] args) {
 			flags = null;
-			_salir = false;
+			_salir = true;
 			_salida = SALIDA_CORRECTA;
 			_escritorSalida = Console.Out; // Si se ejecutaba y se cambiaba de consola, no se actualizaba
 			_escritorError = Console.Error;
-			_lectorEntrada = Console.In;
 			//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
 			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
 			SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
@@ -138,10 +137,10 @@ namespace ProgramaDivisibilidad {
 		/// <remarks>
 		/// Véase la documentación de 
 		/// <see cref="Main(string[])"/>
-		/// para ver el significado de la _salida.
+		/// para ver el significado de la salida.
 		/// </remarks>
 		/// <returns>
-		/// Código de la _salida de la aplicación.
+		/// Código de la salida de la aplicación.
 		/// </returns>
 		private static void IniciarAplicacion() { //Si no se proporcionan los argumentos de forma directa, se establece un diálogo con el usuario para obtenerlos
 			_escritorError.WriteLine(MensajeInicioDialogo,SALIDA);
@@ -153,8 +152,8 @@ namespace ProgramaDivisibilidad {
 				do {
 					//Si no tiene flags las pedirá durante la ejecución
 					if (sinFlags) {
-						//Le una tecla de entrada reglasObj lanza excepción si es la _salida
 
+						//Le una tecla de entrada reglasObj lanza excepción si es la _salida
 						if (!saltarPreguntaExtra) {
 							flags.TipoExtra = !ObtenerDeUsuario(MensajeDialogoExtendido, esS);
 						}
@@ -162,22 +161,25 @@ namespace ProgramaDivisibilidad {
 						if (!flags.TipoExtra && !flags.JSON) {
 							flags.JSON = ObtenerDeUsuario(MensajeDialogoJson, esS);
 						}
-
 					}
 
 					var resultado = FlujoDatosRegla(flags.DivisorDialogo, flags.BaseDialogo, flags.LongitudDialogo, sinFlags);
 
 					EscribirReglaPorWriter(resultado.Item1 + Environment.NewLine, _escritorSalida, _escritorError, resultado.Item2, resultado.Item3, resultado.Item4);
 
-					_salir = !ObtenerDeUsuario(MensajeDialogoRepetir, esS);
+					if (!flags.AnularBulce) {
+						_salir = !ObtenerDeUsuario(MensajeDialogoRepetir, esS);
+					}
 					_salida = SALIDA_CORRECTA;
 
 				} while (!_salir);
 			}
+			// Si decide salir, se saldrá por este catch
 			catch (SalidaException) {
 				_salida = SALIDA_VOLUNTARIA;
 				_escritorError.WriteLine(Environment.NewLine + MensajeDialogoInterrumpido);
 			}
+			// Si ocurre otro error se saldrá por este catch
 			catch (Exception e) {
 				_salida = SALIDA_ERROR;
 				_escritorError.WriteLine(e.Message);
@@ -198,7 +200,7 @@ namespace ProgramaDivisibilidad {
 			int longitud = 1;
 			// Se carga la base primero, necesaria en todos los casos
 			@base = ObtenerValorODefecto(baseNull,
-				() => ObtenerDeUsuarioLong(2, ErrorDivisor, MensajeDialogoDivisor));
+				() => ObtenerDeUsuarioLong(2, ErrorBase, MensajeDialogoBase));
 
 			if (flags.TipoExtra) {
 				divisor = ObtenerValorODefecto(divisorNull,
@@ -224,7 +226,6 @@ namespace ProgramaDivisibilidad {
 						flags.Todos = ObtenerDeUsuario(MensajeDialogoTodas, c => c == 's' | c == 'S');
 
 					}
-
 				}
 			}
 
@@ -237,7 +238,12 @@ namespace ProgramaDivisibilidad {
 
 		private static bool ObtenerDeUsuario(string mensaje, Func<char,bool> comparador) {
 			_escritorError.Write(mensaje);
-			char entrada = Console.ReadKey().KeyChar; //Necesario usar la consola
+			char entrada;
+			if (Console.IsInputRedirected) {
+				entrada = (char)_lectorEntrada.Read();
+			} else {
+				entrada = Console.ReadKey().KeyChar; //Necesario usar la consola
+			}
 			LanzarExcepcionSiSalida(entrada.ToString());
 			_escritorError.WriteLine();
 			return comparador(entrada);
@@ -369,19 +375,10 @@ namespace ProgramaDivisibilidad {
 			return resultado;
 		}
 
-		private static string Tabulaciones(int cantidad) {
-			string tabulaciones = "";
-			while (cantidad > 0) {
-				tabulaciones += '\t';
-				cantidad--;
+		private static void EscribirLineaErrorCondicional(string error) {
+			if (!flags.ActivarMensajesIntermedios) {
+				_escritorError.WriteLine(error);
 			}
-			return tabulaciones;
-		}
-
-		private static void InsertarPropiedadesLista(StringBuilder stringBuilder, string tabulaciones = "") {
-			stringBuilder.Append(tabulaciones + "\"divisor\" : " + flags.DivisorDirecto + ',' + Environment.NewLine);
-			stringBuilder.Append(tabulaciones + "\"base\" : " + flags.BaseDirecto + ',' + Environment.NewLine);
-			stringBuilder.Append(tabulaciones + "\"name\" : " + '\"' + flags.Nombre + '\"' + ',' + Environment.NewLine);
 		}
 	}
 }

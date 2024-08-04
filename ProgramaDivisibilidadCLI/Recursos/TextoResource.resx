@@ -392,4 +392,7 @@ Defaults to coefficient rules, unless extra rules are activated.</value>
   <data name="ErrorBaseCoprima" xml:space="preserve">
     <value>The base must be an integer greater than one and coprime with the divisor.</value>
   </data>
+  <data name="HelpAnularBucle" xml:space="preserve">
+    <value>Cancels dialog mode's looping behavior. Will one calculate rules once.</value>
+  </data>
 </root>

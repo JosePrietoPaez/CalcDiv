@@ -191,6 +191,11 @@ namespace ProgramaDivisibilidad {
 			, ResourceType = typeof(TextoResource))]
 		public int? LongitudDialogo { get; set; }
 
+		[Option("no-loop"
+			, HelpText = "HelpLongitudDialogo"
+			, ResourceType = typeof(TextoResource))]
+		public bool AnularBulce { get; set;	}
+
 		private const char SEPARADOR = ',';
 
 		private long[]? _listaDivisores = null

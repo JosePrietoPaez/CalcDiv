@@ -1,8 +1,6 @@
 ﻿using Operaciones;
-using ExpandedLists;
 using static Operaciones.Calculos;
 using static ProgramaDivisibilidad.Recursos.TextoResource;
-using ExpandedLists.Blocks;
 
 namespace ProgramaDivisibilidad {
 	public static partial class CalculadoraDivisibilidadCLI {
@@ -149,12 +147,6 @@ namespace ProgramaDivisibilidad {
 				salida = SALIDA_FRACASO_EXPANDIDA;
 			}
 			return (salida, resultado.Item2);
-		}
-
-		private static void EscribirLineaErrorCondicional(string error) {
-			if (!flags.ActivarMensajesIntermedios) {
-				_escritorError.WriteLine(error);
-			}
 		}
 	}
 }

@@ -2,7 +2,7 @@
   "profiles": {
     "ProgramaDivisibilidadCLI": {
       "commandName": "Project",
-      "commandLineArgs": "--base 10 --divisor 8"
+      "commandLineArgs": "-s --no-loop"
     }
   }
 }

@@ -227,6 +227,15 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Cancels dialog mode&apos;s looping behavior. Will one calculate rules once..
+        /// </summary>
+        public static string HelpAnularBucle {
+            get {
+                return ResourceManager.GetString("HelpAnularBucle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Outputs a longer help document explaining this application more in-depth..
         /// </summary>
         public static string HelpAyuda {
