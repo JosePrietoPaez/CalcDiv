@@ -47,6 +47,7 @@ namespace ProgramaDivisibilidad {
 			_salida = SALIDA_CORRECTA;
 			_escritorSalida = Console.Out; // Si se ejecutaba y se cambiaba de consola, no se actualizaba
 			_escritorError = Console.Error;
+			_lectorEntrada = Console.In;
 			//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
 			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
 			SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
@@ -158,7 +159,7 @@ namespace ProgramaDivisibilidad {
 							flags.TipoExtra = !ObtenerDeUsuario(MensajeDialogoExtendido, esS);
 						}
 
-						if (!flags.TipoExtra && !flags.JSON) {
+						if (!flags.TipoExtra) {
 							flags.JSON = ObtenerDeUsuario(MensajeDialogoJson, esS);
 						}
 					}
@@ -215,17 +216,9 @@ namespace ProgramaDivisibilidad {
 
 				if (sinFlags) {
 
-					if (flags.Nombre.Equals(string.Empty)) {
+					flags.Nombre = ObtenerDeUsuario(MensajeDialogoRegla);
 
-						flags.Nombre = ObtenerDeUsuario(MensajeDialogoRegla);
-
-					}
-
-					if (!flags.Todos) {
-
-						flags.Todos = ObtenerDeUsuario(MensajeDialogoTodas, c => c == 's' | c == 'S');
-
-					}
+					flags.Todos = ObtenerDeUsuario(MensajeDialogoTodas, c => c == 's' | c == 'S');
 				}
 			}
 
@@ -373,6 +366,12 @@ namespace ProgramaDivisibilidad {
 				resultado = ObjetoAString(reglasObj);
 			}
 			return resultado;
+		}
+
+		private static void AplicarReglaDivisibilidad(Regla regla, List<long> dividendos) {
+			foreach (long dividendo in dividendos) {
+				_escritorSalida.WriteLine(regla.AplicarRegla(dividendo));
+			}
 		}
 
 		private static void EscribirLineaErrorCondicional(string error) {

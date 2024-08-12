@@ -42,12 +42,12 @@ namespace Operaciones
 		/// <summary>
 		/// Devuelve el factorial de <c>@base</c>.
 		/// </summary>
-		public static long Factorial(long num) {
-			ArgumentOutOfRangeException.ThrowIfNegative(num);
-			long res = num;
-			while (num > 1) {
-				res *= num;
-				num--;
+		public static long Factorial(long numero) {
+			ArgumentOutOfRangeException.ThrowIfNegative(numero);
+			long res = numero;
+			while (numero > 1) {
+				res *= numero;
+				numero--;
 			}
 			return res;
 		}
@@ -86,13 +86,13 @@ namespace Operaciones
 		/// <remarks>
 		/// Los elementos de la serie son los exponentes de los números primos en orden ascendente hasta llegar al último con coeficiente positivo.
 		/// </remarks>
-		public static List<long> DescompsicionEnPrimos(long num) {
-			if (num < 0) throw new ArgumentException("El argumento debe ser positivo");
-			List<long> primos = PrimosHasta(num);
+		public static List<long> DescompsicionEnPrimos(long numero) {
+			if (numero < 0) throw new ArgumentException("El argumento debe ser positivo");
+			List<long> primos = PrimosHasta(numero);
 			List<long> res = new(primos.Count);
 			while (res.Count < primos.Count) res.Add(0);
 
-			Descomposicion(primos, res, num);
+			Descomposicion(primos, res, numero);
 
 			while (res[^1] == 0) res.RemoveAt(res.Count - 1);
 
@@ -118,27 +118,27 @@ namespace Operaciones
 		/// <summary>
 		/// Devuelve una lista con los números primos hasta <c>divisor</c> incluido
 		/// </summary>
-		public static List<long> PrimosHasta(long num) {
+		public static List<long> PrimosHasta(long numero) {
 			long cont;
 			List<long> serie = [];
 			if (_longitudPrimos == 0) { //Si no se ha calculado ninguno hace los cálculos completos
-				if (num >= 2) {
+				if (numero >= 2) {
 					serie.Add(2L);
 				}
-				if (num <= 2) {
+				if (numero <= 2) {
 					return serie;
 				}
 				cont = 3;
 				_primosCalculados.Add(2L); //Es más complicado si se introduce en el primer if
 				_longitudPrimos = 1;
 			} else {
-				for (int i = 0; i < _primosCalculados.Count && _primosCalculados[i] <= num; i++) { //Se insertan todos los que se necesiten para no tener que buscarlos otra vez
+				for (int i = 0; i < _primosCalculados.Count && _primosCalculados[i] <= numero; i++) { //Se insertan todos los que se necesiten para no tener que buscarlos otra vez
 					serie.Add(_primosCalculados[i]);
 				}
 				cont = _primosCalculados[^1] + 2; //Se le suma 2 para evitar que se inserte otra vez en el while
 			}
 
-			while (cont <= num) {
+			while (cont <= numero) {
 				if (EsPrimo(cont)) {
 					serie.Add(cont);
 					_primosCalculados.Add(cont);
@@ -201,8 +201,8 @@ namespace Operaciones
 		 * @param divisor número de elementos de la progresión
 		 * @return valor de la progresión aritmética
 		 */
-		public static long SumatorioIntervalo(long inicio, long fin, long num) {
-			return (inicio + fin) * num / 2;
+		public static long SumatorioIntervalo(long inicio, long fin, long numero) {
+			return (inicio + fin) * numero / 2;
 		}
 
 		/// <summary>
@@ -215,74 +215,161 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Calcula el número de cifras de <c>divisor</c> en base <c>@base</c>.
+		/// Calcula el número de cifras de <c>numero</c> en base <c>@base</c>.
 		/// </summary>
-		public static short Cifras(long num, long @base) { 
-			if (num == 0) return 1;
-			return (short)Ceiling(Log(Abs(num) + 1L) / Log(@base));
+		public static byte Cifras(long numero, long @base) { //El valor máximo será 64 en base 2
+			if (numero == 0) return 1;
+			return (byte)Ceiling(Log(Abs(numero) + 1L) / Log(@base));
 		}
 
 		/// <summary>
-		/// Calcula el número de cifras de <c>divisor</c> en base <c>@base</c>.
+		/// Calcula el número de cifras de <c>numero</c> en base <c>@base</c>.
 		/// </summary>
-		public static short Cifras(double num, double @base) {
-			if (num == 0) return 1;
-			return (short)Ceiling(Log(BitIncrement(Abs(num))) / Log(@base));
-		}
-		
-		/// <summary>
-		/// Calcula el número de cifras de <c>divisor</c> en base 10.
-		/// </summary>
-		public static short Cifras10(long num) {
-			return Cifras(num, 10);
+		public static short Cifras(double numero, double @base) { //El valor máximo será 1024 en base dos, creo
+			if (numero == 0) return 1;
+			return (short)Ceiling(Log(BitIncrement(Abs(numero))) / Log(@base));
 		}
 
 		/// <summary>
-		/// Calcula la cifra en la posición <c>pos</c> de <c>divisor</c> en base <c>@base</c>.
+		/// Calcula el número de cifras de <c>numero</c> en base 10.
+		/// </summary>
+		public static byte Cifras10(long numero) => Cifras(numero, 10);
+
+		/// <summary>
+		/// Calcula el número de cifras de <c>numero</c> en base 10.
+		/// </summary>
+		public static short Cifras10(double numero) => Cifras(numero, 10);
+
+		/// <summary>
+		/// Calcula la cifra en la posición <c>pos</c> de <c>numero</c> en base <c>@base</c>.
 		/// </summary>
 		/// <remarks>
 		/// La cifra 0 es la menos significativa.
 		/// </remarks>
 		/// <returns>
-		/// Cifra <c>pos</c> de <c>divisor</c> en base <c>@base</c>
+		/// Cifra <c>pos</c> de <c>numero</c> en base <c>@base</c>
 		/// </returns>
-		public static short Cifra(long num, long pos, long @base) { //Recemos para que nadie ponga primero número de base mayor a 32767
-			if (pos >= Cifras(num, @base) || pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
-			return (short)(Abs(num) / PotenciaEntera(@base,pos) % @base);	
+		public static long Cifra(long numero, byte pos, long @base) {
+			if (pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
+			if (pos >= Cifras(numero, @base)) return 0; //Suponemos que las cifras de la izquierda son 0
+			return Abs(numero) / PotenciaEntera(@base,pos) % @base;	
+		}
+
+		/// <summary>
+		/// Devuelve un número con las cifras de <c>numero</c> entre las posiciones <c>cifraInicio</c> inclusive y <c>cifraFin</c> no inclusive en la base indicada
+		/// </summary>
+		/// <param name="numero">Número del que se sacarán las cifras</param>
+		/// <param name="base">Base de la que se obtendrán las cifras</param>
+		/// <param name="cifraInicio">Primera cifra que obtener</param>
+		/// <param name="cifraFin">Posición posterior a la última</param>
+		/// <returns>
+		/// Cifras en el intervalo indica
+		/// </returns>
+		public static long IntervaloCifras(long numero, long @base, byte cifraInicio, byte cifraFin) {
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(cifraInicio, cifraFin, nameof(cifraInicio));
+			return Abs(numero) / PotenciaEntera(@base,cifraInicio) % PotenciaEntera(@base, cifraFin - cifraInicio);
 		}
 
 		/**
-		 * Devuelve primero objeto {@code String} que contiene {@code divisor} escrito con subíndices de sus cifras en @base 10
-		 * @return {@code divisor} en subíndices
+		 * Devuelve primero objeto {@code String} que contiene {@code numero} escrito con subíndices de sus cifras en @base 10
+		 * @return {@code numero} en subíndices
 		 */
-		public static string NumASubindice(long num) {
+		public static string NumASubindice(long numero) {
 			StringBuilder res = new();
-			if (num < 0) {
+			if (numero < 0) {
 				res.Append('₋');
 			}
-			short cifras = Cifras(num, 10);
-			for (int i = cifras - 1; i >= 0; i--) {
-				res.Append(CifraASubindice(Cifra(num, i, 10)));
+			short cifras = Cifras(numero, 10);
+			for (byte i = (byte)cifras; i > 0; i--) {
+				res.Append(CifraASubindice(Cifra(numero, (byte)(i - 1), 10)));
 			}
 			return res.ToString();
 		}
 
-		public static char CifraASubindice(long num) { return (char)(num + 0x2080); }
+		public static char CifraASubindice(long numero) { return (char)(numero + 0x2080); }
+
+		/// <summary>
+		/// An optimized method using an array as buffer instead of 
+		/// string concatenation. This is faster for return values having 
+		/// a length > 1.
+		/// </summary>
+		/// <remarks>
+		/// Basado en https://stackoverflow.com/a/923814/22934376.
+		/// </remarks>
+		public static string LongToStringFast(long value, char[] baseChars) {
+			// Es 64 para el caso máximo en base 2 y uno más para negativo
+			int i = 65;
+			char[] buffer = new char[i];
+			uint targetBase = (uint)baseChars.Length;
+			bool ponerSigno = value < 0;
+			if (ponerSigno)
+				value = Abs(value); //Para quitarle el signo, jódase el caso máximo
+
+			do {
+				buffer[--i] = baseChars[value % targetBase];
+				value /= targetBase;
+			}
+			while (value > 0);
+
+			if (ponerSigno)
+				buffer[--i] = '-';
+
+			char[] result = new char[65 - i];
+			Array.Copy(buffer, i, result, 0, 65 - i);
+			
+			//Se supone que no debería hacer esto para que vaya rápido, pero necesito poner la base
+			return new string(result, 0, 65 - i) + '(' + targetBase + ')';
+		}
+
+		/// <summary>
+		/// Sobrecarga que permite poner la base y usa un string predeterminado para las cifras.
+		/// </summary>
+		/// <remarks>
+		/// Para más detalles: <see cref="LongToStringFast(long, char[])"/>
+		/// <para>
+		/// El máximo de <c>base</c> por defecto es <c>64</c>.
+		/// </para>
+		/// </remarks>
+		public static string LongToStringFast(long value, long @base) => LongToStringFast(value, BASE_64_STRING.ToCharArray()[0..(int)@base]);
+
+		/// <summary>
+		/// Devuelve un string que representa a un <see cref="long"/> en una base arbitraria.
+		/// </summary>
+		/// <remarks>
+		/// El formato es: "[Cifra(Longitud),Cifra(Longitud-1),...,Cifra(0)](base)".
+		/// <para>
+		/// Por ejemplo: "[15,12,3,0](16)" para <c>0xFC30</c> y base 16.
+		/// </para>
+		/// </remarks>
+		/// <param name="value"></param>
+		/// <param name="base"></param>
+		/// <returns>
+		/// String equivalente a <c>value</c>, con las cifras en decimal.
+		/// </returns>
+		public static string LongToStringNoAlphabet(long value, long @base) {
+			long[] cifras = new long[Cifras(value, @base)];
+			for (byte i = 0; i < cifras.Length; i++) {
+				cifras[i] = Cifra(value, (byte)(cifras.Length - i - 1), @base);
+			}
+			return (value < 0 ? "-" : "") + '[' + string.Join(',', cifras) + "](" + @base + ")";
+		}
+
+		public const string BASE_64_STRING = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_";
 
 		/**
-		 * Calcula {@code divisor}^{@code exp} en módulo {@code @base} multiplicando {@code divisor} por sí mismo y haciendo el módulo en cada paso
+		 * Calcula {@code numero}^{@code exp} en módulo {@code @base} multiplicando {@code numero} por sí mismo y haciendo el módulo en cada paso
 		 * <p>Intenta evitar el overflow que se produciría al hacer la potencia antes del módulo,
 		 * pero esto no se garantiza</p>
-		 * @param divisor @base de la potencia
+		 * @param numero @base de la potencia
 		 * @param exp exponente
 		 * @param @base @base del módulo
-		 * @return {@code divisor}^{@code exp} en módulo {@code @base}
+		 * @return {@code numero}^{@code exp} en módulo {@code @base}
 		 */
-		public static long PotenciaMod(long num, long exp, long @base) {
+		public static long PotenciaMod(long numero, long exp, long @base) {
 			long res = 1;
-			num %= @base;
+			numero %= @base;
 			while (exp > 0) {
-				res = ProductoMod(res, num, @base);
+				res = ProductoMod(res, numero, @base);
 				exp--;
 			}
 			return res;
@@ -300,11 +387,11 @@ namespace Operaciones
 			return fac1 * fac2 % @base;
 		}
 
-		//Guarda en desc la descomposicion de divisor, usando los primos de primos
-		internal static void Descomposicion(List<long> primos, List<long> desc, long num) {
-			for (int j = 0; j < primos.Count && num > 1; j++) {
-				while (num % primos[j] == 0) {
-					num /= primos[j];
+		//Guarda en desc la descomposicion de numero, usando los primos de primos
+		internal static void Descomposicion(List<long> primos, List<long> desc, long numero) {
+			for (int j = 0; j < primos.Count && numero > 1; j++) {
+				while (numero % primos[j] == 0) {
+					numero /= primos[j];
 					desc[j]++;
 				}
 			}
@@ -314,7 +401,7 @@ namespace Operaciones
 		/// Devuelve todas las reglas de divisibilidad de <c>divisor</c> en base <c>@base</c> con longitud <c>longitud</c> cuyo valor absoluto no supera <c>@base</c>.
 		/// </summary>
 		/// <returns>
-		/// <see cref="List"/> de <see cref="Regla"/> con todas las combinaciones de reglas.
+		/// <see cref="List{T}"/> de <see cref="Regla"/> con todas las combinaciones de reglas.
 		/// </returns>
 		public static List<Regla> ReglasDivisibilidad(long divisor, int longitud, long @base) {
 			List<long> reglaInicial = ReglaDivisibilidadBase(divisor, longitud, @base), //Se calcula la regla de positivos
@@ -366,7 +453,7 @@ namespace Operaciones
 			ArgumentOutOfRangeException.ThrowIfLessThan(@base, 2, nameof(@base));
 			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(longitud, nameof(longitud));
 			long inv = InversoMod(@base, divisor);
-			if (inv == 0) throw new ArithmeticException("num debe ser coprimo con @base");
+			if (inv == 0) throw new ArithmeticException("numero debe ser coprimo con @base");
 			return OperacionesListas.PotenciaModProgresiva(inv, divisor, longitud);
 		}
 

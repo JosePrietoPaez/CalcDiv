@@ -196,6 +196,117 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The base is too large to represent naturally, numbers will be represented by the value of their digits in base ten..
+        /// </summary>
+        public static string MensajeAlfabetoNumericoExceso {
+            get {
+                return ResourceManager.GetString("MensajeAlfabetoNumericoExceso", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The numbers related to the dividend will be represented naturally in base {0} to facilitate reading using the following digits:.
+        /// </summary>
+        public static string MensajeAlfabetoNumericoExito {
+            get {
+                return ResourceManager.GetString("MensajeAlfabetoNumericoExito", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} is divisible by {1}, therefore the original dividend, {2}, also is..
+        /// </summary>
+        public static string MensajeAplicarFin {
+            get {
+                return ResourceManager.GetString("MensajeAplicarFin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} is not divisible by {1}, therefore the original dividend, {2}, also isn&apos;t..
+        /// </summary>
+        public static string MensajeAplicarFinNoDivisible {
+            get {
+                return ResourceManager.GetString("MensajeAplicarFinNoDivisible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The divisibility of {0} is estimated to be easily calculated..
+        /// </summary>
+        public static string MensajeAplicarFinPorTamaño {
+            get {
+                return ResourceManager.GetString("MensajeAplicarFinPorTamaño", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Applying the divisibility rule of {0} in base {1} to {2}, with {3} coefficients:.
+        /// </summary>
+        public static string MensajeAplicarInicio {
+            get {
+                return ResourceManager.GetString("MensajeAplicarInicio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The last dividend, {0}, was not lesser than the previous one, {1}.
+        ///Two more iterations will be attempted..
+        /// </summary>
+        public static string MensajeAplicarMinimoEncontrado {
+            get {
+                return ResourceManager.GetString("MensajeAplicarMinimoEncontrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Step two: multiply each digit in the right part by the coefficient in the same position:.
+        /// </summary>
+        public static string MensajeAplicarMultiplicarCoeficientes {
+            get {
+                return ResourceManager.GetString("MensajeAplicarMultiplicarCoeficientes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The dividend, {0}, is to small for this rule, use the first coefficients, starting from the left..
+        /// </summary>
+        public static string MensajeAplicarParteDerechaPequeña {
+            get {
+                return ResourceManager.GetString("MensajeAplicarParteDerechaPequeña", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Results:.
+        /// </summary>
+        public static string MensajeAplicarProductoCoeficiente {
+            get {
+                return ResourceManager.GetString("MensajeAplicarProductoCoeficiente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Step one: separate the number into two parts the right one has length {0}:
+        ///Left: {1}
+        ///Right: {2}.
+        /// </summary>
+        public static string MensajeAplicarSeparar {
+            get {
+                return ResourceManager.GetString("MensajeAplicarSeparar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Step three: Add the sum of the products and the left part of the dividend:.
+        /// </summary>
+        public static string MensajeAplicarSuma {
+            get {
+                return ResourceManager.GetString("MensajeAplicarSuma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The base must be greater than one.
         /// </summary>
         public static string ReglaBaseMenorError {

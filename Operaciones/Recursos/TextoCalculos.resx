@@ -161,4 +161,45 @@
   <data name="ReglaVaciaError" xml:space="preserve">
     <value>The given rule was empty</value>
   </data>
+  <data name="MensajeAplicarInicio" xml:space="preserve">
+    <value>Applying the divisibility rule of {0} in base {1} to {2}, with {3} coefficients:</value>
+    <comment>0 is the divisor
+2 is the dividend</comment>
+  </data>
+  <data name="MensajeAplicarSeparar" xml:space="preserve">
+    <value>Step one: separate the number into two parts the right one has length {0}:
+Left: {1}
+Right: {2}</value>
+  </data>
+  <data name="MensajeAplicarMultiplicarCoeficientes" xml:space="preserve">
+    <value>Step two: multiply each digit in the right part by the coefficient in the same position:</value>
+  </data>
+  <data name="MensajeAplicarProductoCoeficiente" xml:space="preserve">
+    <value>Results:</value>
+  </data>
+  <data name="MensajeAplicarSuma" xml:space="preserve">
+    <value>Step three: Add the sum of the products and the left part of the dividend:</value>
+  </data>
+  <data name="MensajeAplicarFin" xml:space="preserve">
+    <value>{0} is divisible by {1}, therefore the original dividend, {2}, also is.</value>
+  </data>
+  <data name="MensajeAplicarFinNoDivisible" xml:space="preserve">
+    <value>{0} is not divisible by {1}, therefore the original dividend, {2}, also isn't.</value>
+  </data>
+  <data name="MensajeAplicarFinPorTamaño" xml:space="preserve">
+    <value>The divisibility of {0} is estimated to be easily calculated.</value>
+  </data>
+  <data name="MensajeAplicarMinimoEncontrado" xml:space="preserve">
+    <value>The last dividend, {0}, was not lesser than the previous one, {1}.
+Two more iterations will be attempted.</value>
+  </data>
+  <data name="MensajeAlfabetoNumericoExito" xml:space="preserve">
+    <value>The numbers related to the dividend will be represented naturally in base {0} to facilitate reading using the following digits:</value>
+  </data>
+  <data name="MensajeAlfabetoNumericoExceso" xml:space="preserve">
+    <value>The base is too large to represent naturally, numbers will be represented by the value of their digits in base ten.</value>
+  </data>
+  <data name="MensajeAplicarParteDerechaPequeña" xml:space="preserve">
+    <value>The dividend, {0}, is to small for this rule, use the first coefficients, starting from the left.</value>
+  </data>
 </root>

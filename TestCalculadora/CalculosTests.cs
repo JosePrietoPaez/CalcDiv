@@ -408,7 +408,7 @@ namespace TestCalculadora
 				// Arrange
 
 				long num = 543210;
-				long pos = 3;
+				byte pos = 3;
 				long raiz = 10;
 
 				// Act
@@ -432,7 +432,7 @@ namespace TestCalculadora
 				// Act
 				var ncifras = Calculos.Cifras(num, raiz);
 				long[] cifras = new long[ncifras];
-				for(int i = 0; i < ncifras; i++) {
+				for(byte i = 0; i < ncifras; i++) {
 					cifras[i] = Calculos.Cifra(num, i, raiz);
 				}
 
@@ -445,9 +445,108 @@ namespace TestCalculadora
 				}
 
 				// Assert
-				Assert.That(cifras[ncifras - 1], Is.GreaterThan(0));
-				Assert.That(res, Is.EqualTo(num));
+				Assert.Multiple(() => {
+					Assert.That(cifras[ncifras - 1], Is.GreaterThan(0));
+					Assert.That(res, Is.EqualTo(num));
+				});
 			}
+
+			[TestCase(2, 5, TestName = "Cifra en base 2 devuelve 0 si el índice es demasiado grande")]
+			[TestCase(10, 2, TestName = "Cifra en base 10 devuelve 0 si el índice es demasiado grande")]
+			[TestCase(16, 3, TestName = "Cifra en base 16 devuelve 0 si el índice es demasiado grande")]
+			public void Cifra_OtraBasePosicionExcesiva_DevuelveCero(long raiz, byte pos) {
+				// Arrange
+				long numero = 18;
+
+				// Act
+				var resultado = Calculos.Cifra(numero, pos, raiz);
+
+				// Assert
+				Assert.That(resultado, Is.Zero);
+			}
+		}
+
+		[TestFixture]
+		public class IntervaloCifrasTest {
+
+			[Test]
+			public void IntervaloCifras_InicioMayor_LanzaExcepcion() {
+				// Arrange
+				byte inicio = 1, fin = 0;
+				long numero = 100, @base = 10;
+
+				// Act
+				Assert.Throws<ArgumentOutOfRangeException>(() => Calculos.IntervaloCifras(numero, @base, inicio, fin));
+			}
+
+			[TestCase(0)]
+			[TestCase(1)]
+			[TestCase(5)]
+			public void IntervaloCifras_UnaCifra_DevuelveLaCifraIndicada(byte posicion) {
+				// Arrange
+				long @base = 16, numero = 0xFEDA0124;
+				byte final = (byte)(posicion + 1);
+				long esperado = Calculos.Cifra(numero, posicion, @base);
+
+				// Act
+				var resultado = Calculos.IntervaloCifras(numero, @base, posicion, final);
+
+				// Assert
+				Assert.That(resultado, Is.EqualTo(esperado));
+			}
+
+			[TestCase(0, 3)]
+			[TestCase(1, 3)]
+			[TestCase(5, 2)]
+			public void IntervaloCifras_VariasCifras_DevuelveLasCifrasEnElIntervalo(byte posicion, byte longitud) {
+				// Arrange
+				long @base = 15, numero = 9876543210;
+				byte final = (byte)(posicion + longitud);
+				long esperado = 0;
+				while (longitud > 0) {
+					esperado += Calculos.Cifra(numero, (byte)(posicion + longitud - 1), @base) * Calculos.PotenciaEntera(@base, longitud - 1);
+					longitud--;
+				}
+
+				// Act
+				var resultado = Calculos.IntervaloCifras(numero, @base, posicion, final);
+
+				// Assert
+				Assert.That(resultado, Is.EqualTo(esperado));
+			}
+
+			[Test]
+			public void IntervaloCifras_IntervaloFueraDeNumero_DevuelveCero() {
+				// Arrange
+				long @base = 10, numero = 1234;
+				byte posicionInicial = 4, posicionFinal = 10;
+
+				// Act
+				var resultado = Calculos.IntervaloCifras(numero, @base, posicionInicial, posicionFinal);
+
+				// Assert
+				Assert.That(resultado, Is.Zero);
+			}
+
+
+		}
+
+		[TestFixture]
+		public class IntToStringNoAlphabetTest {
+
+			[Test]
+			public void IntoToStringNoAlphabet_ArgumentosCorrectos_DevuelveStringConCifrasYBase() {
+				// Arrange
+				long numero = 0xFEDCBA90
+					, @base = 0x10;
+
+				// Act
+				var resultado = Calculos.LongToStringNoAlphabet(numero, @base);
+
+				// Assert
+				Assert.That(resultado, Is.EqualTo("[15,14,13,12,11,10,9,0](" + @base + ")"));
+			}
+
 		}
 
 		[Test]

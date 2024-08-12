@@ -196,6 +196,12 @@ namespace ProgramaDivisibilidad {
 			, ResourceType = typeof(TextoResource))]
 		public bool AnularBulce { get; set;	}
 
+		[Option("dividend"
+			, Separator = ','
+			, HelpText = "HelpDividendo"
+			, ResourceType = typeof(TextoResource))]
+		public IEnumerable<long>? Dividendo { get; set; }
+
 		private const char SEPARADOR = ',';
 
 		private long[]? _listaDivisores = null

@@ -30,6 +30,10 @@ namespace ProgramaDivisibilidad {
 					if (!SonCoprimos(flags.DivisorDirecto, flags.BaseDirecto)) {
 						_escritorError.WriteLine(ErrorPrimo);
 					}
+					if (flags.Dividendo?.Any() ?? false)
+						foreach (long dividendo in flags.Dividendo) {
+							_escritorSalida.WriteLine(((Regla)elementoCreado).AplicarRegla(dividendo));
+						}
 				}
 			}
 		}

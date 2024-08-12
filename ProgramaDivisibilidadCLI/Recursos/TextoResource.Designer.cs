@@ -273,8 +273,19 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Sets the dividends to apply the rule is successfully obtained.
+        ///Must be valid 64-bit integers separated by commas.
+        ///The absolute value will be used, this does not affect the result..
+        /// </summary>
+        public static string HelpDividendo {
+            get {
+                return ResourceManager.GetString("HelpDividendo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Sets a default divisor for dialog, skipping input.
-        ///Must be a valid non-negative integer.
+        ///Must be a valid 64-bit non-negative integer.
         ///If the base is specified, will default to extra rules, unless the divisor and base are coprime..
         /// </summary>
         public static string HelpDivisorDialogo {
@@ -303,7 +314,7 @@ namespace ProgramaDivisibilidad.Recursos {
         
         /// <summary>
         ///   Busca una cadena traducida similar a Sets a default rule length for dialog, skipping input.
-        ///Must be a valid positive integer.
+        ///Must be a valid 32-bit positive integer.
         ///Defaults to coefficient rules, unless extra rules are activated..
         /// </summary>
         public static string HelpLongitudDialogo {

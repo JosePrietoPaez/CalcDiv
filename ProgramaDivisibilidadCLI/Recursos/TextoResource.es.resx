@@ -254,7 +254,7 @@ Dos números son coprimos si su máximo común divisor es mayor que uno.</value>
     <value>Valor de una secuencia no vinculada a un nombre de opción tiene menos elementos de los obligatorios.</value>
   </data>
   <data name="SentenceSetValueExceptionError" xml:space="preserve">
-    <value>Error cambiando valor para la opción '{0}': {1}</value>
+    <value>Error inicializando el valor para la opción '{0}': {1}</value>
   </data>
   <data name="SentenceUnknownOptionError" xml:space="preserve">
     <value>No se reconoce la opción '{0}'.</value>
@@ -371,7 +371,7 @@ Puede ignorar esta regla.</value>
   </data>
   <data name="HelpBaseDialogo" xml:space="preserve">
     <value>Inicializa un valor para la base en modo diálogo, salta la pregunta por consola.
-Debe ser un entero válido mayor que 1.</value>
+Debe ser un entero de 64 bits válido mayor que 1.</value>
   </data>
   <data name="HelpDivisorDialogo" xml:space="preserve">
     <value>Inicializa un valor para el divisor en modo diálogo, salta la pregunta por consola.
@@ -388,5 +388,10 @@ Activa las reglas de coeficientes, a no ser que se activen las extra.</value>
   </data>
   <data name="HelpAnularBucle" xml:space="preserve">
     <value>Anula el bucle del modo diálogo. Solo hará un calculo de reglas.</value>
+  </data>
+  <data name="HelpDividendo" xml:space="preserve">
+    <value>Indica los valores de los dividendos a los que se les aplicará la regla.
+Deben ser enteros de 64 bits válidos separados por comas.
+Se usarán sus valores absolutos, esto no afecta al resultado.</value>
   </data>
 </root>

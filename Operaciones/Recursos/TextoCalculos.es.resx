@@ -151,4 +151,43 @@
   <data name="ReglaVaciaError" xml:space="preserve">
     <value>La regla recibida está vacía</value>
   </data>
+  <data name="MensajeAplicarInicio" xml:space="preserve">
+    <value>Aplicando la regla de divisibilidad de {0}, en base {1} a {2} con {3} coeficientes:</value>
+  </data>
+  <data name="MensajeAplicarSeparar" xml:space="preserve">
+    <value>Separamos el número en dos partes, la derecha tendrá longitud {0}:
+Izquierda: {1}
+Derecha: {2}</value>
+  </data>
+  <data name="MensajeAplicarMultiplicarCoeficientes" xml:space="preserve">
+    <value>Paso dos: multiplicar cada cifra de la parte derecha por el coeficiente en la misma posición:</value>
+  </data>
+  <data name="MensajeAplicarProductoCoeficiente" xml:space="preserve">
+    <value>Resultados:</value>
+  </data>
+  <data name="MensajeAplicarSuma" xml:space="preserve">
+    <value>Paso tres: Sumar las suma de los productos con la parte izquierda del dividendo:</value>
+  </data>
+  <data name="MensajeAplicarFin" xml:space="preserve">
+    <value>{0} es divisible entre {1}, por lo tanto, el dividendo original, {2}, también lo es.</value>
+  </data>
+  <data name="MensajeAplicarFinNoDivisible" xml:space="preserve">
+    <value>{0} no es divisible entre {1}, por lo tanto, el dividendo original, {2}, tampoco lo es.</value>
+  </data>
+  <data name="MensajeAplicarFinPorTamaño" xml:space="preserve">
+    <value>Se estima que la divisibilidad de {0} es fácil de calcular.</value>
+  </data>
+  <data name="MensajeAplicarMinimoEncontrado" xml:space="preserve">
+    <value>El último dividendo, {0}, no ha sido menor que el anterior, {1}.
+Se harán dos iteraciones más antes de parar.</value>
+  </data>
+  <data name="MensajeAlfabetoNumericoExito" xml:space="preserve">
+    <value>Los números relacionados con el dividendo se representarán en base {0} de forma natural para facilitar la lectura usando las siguientes cifras:</value>
+  </data>
+  <data name="MensajeAlfabetoNumericoExceso" xml:space="preserve">
+    <value>La base es demasiado grande para representar los números de forma natural, se mostrarán con el valor de sus cifras en base diez.</value>
+  </data>
+  <data name="MensajeAplicarParteDerechaPequeña" xml:space="preserve">
+    <value>El dividendo, {0}, es demasiado pequeño, use los primeros coeficientes desde la izquierda.</value>
+  </data>
 </root>
