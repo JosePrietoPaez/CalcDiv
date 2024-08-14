@@ -2,7 +2,7 @@
 
 namespace Operaciones {
 	public enum CasosDivisibilidad {
-		USAR_NORMAL = 0,
+		USAR_COEFICIENTES = 0,
 		MIRAR_CIFRAS = 1,
 		SUMAR_BLOQUES = 2,
 		RESTAR_BLOQUES = 3,

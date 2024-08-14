@@ -190,4 +190,28 @@ Se harán dos iteraciones más antes de parar.</value>
   <data name="MensajeAplicarParteDerechaPequeña" xml:space="preserve">
     <value>El dividendo, {0}, es demasiado pequeño, use los primeros coeficientes desde la izquierda.</value>
   </data>
+  <data name="ReglaExpliacadaCoeficientes" xml:space="preserve">
+    <value>Aplique la regla como se especifica en el README con los coeficientes obtenidos</value>
+  </data>
+  <data name="ReglaExplicadaCero" xml:space="preserve">
+    <value>No se puede crear ninguna regla, la divisibilidad no es aplicable con divisor cero.</value>
+  </data>
+  <data name="ReglaConstructorRestriccionCero" xml:space="preserve">
+    <value>Para este tipo, el divisor debe ser cero.</value>
+  </data>
+  <data name="ReglaConstructorRestriccionUno" xml:space="preserve">
+    <value>Para este tipo, el divisor debe ser uno.</value>
+  </data>
+  <data name="ReglaExplicadaUno" xml:space="preserve">
+    <value>No es necesaria ninguna regla, todos los enteros son divisibles entre uno.</value>
+  </data>
+  <data name="ReglaExplicadaCifras" xml:space="preserve">
+    <value>El dividendo será divisible entre {0} si, y solo si, las últimas {1} cifras en base {2} son divisibles entre {0}.</value>
+  </data>
+  <data name="ReglaExplicadaSumar" xml:space="preserve">
+    <value>El dividendo será divisible entre {0} si, y solo si, la suma de las cifras en base {1} agrupadas en bloques de {2}, desde la de las unidades es divisible entre {0}.</value>
+  </data>
+  <data name="ReglaExplicadaRestar" xml:space="preserve">
+    <value>El dividendo será divisible entre {0} si, y solo si, la resta de la suma de los grupos pares e impares de las cifras en base {1} de {2} cifras, desde la de las unidades, es divisible entre {0}.</value>
+  </data>
 </root>

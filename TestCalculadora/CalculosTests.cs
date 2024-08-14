@@ -677,7 +677,7 @@ namespace TestCalculadora
 					listaPotencias.Add(Calculos.PotenciaEntera(inverso, i) % divisor);
 				}
 
-				List<Regla> resultado = Calculos.ReglasDivisibilidad(divisor, longitud, @base);
+				List<ReglaCoeficientes> resultado = Calculos.ReglasDivisibilidad(divisor, longitud, @base);
 
 				Assert.Multiple(() => {
 					Assert.That(resultado, Has.Count.EqualTo(Calculos.PotenciaEntera(2, longitud)));
@@ -714,7 +714,7 @@ namespace TestCalculadora
 				int longitud = 5;
 				long inverso = Calculos.InversoMod(@base, divisor);
 
-				Regla resultado = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
+				ReglaCoeficientes resultado = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
 
 				Assert.Multiple(() => {
 					Assert.That(resultado.Longitud, Is.EqualTo(longitud));
@@ -1131,7 +1131,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Multiple(() =>
 				{
-					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.USAR_NORMAL));
+					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.USAR_COEFICIENTES));
 					Assert.That(result.informacion, Is.EqualTo(-1));
 				});
 			}

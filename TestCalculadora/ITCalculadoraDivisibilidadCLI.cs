@@ -74,7 +74,7 @@ namespace TestCalculadoraIT {
 		[Test(Description = "Al llamar a la calculadora en modo directo con base y divisor coprimos devuelve la regla por consola")]
 		public void Calculadora_Directo_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
 			_args = ["-d","7","10","4"];
-			Regla regla = Calculos.ReglaDivisibilidadOptima(7, 4, 10);
+			ReglaCoeficientes regla = Calculos.ReglaDivisibilidadOptima(7, 4, 10);
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
 
@@ -92,7 +92,7 @@ namespace TestCalculadoraIT {
 			_args = ["-jd", "17", "10", "3"];
 			long @base = 10, divisor = 17;
 			int coeficientes = 3;
-			Regla regla = Calculos.ReglaDivisibilidadOptima(divisor, coeficientes, @base);
+			ReglaCoeficientes regla = Calculos.ReglaDivisibilidadOptima(divisor, coeficientes, @base);
 			JsonNode? nodo = null;
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
@@ -119,7 +119,7 @@ namespace TestCalculadoraIT {
 			_args = ["-ajd", "17", "5", "3", "-n", nombre];
 			long @base = 5, divisor = 17;
 			int coeficientes = 3;
-			List<Regla> reglas = Calculos.ReglasDivisibilidad(divisor, coeficientes, @base);
+			List<ReglaCoeficientes> reglas = Calculos.ReglasDivisibilidad(divisor, coeficientes, @base);
 			JsonNode nodo = new JsonObject();
 
 			int salida = CalculadoraDivisibilidadCLI.Main(_args);
@@ -171,7 +171,7 @@ namespace TestCalculadoraIT {
 		[Test(Description = "Al llamar a la calculadora en modo directo inverso con base y divisor coprimos devuelve la regla por consola en el orden inverso")]
 		public void Calculadora_DirectoTodosNombre_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
 			_args = ["-ad", "5", "13", "5","-n","Nombre"];
-			List<Regla> regla = Calculos.ReglasDivisibilidad(5, 5, 13); //Genera 2^cantidad reglas
+			List<ReglaCoeficientes> regla = Calculos.ReglasDivisibilidad(5, 5, 13); //Genera 2^cantidad reglas
 			regla = regla.Select(regla => { regla.Nombre = "Nombre"; return regla; }).ToList();
 			string[] lineasReglas = ReglasToArray(regla);
 
@@ -244,7 +244,7 @@ namespace TestCalculadoraIT {
 			int[] divisores = [3, 7, 101, 20], bases = [10, 13];
 			_args = ["-jm", "3,7,101,20", "10,13", "3"];
 			JsonArray jsonReglas = [];
-			List<Regla> reglas = [];
+			List<ReglaCoeficientes> reglas = [];
 			foreach (int i in divisores) {
 				foreach (int j in bases) {
 					reglas.Add(new(i,j,3));
@@ -272,7 +272,7 @@ namespace TestCalculadoraIT {
 			_args = ["-s", "--no-loop"];
 			int longitud = 5;
 			long divisor = 7, @base = 10;
-			Regla reglaEsperada = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
+			ReglaCoeficientes reglaEsperada = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
 			_lectorEntrada =
 				new StringReader(@base + _escritorError.NewLine
 				 + divisor + _escritorError.NewLine
@@ -289,7 +289,7 @@ namespace TestCalculadoraIT {
 			});
 		}
 
-		private static string[] ReglasToArray(List<Regla> reglas) {
+		private static string[] ReglasToArray(List<ReglaCoeficientes> reglas) {
 			return reglas.Select(regla => regla.ToStringCompleto()).ToArray();
 		}
 

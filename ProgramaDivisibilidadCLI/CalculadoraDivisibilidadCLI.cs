@@ -166,7 +166,7 @@ namespace ProgramaDivisibilidad {
 
 					var resultado = FlujoDatosRegla(flags.DivisorDialogo, flags.BaseDialogo, flags.LongitudDialogo, sinFlags);
 
-					EscribirReglaPorWriter(resultado.Item1 + Environment.NewLine, _escritorSalida, _escritorError, resultado.Item2, resultado.Item3, resultado.Item4);
+					EscribirReglaPorWriter(resultado.Mensaje + Environment.NewLine, _escritorSalida, _escritorError, resultado.Divisor, resultado.Base, resultado.Longitud);
 
 					if (!flags.AnularBulce) {
 						_salir = !ObtenerDeUsuario(MensajeDialogoRepetir, esS);
@@ -196,7 +196,7 @@ namespace ProgramaDivisibilidad {
 		/// <param name="baseNull"></param>
 		/// <param name="longitudNull"></param>
 		/// <param name="sinFlags"></param>
-		private static (string, long, long, int) FlujoDatosRegla(long? divisorNull, long? baseNull, int? longitudNull, bool sinFlags) {
+		private static (string Mensaje, long Divisor, long Base, int Longitud) FlujoDatosRegla(long? divisorNull, long? baseNull, int? longitudNull, bool sinFlags) {
 			long divisor, @base;
 			int longitud = 1;
 			// Se carga la base primero, necesaria en todos los casos
@@ -309,7 +309,7 @@ namespace ProgramaDivisibilidad {
 			string resultadoObjeto = obj switch {
 				// Para una regla de reglasObj de coeficientes obtenidas de una regla, usa recursión
 				IEnumerable<object?> or IEnumerable<object> => EnumerableStringSeparadoLinea((IEnumerable<object>)obj),//Se juntan los casos para que sean separados por la recursión
-				Regla regla => regla.ToStringCompleto(),
+				ReglaCoeficientes regla => regla.ToStringCompleto(),
 				_ => obj.ToString() ?? ObjetoNuloMensaje,
 			};
 			return resultadoObjeto;
@@ -351,7 +351,7 @@ namespace ProgramaDivisibilidad {
 			} else {
 				object? reglasObj = null;
 				if (flags.Todos) { //Si se piden las 2^coeficientes reglasObj
-					List<Regla> reglas = ReglasDivisibilidad(divisor, longitud, @base);
+					List<ReglaCoeficientes> reglas = ReglasDivisibilidad(divisor, longitud, @base);
 					if (flags.Nombre != "") {
 						foreach (var serie in reglas) {
 							serie.Nombre = flags.Nombre ?? "";
@@ -359,7 +359,7 @@ namespace ProgramaDivisibilidad {
 					}
 					reglasObj = reglas;
 				} else {
-					Regla serie = ReglaDivisibilidadOptima(divisor, longitud, @base);
+					ReglaCoeficientes serie = ReglaDivisibilidadOptima(divisor, longitud, @base);
 					serie.Nombre = flags.Nombre;
 					reglasObj = serie;
 				}
@@ -368,7 +368,7 @@ namespace ProgramaDivisibilidad {
 			return resultado;
 		}
 
-		private static void AplicarReglaDivisibilidad(Regla regla, List<long> dividendos) {
+		private static void AplicarReglaDivisibilidad(ReglaCoeficientes regla, List<long> dividendos) {
 			foreach (long dividendo in dividendos) {
 				_escritorSalida.WriteLine(regla.AplicarRegla(dividendo));
 			}

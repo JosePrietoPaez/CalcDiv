@@ -401,9 +401,9 @@ namespace Operaciones
 		/// Devuelve todas las reglas de divisibilidad de <c>divisor</c> en base <c>@base</c> con longitud <c>longitud</c> cuyo valor absoluto no supera <c>@base</c>.
 		/// </summary>
 		/// <returns>
-		/// <see cref="List{T}"/> de <see cref="Regla"/> con todas las combinaciones de reglas.
+		/// <see cref="List{T}"/> de <see cref="ReglaCoeficientes"/> con todas las combinaciones de reglas.
 		/// </returns>
-		public static List<Regla> ReglasDivisibilidad(long divisor, int longitud, long @base) {
+		public static List<ReglaCoeficientes> ReglasDivisibilidad(long divisor, int longitud, long @base) {
 			List<long> reglaInicial = ReglaDivisibilidadBase(divisor, longitud, @base), //Se calcula la regla de positivos
 				listaAuxiliar = [];
 			for (int i = 0; i < longitud; i++) {
@@ -412,7 +412,7 @@ namespace Operaciones
 			bool[] producto = new bool[longitud]; //guarda si el elemento i de atajo se le resta divisor
 			int iteracionesMaximas = PotenciaEntera(2, longitud), //Antes se usaba ArrayFalso, pero eso significaba una operación O(longitud) en cada iteración
 				iteracionesActuales = 1;
-			List<Regla> reglas = new(iteracionesMaximas) {
+			List<ReglaCoeficientes> reglas = new(iteracionesMaximas) {
 				new(divisor, @base, reglaInicial)
 			};
 			Func<long, long, bool, long> restaCondicional = (coeficiente, divisorResta, resta) => resta ? coeficiente - divisorResta : coeficiente;
@@ -421,7 +421,7 @@ namespace Operaciones
 				for (int i = 0; i < reglaInicial.Count; i++) {
 					listaAuxiliar[i] = restaCondicional(reglaInicial[i], divisor, producto[i]);
 				}
-				reglas.Add(new Regla(divisor, @base, new List<long>(listaAuxiliar)));
+				reglas.Add(new ReglaCoeficientes(divisor, @base, new List<long>(listaAuxiliar)));
 				OperacionesListas.IncrementarArray(producto); //Itera el bucle
 				iteracionesActuales++;
 			} while (iteracionesMaximas > iteracionesActuales);
@@ -434,7 +434,7 @@ namespace Operaciones
 		/// <remarks>
 		/// <c>divisor</c> y <c>@base</c> deben ser coprimos
 		/// </remarks>
-		public static Regla ReglaDivisibilidadOptima(long divisor, int longitud, long @base) {
+		public static ReglaCoeficientes ReglaDivisibilidadOptima(long divisor, int longitud, long @base) {
 			List<long> regla = ReglaDivisibilidadBase(divisor, longitud, @base);
 			for (int i = 0; i < regla.Count; i++) {
 				regla[i] = MinAbs(regla[i], regla[i] - divisor);
@@ -563,7 +563,7 @@ namespace Operaciones
 				mensaje = MensajeParaDatoConValorUno(caso.caso,divisor,@base,mensaje);
 			}
 			
-			return (caso.caso != CasosDivisibilidad.USAR_NORMAL, mensaje,caso.informacion);
+			return (caso.caso != CasosDivisibilidad.USAR_COEFICIENTES, mensaje,caso.informacion);
 		}
 
 		private static string MensajeParaDatoConValorUno(CasosDivisibilidad caso, long divisor, long @base, string mensajeInicial) {
@@ -623,7 +623,7 @@ namespace Operaciones
 			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.RESTAR_BLOQUES, tuplaCaso.dato);
 			tuplaCaso = UnoMasQuePotencia(divisor, @base);
 			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.SUMAR_BLOQUES, tuplaCaso.dato);
-			return (CasosDivisibilidad.USAR_NORMAL,-1);
+			return (CasosDivisibilidad.USAR_COEFICIENTES,-1);
 		}
 
 		/// <summary>

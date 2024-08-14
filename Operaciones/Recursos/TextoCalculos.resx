@@ -202,4 +202,28 @@ Two more iterations will be attempted.</value>
   <data name="MensajeAplicarParteDerechaPequeña" xml:space="preserve">
     <value>The dividend, {0}, is to small for this rule, use the first coefficients, starting from the left.</value>
   </data>
+  <data name="ReglaExpliacadaCoeficientes" xml:space="preserve">
+    <value>Apply the rule as specified in the README using the coefficients obtained</value>
+  </data>
+  <data name="ReglaExplicadaCero" xml:space="preserve">
+    <value>No rule can be created, divisibility is not applicable with divisor zero.</value>
+  </data>
+  <data name="ReglaConstructorRestriccionCero" xml:space="preserve">
+    <value>For this type, the divisor must be zero.</value>
+  </data>
+  <data name="ReglaConstructorRestriccionUno" xml:space="preserve">
+    <value>For this type, the divisor must be one.</value>
+  </data>
+  <data name="ReglaExplicadaUno" xml:space="preserve">
+    <value>No rule is necessary, all integers are divisible by one.</value>
+  </data>
+  <data name="ReglaExplicadaCifras" xml:space="preserve">
+    <value>The dividend will be divisible by {0} if, and only if, its last {1} digits in base {2} are divisible by {0}.</value>
+  </data>
+  <data name="ReglaExplicadaSumar" xml:space="preserve">
+    <value>The dividend will be divisible by {0} if, and only if, the sum of all the digits in base {1} split into groups of {2} digits, starting at its units digit is also divisible by {0}.</value>
+  </data>
+  <data name="ReglaExplicadaRestar" xml:space="preserve">
+    <value>The dividend will be divisible by {0} if, and only if, the difference of the sums of all the even and odd groups of digits in base {1} of {2} digits, starting at its units digit is also divisible by {0}.</value>
+  </data>
 </root>

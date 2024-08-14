@@ -32,7 +32,7 @@ namespace ProgramaDivisibilidad {
 					}
 					if (flags.Dividendo?.Any() ?? false)
 						foreach (long dividendo in flags.Dividendo) {
-							_escritorSalida.WriteLine(((Regla)elementoCreado).AplicarRegla(dividendo));
+							_escritorSalida.WriteLine(((ReglaCoeficientes)elementoCreado).AplicarRegla(dividendo));
 						}
 				}
 			}
@@ -123,18 +123,18 @@ namespace ProgramaDivisibilidad {
 
 		private static (int, object) CrearReglaCoeficientes(long divisor, long @base, int coefientes) {
 			int salida;
-			object elementoCreado = new Regla(divisor, @base, coefientes);
+			object elementoCreado = new ReglaCoeficientes(divisor, @base, coefientes);
 			if (!SonCoprimos(divisor,@base)) {
 				salida = SALIDA_ERROR;
 			} else if (flags.Todos) {
-				List<Regla> listaAuxiliar = ReglasDivisibilidad(divisor, coefientes, @base);
+				List<ReglaCoeficientes> listaAuxiliar = ReglasDivisibilidad(divisor, coefientes, @base);
 				foreach (var item in listaAuxiliar) {
 					item.Nombre = flags.Nombre;
 				}
 				elementoCreado = listaAuxiliar;
 				salida = SALIDA_CORRECTA;
 			} else {
-				Regla reglaAuxiliar = ReglaDivisibilidadOptima(divisor, coefientes, @base);
+				ReglaCoeficientes reglaAuxiliar = ReglaDivisibilidadOptima(divisor, coefientes, @base);
 				reglaAuxiliar.Nombre = flags.Nombre!;
 				elementoCreado = reglaAuxiliar;
 				salida = SALIDA_CORRECTA;

@@ -316,11 +316,83 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a For this type, the divisor must be zero..
+        /// </summary>
+        public static string ReglaConstructorRestriccionCero {
+            get {
+                return ResourceManager.GetString("ReglaConstructorRestriccionCero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a For this type, the divisor must be one..
+        /// </summary>
+        public static string ReglaConstructorRestriccionUno {
+            get {
+                return ResourceManager.GetString("ReglaConstructorRestriccionUno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The divisor cannot be negative.
         /// </summary>
         public static string ReglaDivisorNegativoError {
             get {
                 return ResourceManager.GetString("ReglaDivisorNegativoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Apply the rule as specified in the README using the coefficients obtained.
+        /// </summary>
+        public static string ReglaExpliacadaCoeficientes {
+            get {
+                return ResourceManager.GetString("ReglaExpliacadaCoeficientes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No rule can be created, divisibility is not applicable with divisor zero..
+        /// </summary>
+        public static string ReglaExplicadaCero {
+            get {
+                return ResourceManager.GetString("ReglaExplicadaCero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The dividend will be divisible by {0} if, and only if, its last {1} digits in base {2} are divisible by {0}..
+        /// </summary>
+        public static string ReglaExplicadaCifras {
+            get {
+                return ResourceManager.GetString("ReglaExplicadaCifras", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The dividend will be divisible by {0} if, and only if, the difference of the sums of all the even and odd groups of digits in base {1} of {2} digits, starting at its units digit is also divisible by {0}..
+        /// </summary>
+        public static string ReglaExplicadaRestar {
+            get {
+                return ResourceManager.GetString("ReglaExplicadaRestar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The dividend will be divisible by {0} if, and only if, the sum of all the digits in base {1} split into groups of {2} digits, starting at its units digit is also divisible by {0}..
+        /// </summary>
+        public static string ReglaExplicadaSumar {
+            get {
+                return ResourceManager.GetString("ReglaExplicadaSumar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No rule is necessary, all integers are divisible by one..
+        /// </summary>
+        public static string ReglaExplicadaUno {
+            get {
+                return ResourceManager.GetString("ReglaExplicadaUno", resourceCulture);
             }
         }
         

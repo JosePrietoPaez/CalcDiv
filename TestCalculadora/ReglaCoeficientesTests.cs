@@ -5,7 +5,7 @@ using System.Text.Json.Nodes;
 namespace TestCalculadora {
 
 	[TestFixture]
-	internal class ReglaTests {
+	internal class ReglaCoeficientesTests {
 
 		[Test]
 		public void Regla_Constructor_CreaEInicializaPropiedades() {
@@ -14,7 +14,7 @@ namespace TestCalculadora {
 			string nombre = "Nombre";
 			List<long> coeficientes = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base).Coeficientes;
 
-			Regla reglaObtenida = new(divisor, @base, longitud, nombre);
+			ReglaCoeficientes reglaObtenida = new(divisor, @base, longitud, nombre);
 
 			Assert.Multiple(() => {
 				Assert.That(reglaObtenida.Nombre, Is.EqualTo(nombre));
@@ -33,7 +33,7 @@ namespace TestCalculadora {
 			string nombre = "Nombre";
 			List<long> coeficientes = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base).Coeficientes;
 
-			Regla reglaObtenida = new(divisor, @base, coeficientes, nombre);
+			ReglaCoeficientes reglaObtenida = new(divisor, @base, coeficientes, nombre);
 
 			Assert.Multiple(() => {
 				Assert.That(reglaObtenida.Nombre, Is.EqualTo(nombre));
@@ -51,7 +51,7 @@ namespace TestCalculadora {
 			int longitud = 5;
 			string nombre = "Nombre";
 			List<long> regla = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base).Coeficientes;
-			Regla reglaObtenida = new(divisor, @base, regla, nombre);
+			ReglaCoeficientes reglaObtenida = new(divisor, @base, regla, nombre);
 
 			JsonNode nodo = JsonNode.Parse(JsonSerializer.Serialize(reglaObtenida))!;
 			
@@ -72,7 +72,7 @@ namespace TestCalculadora {
 			long div = 10, bas = 7;
 			List<long> coeficientes = [1, 2, 3];
 			string esperado = "1, 2, 3";
-			Regla regla = new(div, bas, coeficientes);
+			ReglaCoeficientes regla = new(div, bas, coeficientes);
 
 			string resultado = regla.ToString();
 
@@ -84,7 +84,7 @@ namespace TestCalculadora {
 			long div = 10, bas = 7;
 			List<long> coeficientes = [1, 2, 3];
 			string nombre = "Ejemplo", esperado = "Ejemplo₀ = 1, Ejemplo₁ = 2, Ejemplo₂ = 3";
-			Regla regla = new(div, bas, coeficientes,nombre);
+			ReglaCoeficientes regla = new(div, bas, coeficientes,nombre);
 
 			string resultado = regla.ToStringCompleto();
 
