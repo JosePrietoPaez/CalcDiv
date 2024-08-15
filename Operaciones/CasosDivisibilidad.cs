@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace Operaciones {
+﻿namespace Operaciones {
 	public enum CasosDivisibilidad {
-		USAR_COEFICIENTES = 0,
-		MIRAR_CIFRAS = 1,
-		SUMAR_BLOQUES = 2,
-		RESTAR_BLOQUES = 3,
-		UNO = 4,
-		CERO = 5
+		COEFFICIENTS = 0,
+		DIGITS = 1,
+		ADD_BLOCKS = 2,
+		SUBSTRACT_BLOCKS = 3,
+		DIVISOR_ONE = 4,
+		DIVISOR_CERO = 5
 	}
 }

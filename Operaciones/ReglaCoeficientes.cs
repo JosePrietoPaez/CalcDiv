@@ -32,7 +32,6 @@ namespace Operaciones {
 
 		private List<long>? _coeficientes = null;
 
-		private string _reglaExtra = string.Empty;
 		private int _longitud = coeficientes;
 
 		[JsonPropertyName("divisor")]
@@ -85,6 +84,9 @@ namespace Operaciones {
 
 		[JsonPropertyName("rule-explained")]
 		public string ReglaExplicada { get => TextoCalculos.ReglaExpliacadaCoeficientes; }
+
+		[JsonPropertyName("type")]
+		public CasosDivisibilidad Tipo => CasosDivisibilidad.COEFFICIENTS;
 
 		/// <summary>
 		/// Este campo indica una aproxima una estimación del punto donde se estima que el dividendo 

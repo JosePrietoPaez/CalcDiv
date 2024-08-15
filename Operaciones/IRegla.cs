@@ -31,6 +31,12 @@ namespace Operaciones {
 		public long Divisor { get; }
 
 		/// <summary>
+		/// Esta propiedad indica el tipo de regla que contiene el tipo.
+		/// </summary>
+		[JsonPropertyName("type")]
+		public CasosDivisibilidad Tipo { get; }
+
+		/// <summary>
 		/// Aplica la regla a un dividendo y determina si es divisible entre él.
 		/// </summary>
 		/// <param name="dividendo">El número al que se le aplicará la regla</param>
@@ -42,19 +48,24 @@ namespace Operaciones {
 		/// <summary>
 		/// Genera una regla dados un caso y su información, la regla se habrá inicializado.
 		/// </summary>
-		/// <param name="caso">Caso de </param>
-		/// <param name="base"></param>
-		/// <param name="divisor"></param>
-		/// <param name="informacion"></param>
-		/// <returns></returns>
-		public static IRegla GenerarReglaPorTipo(CasosDivisibilidad caso, long @base, long divisor, int informacion) {
+		/// <remarks>
+		/// Se salta el flujo de control que asegura que las reglas sean correctas.
+		/// </remarks>
+		/// <param name="caso">Caso del tipo de regla</param>
+		/// <param name="base">Base en la que se aplicará la regla</param>
+		/// <param name="divisor">Divisor de la regla</param>
+		/// <param name="informacion">Un dato que se necesitará para generar la regla</param>
+		/// <returns>
+		/// <see cref="IRegla"/> del tipo correspondiente.
+		/// </returns>
+		internal static IRegla GenerarReglaPorTipo(CasosDivisibilidad caso, long divisor, long @base, int informacion) {
 			return caso switch {
-				CasosDivisibilidad.CERO => new ReglaCero(divisor, @base),
-				CasosDivisibilidad.UNO => new ReglaUno(divisor, @base),
-				CasosDivisibilidad.USAR_COEFICIENTES => new ReglaCoeficientes(divisor, @base, 1),
-				CasosDivisibilidad.MIRAR_CIFRAS => new ReglaCifras(divisor, @base, informacion),
-				CasosDivisibilidad.SUMAR_BLOQUES => new ReglaSumar(divisor, @base, informacion),
-				CasosDivisibilidad.RESTAR_BLOQUES => new ReglaRestar(divisor, @base, informacion),
+				CasosDivisibilidad.DIVISOR_CERO => new ReglaCero(divisor, @base),
+				CasosDivisibilidad.DIVISOR_ONE => new ReglaUno(divisor, @base),
+				CasosDivisibilidad.COEFFICIENTS => new ReglaCoeficientes(divisor, @base, 1),
+				CasosDivisibilidad.DIGITS => new ReglaCifras(divisor, @base, informacion),
+				CasosDivisibilidad.ADD_BLOCKS => new ReglaSumar(divisor, @base, informacion),
+				CasosDivisibilidad.SUBSTRACT_BLOCKS => new ReglaRestar(divisor, @base, informacion),
 				_ => throw new NotImplementedException()
 			};
 		}

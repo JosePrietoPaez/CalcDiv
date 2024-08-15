@@ -23,7 +23,9 @@ namespace Operaciones {
 		}
 
 		[JsonPropertyName("rule-explained")]
-		public string ReglaExplicada => string.Format(TextoCalculos.ReglaExplicadaCifras, Divisor, Cifras, Base);
+		public string ReglaExplicada => string.Format(TextoCalculos.CalculosExtendidaMensajeCifrasPrincipio, _divisor, _base)
+			+ Environment.NewLine
+			+ string.Format(TextoCalculos.ReglaExplicadaCifras, Divisor, Cifras, Base);
 
 		[JsonPropertyName("base")]
 		public long Base => _base;
@@ -34,8 +36,14 @@ namespace Operaciones {
 		[JsonPropertyName("digits-used")]
 		public int Cifras => _cifras;
 
+		[JsonPropertyName("type")]
+		public CasosDivisibilidad Tipo => CasosDivisibilidad.DIGITS;
+
 		public string AplicarRegla(long dividendo) {
 			throw new NotImplementedException();
-		}		
+		}
+		public override string ToString() {
+			return ReglaExplicada;
+		}
 	}
 }

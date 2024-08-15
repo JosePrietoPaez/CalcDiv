@@ -38,12 +38,6 @@ namespace ProgramaDivisibilidad {
 			, SetName = "coef")]
 		public bool Todos { get; set; }
 
-		[Option('j', longName: "json"
-			, HelpText = "HelpJson"
-			, ResourceType = typeof(TextoResource)
-			, SetName = "coef")]
-		public bool JSON { get; set; }
-
 	}
 
 	/// <summary>
@@ -156,6 +150,10 @@ namespace ProgramaDivisibilidad {
 		/// <summary>
 		/// Esta propiedad indica si la opción -j está activa.
 		/// </summary>
+
+		[Option('j', longName: "json"
+			, HelpText = "HelpJson"
+			, ResourceType = typeof(TextoResource))]
 		public bool JSON { get; set; }
 
 		/// <summary>

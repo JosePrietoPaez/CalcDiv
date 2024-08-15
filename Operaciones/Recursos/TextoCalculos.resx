@@ -111,7 +111,7 @@
     <value>Divisibility cannot be applied to zero.</value>
   </data>
   <data name="CalculosExtendidaMensajeCifrasPrincipio" xml:space="preserve">
-    <value> is composed of powers of the prime factors of </value>
+    <value>{0} is composed of powers of the prime factors of {1}.</value>
     <comment>Is placed after the divisor and before the base, all these messages are divided into two to avoid repeating CrearMensaje in every single one</comment>
   </data>
   <data name="CalculosExtendidaMensajeCifrasFinal" xml:space="preserve">
@@ -122,7 +122,7 @@
     <value>All integers are divisible by one.</value>
   </data>
   <data name="CalculosExtendidaRestarPrincipio" xml:space="preserve">
-    <value> is a divisor of {0} to the power of {1} plus one ({2})</value>
+    <value>{0} is a divisor of {1} to the power of {2} plus one ({3}).</value>
     <comment>Like CifrasPrincipio</comment>
   </data>
   <data name="CalculosExtendidaRestarFinal" xml:space="preserve">
@@ -130,7 +130,7 @@
     <comment>Like CifrasFinal</comment>
   </data>
   <data name="CalculosExtendidaSumarPrincipio" xml:space="preserve">
-    <value> is a divisor of {0} to the power of {1} minus one ({2})</value>
+    <value>{0} is a divisor of {1} to the power of {2} minus one ({3}).</value>
     <comment>Very similar to RestarPrincipio</comment>
   </data>
   <data name="CalculosExtendidaSumarFinal" xml:space="preserve">

@@ -88,7 +88,7 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a  is composed of powers of the prime factors of .
+        ///   Busca una cadena traducida similar a {0} is composed of powers of the prime factors of {1}..
         /// </summary>
         public static string CalculosExtendidaMensajeCifrasPrincipio {
             get {
@@ -133,7 +133,7 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a  is a divisor of {0} to the power of {1} plus one ({2}).
+        ///   Busca una cadena traducida similar a {0} is a divisor of {1} to the power of {2} plus one ({3})..
         /// </summary>
         public static string CalculosExtendidaRestarPrincipio {
             get {
@@ -151,7 +151,7 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a  is a divisor of {0} to the power of {1} minus one ({2}).
+        ///   Busca una cadena traducida similar a {0} is a divisor of {1} to the power of {2} minus one ({3})..
         /// </summary>
         public static string CalculosExtendidaSumarPrincipio {
             get {

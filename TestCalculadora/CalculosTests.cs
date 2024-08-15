@@ -979,7 +979,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Multiple(() =>
 				{
-					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.CERO));
+					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.DIVISOR_CERO));
 					Assert.That(result.informacion, Is.EqualTo(-1));
 				});
 			}
@@ -1000,7 +1000,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Multiple(() =>
 				{
-					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.UNO));
+					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.DIVISOR_ONE));
 					Assert.That(result.informacion, Is.EqualTo(-1));
 				});
 			}
@@ -1026,7 +1026,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Multiple(() =>
 				{
-					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.SUMAR_BLOQUES));
+					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.ADD_BLOCKS));
 					Assert.That(result.informacion, Is.EqualTo(potencia));
 				});
 			}
@@ -1054,7 +1054,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Multiple(() =>
 				{
-					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.RESTAR_BLOQUES));
+					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.SUBSTRACT_BLOCKS));
 					Assert.That(result.informacion, Is.EqualTo(potencia));
 				});
 			}
@@ -1081,7 +1081,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Multiple(() =>
 				{
-					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.MIRAR_CIFRAS));
+					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.DIGITS));
 					Assert.That(result.informacion, Is.EqualTo(cifras));
 				});
 			}
@@ -1131,7 +1131,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Multiple(() =>
 				{
-					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.USAR_COEFICIENTES));
+					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.COEFFICIENTS));
 					Assert.That(result.informacion, Is.EqualTo(-1));
 				});
 			}

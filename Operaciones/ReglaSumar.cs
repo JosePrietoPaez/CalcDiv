@@ -1,4 +1,5 @@
 ﻿using Operaciones.Recursos;
+using System.Text.Json.Serialization;
 
 namespace Operaciones {
 	/// <summary>
@@ -21,19 +22,43 @@ namespace Operaciones {
 			_base = @base;
 		}
 
-		public string ReglaExplicada => string.Format(TextoCalculos.ReglaExplicadaSumar, Divisor, Base, Longitud);
+		[JsonPropertyName("rule-explained")]
+		public string ReglaExplicada {
+			get {
+				string potencia;
+				try {
+					long resultado = Calculos.PotenciaEntera(Base, Longitud) - 1;
+					potencia = resultado.ToString(); //Puede dar overflow si el exponente es grande
+				}
+				catch (OverflowException) {
+					potencia = TextoCalculos.CalculosExtendidaMensajeExceso;
+				}
+				return string.Format(TextoCalculos.CalculosExtendidaSumarPrincipio, Divisor, Base, Longitud, potencia)
+					+ Environment.NewLine
+					+ string.Format(TextoCalculos.ReglaExplicadaSumar, Divisor, Base, Longitud);
+			}
+		}
 
+		[JsonPropertyName("base")]
 		public long Base => _base;
 
+		[JsonPropertyName("divisor")]
 		public long Divisor => _divisor;
 
 		/// <summary>
 		/// Esta propiedad indica la longitud de los bloques de cifras que se deberán sumar.
 		/// </summary>
+		[JsonPropertyName("block-length")]
 		public int Longitud => _longitud;
+
+		[JsonPropertyName("type")]
+		public CasosDivisibilidad Tipo => CasosDivisibilidad.ADD_BLOCKS;
 
 		public string AplicarRegla(long dividendo) {
 			throw new NotImplementedException();
+		}
+		public override string ToString() {
+			return ReglaExplicada;
 		}
 	}
 }

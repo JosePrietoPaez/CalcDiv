@@ -29,6 +29,12 @@ namespace Operaciones {
 		[JsonPropertyName("divisor")]
 		public long Divisor => divisor;
 
+		[JsonPropertyName("type")]
+		public CasosDivisibilidad Tipo => CasosDivisibilidad.DIVISOR_CERO;
+
 		public string AplicarRegla(long dividendo) => TextoCalculos.ReglaExplicadaCero;
+		public override string ToString() {
+			return ReglaExplicada;
+		}
 	}
 }

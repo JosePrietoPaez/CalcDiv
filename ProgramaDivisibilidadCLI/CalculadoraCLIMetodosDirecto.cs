@@ -31,9 +31,7 @@ namespace ProgramaDivisibilidad {
 						_escritorError.WriteLine(ErrorPrimo);
 					}
 					if (flags.Dividendo?.Any() ?? false)
-						foreach (long dividendo in flags.Dividendo) {
-							_escritorSalida.WriteLine(((ReglaCoeficientes)elementoCreado).AplicarRegla(dividendo));
-						}
+						AplicarReglaDivisibilidad((IRegla)elementoCreado, flags.Dividendo);
 				}
 			}
 		}

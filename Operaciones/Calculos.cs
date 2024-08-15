@@ -525,57 +525,15 @@ namespace Operaciones
 		/// El divisor debe ser mayor o igual que 2.
 		/// </remarks>
 		/// <exception cref="ArgumentOutOfRangeException"></exception>
-		/// <param name="divisor"></param>
-		/// <param name="@base"></param>
+		/// <param name="divisor">Divisor de la regla</param>
+		/// <param name="base">Base para aplicar la regla</param>
 		/// <returns>
-		/// Tupla con primero booleano indicando el éxito del método, segundo mensaje explicando la regla obtenida y tercero con información.
+		/// Tupla con primero booleano indicando el éxito del método, segundo la regla con su información inicializada.
 		/// </returns>
-		public static (bool,string,int) ReglaDivisibilidadExtendida(long divisor, long @base) {
+		public static (bool, IRegla) ReglaDivisibilidadExtendida(long divisor, long @base) {
 			var caso = CasoEspecialRegla(divisor, @base);
-			string potencia = "";
-			try {
-				long resultado = -1;
-				if (caso.caso == CasosDivisibilidad.RESTAR_BLOQUES) {
-					resultado = PotenciaEntera(@base, caso.informacion) + 1;
-				} else if (caso.caso == CasosDivisibilidad.SUMAR_BLOQUES) {
-					resultado = PotenciaEntera(@base, caso.informacion) - 1;
-				}
-				potencia = resultado.ToString(); //Puede dar overflow si el exponente es grande
-			} catch (OverflowException) {
-				potencia = TextoCalculos.CalculosExtendidaMensajeExceso;
-			}
-			string mensaje;
-			mensaje = caso.caso switch {
-				CasosDivisibilidad.MIRAR_CIFRAS => CrearMensajeDivisibilidad(divisor + TextoCalculos.CalculosExtendidaMensajeCifrasPrincipio + @base,
-					string.Format(TextoCalculos.CalculosExtendidaMensajeCifrasFinal,caso.informacion) + divisor,
-					@base, divisor),
-				CasosDivisibilidad.UNO => TextoCalculos.CalculosExtendidaMensajeUno,
-				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad(divisor + string.Format(TextoCalculos.CalculosExtendidaRestarPrincipio,@base,caso.informacion,potencia),
-					string.Format(TextoCalculos.CalculosExtendidaRestarFinal,caso.informacion) + divisor,
-					@base,divisor),
-				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad(divisor + string.Format(TextoCalculos.CalculosExtendidaSumarPrincipio,@base,caso.informacion,potencia),
-					string.Format(TextoCalculos.CalculosExtendidaSumarFinal,caso.informacion) + divisor,
-					@base, divisor),
-				CasosDivisibilidad.CERO => TextoCalculos.CalculosExtendidaMensajeCero,
-				_ => TextoCalculos.CalculosExtendidaMensajeFracaso,
-			};
-			if (caso.informacion == 1) {
-				mensaje = MensajeParaDatoConValorUno(caso.caso,divisor,@base,mensaje);
-			}
-			
-			return (caso.caso != CasosDivisibilidad.USAR_COEFICIENTES, mensaje,caso.informacion);
-		}
-
-		private static string MensajeParaDatoConValorUno(CasosDivisibilidad caso, long divisor, long @base, string mensajeInicial) {
-			return caso switch {
-				CasosDivisibilidad.RESTAR_BLOQUES => CrearMensajeDivisibilidad(divisor + string.Format(TextoCalculos.CalculosValorUnoRestarPrincipio,@base),
-					TextoCalculos.CalculosValorUnoRestarFinal + divisor,
-					@base, divisor),
-				CasosDivisibilidad.SUMAR_BLOQUES => CrearMensajeDivisibilidad(divisor + string.Format(TextoCalculos.CalculosValorUnoSumarPrincipio,@base),
-					TextoCalculos.CalculosValorUnoSumarFinal + divisor,
-					@base, divisor),
-				_ => mensajeInicial
-			};
+			IRegla reglaExtra = IRegla.GenerarReglaPorTipo(caso.caso, divisor, @base, caso.informacion);
+			return (caso.caso != CasosDivisibilidad.COEFFICIENTS, reglaExtra);
 		}
 
 		/// <summary>
@@ -596,7 +554,7 @@ namespace Operaciones
 		/// </remarks>
 		/// <exception cref="ArgumentOutOfRangeException"></exception>
 		/// <param name="divisor"></param>
-		/// <param name="@base"></param>
+		/// <param name="base"></param>
 		/// <returns>
 		/// Tupla con primero caso y primero entero con información
 		/// </returns>
@@ -605,8 +563,8 @@ namespace Operaciones
 			ArgumentOutOfRangeException.ThrowIfLessThan(@base,2,nameof(@base));
 			ArgumentOutOfRangeException.ThrowIfLessThan(@base,0, nameof(@base));
 
-			if (divisor == 0) return (CasosDivisibilidad.CERO, -1);
-			if (divisor == 1) return (CasosDivisibilidad.UNO, -1);
+			if (divisor == 0) return (CasosDivisibilidad.DIVISOR_CERO, -1);
+			if (divisor == 1) return (CasosDivisibilidad.DIVISOR_ONE, -1);
 
 			List<long> descomposicionDivisor = DescompsicionEnPrimos(divisor),
 				descomposicionRaiz = DescompsicionEnPrimos(@base);
@@ -618,12 +576,12 @@ namespace Operaciones
 
 			var tuplaCaso = ProductoDePotenciasDeBases(descomposicionDivisor, descomposicionRaiz, @base);
 
-			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.MIRAR_CIFRAS, tuplaCaso.dato);
+			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.DIGITS, tuplaCaso.dato);
 			tuplaCaso = UnoMenosQuePotencia(divisor, @base);
-			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.RESTAR_BLOQUES, tuplaCaso.dato);
+			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.SUBSTRACT_BLOCKS, tuplaCaso.dato);
 			tuplaCaso = UnoMasQuePotencia(divisor, @base);
-			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.SUMAR_BLOQUES, tuplaCaso.dato);
-			return (CasosDivisibilidad.USAR_COEFICIENTES,-1);
+			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.ADD_BLOCKS, tuplaCaso.dato);
+			return (CasosDivisibilidad.COEFFICIENTS,-1);
 		}
 
 		/// <summary>

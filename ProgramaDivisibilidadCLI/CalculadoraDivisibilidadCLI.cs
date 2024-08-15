@@ -8,6 +8,7 @@ using System.Text.Json;
 using Operaciones;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using System.Text.Json.Serialization;
 
 namespace ProgramaDivisibilidad {
 
@@ -26,7 +27,12 @@ namespace ProgramaDivisibilidad {
 		private static Opciones? flags = null;
 		private static TextWriter _escritorSalida = Console.Out, _escritorError = Console.Error;
 		private static TextReader _lectorEntrada = Console.In;
-		private readonly static JsonSerializerOptions opcionesJson = new() { WriteIndented = true, Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement) };
+		private readonly static JsonSerializerOptions opcionesJson = new() 
+		{ 
+			WriteIndented = true, 
+			Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement),
+			Converters = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseUpper) }
+		};
 
 		/// <summary>
 		/// Este método calcula la regla de divisibilidad, obteniendo los datos desde la consola reglasObj desde los argumentos.
@@ -158,10 +164,8 @@ namespace ProgramaDivisibilidad {
 						if (!saltarPreguntaExtra) {
 							flags.TipoExtra = !ObtenerDeUsuario(MensajeDialogoExtendido, esS);
 						}
-
-						if (!flags.TipoExtra) {
-							flags.JSON = ObtenerDeUsuario(MensajeDialogoJson, esS);
-						}
+						
+						flags.JSON = ObtenerDeUsuario(MensajeDialogoJson, esS);
 					}
 
 					var resultado = FlujoDatosRegla(flags.DivisorDialogo, flags.BaseDialogo, flags.LongitudDialogo, sinFlags);
@@ -224,6 +228,8 @@ namespace ProgramaDivisibilidad {
 
 			return (ObtenerReglas(divisor, @base, longitud), divisor, @base, longitud);
 		}
+
+		#region ObtenerSHUTTHEFUCKUP
 
 		private static T ObtenerValorODefecto<T>(T? valorDefecto, Func<T> funcionCasoNulo) where T : struct {
 			return valorDefecto is null ? funcionCasoNulo() : valorDefecto.Value;
@@ -297,6 +303,8 @@ namespace ProgramaDivisibilidad {
 			if (linea == SALIDA) throw new SalidaException(MensajeSalidaVoluntaria);
 		}
 
+		#endregion
+
 		/// <summary>
 		/// Devuelve un string para la consola, depende del tipo del objeto
 		/// </summary>
@@ -347,9 +355,9 @@ namespace ProgramaDivisibilidad {
 		private static string ObtenerReglas(long divisor, long @base, int longitud = 1) {
 			string resultado;
 			if (flags.TipoExtra) {
-				resultado = ReglaDivisibilidadExtendida(divisor, @base).Item2;
+				resultado = ReglaDivisibilidadExtendida(divisor, @base).Item2.ReglaExplicada;
 			} else {
-				object? reglasObj = null;
+				object? reglasObj;
 				if (flags.Todos) { //Si se piden las 2^coeficientes reglasObj
 					List<ReglaCoeficientes> reglas = ReglasDivisibilidad(divisor, longitud, @base);
 					if (flags.Nombre != "") {
@@ -368,7 +376,7 @@ namespace ProgramaDivisibilidad {
 			return resultado;
 		}
 
-		private static void AplicarReglaDivisibilidad(ReglaCoeficientes regla, List<long> dividendos) {
+		private static void AplicarReglaDivisibilidad(IRegla regla, IEnumerable<long> dividendos) {
 			foreach (long dividendo in dividendos) {
 				_escritorSalida.WriteLine(regla.AplicarRegla(dividendo));
 			}
