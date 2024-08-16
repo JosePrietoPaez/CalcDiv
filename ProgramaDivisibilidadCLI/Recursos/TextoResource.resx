@@ -289,7 +289,6 @@ Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and o
 -h: shows a summary of this message, ignores other options.
 -d: allows for the arguments to be passed in the command line instead of keyboard input. 2 or 3 arguments are passed: the divisor, base and optionally the rule length.
 -a: writes all possible rules using the given rule length, the coefficients' absolute value will be lower than the divisor.
--n: writes the given name before every element or is included in the JSON output.
 -j: outputs the rule in JSON, unless -x is used.
 -x: outputs a different rule, also explains how to apply said rule. Possible cases are similar to the rules of 0, 1, 2, 3 and 11.
 -m: receives divisors and bases separated by commas and returns all the rules of every divisor,base pair. May also receive the length of the rules.

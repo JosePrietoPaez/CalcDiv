@@ -26,12 +26,6 @@ namespace ProgramaDivisibilidad {
 	/// </summary>
 	interface ICoeficientesOpciones {
 
-		[Option('n', longName: "name", Default = "-"
-			, HelpText = "HelpNombre"
-			, ResourceType = typeof(TextoResource)
-			, SetName = "coef")]
-		public string Nombre { get; set; }
-
 		[Option('a', longName: "all-rules"
 			, HelpText = "HelpTodos"
 			, ResourceType = typeof(TextoResource)
@@ -138,16 +132,6 @@ namespace ProgramaDivisibilidad {
 		}
 
 		/// <summary>
-		/// Esta propiedad indica el nombre pasado a -n, si no se ha indicado será "-". 
-		/// </summary>
-		/// <remarks>
-		/// Al principio del programa se cambia al string vacío si su valor es "-".
-		/// </remarks>
-#pragma warning disable CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declararlo como que admite un valor NULL.
-		public string Nombre { get; set; }
-#pragma warning restore CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declararlo como que admite un valor NULL.
-
-		/// <summary>
 		/// Esta propiedad indica si la opción -j está activa.
 		/// </summary>
 
@@ -190,7 +174,7 @@ namespace ProgramaDivisibilidad {
 		public int? LongitudDialogo { get; set; }
 
 		[Option("no-loop"
-			, HelpText = "HelpLongitudDialogo"
+			, HelpText = "HelpAnularBucle"
 			, ResourceType = typeof(TextoResource))]
 		public bool AnularBulce { get; set;	}
 
@@ -289,7 +273,7 @@ namespace ProgramaDivisibilidad {
 		/// <summary>
 		/// Esta propiedad devuelve si todos los flags, excepto los de valores de diálogo están inactivos.
 		/// </summary>
-		public bool FlagsInactivos => !(DialogoSencillo || JSON || Ayuda || Ayuda || AyudaCorta || TipoExtra || Todos || (Nombre?.Length ?? 0) != 0 || (Directo?.Any() ?? false));
+		public bool FlagsInactivos => !(DialogoSencillo || JSON || Ayuda || Ayuda || AyudaCorta || TipoExtra || Todos ||  (Directo?.Any() ?? false));
 
 		/// <summary>
 		/// Esta propiedad indica si se debería usar el modo directo según las opciones habilitadas

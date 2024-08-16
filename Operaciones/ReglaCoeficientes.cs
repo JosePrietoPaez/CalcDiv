@@ -13,8 +13,7 @@ namespace Operaciones {
 	public class ReglaCoeficientes(
 		[Range(0, long.MaxValue)] long divisor
 		, [Range(2, long.MaxValue)] long @base
-		, [Range(0,int.MaxValue)] int coeficientes
-		, string nombre = ""): IRegla {
+		, [Range(0,int.MaxValue)] int coeficientes): IRegla {
 
 		/// <summary>
 		/// Crea una regla con los coeficientes ya obtenidos, no se comprueba que sean correctos.
@@ -23,8 +22,8 @@ namespace Operaciones {
 		/// <param name="base">Base de la representación de los dividendos</param>
 		/// <param name="coeficientes">Lista de coeficientes</param>
 		/// <param name="nombre"></param>
-		public ReglaCoeficientes(long divisor, long @base, IEnumerable<long> coeficientes, string nombre = "")
-			: this(divisor, @base, coeficientes.Count(), nombre) {
+		public ReglaCoeficientes(long divisor, long @base, IEnumerable<long> coeficientes)
+			: this(divisor, @base, coeficientes.Count()) {
 			if (!coeficientes.Any()) throw new ArgumentException(
 				TextoCalculos.ReglaVaciaError, nameof(coeficientes));
 			_coeficientes = new(coeficientes);
@@ -55,12 +54,8 @@ namespace Operaciones {
 					return 0;
 				return _longitud;
 			}
-			set => _longitud = value; }
-		/// <summary>
-		/// Esta propiedad permite obtener y cambiar el nombre de la regla
-		/// </summary>
-		[JsonPropertyName("name")]
-		public string Nombre { get; set; } = nombre;
+			set => _longitud = value; 
+		}
 
 		/// <summary>
 		/// Esta propiedad permite obtener los coeficientes de la regla para ser utilizados.
@@ -194,18 +189,6 @@ namespace Operaciones {
 			return string.Join(", ", Coeficientes);
 		}
 
-		public string ToStringCompleto() {
-			if (Nombre.Equals(string.Empty)) return ToString();
-			StringBuilder sb = new();
-			for (int i = 0; i < Longitud; i++) {
-				sb.Append(Nombre).Append(Calculos.NumASubindice(i)).Append(" = ").Append(Coeficientes[i]);
-				if (i + 1 != Longitud) {
-					sb.Append(", ");
-				}
-			}
-			return sb.ToString();
-		}
-
 		public override int GetHashCode() {
 			return HashCode.Combine(Coeficientes);
 		}
@@ -215,7 +198,6 @@ namespace Operaciones {
 				   Divisor == coeficientes.Divisor &&
 				   Base == coeficientes.Base &&
 				   Longitud == coeficientes.Longitud &&
-				   Nombre == coeficientes.Nombre &&
 				   EqualityComparer<List<long>>.Default.Equals(Coeficientes, coeficientes.Coeficientes);
 		}
 	}

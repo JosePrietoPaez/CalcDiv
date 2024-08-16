@@ -77,9 +77,6 @@ namespace ProgramaDivisibilidad {
 			if (flags is null) {
 				_salida = SALIDA_ENTRADA_MALFORMADA;
 			} else {
-				if (flags.Nombre == "-") { // El valor por defecto es - para que se vea en la pantalla de ayuda
-					flags.Nombre = string.Empty;
-				}
 				Action modoElegido;
 				if (flags.Ayuda) {
 					modoElegido = EscribirAyudaLarga;
@@ -220,8 +217,6 @@ namespace ProgramaDivisibilidad {
 
 				if (sinFlags) {
 
-					flags.Nombre = ObtenerDeUsuario(MensajeDialogoRegla);
-
 					flags.Todos = ObtenerDeUsuario(MensajeDialogoTodas, c => c == 's' | c == 'S');
 				}
 			}
@@ -317,7 +312,6 @@ namespace ProgramaDivisibilidad {
 			string resultadoObjeto = obj switch {
 				// Para una regla de reglasObj de coeficientes obtenidas de una regla, usa recursión
 				IEnumerable<object?> or IEnumerable<object> => EnumerableStringSeparadoLinea((IEnumerable<object>)obj),//Se juntan los casos para que sean separados por la recursión
-				ReglaCoeficientes regla => regla.ToStringCompleto(),
 				_ => obj.ToString() ?? ObjetoNuloMensaje,
 			};
 			return resultadoObjeto;
@@ -360,15 +354,9 @@ namespace ProgramaDivisibilidad {
 				object? reglasObj;
 				if (flags.Todos) { //Si se piden las 2^coeficientes reglasObj
 					List<ReglaCoeficientes> reglas = ReglasDivisibilidad(divisor, longitud, @base);
-					if (flags.Nombre != "") {
-						foreach (var serie in reglas) {
-							serie.Nombre = flags.Nombre ?? "";
-						}
-					}
 					reglasObj = reglas;
 				} else {
 					ReglaCoeficientes serie = ReglaDivisibilidadOptima(divisor, longitud, @base);
-					serie.Nombre = flags.Nombre;
 					reglasObj = serie;
 				}
 				resultado = ObjetoAString(reglasObj);

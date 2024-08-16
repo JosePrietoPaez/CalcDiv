@@ -283,7 +283,6 @@ Calcula la regla de 7 en base 10, le da el nombre Nombre y lo escribe en JSON.
 -h: muestra una versión reducida de la ayuda, ignora las otras opciones.
 -d: si se pasan todos los datos se obtiene un resultado sin que la aplicación pida datos.
 -a: se escriben todas las reglas posibles con la cantidad de coeficientes proporcionado, el valor absoluto de los coeficientes será menor que el del divisor.
--n: escribe el nombre introducido como parámetro antes de cada elemento con su indice.
 -j: escribe la regla como en JSON, a no ser que se use -x.
 -x: cambia la salida a una regla alternativa que no usa coeficientes y explica como usarla. Los casos disponibles son como las reglas de 0, 1, 2, 3 y 11.
 -m: recibe divisores y bases separados por comas y devuelve las reglas de todos los pares divisor, base. Puede recibir opcionalmente la longitud de las reglas.
