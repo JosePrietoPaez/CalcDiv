@@ -135,7 +135,7 @@ Ejecute este programa con la opción -x o actívela en el diálogo para obtener 
     <value>Lee la base, divisor y, opcionalmente la longitud de las reglas de coeficientes, como argumentos en lugar de preguntarlos en modo diálogo. Deben ser enteros de 64 bits válidos.</value>
   </data>
   <data name="HelpExtendido" xml:space="preserve">
-    <value>Puede devolver reglas de tipos distintos, también devuelve por pantalla explicaciones sobre como se aplican. Ignora los demás flags, excepto -d.</value>
+    <value>Puede devolver reglas de tipos distintos, también devuelve por pantalla explicaciones sobre como se aplican.</value>
   </data>
   <data name="HelpJson" xml:space="preserve">
     <value>Las reglas de coeficientes se devolveran como un objeto JSON, se reflejarán los cambios causados por otros flags.</value>
@@ -392,5 +392,18 @@ Activa las reglas de coeficientes, a no ser que se activen las extra.</value>
     <value>Indica los valores de los dividendos a los que se les aplicará la regla.
 Deben ser enteros de 64 bits válidos separados por comas.
 Se usarán sus valores absolutos, esto no afecta al resultado.</value>
+  </data>
+  <data name="HelpVerbHelp" xml:space="preserve">
+    <value>Muestra la ayuda de esta aplicación.</value>
+  </data>
+  <data name="HelpVerbDialog" xml:space="preserve">
+    <value>Inicia un diálogo para crear reglas de divisibilidad.</value>
+  </data>
+  <data name="HelpVerbSingle" xml:space="preserve">
+    <value>Genera una única regla dado un divisor, su base y su longitud si la regla es de coeficientes</value>
+  </data>
+  <data name="HelpTextMultiple" xml:space="preserve">
+    <value>Devuelve todas las combinaciones válidas de reglas dadas unas listas de divisores, bases y longitudes si son reglas de coeficientes.
+Los elementos de una misma lista deben estar separados por una coma.</value>
   </data>
 </root>

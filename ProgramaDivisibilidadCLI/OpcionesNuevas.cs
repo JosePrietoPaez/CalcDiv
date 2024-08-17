@@ -1,81 +1,67 @@
 ﻿using CommandLine;
 using ProgramaDivisibilidad.Recursos;
+using System.IO;
 
 namespace ProgramaDivisibilidad {
 
-	interface IAyudaCortaOpciones {
+	[Verb("help", false, HelpText = "HelpVerbHelp", ResourceType = typeof(TextoResource))]
+	internal class OpcionesAyuda {
 
-		[Option('H', longName: "long-help"
-			, HelpText = "HelpAyuda"
-			, ResourceType = typeof(TextoResource)
-			, SetName = "ayuda-larga")]
-		public bool Ayuda { get; set; }
-	}
-
-	interface IAyudaLargaOpciones {
-
-		[Option('h', longName: "short-help"
+		[Option('s', longName: "short-help"
 			, HelpText = "HelpAyudaCorta"
-			, ResourceType = typeof(TextoResource)
-			, SetName = "ayuda-corta")]
-		public bool AyudaCorta { get; set; }
+			, ResourceType = typeof(TextoResource))]
+		public bool AyudaCorta { get; }
 	}
 
-	/// <summary>
-	/// Opciones disponibles solo para reglas de coeficientes
-	/// </summary>
-	interface ICoeficientesOpciones {
+	[Verb("dialog", true, HelpText = "HelpVerbDialog", ResourceType = typeof(TextoResource))]
+	internal class OpcionesDialogo : IOpcionesGlobales {
 
-		[Option('a', longName: "all-rules"
-			, HelpText = "HelpTodos"
-			, ResourceType = typeof(TextoResource)
-			, SetName = "coef")]
-		public bool Todos { get; set; }
+		[Option("base"
+			, HelpText = "HelpBaseDialogo"
+			, ResourceType = typeof(TextoResource))]
+		public long? BaseDialogo { get; set; }
 
-	}
+		[Option("divisor"
+			, HelpText = "HelpDivisorDialogo"
+			, ResourceType = typeof(TextoResource))]
+		public long? DivisorDialogo { get; set; }
 
-	/// <summary>
-	/// Opciones disponibles solo para reglas extra
-	/// </summary>
-	interface IExtraOpciones {
+		[Option("length"
+			, HelpText = "HelpLongitudDialogo"
+			, ResourceType = typeof(TextoResource))]
+		public int? LongitudDialogo { get; set; }
 
-		[Option('x', longName: "extra-rule-types"
-			, HelpText = "HelpExtendido"
-			, ResourceType = typeof(TextoResource)
-			, SetName = "extra")]
+		[Option("no-loop"
+			, HelpText = "HelpAnularBucle"
+			, ResourceType = typeof(TextoResource))]
+		public bool AnularBucle { get; set; }
+
+		/// <summary>
+		/// Esta propiedad indica si la opción -s está activa.
+		/// </summary>
+		[Option('s', longName: "simple-dialog"
+			, HelpText = "HelpSaltar"
+			, ResourceType = typeof(TextoResource))]
+		public bool DialogoSencillo { get; set; }
+
 		public bool TipoExtra { get; set; }
+		public bool Todos { get ; set ; }
+		public bool JSON { get; set; }
+		public IEnumerable<long>? Dividendo { get; set; }
 
+		/// <summary>
+		/// Esta propiedad devuelve si todos los flags, excepto los de valores de diálogo están inactivos.
+		/// </summary>
+		public bool FlagsInactivos => !(DialogoSencillo || JSON || TipoExtra || Todos);
 	}
 
-	/// <summary>
-	/// Clase usada por el parser para inicializar las pociones
-	/// </summary>
-	internal class Opciones : IAyudaCortaOpciones, IAyudaLargaOpciones, ICoeficientesOpciones, IExtraOpciones {
-
-		/// <summary>
-		/// Esta propiedad indica si la opción -x está activa.
-		/// </summary>
-		public bool TipoExtra { get; set; }
-
-		/// <summary>
-		/// Esta propiedad indica si la opción -a está activa.
-		/// </summary>
-		public bool Todos { get; set; }
-
-		/// <summary>
-		/// Esta propiedad indica si la opción -H está activa.
-		/// </summary>
-		public bool Ayuda { get; set; }
-
-		/// <summary>
-		/// Esta propiedad indica si la opción -h está activa.
-		/// </summary>
-		public bool AyudaCorta { get; set; }
+	[Verb("single", false, HelpText = "HelpVerbSingle", ResourceType = typeof(TextoResource))]
+	internal class OpcionesDirecto : IOpcionesGlobales {
 
 		/// <summary>
 		/// Esta propiedad indica los argumentos pasados a -d, si no se ha indicado estará vacía.
 		/// </summary>
-		[Option('d', longName: "direct-output", Min = 2, Max = 3
+		[Value(0, Min = 2, Max = 3
 			, HelpText = "HelpDirecto"
 			, ResourceType = typeof(TextoResource))]
 		public IEnumerable<long>? Directo { get; set; }
@@ -131,58 +117,23 @@ namespace ProgramaDivisibilidad {
 			}
 		}
 
-		/// <summary>
-		/// Esta propiedad indica si la opción -j está activa.
-		/// </summary>
-
-		[Option('j', longName: "json"
-			, HelpText = "HelpJson"
-			, ResourceType = typeof(TextoResource))]
+		public bool TipoExtra { get; set; }
+		public bool Todos { get; set; }
 		public bool JSON { get; set; }
+		public IEnumerable<long>? Dividendo { get; set; }
+	}
 
-		/// <summary>
-		/// Esta propiedad indica si la opción -s está activa.
-		/// </summary>
-		[Option('s', longName: "simple-dialog"
-			, HelpText = "HelpSaltar"
-			, ResourceType = typeof(TextoResource))]
-		public bool DialogoSencillo { get; set; }
+	[Verb("multiple", false, HelpText = "HelpTextMultiple", ResourceType = typeof(TextoResource))]
+	internal class OpcionesVarias : IOpcionesGlobales {
 
 		/// <summary>
 		/// Esta propiedad indica si la opción -m está activa y cuales.
 		/// </summary>
-		[Option('m', longName: "multiple-rules"
-			, HelpText = "HelpVarias"
+		[Value(0, HelpText = "HelpVarias"
 			, Min = 2
 			, Max = 3
 			, ResourceType = typeof(TextoResource))]
 		public IEnumerable<string>? VariasReglas { get; set; }
-
-		[Option("base"
-			, HelpText = "HelpBaseDialogo"
-			, ResourceType = typeof(TextoResource))]
-		public long? BaseDialogo { get; set; }
-
-		[Option("divisor"
-			, HelpText = "HelpDivisorDialogo"
-			, ResourceType = typeof(TextoResource))]
-		public long? DivisorDialogo { get; set; }
-
-		[Option("length"
-			, HelpText = "HelpLongitudDialogo"
-			, ResourceType = typeof(TextoResource))]
-		public int? LongitudDialogo { get; set; }
-
-		[Option("no-loop"
-			, HelpText = "HelpAnularBucle"
-			, ResourceType = typeof(TextoResource))]
-		public bool AnularBucle { get; set;	}
-
-		[Option("dividend"
-			, Separator = SEPARADOR
-			, HelpText = "HelpDividendo"
-			, ResourceType = typeof(TextoResource))]
-		public IEnumerable<long>? Dividendo { get; set; }
 
 		private const char SEPARADOR = ',';
 
@@ -252,7 +203,7 @@ namespace ProgramaDivisibilidad {
 					}
 				}
 				return _longitudVarias ?? 1;
-			} 
+			}
 			set => _longitudVarias = value;
 		}
 
@@ -270,19 +221,46 @@ namespace ProgramaDivisibilidad {
 			return result;
 		}
 
-		/// <summary>
-		/// Esta propiedad devuelve si todos los flags, excepto los de valores de diálogo están inactivos.
-		/// </summary>
-		public bool FlagsInactivos => !(DialogoSencillo || JSON || Ayuda || Ayuda || AyudaCorta || TipoExtra || Todos ||  (Directo?.Any() ?? false));
+		public bool TipoExtra { get; set; }
+		public bool Todos { get; set; }
+		public bool JSON { get; set; }
+		public IEnumerable<long>? Dividendo { get; set; }
+	}
+
+	internal interface IOpcionesGlobales {
 
 		/// <summary>
-		/// Esta propiedad indica si se debería usar el modo directo según las opciones habilitadas
+		/// Esta propiedad indica si la opción -x está activa.
 		/// </summary>
-		public bool ActivarDirecto => (Directo?.Any() ?? false) || (VariasReglas?.Any() ?? false);
+		[Option('x', longName: "extra-rule-types"
+			, HelpText = "HelpExtendido"
+			, ResourceType = typeof(TextoResource)
+			, SetName = "extra")]
+		public bool TipoExtra { get; set; }
 
 		/// <summary>
-		/// Esta propiedad indica si se debería evitar la escritura de mensajes intermedios a la consola de error
+		/// Esta propiedad indica si la opción -a está activa.
 		/// </summary>
-		public bool ActivarMensajesIntermedios => !JSON || !(VariasReglas?.Any() ?? false);
+		[Option('a', longName: "all-rules"
+			, HelpText = "HelpTodos"
+			, ResourceType = typeof(TextoResource)
+			, SetName = "coef")]
+		public bool Todos { get; set; }
+
+		/// <summary>
+		/// Esta propiedad indica si la opción -j está activa.
+		/// </summary>
+
+		[Option('j', longName: "json"
+			, HelpText = "HelpJson"
+			, ResourceType = typeof(TextoResource))]
+		public bool JSON { get; set; }
+
+		[Option("dividend"
+			, Separator = ','
+			, HelpText = "HelpDividendo"
+			, ResourceType = typeof(TextoResource))]
+		public IEnumerable<long>? Dividendo { get; set; }
+
 	}
 }

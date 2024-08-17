@@ -137,7 +137,7 @@ Run this program with the option-x to obtain a different type of rule, or activa
     <value>Reads the divisor, base, and optionally the number of coefficients as arguments, not as dialog input. Must be two or three valid 64-bit integers.</value>
   </data>
   <data name="HelpExtendido" xml:space="preserve">
-    <value>May return other types of rules, also outputs explanations on how to apply them, ignores all other flags, except -d.</value>
+    <value>May return other types of rules, also outputs explanations on how to apply them.</value>
   </data>
   <data name="HelpJson" xml:space="preserve">
     <value>Outputs coefficient rule as a JSON object, changes made by other flags are not ignored.</value>
@@ -398,5 +398,18 @@ Defaults to coefficient rules, unless extra rules are activated.</value>
     <value>Sets the dividends to apply the rule is successfully obtained.
 Must be valid 64-bit integers separated by commas.
 The absolute value will be used, this does not affect the result.</value>
+  </data>
+  <data name="HelpVerbHelp" xml:space="preserve">
+    <value>Outputs the help for this application.</value>
+  </data>
+  <data name="HelpVerbDialog" xml:space="preserve">
+    <value>Starts a dialog to create divisibility rules.</value>
+  </data>
+  <data name="HelpVerbSingle" xml:space="preserve">
+    <value>Outputs a single rule given its divisor, base and length, if it is a coefficient rule.</value>
+  </data>
+  <data name="HelpTextMultiple" xml:space="preserve">
+    <value>Outputs all the valid combinations of rules given a list of divisors, bases and lengths if they are coefficient rules.
+The elements in the same lists are separated by commas.</value>
   </data>
 </root>

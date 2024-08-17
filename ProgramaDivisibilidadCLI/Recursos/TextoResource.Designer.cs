@@ -295,7 +295,7 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a May return other types of rules, also outputs explanations on how to apply them, ignores all other flags, except -d..
+        ///   Busca una cadena traducida similar a May return other types of rules, also outputs explanations on how to apply them..
         /// </summary>
         public static string HelpExtendido {
             get {
@@ -342,6 +342,16 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Outputs all the valid combinations of rules given a list of divisors, bases and lengths if they are coefficient rules.
+        ///The elements in the same lists are separated by commas..
+        /// </summary>
+        public static string HelpTextMultiple {
+            get {
+                return ResourceManager.GetString("HelpTextMultiple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Outputs all coefficient rules with elements whose absolute value is less than the divisor..
         /// </summary>
         public static string HelpTodos {
@@ -358,6 +368,33 @@ namespace ProgramaDivisibilidad.Recursos {
         public static string HelpVarias {
             get {
                 return ResourceManager.GetString("HelpVarias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Starts a dialog to create divisibility rules..
+        /// </summary>
+        public static string HelpVerbDialog {
+            get {
+                return ResourceManager.GetString("HelpVerbDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Outputs the help for this application..
+        /// </summary>
+        public static string HelpVerbHelp {
+            get {
+                return ResourceManager.GetString("HelpVerbHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Outputs a single rule given its divisor, base and length, if it is a coefficient rule..
+        /// </summary>
+        public static string HelpVerbSingle {
+            get {
+                return ResourceManager.GetString("HelpVerbSingle", resourceCulture);
             }
         }
         

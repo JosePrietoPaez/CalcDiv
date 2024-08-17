@@ -21,10 +21,8 @@ namespace ProgramaDivisibilidad {
 		private const int SALIDA_CORRECTA = 0, SALIDA_ERROR = 1, SALIDA_ENTRADA_MALFORMADA = 2, SALIDA_VOLUNTARIA = 3, SALIDA_FRACASO_EXPANDIDA = 4
 			, SALIDA_VARIAS_ERROR = 5, SALIDA_VARIAS_ERROR_TOTAL = 6;
 		private const string SALIDA = "/";
-		private static bool _salir; //Usado para saber si el usuario ha solicitado terminar la ejecución
 		private static int _salida; //Salida del programa
 		[NotNull] //Para que no me den los warnings, no debería ser null durante las partes relevantes del código
-		private static Opciones? flags = null;
 		private static TextWriter _escritorSalida = Console.Out, _escritorError = Console.Error;
 		private static TextReader _lectorEntrada = Console.In;
 		private readonly static JsonSerializerOptions opcionesJson = new() 
@@ -48,8 +46,6 @@ namespace ProgramaDivisibilidad {
 		/// </list>
 		/// </returns>
 		public static int Main(string[] args) {
-			flags = null;
-			_salir = true;
 			_salida = SALIDA_CORRECTA;
 			_escritorSalida = Console.Out; // Si se ejecutaba y se cambiaba de consola, no se actualizaba
 			_escritorError = Console.Error;
@@ -58,49 +54,44 @@ namespace ProgramaDivisibilidad {
 			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
 			SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
 			var parser = new Parser(with => with.HelpWriter = null);
-			var resultado = parser.ParseArguments<Opciones>(args); //Parsea los argumentos
+			var resultado = parser.ParseArguments<OpcionesAyuda, OpcionesDialogo, OpcionesDirecto, OpcionesVarias>(args); //Parsea los argumentos
 				resultado
-				.WithParsed(options => { flags = options;
+				.WithParsed(options => { 
+					_salida = SeleccionarModo(options);
 					//_escritorError.WriteLine(options.Dump());
 				})
-				.WithNotParsed(errors => { _salida = SALIDA_ENTRADA_MALFORMADA;
+				.WithNotParsed(errors => { 
+					_salida = SALIDA_ENTRADA_MALFORMADA;
 					//_escritorError.WriteLine(resultado);
 					MostrarAyuda(resultado, errors);
 				});
-			if (_salida != SALIDA_ENTRADA_MALFORMADA) {
-				SeleccionarModo();
-			}
 			return _salida;
 		}
 
-		private static void SeleccionarModo() {
-			if (flags is null) {
-				_salida = SALIDA_ENTRADA_MALFORMADA;
-			} else {
-				Action modoElegido;
-				if (flags.Ayuda) {
-					modoElegido = EscribirAyudaLarga;
-				} else if (flags.AyudaCorta) {
-					modoElegido = EscribirAyudaCorta;
-				} else { 
-					if (flags.ActivarDirecto) { //Si se ha activado el modo directo
-						modoElegido = IntentarDirecto;
-					} else {
-						modoElegido = IniciarAplicacion;
-					}
-				}
-				modoElegido();
+		private static int SeleccionarModo(object obj) {
+			Func<object, int> funcionInicio;
+			switch (obj) {
+				case OpcionesAyuda ayuda:
+					funcionInicio = (x) => ayuda.AyudaCorta ? EscribirAyudaCorta() : EscribirAyudaLarga();
+					break;
+				case OpcionesDialogo dialogo:
+					funcionInicio = IniciarAplicacion;
+					break;
+				default:
+					funcionInicio = (x) => SALIDA_ENTRADA_MALFORMADA;
+					break;
 			}
+			return funcionInicio(obj);
 		}
 
-		private static void EscribirAyudaLarga() {
+		private static int EscribirAyudaLarga() {
 			_escritorSalida.Write(Ayuda);
-			_salida = SALIDA_CORRECTA;
+			return SALIDA_CORRECTA;
 		}
 
-		private static void EscribirAyudaCorta() {
+		private static int EscribirAyudaCorta() {
 			_escritorSalida.Write(AyudaCorta);
-			_salida = SALIDA_CORRECTA;
+			return SALIDA_CORRECTA;
 		}
 
 		private static void MostrarAyuda<T>(ParserResult<T> resultado, IEnumerable<Error> errores) {
@@ -114,7 +105,7 @@ namespace ProgramaDivisibilidad {
 			_escritorError.WriteLine(textoAyuda);
 		}
 
-		private static bool GestionarOpcionesDialogo() {
+		private static bool GestionarOpcionesDialogo(OpcionesDialogo flags) {
 			bool saltarPreguntaExtra = flags.TipoExtra;
 			if (flags.BaseDialogo.HasValue && flags.DivisorDialogo.HasValue) {
 				if (!SonCoprimos(flags.BaseDialogo.Value, flags.DivisorDialogo.Value)) {
@@ -146,13 +137,14 @@ namespace ProgramaDivisibilidad {
 		/// <returns>
 		/// Código de la salida de la aplicación.
 		/// </returns>
-		private static void IniciarAplicacion() { //Si no se proporcionan los argumentos de forma directa, se establece un diálogo con el usuario para obtenerlos
+		private static int IniciarAplicacion(object opciones) { //Si no se proporcionan los argumentos de forma directa, se establece un diálogo con el usuario para obtenerlos
+			OpcionesDialogo flags = (OpcionesDialogo) opciones;
 			_escritorError.WriteLine(MensajeInicioDialogo,SALIDA);
-			bool sinFlags = flags.FlagsInactivos;
+			bool sinFlags = flags.FlagsInactivos, salir = true;
+			int resultadoSalida = SALIDA_CORRECTA;
 			static bool esS(char letra) => letra == 's' | letra == 'S';
 			try {
-				bool saltarPreguntaExtra = GestionarOpcionesDialogo();
-				flags.DatosRegla = [0,0,0];
+				bool saltarPreguntaExtra = GestionarOpcionesDialogo(flags);
 				do {
 					//Si no tiene flags las pedirá durante la ejecución
 					if (sinFlags) {
@@ -165,29 +157,30 @@ namespace ProgramaDivisibilidad {
 						flags.JSON = ObtenerDeUsuario(MensajeDialogoJson, esS);
 					}
 
-					var resultado = FlujoDatosRegla(flags.DivisorDialogo, flags.BaseDialogo, flags.LongitudDialogo, sinFlags);
+					var (Mensaje, Divisor, Base, Longitud) = FlujoDatosRegla(flags.DivisorDialogo, flags.BaseDialogo, flags.LongitudDialogo, sinFlags, flags);
 
-					EscribirReglaPorWriter(resultado.Mensaje + Environment.NewLine, _escritorSalida, _escritorError, resultado.Divisor, resultado.Base, resultado.Longitud);
+					EscribirReglaPorWriter(Mensaje + Environment.NewLine, _escritorSalida, _escritorError, Divisor, Base, Longitud);
 
-					if (!flags.AnularBulce) {
-						_salir = !ObtenerDeUsuario(MensajeDialogoRepetir, esS);
+					if (!flags.AnularBucle) {
+						salir = !ObtenerDeUsuario(MensajeDialogoRepetir, esS);
 					}
-					_salida = SALIDA_CORRECTA;
+					resultadoSalida = SALIDA_CORRECTA;
 
-				} while (!_salir);
+				} while (!salir);
 			}
 			// Si decide salir, se saldrá por este catch
 			catch (SalidaException) {
-				_salida = SALIDA_VOLUNTARIA;
+				resultadoSalida = SALIDA_VOLUNTARIA;
 				_escritorError.WriteLine(Environment.NewLine + MensajeDialogoInterrumpido);
 			}
 			// Si ocurre otro error se saldrá por este catch
 			catch (Exception e) {
-				_salida = SALIDA_ERROR;
+				resultadoSalida = SALIDA_ERROR;
 				_escritorError.WriteLine(e.Message);
 				_escritorError.WriteLine(e.StackTrace);
 				_escritorError.WriteLine(DialogoExcepcionInesperada);
 			}
+			return resultadoSalida;
 		}
 
 		/// <summary>
@@ -197,7 +190,9 @@ namespace ProgramaDivisibilidad {
 		/// <param name="baseNull"></param>
 		/// <param name="longitudNull"></param>
 		/// <param name="sinFlags"></param>
-		private static (string Mensaje, long Divisor, long Base, int Longitud) FlujoDatosRegla(long? divisorNull, long? baseNull, int? longitudNull, bool sinFlags) {
+		/// <param name="flags"></param>
+		private static (string Mensaje, long Divisor, long Base, int Longitud) FlujoDatosRegla(
+			long? divisorNull, long? baseNull, int? longitudNull, bool sinFlags, OpcionesDialogo flags) {
 			long divisor, @base;
 			int longitud = 1;
 			// Se carga la base primero, necesaria en todos los casos
@@ -221,7 +216,7 @@ namespace ProgramaDivisibilidad {
 				}
 			}
 
-			return (ObtenerReglas(divisor, @base, longitud), divisor, @base, longitud);
+			return (ObtenerReglas(divisor, @base, flags, longitud), divisor, @base, longitud);
 		}
 
 		#region ObtenerSHUTTHEFUCKUP
@@ -306,9 +301,9 @@ namespace ProgramaDivisibilidad {
 		/// <returns>
 		/// String apropiado según el tipo del objeto y el estado del programa
 		/// </returns>
-		private static string ObjetoAString(object? obj) {
+		private static string ObjetoAString(object? obj, bool json = false) {
 			if (obj == null) return ObjetoNuloMensaje;
-			if (flags.JSON) return JsonSerializer.Serialize(obj, opcionesJson);
+			if (json) return JsonSerializer.Serialize(obj, opcionesJson);
 			string resultadoObjeto = obj switch {
 				// Para una regla de reglasObj de coeficientes obtenidas de una regla, usa recursión
 				IEnumerable<object?> or IEnumerable<object> => EnumerableStringSeparadoLinea((IEnumerable<object>)obj),//Se juntan los casos para que sean separados por la recursión
@@ -332,7 +327,6 @@ namespace ProgramaDivisibilidad {
 		/// </summary>
 		private static void EscribirReglaPorWriter(string reglaCoeficientes, TextWriter writerSalida, TextWriter writerError, long divisor, long @base, int coeficientes = 1) {
 			writerError.WriteLine(MensajeParametrosDirecto, divisor, @base, coeficientes);
-			EscribirLineaErrorCondicional(MensajeFinDirecto);
 			writerSalida.Write(reglaCoeficientes);
 			writerError.WriteLine();
 		}
@@ -343,10 +337,11 @@ namespace ProgramaDivisibilidad {
 		/// <param name="divisor"></param>
 		/// <param name="base"></param>
 		/// <param name="longitud"></param>
+		/// <param name="flags"></param>
 		/// <returns>
 		/// String apropiado para la regla según los datos proporcionados.
 		/// </returns>
-		private static string ObtenerReglas(long divisor, long @base, int longitud = 1) {
+		private static string ObtenerReglas(long divisor, long @base, OpcionesDialogo flags, int longitud = 1) {
 			string resultado;
 			if (flags.TipoExtra) {
 				resultado = ReglaDivisibilidadExtendida(divisor, @base).Item2.ReglaExplicada;
@@ -367,12 +362,6 @@ namespace ProgramaDivisibilidad {
 		private static void AplicarReglaDivisibilidad(IRegla regla, IEnumerable<long> dividendos) {
 			foreach (long dividendo in dividendos) {
 				_escritorSalida.WriteLine(regla.AplicarRegla(dividendo));
-			}
-		}
-
-		private static void EscribirLineaErrorCondicional(string error) {
-			if (!flags.ActivarMensajesIntermedios) {
-				_escritorError.WriteLine(error);
 			}
 		}
 	}

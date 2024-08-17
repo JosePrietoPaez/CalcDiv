@@ -17,7 +17,7 @@ namespace ProgramaDivisibilidad {
 			Func<object,string> consumidora = SeleccionarConsumidora();
 			if (flags.VariasReglas?.Any() ?? false) {
 				flags.DatosRegla = [1,1,1];
-				_salida = EjectutarVarias(generadora, consumidora, flags.ListaDivisores, flags.ListaBases, flags.CoeficientesVarias);
+				_salida = EjectutarVarias(generadora, consumidora, (x) => null!, flags.ListaDivisores, flags.ListaBases, flags.LongitudesVarias);
 			} else {
 				if (flags.DivisorDirecto < 2 || flags.BaseDirecto < 2 || !SonCoprimos(flags.DivisorDirecto, flags.BaseDirecto)) {
 					_escritorError.WriteLine(ErrorDivisorCoprimo);
@@ -26,7 +26,7 @@ namespace ProgramaDivisibilidad {
 				} else {
 					if (flags.DatosRegla.Count == 2) flags.Directo = flags.Directo!.Append(1);
 					(_salida, object elementoCreado) = generadora(flags.DivisorDirecto, flags.BaseDirecto, flags.LongitudDirecta);
-					string textoResultado = ObjetoAString(elementoCreado);
+					string textoResultado = ObjetoAString(elementoCreado, flags.JSON);
 					EscribirReglaPorWriter(textoResultado, _escritorSalida, _escritorError, flags.DivisorDirecto, flags.BaseDirecto, flags.LongitudDirecta);
 					if (!SonCoprimos(flags.DivisorDirecto, flags.BaseDirecto)) {
 						_escritorError.WriteLine(ErrorPrimo);
@@ -38,7 +38,8 @@ namespace ProgramaDivisibilidad {
 		}
 
 		private static int EjectutarVarias(Func<long, long, int, (int,object)> funcionGeneradora,
-			Func<object, string> funcionConsumidora, long[] divisores, long[] bases, int coeficiente) {
+			Func<object, string> funcionConsumidora,
+			Func<List<object>, string> funcionFinal, long[] divisores, long[] bases, int coeficiente) {
 			int valorEjecucion = SALIDA_CORRECTA;
 			bool hayFallo = false, hayExito = false;
 			List<object> reglas = new(divisores.Length * bases.Length); // Contendrá las listas o listas de listas
