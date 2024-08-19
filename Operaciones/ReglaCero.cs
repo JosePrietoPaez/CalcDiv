@@ -30,7 +30,7 @@ namespace Operaciones {
 		public long Divisor => divisor;
 
 		[JsonPropertyName("type")]
-		public CasosDivisibilidad Tipo => CasosDivisibilidad.DIVISOR_CERO;
+		public CasosDivisibilidad Tipo => CasosDivisibilidad.DIVISOR_ZERO;
 
 		public string AplicarRegla(long dividendo) => TextoCalculos.ReglaExplicadaCero;
 		public override string ToString() {

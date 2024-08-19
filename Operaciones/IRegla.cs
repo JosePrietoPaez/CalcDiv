@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Operaciones {
 	/// <summary>
@@ -60,7 +61,7 @@ namespace Operaciones {
 		/// </returns>
 		internal static IRegla GenerarReglaPorTipo(CasosDivisibilidad caso, long divisor, long @base, int informacion) {
 			return caso switch {
-				CasosDivisibilidad.DIVISOR_CERO => new ReglaCero(divisor, @base),
+				CasosDivisibilidad.DIVISOR_ZERO => new ReglaCero(divisor, @base),
 				CasosDivisibilidad.DIVISOR_ONE => new ReglaUno(divisor, @base),
 				CasosDivisibilidad.COEFFICIENTS => new ReglaCoeficientes(divisor, @base, 1),
 				CasosDivisibilidad.DIGITS => new ReglaCifras(divisor, @base, informacion),
@@ -73,6 +74,14 @@ namespace Operaciones {
 		public static IRegla GenerarReglaPorTipo(long @base, long divisor) {
 			var (caso, informacion) = Calculos.CasoEspecialRegla(@base, divisor);
 			return GenerarReglaPorTipo(caso, @base, divisor, informacion);
+		}
+
+		public string AplicarVariosDividendos(IEnumerable<long> dividendos) {
+			StringBuilder stringBuilder = new();
+			foreach (long dividendo in dividendos) {
+				stringBuilder.AppendLine(AplicarRegla(dividendo));
+			}
+			return stringBuilder.ToString();
 		}
 	}
 }

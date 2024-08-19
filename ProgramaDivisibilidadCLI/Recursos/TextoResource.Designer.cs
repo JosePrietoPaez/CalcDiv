@@ -227,6 +227,15 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Unexpected error while starting application..
+        /// </summary>
+        public static string ErrorTipoVerbo {
+            get {
+                return ResourceManager.GetString("ErrorTipoVerbo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Cancels dialog mode&apos;s looping behavior. Will one calculate rules once..
         /// </summary>
         public static string HelpAnularBucle {
@@ -264,7 +273,7 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Reads the divisor, base, and optionally the number of coefficients as arguments, not as dialog input. Must be two or three valid 64-bit integers..
+        ///   Busca una cadena traducida similar a The divisor, base, and optionally the number of coefficients as arguments, not as dialog input..
         /// </summary>
         public static string HelpDirecto {
             get {
@@ -507,7 +516,7 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Divisor: {0}, Base: {1}, Coefficients: {2}..
+        ///   Busca una cadena traducida similar a Divisor: {0}, Base: {1}, Length: {2}..
         /// </summary>
         public static string MensajeParametrosDirecto {
             get {

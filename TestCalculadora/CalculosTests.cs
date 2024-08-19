@@ -979,7 +979,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Multiple(() =>
 				{
-					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.DIVISOR_CERO));
+					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.DIVISOR_ZERO));
 					Assert.That(result.informacion, Is.EqualTo(-1));
 				});
 			}

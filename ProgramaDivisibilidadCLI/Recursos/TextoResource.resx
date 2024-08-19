@@ -134,7 +134,7 @@ Run this program with the option-x to obtain a different type of rule, or activa
     <value>Outputs short document with information on how to run this program.</value>
   </data>
   <data name="HelpDirecto" xml:space="preserve">
-    <value>Reads the divisor, base, and optionally the number of coefficients as arguments, not as dialog input. Must be two or three valid 64-bit integers.</value>
+    <value>The divisor, base, and optionally the number of coefficients as arguments, not as dialog input.</value>
   </data>
   <data name="HelpExtendido" xml:space="preserve">
     <value>May return other types of rules, also outputs explanations on how to apply them.</value>
@@ -156,7 +156,7 @@ Run this program with the option-x to obtain a different type of rule, or activa
     <comment>Shown when the user sends the exit sequence in dialog mode</comment>
   </data>
   <data name="MensajeParametrosDirecto" xml:space="preserve">
-    <value>Divisor: {0}, Base: {1}, Coefficients: {2}.</value>
+    <value>Divisor: {0}, Base: {1}, Length: {2}.</value>
     <comment>The parameters are the arguments passed to the -d flag</comment>
   </data>
   <data name="MensajeFinDirecto" xml:space="preserve">
@@ -411,5 +411,8 @@ The absolute value will be used, this does not affect the result.</value>
   <data name="HelpTextMultiple" xml:space="preserve">
     <value>Outputs all the valid combinations of rules given a list of divisors, bases and lengths if they are coefficient rules.
 The elements in the same lists are separated by commas.</value>
+  </data>
+  <data name="ErrorTipoVerbo" xml:space="preserve">
+    <value>Unexpected error while starting application.</value>
   </data>
 </root>

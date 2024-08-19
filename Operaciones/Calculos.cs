@@ -563,7 +563,7 @@ namespace Operaciones
 			ArgumentOutOfRangeException.ThrowIfLessThan(@base,2,nameof(@base));
 			ArgumentOutOfRangeException.ThrowIfLessThan(@base,0, nameof(@base));
 
-			if (divisor == 0) return (CasosDivisibilidad.DIVISOR_CERO, -1);
+			if (divisor == 0) return (CasosDivisibilidad.DIVISOR_ZERO, -1);
 			if (divisor == 1) return (CasosDivisibilidad.DIVISOR_ONE, -1);
 
 			List<long> descomposicionDivisor = DescompsicionEnPrimos(divisor),

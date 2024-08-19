@@ -1,32 +1,24 @@
 ﻿using CommandLine;
 using ProgramaDivisibilidad.Recursos;
-using System.IO;
 
 namespace ProgramaDivisibilidad {
 
-	[Verb("help", false, HelpText = "HelpVerbHelp", ResourceType = typeof(TextoResource))]
-	internal class OpcionesAyuda {
-
-		[Option('s', longName: "short-help"
-			, HelpText = "HelpAyudaCorta"
-			, ResourceType = typeof(TextoResource))]
-		public bool AyudaCorta { get; }
-	}
+	internal interface IOpciones {}
 
 	[Verb("dialog", true, HelpText = "HelpVerbDialog", ResourceType = typeof(TextoResource))]
 	internal class OpcionesDialogo : IOpcionesGlobales {
 
-		[Option("base"
+		[Option("base", MetaValue = "LONG"
 			, HelpText = "HelpBaseDialogo"
 			, ResourceType = typeof(TextoResource))]
 		public long? BaseDialogo { get; set; }
 
-		[Option("divisor"
+		[Option("divisor", MetaValue = "LONG"
 			, HelpText = "HelpDivisorDialogo"
 			, ResourceType = typeof(TextoResource))]
 		public long? DivisorDialogo { get; set; }
 
-		[Option("length"
+		[Option("length", MetaValue = "INT"
 			, HelpText = "HelpLongitudDialogo"
 			, ResourceType = typeof(TextoResource))]
 		public int? LongitudDialogo { get; set; }
@@ -61,7 +53,8 @@ namespace ProgramaDivisibilidad {
 		/// <summary>
 		/// Esta propiedad indica los argumentos pasados a -d, si no se ha indicado estará vacía.
 		/// </summary>
-		[Value(0, Min = 2, Max = 3
+		[Value(0, MetaName = "arguments", MetaValue = "LONG LONG (INT)"
+			, Min = 2, Max = 3
 			, HelpText = "HelpDirecto"
 			, ResourceType = typeof(TextoResource))]
 		public IEnumerable<long>? Directo { get; set; }
@@ -227,7 +220,7 @@ namespace ProgramaDivisibilidad {
 		public IEnumerable<long>? Dividendo { get; set; }
 	}
 
-	internal interface IOpcionesGlobales {
+	internal interface IOpcionesGlobales : IOpciones {
 
 		/// <summary>
 		/// Esta propiedad indica si la opción -x está activa.
@@ -256,7 +249,7 @@ namespace ProgramaDivisibilidad {
 			, ResourceType = typeof(TextoResource))]
 		public bool JSON { get; set; }
 
-		[Option("dividend"
+		[Option("dividend", MetaValue = "[LONG]"
 			, Separator = ','
 			, HelpText = "HelpDividendo"
 			, ResourceType = typeof(TextoResource))]
