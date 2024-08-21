@@ -409,4 +409,7 @@ Los elementos de una misma lista deben estar separados por una coma.</value>
   <data name="ErrorTipoVerbo" xml:space="preserve">
     <value>Error inesperado iniciando la aplicación.</value>
   </data>
+  <data name="ErrorReglaNula" xml:space="preserve">
+    <value>Una regla fue nula al calcularla, no se puede seguir con la ejecución.</value>
+  </data>
 </root>

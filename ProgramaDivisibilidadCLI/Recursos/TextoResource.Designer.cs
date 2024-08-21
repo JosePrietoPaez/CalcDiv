@@ -227,6 +227,15 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a A rule was null when calculated, cannot continue execution..
+        /// </summary>
+        public static string ErrorReglaNula {
+            get {
+                return ResourceManager.GetString("ErrorReglaNula", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Unexpected error while starting application..
         /// </summary>
         public static string ErrorTipoVerbo {

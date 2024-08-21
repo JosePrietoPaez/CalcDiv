@@ -214,11 +214,38 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Applying the divisibility rule of {0}, in base {1} to {2}, using {3} digits:.
+        /// </summary>
+        public static string MensajeAplicarCifrasInicio {
+            get {
+                return ResourceManager.GetString("MensajeAplicarCifrasInicio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Keep only the least {0} significant digits: {1}.
+        /// </summary>
+        public static string MensajeAplicarCifrasSeparar {
+            get {
+                return ResourceManager.GetString("MensajeAplicarCifrasSeparar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a {0} is divisible by {1}, therefore the original dividend, {2}, also is..
         /// </summary>
         public static string MensajeAplicarFin {
             get {
                 return ResourceManager.GetString("MensajeAplicarFin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} might be too large to easily determine its divisibility by {1}, but the rule cannot be applied further or may not give better results..
+        /// </summary>
+        public static string MensajeAplicarFinDemasiadoGrande {
+            get {
+                return ResourceManager.GetString("MensajeAplicarFinDemasiadoGrande", resourceCulture);
             }
         }
         
@@ -269,6 +296,15 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The dividend represented in base {0} is {1}..
+        /// </summary>
+        public static string MensajeAplicarNumero {
+            get {
+                return ResourceManager.GetString("MensajeAplicarNumero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The dividend, {0}, is to small for this rule, use the first coefficients, starting from the left..
         /// </summary>
         public static string MensajeAplicarParteDerechaPequeña {
@@ -303,6 +339,16 @@ namespace Operaciones.Recursos {
         public static string MensajeAplicarSuma {
             get {
                 return ResourceManager.GetString("MensajeAplicarSuma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The result must be one of these numbers, written in base {1}:
+        ///{0}.
+        /// </summary>
+        public static string MensajePosiblesCifras {
+            get {
+                return ResourceManager.GetString("MensajePosiblesCifras", resourceCulture);
             }
         }
         

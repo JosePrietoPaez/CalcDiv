@@ -214,4 +214,20 @@ Se harán dos iteraciones más antes de parar.</value>
   <data name="ReglaExplicadaRestar" xml:space="preserve">
     <value>El dividendo será divisible entre {0} si, y solo si, la resta de la suma de los grupos pares e impares de las cifras en base {1} de {2} cifras, desde la de las unidades, es divisible entre {0}.</value>
   </data>
+  <data name="MensajeAplicarCifrasSeparar" xml:space="preserve">
+    <value>Mantén solo las {0} cifras menos significativas: {1}</value>
+  </data>
+  <data name="MensajeAplicarCifrasInicio" xml:space="preserve">
+    <value>Aplicando la regla de divisibilidad de {0}, en base {1} a {2}, usando {3} cifras:</value>
+  </data>
+  <data name="MensajeAplicarFinDemasiadoGrande" xml:space="preserve">
+    <value>{0} puede ser demasiado grande para determinar su divisibilidad con {1} fácilmente, pero la regla no puede aplicarse más o es probable que no de mejores resultados.</value>
+  </data>
+  <data name="MensajePosiblesCifras" xml:space="preserve">
+    <value>El resultado debe ser uno de estos números, escritos en base {1}:
+{0}</value>
+  </data>
+  <data name="MensajeAplicarNumero" xml:space="preserve">
+    <value>El dividendo representado en base {0} es {1}.</value>
+  </data>
 </root>

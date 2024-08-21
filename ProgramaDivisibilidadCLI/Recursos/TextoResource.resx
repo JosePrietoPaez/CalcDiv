@@ -415,4 +415,7 @@ The elements in the same lists are separated by commas.</value>
   <data name="ErrorTipoVerbo" xml:space="preserve">
     <value>Unexpected error while starting application.</value>
   </data>
+  <data name="ErrorReglaNula" xml:space="preserve">
+    <value>A rule was null when calculated, cannot continue execution.</value>
+  </data>
 </root>

@@ -226,4 +226,20 @@ Two more iterations will be attempted.</value>
   <data name="ReglaExplicadaRestar" xml:space="preserve">
     <value>The dividend will be divisible by {0} if, and only if, the difference of the sums of all the even and odd groups of digits in base {1} of {2} digits, starting at its units digit is also divisible by {0}.</value>
   </data>
+  <data name="MensajeAplicarCifrasSeparar" xml:space="preserve">
+    <value>Keep only the least {0} significant digits: {1}</value>
+  </data>
+  <data name="MensajeAplicarCifrasInicio" xml:space="preserve">
+    <value>Applying the divisibility rule of {0}, in base {1} to {2}, using {3} digits:</value>
+  </data>
+  <data name="MensajeAplicarFinDemasiadoGrande" xml:space="preserve">
+    <value>{0} might be too large to easily determine its divisibility by {1}, but the rule cannot be applied further or may not give better results.</value>
+  </data>
+  <data name="MensajePosiblesCifras" xml:space="preserve">
+    <value>The result must be one of these numbers, written in base {1}:
+{0}</value>
+  </data>
+  <data name="MensajeAplicarNumero" xml:space="preserve">
+    <value>The dividend represented in base {0} is {1}.</value>
+  </data>
 </root>

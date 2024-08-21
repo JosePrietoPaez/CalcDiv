@@ -249,7 +249,7 @@ namespace ProgramaDivisibilidad {
 			, ResourceType = typeof(TextoResource))]
 		public bool JSON { get; set; }
 
-		[Option("dividend", MetaValue = "[LONG]"
+		[Option('d', longName:"dividend", MetaValue = "[LONG]"
 			, Separator = ','
 			, HelpText = "HelpDividendo"
 			, ResourceType = typeof(TextoResource))]

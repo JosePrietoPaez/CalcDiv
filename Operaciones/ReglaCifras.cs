@@ -1,4 +1,5 @@
 ﻿using Operaciones.Recursos;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Operaciones {
@@ -8,7 +9,7 @@ namespace Operaciones {
 	/// <remarks>
 	/// Las reglas de este tipo solo pueden usarse una vez.
 	/// </remarks>
-	public class ReglaCifras : IRegla {
+	public class ReglaCifras : ReglaAplicable {
 
 		private readonly long _divisor, _base;
 		private readonly int _cifras;
@@ -20,30 +21,60 @@ namespace Operaciones {
 			_divisor = divisor;
 			_base = @base;
 			_cifras = cifras;
+			CalcularMenoresCifras();
+			_stringCifras = '[' + string.Join(",", _menoresPermitidos.Select(LongAStringCondicional)) + ']';
 		}
 
 		[JsonPropertyName("rule-explained")]
-		public string ReglaExplicada => string.Format(TextoCalculos.CalculosExtendidaMensajeCifrasPrincipio, _divisor, _base)
+		public override string ReglaExplicada => string.Format(TextoCalculos.CalculosExtendidaMensajeCifrasPrincipio, _divisor, _base)
 			+ Environment.NewLine
 			+ string.Format(TextoCalculos.ReglaExplicadaCifras, Divisor, Cifras, Base);
 
 		[JsonPropertyName("base")]
-		public long Base => _base;
+		public override long Base => _base;
 
 		[JsonPropertyName("divisor")]
-		public long Divisor => _divisor;
+		public override long Divisor => _divisor;
 
 		[JsonPropertyName("digits-used")]
 		public int Cifras => _cifras;
 
-		[JsonPropertyName("type")]
-		public CasosDivisibilidad Tipo => CasosDivisibilidad.DIGITS;
+		[JsonPropertyName("allowed-lowest-digits")]
+		public List<long> CasosPermitidos {
+			get {
+				return new(_menoresPermitidos);
+			}
+		}
 
-		public string AplicarRegla(long dividendo) {
-			throw new NotImplementedException();
+		[JsonIgnore]
+		public string CasosPermitidosString => _stringCifras;
+
+		private readonly List<long> _menoresPermitidos = [0];
+
+		private readonly string _stringCifras;
+
+		private void CalcularMenoresCifras() {
+			long iteraciones = Calculos.PotenciaEntera(Base, Cifras) / Divisor;
+			for (int i = 1; i < iteraciones; i++) {
+				_menoresPermitidos.Add(Divisor * i);
+			}
+		}
+
+		[JsonPropertyName("type")]
+		public override CasosDivisibilidad Tipo => CasosDivisibilidad.DIGITS;
+
+		public override string AplicarRegla(long dividendo) {
+			StringBuilder sb = new();
+			sb.AppendFormat(TextoCalculos.MensajeAplicarCifrasInicio, Divisor, Base, dividendo, Cifras).AppendLine();
+			InsertarMensajeBase(sb, dividendo);
+			long cifrasUsadas = dividendo % Calculos.PotenciaEntera(Base, Cifras);
+			sb.AppendFormat(TextoCalculos.MensajeAplicarCifrasSeparar, Cifras, LongAStringCondicional(cifrasUsadas)).AppendLine();
+			InsertarMensajeFin(sb, dividendo, cifrasUsadas);
+			return sb.ToString();
 		}
 		public override string ToString() {
-			return ReglaExplicada;
+			return ReglaExplicada + Environment.NewLine
+				+ string.Format(TextoCalculos.MensajePosiblesCifras, CasosPermitidosString, Base);
 		}
 	}
 }

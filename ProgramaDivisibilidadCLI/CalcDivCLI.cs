@@ -100,10 +100,11 @@ namespace ProgramaDivisibilidad {
 			return resultado;
 		}
 
-		private readonly static JsonSerializerOptions opcionesJson = new() {
+		private static readonly JsonSerializerOptions opcionesJson = new() {
 			WriteIndented = true,
 			Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement),
-			Converters = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseUpper) }
+			Converters = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseUpper) },
+			PropertyNamingPolicy = JsonNamingPolicy.KebabCaseLower
 		};
 
 		/// <summary>
