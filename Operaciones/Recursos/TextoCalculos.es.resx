@@ -166,7 +166,7 @@ Derecha: {2}</value>
     <value>Resultados:</value>
   </data>
   <data name="MensajeAplicarSuma" xml:space="preserve">
-    <value>Paso tres: Sumar las suma de los productos con la parte izquierda del dividendo:</value>
+    <value>Paso tres: sumar las suma de los productos con la parte izquierda del dividendo:</value>
   </data>
   <data name="MensajeAplicarFin" xml:space="preserve">
     <value>{0} es divisible entre {1}, por lo tanto, el dividendo original, {2}, también lo es.</value>
@@ -209,7 +209,7 @@ Se harán dos iteraciones más antes de parar.</value>
     <value>El dividendo será divisible entre {0} si, y solo si, las últimas {1} cifras en base {2} son divisibles entre {0}.</value>
   </data>
   <data name="ReglaExplicadaSumar" xml:space="preserve">
-    <value>El dividendo será divisible entre {0} si, y solo si, la suma de las cifras en base {1} agrupadas en bloques de {2}, desde la de las unidades es divisible entre {0}.</value>
+    <value>El dividendo será divisible entre {0} si, y solo si, la suma de las cifras en base {1} agrupadas en grupos de {2}, desde la de las unidades es divisible entre {0}.</value>
   </data>
   <data name="ReglaExplicadaRestar" xml:space="preserve">
     <value>El dividendo será divisible entre {0} si, y solo si, la resta de la suma de los grupos pares e impares de las cifras en base {1} de {2} cifras, desde la de las unidades, es divisible entre {0}.</value>
@@ -229,5 +229,32 @@ Se harán dos iteraciones más antes de parar.</value>
   </data>
   <data name="MensajeAplicarNumero" xml:space="preserve">
     <value>El dividendo representado en base {0} es {1}.</value>
+  </data>
+  <data name="MensajeAplicarRestaInicio" xml:space="preserve">
+    <value>Aplicando la regla de divisibilidad de {0}, en base {1} a {2}, usando grupos de {3} cifras:</value>
+  </data>
+  <data name="MensajeAplicarRestaBloques" xml:space="preserve">
+    <value>Paso uno: separar el dividendo en grupos de {0} cifras empezando desde las unidades, separando los grupos en posiciones pares de las impares.
+grupos impares: {1}
+grupos pares: {2}</value>
+  </data>
+  <data name="MensajeAplicarRestaSuma" xml:space="preserve">
+    <value>Paso dos: sumar todos los grupos del mismo tipo.
+Suma de los grupos impares: {0}
+Suma de los grupos pares: {1}</value>
+  </data>
+  <data name="MensajeAplicarRepeticion" xml:space="preserve">
+    <value>Es probable que {0} sea demasiado grande para poder determinar su divisibilidad fácilmente. Aplique la regla usando {0}.</value>
+  </data>
+  <data name="MensajeAplicarRestaResta" xml:space="preserve">
+    <value>Paso tres: obtén la resta de ambas sumas: {0}
+Se puede restar en cualquier orden, no importa el signo del resultado.</value>
+  </data>
+  <data name="MensajeAplicarSumaBloques" xml:space="preserve">
+    <value>Paso uno: separa el dividendo en grupos de {0} cifras, empezando en las unidades.
+Grupos: {1}</value>
+  </data>
+  <data name="MensajeAplicarSumaSuma" xml:space="preserve">
+    <value>Paso dos: suma todos los grupos de cifras como números y usa el resultado: {0}</value>
   </data>
 </root>

@@ -316,9 +316,14 @@ namespace Operaciones
 
 			char[] result = new char[65 - i];
 			Array.Copy(buffer, i, result, 0, 65 - i);
-			
-			//Se supone que no debería hacer esto para que vaya rápido, pero necesito poner la base
-			return new string(result, 0, 65 - i) + '(' + targetBase + ')';
+
+			if (targetBase == 10) {
+				return new string(result, 0, 65 - i);
+			}
+			return new string(result, 0, 65 - i)
+			 //Se supone que no debería hacer esto para que vaya rápido, pero necesito poner la base
+			 + '(' + targetBase + ')';
+
 		}
 
 		/// <summary>
@@ -635,11 +640,6 @@ namespace Operaciones
 				maxPotencia = Max(maxPotencia, @base[i] == 0 ? 0 : (int)Ceiling(divisor[i] / (double)@base[i]));
 			}
 			return (true, maxPotencia);
-		}
-
-		private static string CrearMensajeDivisibilidad(string motivo, string condicion, long @base, long divisor) {
-			//motivo\nUn entero en base @base será divisible entre divisor si condicion.
-			return motivo + '.' + Environment.NewLine + string.Format(TextoCalculos.CalculosCrearMensaje,@base,divisor) + condicion + '.';
 		}
 	}
 }

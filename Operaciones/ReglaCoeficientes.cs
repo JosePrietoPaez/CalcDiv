@@ -82,36 +82,7 @@ namespace Operaciones {
 		[JsonPropertyName("type")]
 		public override CasosDivisibilidad Tipo => CasosDivisibilidad.COEFFICIENTS;
 
-		public override string AplicarRegla(long dividendo) {
-			StringBuilder sb = new();
-			long dividendoMenor = dividendo,
-				dividendoActual;
-			int iteracionesRestantes = int.MaxValue; // Se cambiará si el actual es mayor que el menor y hará una cantidad limitada
-			bool minimoLocalEncontrado = false
-				, saltarBucle = false;
-			InsertarMensajeBase(sb, dividendo);
-			do {
-				
-				dividendoActual = Math.Abs(ObtenerNuevoDividendo(dividendoMenor, sb));
-				if (iteracionesRestantes == 0 && minimoLocalEncontrado) {
-					saltarBucle = true;
-				}
-				if (dividendoActual < dividendoMenor) {
-					dividendoMenor = dividendoActual;
-				} else {
-					minimoLocalEncontrado = true;
-					iteracionesRestantes = 2;
-					sb.AppendFormat(TextoCalculos.MensajeAplicarMinimoEncontrado, dividendoActual, dividendoMenor).AppendLine();
-				}
-				iteracionesRestantes--;
-				sb.AppendLine();
-			} while (dividendoMenor > LimiteTrivialidadEstimado 
-			& !saltarBucle); // Mientras sea demasiado grande o no tengamos un mínimo que nos oblique a parar
-			InsertarMensajeFin(sb, dividendo, dividendoMenor);
-			return sb.ToString();
-		}
-
-		private long ObtenerNuevoDividendo(long dividendo, StringBuilder sb) { // Escribe en el sb y devuelve un nuevo dividendo
+		protected override long ObtenerNuevoDividendo(long dividendo, StringBuilder sb) { // Escribe en el sb y devuelve un nuevo dividendo
 			sb.AppendFormat(TextoCalculos.MensajeAplicarInicio, Divisor, Base, LongAStringCondicional(dividendo), Longitud).AppendLine();
 			long parteIzquierda = dividendo / Calculos.PotenciaEntera(Base, Longitud),
 				parteDerecha = Calculos.IntervaloCifras(dividendo, Base, 0, (byte)Longitud);

@@ -178,7 +178,7 @@ Right: {2}</value>
     <value>Results:</value>
   </data>
   <data name="MensajeAplicarSuma" xml:space="preserve">
-    <value>Step three: Add the sum of the products and the left part of the dividend:</value>
+    <value>Step three: add the sum of the products and the left part of the dividend:</value>
   </data>
   <data name="MensajeAplicarFin" xml:space="preserve">
     <value>{0} is divisible by {1}, therefore the original dividend, {2}, also is.</value>
@@ -241,5 +241,32 @@ Two more iterations will be attempted.</value>
   </data>
   <data name="MensajeAplicarNumero" xml:space="preserve">
     <value>The dividend represented in base {0} is {1}.</value>
+  </data>
+  <data name="MensajeAplicarRestaInicio" xml:space="preserve">
+    <value>Applying the divisibility rule of {0}, in base {1} to {2}, using groups of {3} digits:</value>
+  </data>
+  <data name="MensajeAplicarRestaBloques" xml:space="preserve">
+    <value>Step one: separate the dividend in groups of {0} digits from the units digit, separating those in even positions from those in odd positions:
+Odd groups: {1}
+Even groups: {2}</value>
+  </data>
+  <data name="MensajeAplicarRestaSuma" xml:space="preserve">
+    <value>Step two: add all the groups from the same group.
+Sum of the odd groups: {0}
+Sum of the even groups: {1}</value>
+  </data>
+  <data name="MensajeAplicarRestaResta" xml:space="preserve">
+    <value>Step three: get the result of substracting both sums: {0}
+Can be substracted in any order, its sign won't affect the result.</value>
+  </data>
+  <data name="MensajeAplicarRepeticion" xml:space="preserve">
+    <value>{0} might be too large to easily determine its divisibility. Apply the rule again using {0} as the dividend.</value>
+  </data>
+  <data name="MensajeAplicarSumaBloques" xml:space="preserve">
+    <value>Step one: separate the dividend into groups of {0} digits, starting at the units.
+Groups: {1}</value>
+  </data>
+  <data name="MensajeAplicarSumaSuma" xml:space="preserve">
+    <value>Step two: add all the groups of digits as numbers and use the result: {0}</value>
   </data>
 </root>

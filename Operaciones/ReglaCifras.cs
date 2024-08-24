@@ -67,14 +67,20 @@ namespace Operaciones {
 			StringBuilder sb = new();
 			sb.AppendFormat(TextoCalculos.MensajeAplicarCifrasInicio, Divisor, Base, dividendo, Cifras).AppendLine();
 			InsertarMensajeBase(sb, dividendo);
-			long cifrasUsadas = dividendo % Calculos.PotenciaEntera(Base, Cifras);
-			sb.AppendFormat(TextoCalculos.MensajeAplicarCifrasSeparar, Cifras, LongAStringCondicional(cifrasUsadas)).AppendLine();
+			long cifrasUsadas = ObtenerNuevoDividendo(dividendo, sb);
 			InsertarMensajeFin(sb, dividendo, cifrasUsadas);
 			return sb.ToString();
 		}
+
 		public override string ToString() {
 			return ReglaExplicada + Environment.NewLine
 				+ string.Format(TextoCalculos.MensajePosiblesCifras, CasosPermitidosString, Base);
+		}
+
+		protected override long ObtenerNuevoDividendo(long dividendo, StringBuilder sb) {
+			long cifrasUsadas = dividendo % Calculos.PotenciaEntera(Base, Cifras);
+			sb.AppendFormat(TextoCalculos.MensajeAplicarCifrasSeparar, Cifras, LongAStringCondicional(cifrasUsadas)).AppendLine();
+			return cifrasUsadas;
 		}
 	}
 }
