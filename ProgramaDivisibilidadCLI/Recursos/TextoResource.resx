@@ -134,10 +134,10 @@ Run this program with the option-x to obtain a different type of rule, or activa
     <value>Outputs short document with information on how to run this program.</value>
   </data>
   <data name="HelpDirecto" xml:space="preserve">
-    <value>Reads the divisor, base, and optionally the number of coefficients as arguments, not as dialog input. Must be two or three valid 64-bit integers.</value>
+    <value>The divisor, base, and optionally the number of coefficients as arguments, not as dialog input.</value>
   </data>
   <data name="HelpExtendido" xml:space="preserve">
-    <value>May return other types of rules, also outputs explanations on how to apply them, ignores all other flags, except -d.</value>
+    <value>May return other types of rules, also outputs explanations on how to apply them.</value>
   </data>
   <data name="HelpJson" xml:space="preserve">
     <value>Outputs coefficient rule as a JSON object, changes made by other flags are not ignored.</value>
@@ -156,7 +156,7 @@ Run this program with the option-x to obtain a different type of rule, or activa
     <comment>Shown when the user sends the exit sequence in dialog mode</comment>
   </data>
   <data name="MensajeParametrosDirecto" xml:space="preserve">
-    <value>Divisor: {0}, Base: {1}, Coefficients: {2}.</value>
+    <value>Divisor: {0}, Base: {1}, Length: {2}.</value>
     <comment>The parameters are the arguments passed to the -d flag</comment>
   </data>
   <data name="MensajeFinDirecto" xml:space="preserve">
@@ -289,7 +289,6 @@ Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and o
 -h: shows a summary of this message, ignores other options.
 -d: allows for the arguments to be passed in the command line instead of keyboard input. 2 or 3 arguments are passed: the divisor, base and optionally the rule length.
 -a: writes all possible rules using the given rule length, the coefficients' absolute value will be lower than the divisor.
--n: writes the given name before every element or is included in the JSON output.
 -j: outputs the rule in JSON, unless -x is used.
 -x: outputs a different rule, also explains how to apply said rule. Possible cases are similar to the rules of 0, 1, 2, 3 and 11.
 -m: receives divisors and bases separated by commas and returns all the rules of every divisor,base pair. May also receive the length of the rules.
@@ -399,5 +398,40 @@ Defaults to coefficient rules, unless extra rules are activated.</value>
     <value>Sets the dividends to apply the rule is successfully obtained.
 Must be valid 64-bit integers separated by commas.
 The absolute value will be used, this does not affect the result.</value>
+  </data>
+  <data name="HelpVerbHelp" xml:space="preserve">
+    <value>Outputs the help for this application.</value>
+  </data>
+  <data name="HelpVerbDialog" xml:space="preserve">
+    <value>Starts a dialog to create divisibility rules.</value>
+  </data>
+  <data name="HelpVerbSingle" xml:space="preserve">
+    <value>Outputs a single rule given its divisor, base and length, if it is a coefficient rule.</value>
+  </data>
+  <data name="HelpTextMultiple" xml:space="preserve">
+    <value>Outputs all the valid combinations of rules given a list of divisors, bases and lengths if they are coefficient rules.
+The elements in the same lists are separated by commas.</value>
+  </data>
+  <data name="ErrorTipoVerbo" xml:space="preserve">
+    <value>Unexpected error while starting application.</value>
+  </data>
+  <data name="ErrorReglaNula" xml:space="preserve">
+    <value>A rule was null when calculated, cannot continue execution.</value>
+  </data>
+  <data name="HelpDivisor" xml:space="preserve">
+    <value>Sets the divisor to find its divisibility rule.
+Obligatory, must be a valid 64-bit non-negative integer.</value>
+  </data>
+  <data name="HelpBase" xml:space="preserve">
+    <value>Sets a value for the base the rule will be applied in.
+Defaults to ten, must be greater than one.</value>
+  </data>
+  <data name="HelpLongitud" xml:space="preserve">
+    <value>Sets a value for the length of the rule if it is a coefficient rule.
+Defaults to one, must be a valid positive 32-bit integer.</value>
+  </data>
+  <data name="HelpDivisorVarias" xml:space="preserve">
+    <value>Sets the divisor to find its divisibility rule.
+Obligatory, must be a list of valid 64-bit non-negative integers.</value>
   </data>
 </root>

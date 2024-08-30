@@ -5,7 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject>ProgramaDivisibilidad.CalculadoraDivisibilidadCLI</StartupObject>
+    <StartupObject>ProgramaDivisibilidad.CalcDivCLI</StartupObject>
     <AssemblyName>CalcDivCLI</AssemblyName>
     <AssemblyVersion>0.3.0.1</AssemblyVersion>
     <NeutralLanguage>en</NeutralLanguage>

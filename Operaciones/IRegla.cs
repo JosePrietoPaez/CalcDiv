@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Numerics;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Operaciones {
 	/// <summary>
@@ -43,7 +45,7 @@ namespace Operaciones {
 		/// <returns>
 		/// <see cref="string"/> con la explicación del procedimiento y resultado.
 		/// </returns>
-		public string AplicarRegla(long dividendo);
+		public string AplicarRegla(BigInteger dividendo);
 
 		/// <summary>
 		/// Genera una regla dados un caso y su información, la regla se habrá inicializado.
@@ -58,21 +60,32 @@ namespace Operaciones {
 		/// <returns>
 		/// <see cref="IRegla"/> del tipo correspondiente.
 		/// </returns>
-		internal static IRegla GenerarReglaPorTipo(CasosDivisibilidad caso, long divisor, long @base, int informacion) {
-			return caso switch {
-				CasosDivisibilidad.DIVISOR_CERO => new ReglaCero(divisor, @base),
-				CasosDivisibilidad.DIVISOR_ONE => new ReglaUno(divisor, @base),
-				CasosDivisibilidad.COEFFICIENTS => new ReglaCoeficientes(divisor, @base, 1),
-				CasosDivisibilidad.DIGITS => new ReglaCifras(divisor, @base, informacion),
-				CasosDivisibilidad.ADD_BLOCKS => new ReglaSumar(divisor, @base, informacion),
-				CasosDivisibilidad.SUBSTRACT_BLOCKS => new ReglaRestar(divisor, @base, informacion),
-				_ => throw new NotImplementedException()
-			};
-		}
+		internal static IRegla GenerarReglaPorTipo(CasosDivisibilidad caso, long divisor, long @base, int informacion) => caso switch {
+			CasosDivisibilidad.DIVISOR_ZERO => new ReglaCero(divisor, @base),
+			CasosDivisibilidad.DIVISOR_ONE => new ReglaUno(divisor, @base),
+			CasosDivisibilidad.COEFFICIENTS when Calculos.SonCoprimos(@base, divisor) => new ReglaCoeficientes(divisor, @base, 1),
+			CasosDivisibilidad.COEFFICIENTS when !Calculos.SonCoprimos(@base, divisor) => new ReglaCompuesta(divisor, @base),
+			CasosDivisibilidad.DIGITS => new ReglaCifras(divisor, @base, informacion),
+			CasosDivisibilidad.ADD_BLOCKS => new ReglaSumar(divisor, @base, informacion),
+			CasosDivisibilidad.SUBSTRACT_BLOCKS => new ReglaRestar(divisor, @base, informacion),
+			_ => throw new NotImplementedException()
+		};
 
 		public static IRegla GenerarReglaPorTipo(long @base, long divisor) {
 			var (caso, informacion) = Calculos.CasoEspecialRegla(@base, divisor);
 			return GenerarReglaPorTipo(caso, @base, divisor, informacion);
+		}
+
+		public string AplicarVariosDividendos(IEnumerable<long> dividendos) {
+			return AplicarVariosDividendos(dividendos.Select(numero => new BigInteger(numero)));
+		}
+
+		public string AplicarVariosDividendos(IEnumerable<BigInteger> dividendos) {
+			StringBuilder stringBuilder = new();
+			foreach (BigInteger dividendo in dividendos) {
+				stringBuilder.AppendLine(AplicarRegla(dividendo));
+			}
+			return stringBuilder.ToString();
 		}
 	}
 }

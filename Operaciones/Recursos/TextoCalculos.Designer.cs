@@ -214,11 +214,56 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Applying the divisibility rule of {0}, in base {1} to {2}, using {3} digits:.
+        /// </summary>
+        public static string MensajeAplicarCifrasInicio {
+            get {
+                return ResourceManager.GetString("MensajeAplicarCifrasInicio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Keep only the least {0} significant digits: {1}.
+        /// </summary>
+        public static string MensajeAplicarCifrasSeparar {
+            get {
+                return ResourceManager.GetString("MensajeAplicarCifrasSeparar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string MensajeAplicarCompuestoBucle {
+            get {
+                return ResourceManager.GetString("MensajeAplicarCompuestoBucle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The rule did not change the dividend, {0}, cannot reduce further..
+        /// </summary>
+        public static string MensajeAplicarDividendoIgual {
+            get {
+                return ResourceManager.GetString("MensajeAplicarDividendoIgual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a {0} is divisible by {1}, therefore the original dividend, {2}, also is..
         /// </summary>
         public static string MensajeAplicarFin {
             get {
                 return ResourceManager.GetString("MensajeAplicarFin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} might be too large to easily determine its divisibility by {1}, but the rule cannot be applied further or may not give better results..
+        /// </summary>
+        public static string MensajeAplicarFinDemasiadoGrande {
+            get {
+                return ResourceManager.GetString("MensajeAplicarFinDemasiadoGrande", resourceCulture);
             }
         }
         
@@ -250,6 +295,15 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Applying the divisibility rules of {0} in base {1} to {2}:.
+        /// </summary>
+        public static string MensajeAplicarInicioCompuesto {
+            get {
+                return ResourceManager.GetString("MensajeAplicarInicioCompuesto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The last dividend, {0}, was not lesser than the previous one, {1}.
         ///Two more iterations will be attempted..
         /// </summary>
@@ -265,6 +319,15 @@ namespace Operaciones.Recursos {
         public static string MensajeAplicarMultiplicarCoeficientes {
             get {
                 return ResourceManager.GetString("MensajeAplicarMultiplicarCoeficientes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The dividend represented in base {0} is {1}..
+        /// </summary>
+        public static string MensajeAplicarNumero {
+            get {
+                return ResourceManager.GetString("MensajeAplicarNumero", resourceCulture);
             }
         }
         
@@ -287,6 +350,56 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a {0} might be too large to easily determine its divisibility. Apply the rule again using {0} as the dividend..
+        /// </summary>
+        public static string MensajeAplicarRepeticion {
+            get {
+                return ResourceManager.GetString("MensajeAplicarRepeticion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Step one: separate the dividend in groups of {0} digits from the units digit, separating those in even positions from those in odd positions:
+        ///Odd groups: {1}
+        ///Even groups: {2}.
+        /// </summary>
+        public static string MensajeAplicarRestaBloques {
+            get {
+                return ResourceManager.GetString("MensajeAplicarRestaBloques", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Applying the divisibility rule of {0}, in base {1} to {2}, using groups of {3} digits:.
+        /// </summary>
+        public static string MensajeAplicarRestaInicio {
+            get {
+                return ResourceManager.GetString("MensajeAplicarRestaInicio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Step three: get the result of substracting both sums: {0}
+        ///Can be substracted in any order, its sign won&apos;t affect the result..
+        /// </summary>
+        public static string MensajeAplicarRestaResta {
+            get {
+                return ResourceManager.GetString("MensajeAplicarRestaResta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Step two: add all the groups from the same group.
+        ///Sum of the odd groups: {0}
+        ///Sum of the even groups: {1}.
+        /// </summary>
+        public static string MensajeAplicarRestaSuma {
+            get {
+                return ResourceManager.GetString("MensajeAplicarRestaSuma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Step one: separate the number into two parts the right one has length {0}:
         ///Left: {1}
         ///Right: {2}.
@@ -298,11 +411,40 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Step three: Add the sum of the products and the left part of the dividend:.
+        ///   Busca una cadena traducida similar a Step three: add the sum of the products and the left part of the dividend:.
         /// </summary>
         public static string MensajeAplicarSuma {
             get {
                 return ResourceManager.GetString("MensajeAplicarSuma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Step one: separate the dividend into groups of {0} digits, starting at the units.
+        ///Groups: {1}.
+        /// </summary>
+        public static string MensajeAplicarSumaBloques {
+            get {
+                return ResourceManager.GetString("MensajeAplicarSumaBloques", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Step two: add all the groups of digits as numbers and use the result: {0}.
+        /// </summary>
+        public static string MensajeAplicarSumaSuma {
+            get {
+                return ResourceManager.GetString("MensajeAplicarSumaSuma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The result must be one of these numbers, written in base {1}:
+        ///{0}.
+        /// </summary>
+        public static string MensajePosiblesCifras {
+            get {
+                return ResourceManager.GetString("MensajePosiblesCifras", resourceCulture);
             }
         }
         
@@ -366,6 +508,15 @@ namespace Operaciones.Recursos {
         public static string ReglaExplicadaCifras {
             get {
                 return ResourceManager.GetString("ReglaExplicadaCifras", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The dividend will be divisible by {0} if, and only if, it is divisible by all of its prime factors at their respective powers..
+        /// </summary>
+        public static string ReglaExplicadaCompuesta {
+            get {
+                return ResourceManager.GetString("ReglaExplicadaCompuesta", resourceCulture);
             }
         }
         

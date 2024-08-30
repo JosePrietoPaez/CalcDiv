@@ -258,19 +258,55 @@ namespace TestCalculadora
 			}
 		}
 
-		[Test(Description = "La lista que devuelve el metodo debe contener todos los numeros primos incluido el numero propio")]
-		public void PrimosHasta_ValoresSimples_DevuelveListaDePrimos()
-		{
-			long num = 18;
-			// Act
-			List<long> primos = Calculos.PrimosHasta(num);
-			long[] numerosPrim = [2, 3, 5, 7, 11, 13, 17, 18];
+		[TestFixture]
+		public class PrimosHastaTest {
+
+			[Test(Description = "La lista que devuelve el metodo debe contener todos los numeros primos incluido el numero propio")]
+			public void PrimosHasta_ValoresSimples_DevuelveListaDePrimos() {
+				long num = 18;
+				// Act
+				List<long> primos = Calculos.PrimosHasta(num);
+				long[] numerosPrim = [2, 3, 5, 7, 11, 13, 17];
 			
-			int contador = 0;
-			foreach(long value in primos){
-				Assert.That(value, Is.EqualTo(numerosPrim[contador]));
-				contador++;
+				int contador = 0;
+				foreach(long value in primos){
+					Assert.That(value, Is.EqualTo(numerosPrim[contador]));
+					contador++;
+				}
 			}
+
+			[Test(Description = "La lista que devuelve el metodo debe contener todos los numeros primos incluido el numero propio")]
+			public void PrimosHasta_ValorPrimo_DevuelveListaDePrimos() {
+				long num = 17;
+				// Act
+				List<long> primos = Calculos.PrimosHasta(num);
+				long[] numerosPrim = [2, 3, 5, 7, 11, 13, 17];
+
+				int contador = 0;
+				foreach (long value in primos) {
+					Assert.That(value, Is.EqualTo(numerosPrim[contador]));
+					contador++;
+				}
+			}
+
+			[Test(Description = "La lista que devuelve el método no depende de las veces que se haya llamado")]
+			public void PrimosHasta_VariasLlamadas_DevuelveValoresValidos() {
+				// Arrange
+				long numero1 = 30, numero2 = 50;
+				List<long> primosEsperados1 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29],
+					primosEsperados2 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
+
+				// Act
+				List<long> primosObtenidos1 = Calculos.PrimosHasta(numero1),
+					primosObtenidos2 = Calculos.PrimosHasta(numero2);
+
+				Assert.Multiple(() => {
+					// Assert
+					Assert.That(primosObtenidos1, Is.EqualTo(primosEsperados1));
+					Assert.That(primosObtenidos2, Is.EqualTo(primosEsperados2));
+				});
+			}
+
 
 		}
 
@@ -979,7 +1015,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Multiple(() =>
 				{
-					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.DIVISOR_CERO));
+					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.DIVISOR_ZERO));
 					Assert.That(result.informacion, Is.EqualTo(-1));
 				});
 			}

@@ -1,5 +1,6 @@
 ﻿using Operaciones.Recursos;
 using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -13,8 +14,7 @@ namespace Operaciones {
 	public class ReglaCoeficientes(
 		[Range(0, long.MaxValue)] long divisor
 		, [Range(2, long.MaxValue)] long @base
-		, [Range(0,int.MaxValue)] int coeficientes
-		, string nombre = ""): IRegla {
+		, [Range(0,int.MaxValue)] int coeficientes): ReglaAplicable {
 
 		/// <summary>
 		/// Crea una regla con los coeficientes ya obtenidos, no se comprueba que sean correctos.
@@ -22,9 +22,8 @@ namespace Operaciones {
 		/// <param name="divisor">Divisor de la regla</param>
 		/// <param name="base">Base de la representación de los dividendos</param>
 		/// <param name="coeficientes">Lista de coeficientes</param>
-		/// <param name="nombre"></param>
-		public ReglaCoeficientes(long divisor, long @base, IEnumerable<long> coeficientes, string nombre = "")
-			: this(divisor, @base, coeficientes.Count(), nombre) {
+		public ReglaCoeficientes(long divisor, long @base, IEnumerable<long> coeficientes)
+			: this(divisor, @base, coeficientes.Count()) {
 			if (!coeficientes.Any()) throw new ArgumentException(
 				TextoCalculos.ReglaVaciaError, nameof(coeficientes));
 			_coeficientes = new(coeficientes);
@@ -36,11 +35,11 @@ namespace Operaciones {
 
 		[JsonPropertyName("divisor")]
 		[Range(0, long.MaxValue)]
-		public long Divisor => divisor;
+		public override long Divisor => divisor;
 		
 		[JsonPropertyName("base")]
 		[Range(2, long.MaxValue)]
-		public long Base => @base;
+		public override long Base => @base;
 
 		/// <summary>
 		/// Esta propiedad indica la longitud de la regla, será 0 siempre que no se pueda calcular.
@@ -55,12 +54,8 @@ namespace Operaciones {
 					return 0;
 				return _longitud;
 			}
-			set => _longitud = value; }
-		/// <summary>
-		/// Esta propiedad permite obtener y cambiar el nombre de la regla
-		/// </summary>
-		[JsonPropertyName("name")]
-		public string Nombre { get; set; } = nombre;
+			set => _longitud = value; 
+		}
 
 		/// <summary>
 		/// Esta propiedad permite obtener los coeficientes de la regla para ser utilizados.
@@ -83,75 +78,22 @@ namespace Operaciones {
 		}
 
 		[JsonPropertyName("rule-explained")]
-		public string ReglaExplicada { get => TextoCalculos.ReglaExpliacadaCoeficientes; }
+		public override string ReglaExplicada { get => TextoCalculos.ReglaExpliacadaCoeficientes; }
 
 		[JsonPropertyName("type")]
-		public CasosDivisibilidad Tipo => CasosDivisibilidad.COEFFICIENTS;
+		public override CasosDivisibilidad Tipo => CasosDivisibilidad.COEFFICIENTS;
 
-		/// <summary>
-		/// Este campo indica una aproxima una estimación del punto donde se estima que el dividendo 
-		/// es demasiado grande para que se pueda detener el procedimiento de la regla.
-		/// </summary>
-		/// <remarks>
-		/// Puede cambiar con el tiempo.
-		/// </remarks>
-		private readonly long LimiteTrivialidadEstimado = 2 * divisor * @base;
-
-		public string AplicarRegla(long dividendo) {
-			StringBuilder sb = new();
-			long dividendoMenor = dividendo,
-				dividendoActual;
-			int iteracionesRestantes = int.MaxValue; // Se cambiará si el actual es mayor que el menor y hará una cantidad limitada
-			bool minimoLocalEncontrado = false
-				, saltarBucle = false;
-			if (@base <= Calculos.BASE_64_STRING.Length) {
-				sb.AppendFormat(TextoCalculos.MensajeAlfabetoNumericoExito, @base)
-					.AppendLine()
-					//No habrá problemas ya que si la base es demasiado grande para la conversión, no pasará por el if
-					.AppendLine(Calculos.BASE_64_STRING[0..(int)@base]); 
-			} else {
-				sb.AppendLine(TextoCalculos.MensajeAlfabetoNumericoExceso);
-			}
-			sb.AppendLine();
-			do {
-				
-				dividendoActual = Math.Abs(ObtenerNuevoDividendo(dividendoMenor, sb));
-				if (iteracionesRestantes == 0 && minimoLocalEncontrado) {
-					saltarBucle = true;
-				}
-				if (dividendoActual < dividendoMenor) {
-					dividendoMenor = dividendoActual;
-				} else {
-					minimoLocalEncontrado = true;
-					iteracionesRestantes = 2;
-					sb.AppendFormat(TextoCalculos.MensajeAplicarMinimoEncontrado, dividendoActual, dividendoMenor).AppendLine();
-				}
-				iteracionesRestantes--;
-				sb.AppendLine();
-			} while (dividendoMenor > LimiteTrivialidadEstimado 
-			& !saltarBucle); // Mientras sea demasiado grande o no tengamos un mínimo que nos oblique a parar
-			if (dividendoMenor <= LimiteTrivialidadEstimado) {
-				sb.AppendFormat(TextoCalculos.MensajeAplicarFinPorTamaño, dividendoMenor).AppendLine();
-			}
-			if (dividendoMenor % Divisor == 0) {
-				sb.AppendFormat(TextoCalculos.MensajeAplicarFin, dividendoMenor, Divisor, dividendo).AppendLine();
-			} else {
-				sb.AppendFormat(TextoCalculos.MensajeAplicarFinNoDivisible, dividendoMenor, Divisor, dividendo).AppendLine();
-			}
-			return sb.ToString();
-		}
-
-		private long ObtenerNuevoDividendo(long dividendo, StringBuilder sb) { // Escribe en el sb y devuelve un nuevo dividendo
+		protected override BigInteger ObtenerNuevoDividendo(BigInteger dividendo, StringBuilder sb) { // Escribe en el sb y devuelve un nuevo dividendo
 			sb.AppendFormat(TextoCalculos.MensajeAplicarInicio, Divisor, Base, LongAStringCondicional(dividendo), Longitud).AppendLine();
-			long parteIzquierda = dividendo / Calculos.PotenciaEntera(Base, Longitud),
-				parteDerecha = Calculos.IntervaloCifras(dividendo, Base, 0, (byte)Longitud);
+			BigInteger parteIzquierda = dividendo / Calculos.PotenciaEntera(Base, Longitud),
+				parteDerecha = Calculos.IntervaloCifras(dividendo, Base, 0, Longitud);
 			sb.AppendFormat(TextoCalculos.MensajeAplicarSeparar, Longitud, LongAStringCondicional(parteIzquierda), LongAStringCondicional(parteDerecha))
 				.AppendLine()
 				.AppendLine(TextoCalculos.MensajeAplicarMultiplicarCoeficientes);
 			if (Calculos.Cifras(parteDerecha, Base) < Longitud) {
 				sb.AppendFormat(TextoCalculos.MensajeAplicarParteDerechaPequeña, parteDerecha).AppendLine();
 			}
-			long productoTotal = CalcularNuevoDividendoYPonerEnBuilder(parteDerecha, sb),
+			BigInteger productoTotal = CalcularNuevoDividendoYPonerEnBuilder(parteDerecha, sb),
 				nuevoDividendo = productoTotal + parteIzquierda; // Paso dos
 			sb.AppendLine(TextoCalculos.MensajeAplicarSuma)
 				.AppendLine(LongAStringCondicional(productoTotal) + " + " + LongAStringCondicional(parteIzquierda)
@@ -159,23 +101,13 @@ namespace Operaciones {
 			return nuevoDividendo;
 		}
 
-		private string LongAStringCondicional(long numero) {
-			string resultado;
-			if (Base <= Calculos.BASE_64_STRING.Length) {
-				resultado = Calculos.LongToStringFast(numero, Base);
-			} else {
-				resultado = Calculos.LongToStringNoAlphabet(numero, Base);
-			}
-			return resultado;
-		}
-
-		private long CalcularNuevoDividendoYPonerEnBuilder(long parteDerecha, StringBuilder sb) {
-			byte indiceCoeficientes = 0;
-			long resultadoProducto = 0;
+		private BigInteger CalcularNuevoDividendoYPonerEnBuilder(BigInteger parteDerecha, StringBuilder sb) {
+			int indiceCoeficientes = 0;
+			BigInteger resultadoProducto = 0;
 			// Se itera al revés por las cifras ya que están en el orden inverso
-			for (byte cifras = Calculos.Cifras(parteDerecha, Base); indiceCoeficientes < cifras - 1; indiceCoeficientes++) { 
-				long coeficienteActual = Coeficientes[indiceCoeficientes],
-					cifraActual = Calculos.Cifra(parteDerecha, (byte)(cifras - indiceCoeficientes - 1), Base);
+			for (int cifras = (int)Calculos.Cifras(parteDerecha, Base); indiceCoeficientes < cifras - 1; indiceCoeficientes++) {
+				long coeficienteActual = Coeficientes[indiceCoeficientes];
+				BigInteger cifraActual = Calculos.Cifra(parteDerecha, cifras - indiceCoeficientes - 1, Base);
 				sb.Append(LongAStringCondicional(coeficienteActual) + " * " + LongAStringCondicional(cifraActual) + " + "); // O sea coeficiente * cifra +
 				resultadoProducto += coeficienteActual * cifraActual;
 			}
@@ -194,18 +126,6 @@ namespace Operaciones {
 			return string.Join(", ", Coeficientes);
 		}
 
-		public string ToStringCompleto() {
-			if (Nombre.Equals(string.Empty)) return ToString();
-			StringBuilder sb = new();
-			for (int i = 0; i < Longitud; i++) {
-				sb.Append(Nombre).Append(Calculos.NumASubindice(i)).Append(" = ").Append(Coeficientes[i]);
-				if (i + 1 != Longitud) {
-					sb.Append(", ");
-				}
-			}
-			return sb.ToString();
-		}
-
 		public override int GetHashCode() {
 			return HashCode.Combine(Coeficientes);
 		}
@@ -215,7 +135,6 @@ namespace Operaciones {
 				   Divisor == coeficientes.Divisor &&
 				   Base == coeficientes.Base &&
 				   Longitud == coeficientes.Longitud &&
-				   Nombre == coeficientes.Nombre &&
 				   EqualityComparer<List<long>>.Default.Equals(Coeficientes, coeficientes.Coeficientes);
 		}
 	}

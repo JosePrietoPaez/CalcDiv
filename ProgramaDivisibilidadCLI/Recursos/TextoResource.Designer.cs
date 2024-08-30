@@ -227,6 +227,24 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a A rule was null when calculated, cannot continue execution..
+        /// </summary>
+        public static string ErrorReglaNula {
+            get {
+                return ResourceManager.GetString("ErrorReglaNula", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Unexpected error while starting application..
+        /// </summary>
+        public static string ErrorTipoVerbo {
+            get {
+                return ResourceManager.GetString("ErrorTipoVerbo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Cancels dialog mode&apos;s looping behavior. Will one calculate rules once..
         /// </summary>
         public static string HelpAnularBucle {
@@ -254,6 +272,16 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Sets a value for the base the rule will be applied in.
+        ///Defaults to ten, must be greater than one..
+        /// </summary>
+        public static string HelpBase {
+            get {
+                return ResourceManager.GetString("HelpBase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Sets a default base for dialog, skipping input.
         ///Must be a valid integer greater than 1..
         /// </summary>
@@ -264,7 +292,7 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Reads the divisor, base, and optionally the number of coefficients as arguments, not as dialog input. Must be two or three valid 64-bit integers..
+        ///   Busca una cadena traducida similar a The divisor, base, and optionally the number of coefficients as arguments, not as dialog input..
         /// </summary>
         public static string HelpDirecto {
             get {
@@ -284,6 +312,16 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Sets the divisor to find its divisibility rule.
+        ///Obligatory, must be a valid 64-bit non-negative integer..
+        /// </summary>
+        public static string HelpDivisor {
+            get {
+                return ResourceManager.GetString("HelpDivisor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Sets a default divisor for dialog, skipping input.
         ///Must be a valid 64-bit non-negative integer.
         ///If the base is specified, will default to extra rules, unless the divisor and base are coprime..
@@ -295,7 +333,17 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a May return other types of rules, also outputs explanations on how to apply them, ignores all other flags, except -d..
+        ///   Busca una cadena traducida similar a Sets the divisor to find its divisibility rule.
+        ///Obligatory, must be a list of valid 64-bit non-negative integers..
+        /// </summary>
+        public static string HelpDivisorVarias {
+            get {
+                return ResourceManager.GetString("HelpDivisorVarias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a May return other types of rules, also outputs explanations on how to apply them..
         /// </summary>
         public static string HelpExtendido {
             get {
@@ -309,6 +357,16 @@ namespace ProgramaDivisibilidad.Recursos {
         public static string HelpJson {
             get {
                 return ResourceManager.GetString("HelpJson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Sets a value for the length of the rule if it is a coefficient rule.
+        ///Defaults to one, must be a valid positive 32-bit integer..
+        /// </summary>
+        public static string HelpLongitud {
+            get {
+                return ResourceManager.GetString("HelpLongitud", resourceCulture);
             }
         }
         
@@ -342,6 +400,16 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Outputs all the valid combinations of rules given a list of divisors, bases and lengths if they are coefficient rules.
+        ///The elements in the same lists are separated by commas..
+        /// </summary>
+        public static string HelpTextMultiple {
+            get {
+                return ResourceManager.GetString("HelpTextMultiple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Outputs all coefficient rules with elements whose absolute value is less than the divisor..
         /// </summary>
         public static string HelpTodos {
@@ -358,6 +426,33 @@ namespace ProgramaDivisibilidad.Recursos {
         public static string HelpVarias {
             get {
                 return ResourceManager.GetString("HelpVarias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Starts a dialog to create divisibility rules..
+        /// </summary>
+        public static string HelpVerbDialog {
+            get {
+                return ResourceManager.GetString("HelpVerbDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Outputs the help for this application..
+        /// </summary>
+        public static string HelpVerbHelp {
+            get {
+                return ResourceManager.GetString("HelpVerbHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Outputs a single rule given its divisor, base and length, if it is a coefficient rule..
+        /// </summary>
+        public static string HelpVerbSingle {
+            get {
+                return ResourceManager.GetString("HelpVerbSingle", resourceCulture);
             }
         }
         
@@ -470,7 +565,7 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Divisor: {0}, Base: {1}, Coefficients: {2}..
+        ///   Busca una cadena traducida similar a Divisor: {0}, Base: {1}, Length: {2}..
         /// </summary>
         public static string MensajeParametrosDirecto {
             get {

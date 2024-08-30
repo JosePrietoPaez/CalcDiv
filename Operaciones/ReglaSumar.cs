@@ -1,4 +1,6 @@
 ﻿using Operaciones.Recursos;
+using System.Numerics;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Operaciones {
@@ -8,7 +10,7 @@ namespace Operaciones {
 	/// <remarks>
 	/// Las reglas de este tipo se pueden aplicar recursivamente.
 	/// </remarks>
-	internal class ReglaSumar : IRegla {
+	internal class ReglaSumar : ReglaAplicable {
 		private readonly long _divisor;
 		private readonly long _base;
 		private readonly int _longitud;
@@ -23,7 +25,7 @@ namespace Operaciones {
 		}
 
 		[JsonPropertyName("rule-explained")]
-		public string ReglaExplicada {
+		public override string ReglaExplicada {
 			get {
 				string potencia;
 				try {
@@ -40,10 +42,10 @@ namespace Operaciones {
 		}
 
 		[JsonPropertyName("base")]
-		public long Base => _base;
+		public override long Base => _base;
 
 		[JsonPropertyName("divisor")]
-		public long Divisor => _divisor;
+		public override long Divisor => _divisor;
 
 		/// <summary>
 		/// Esta propiedad indica la longitud de los bloques de cifras que se deberán sumar.
@@ -52,11 +54,23 @@ namespace Operaciones {
 		public int Longitud => _longitud;
 
 		[JsonPropertyName("type")]
-		public CasosDivisibilidad Tipo => CasosDivisibilidad.ADD_BLOCKS;
+		public override CasosDivisibilidad Tipo => CasosDivisibilidad.ADD_BLOCKS;
 
-		public string AplicarRegla(long dividendo) {
-			throw new NotImplementedException();
+		protected override BigInteger ObtenerNuevoDividendo(BigInteger dividendo, StringBuilder sb) {
+			byte bloquesDividendo = (byte)(Calculos.Cifras(dividendo, Base) / Longitud + (Calculos.Cifras(dividendo, Base) % Longitud == 0 ? 0 : 1));
+			BigInteger[] bloques = new BigInteger[bloquesDividendo];
+			BigInteger suma = 0;
+			sb.AppendFormat(TextoCalculos.MensajeAplicarRestaInicio, Divisor, Base, dividendo, Longitud).AppendLine();
+			for (byte i = 0; i < bloquesDividendo; i++) {
+				bloques[i] = Calculos.IntervaloCifras(dividendo, Base, i * Longitud, (i + 1) * Longitud);
+				suma += bloques[i];
+			}
+			sb.AppendFormat(TextoCalculos.MensajeAplicarSumaBloques, Longitud
+				, string.Join(", ", bloques.Select(LongAStringCondicional).Reverse())).AppendLine();
+			sb.AppendFormat(TextoCalculos.MensajeAplicarSumaSuma, suma).AppendLine();
+			return suma;
 		}
+
 		public override string ToString() {
 			return ReglaExplicada;
 		}

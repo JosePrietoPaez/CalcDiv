@@ -132,10 +132,10 @@ Ejecute este programa con la opción -x o actívela en el diálogo para obtener 
     <value>Devuelve por salida un pequeño documento indicando como ejecutar esta aplicación.</value>
   </data>
   <data name="HelpDirecto" xml:space="preserve">
-    <value>Lee la base, divisor y, opcionalmente la longitud de las reglas de coeficientes, como argumentos en lugar de preguntarlos en modo diálogo. Deben ser enteros de 64 bits válidos.</value>
+    <value>La base, divisor y, opcionalmente la longitud de las reglas de coeficientes, como argumentos en lugar de preguntarlos en modo diálogo.</value>
   </data>
   <data name="HelpExtendido" xml:space="preserve">
-    <value>Puede devolver reglas de tipos distintos, también devuelve por pantalla explicaciones sobre como se aplican. Ignora los demás flags, excepto -d.</value>
+    <value>Puede devolver reglas de tipos distintos, también devuelve por pantalla explicaciones sobre como se aplican.</value>
   </data>
   <data name="HelpJson" xml:space="preserve">
     <value>Las reglas de coeficientes se devolveran como un objeto JSON, se reflejarán los cambios causados por otros flags.</value>
@@ -153,7 +153,7 @@ Ejecute este programa con la opción -x o actívela en el diálogo para obtener 
     <value>Se ha detectado el mensaje de salida, se ha detenido el programa.</value>
   </data>
   <data name="MensajeParametrosDirecto" xml:space="preserve">
-    <value>Divisor: {0}, Base: {1}, Coeficientes: {2}.</value>
+    <value>Divisor: {0}, Base: {1}, Longitud: {2}.</value>
   </data>
   <data name="MensajeFinDirecto" xml:space="preserve">
     <value>Se ha calculado la regla.</value>
@@ -283,7 +283,6 @@ Calcula la regla de 7 en base 10, le da el nombre Nombre y lo escribe en JSON.
 -h: muestra una versión reducida de la ayuda, ignora las otras opciones.
 -d: si se pasan todos los datos se obtiene un resultado sin que la aplicación pida datos.
 -a: se escriben todas las reglas posibles con la cantidad de coeficientes proporcionado, el valor absoluto de los coeficientes será menor que el del divisor.
--n: escribe el nombre introducido como parámetro antes de cada elemento con su indice.
 -j: escribe la regla como en JSON, a no ser que se use -x.
 -x: cambia la salida a una regla alternativa que no usa coeficientes y explica como usarla. Los casos disponibles son como las reglas de 0, 1, 2, 3 y 11.
 -m: recibe divisores y bases separados por comas y devuelve las reglas de todos los pares divisor, base. Puede recibir opcionalmente la longitud de las reglas.
@@ -393,5 +392,40 @@ Activa las reglas de coeficientes, a no ser que se activen las extra.</value>
     <value>Indica los valores de los dividendos a los que se les aplicará la regla.
 Deben ser enteros de 64 bits válidos separados por comas.
 Se usarán sus valores absolutos, esto no afecta al resultado.</value>
+  </data>
+  <data name="HelpVerbHelp" xml:space="preserve">
+    <value>Muestra la ayuda de esta aplicación.</value>
+  </data>
+  <data name="HelpVerbDialog" xml:space="preserve">
+    <value>Inicia un diálogo para crear reglas de divisibilidad.</value>
+  </data>
+  <data name="HelpVerbSingle" xml:space="preserve">
+    <value>Genera una única regla dado un divisor, su base y su longitud si la regla es de coeficientes.</value>
+  </data>
+  <data name="HelpTextMultiple" xml:space="preserve">
+    <value>Devuelve todas las combinaciones válidas de reglas dadas unas listas de divisores, bases y longitudes si son reglas de coeficientes.
+Los elementos de una misma lista deben estar separados por una coma.</value>
+  </data>
+  <data name="ErrorTipoVerbo" xml:space="preserve">
+    <value>Error inesperado iniciando la aplicación.</value>
+  </data>
+  <data name="ErrorReglaNula" xml:space="preserve">
+    <value>Una regla fue nula al calcularla, no se puede seguir con la ejecución.</value>
+  </data>
+  <data name="HelpDivisor" xml:space="preserve">
+    <value>Indica el divisor usado para encontrar su regla de divisibilidad.
+Obligatorio, debe ser un entero de 64 bits no negativo válido.</value>
+  </data>
+  <data name="HelpBase" xml:space="preserve">
+    <value>Indica la base en la que se aplicará la regla.
+Por defecto diez, debe ser mayor que uno.</value>
+  </data>
+  <data name="HelpLongitud" xml:space="preserve">
+    <value>Indica la longitud de la regla si es de coeficientes.
+Por defecto uno, debe ser un entero positivo de 32 bits válido.</value>
+  </data>
+  <data name="HelpDivisorVarias" xml:space="preserve">
+    <value>Indica el divisor usado para encontrar su regla de divisibilidad.
+Obligatorio, debe ser una lista de enteros de 64 bits no negativos válidos.</value>
   </data>
 </root>
