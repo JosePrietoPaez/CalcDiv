@@ -1,4 +1,5 @@
 ﻿using Operaciones.Recursos;
+using System.Numerics;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -58,20 +59,20 @@ namespace Operaciones {
 			return ReglaExplicada;
 		}
 
-		protected override long ObtenerNuevoDividendo(long dividendo, StringBuilder sb) {
-			byte bloquesDividendo = (byte)(Calculos.Cifras(dividendo, Base) / Longitud + (Calculos.Cifras(dividendo, Base) % Longitud == 0 ? 0 : 1));
-			long[] impares = new long[(bloquesDividendo / 2) + (bloquesDividendo & 1)]
-				, pares = new long[bloquesDividendo / 2];
+		protected override BigInteger ObtenerNuevoDividendo(BigInteger dividendo, StringBuilder sb) {
+			long bloquesDividendo = Calculos.Cifras(dividendo, Base) / Longitud + (Calculos.Cifras(dividendo, Base) % Longitud == 0 ? 0 : 1);
+			BigInteger[] impares = new BigInteger[(bloquesDividendo / 2) + (bloquesDividendo & 1)]
+				, pares = new BigInteger[bloquesDividendo / 2];
 			sb.AppendFormat(TextoCalculos.MensajeAplicarRestaInicio, Divisor, Base, dividendo, Longitud).AppendLine();
 			for (byte i = 0; i < bloquesDividendo / 2 * 2; i++) {
-				long bloque = Calculos.IntervaloCifras(dividendo, Base, (byte)(i * Longitud), (byte)((i + 1) * Longitud));
+				BigInteger bloque = Calculos.IntervaloCifras(dividendo, Base, (byte)(i * Longitud), (byte)((i + 1) * Longitud));
 				if ((i & 1) == 0) { // Si es par
 					impares[i >> 1] = bloque;
 				} else {
 					pares[i >> 1] = bloque;
 				}
 			}
-			long sumaImpares = 0, sumaPares = 0;
+			BigInteger sumaImpares = 0, sumaPares = 0;
 			if (impares.Length > pares.Length) {
 				impares[^1] = Calculos.IntervaloCifras(dividendo, Base, (byte)((bloquesDividendo - 1) * Longitud), (byte)(bloquesDividendo * Longitud));
 				sumaImpares += impares[^1];

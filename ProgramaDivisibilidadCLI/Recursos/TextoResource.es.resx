@@ -412,4 +412,20 @@ Los elementos de una misma lista deben estar separados por una coma.</value>
   <data name="ErrorReglaNula" xml:space="preserve">
     <value>Una regla fue nula al calcularla, no se puede seguir con la ejecución.</value>
   </data>
+  <data name="HelpDivisor" xml:space="preserve">
+    <value>Indica el divisor usado para encontrar su regla de divisibilidad.
+Obligatorio, debe ser un entero de 64 bits no negativo válido.</value>
+  </data>
+  <data name="HelpBase" xml:space="preserve">
+    <value>Indica la base en la que se aplicará la regla.
+Por defecto diez, debe ser mayor que uno.</value>
+  </data>
+  <data name="HelpLongitud" xml:space="preserve">
+    <value>Indica la longitud de la regla si es de coeficientes.
+Por defecto uno, debe ser un entero positivo de 32 bits válido.</value>
+  </data>
+  <data name="HelpDivisorVarias" xml:space="preserve">
+    <value>Indica el divisor usado para encontrar su regla de divisibilidad.
+Obligatorio, debe ser una lista de enteros de 64 bits no negativos válidos.</value>
+  </data>
 </root>

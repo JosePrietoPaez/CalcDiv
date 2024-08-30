@@ -34,12 +34,12 @@ namespace ProgramaDivisibilidad {
 			//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
 			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
 			SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
-			var parser = new Parser(with => with.HelpWriter = null);
-			var resultado = parser.ParseArguments<OpcionesDialogo, OpcionesDirecto, OpcionesVarias>(args); //Parsea los argumentos
+			var parser = new Parser(with => with.HelpWriter = null); 
+			var resultado = parser.ParseArguments<OpcionesDirecto, OpcionesVarias, OpcionesDialogo>(args); //Parsea los argumentos
 			resultado
 			.WithParsed(options => {
-				_estadoSalida = SeleccionarModo((IOpciones)options);
 				//Console.Error.WriteLine(options.Dump());
+				_estadoSalida = SeleccionarModo((IOpciones)options);
 			})
 			.WithNotParsed(errors => {
 				_estadoSalida = Salida.ENTRADA_MALFORMADA;

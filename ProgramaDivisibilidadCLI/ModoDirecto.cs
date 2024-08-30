@@ -1,5 +1,6 @@
 ﻿using Operaciones;
 using ProgramaDivisibilidad.Recursos;
+using System.Numerics;
 using static Operaciones.Calculos;
 using static ProgramaDivisibilidad.Recursos.TextoResource;
 
@@ -18,28 +19,27 @@ namespace ProgramaDivisibilidad {
 			OpcionesDirecto flags = (OpcionesDirecto) opciones;
 			_estadoSalida = Salida.CORRECTA;
 			Func<long, long, int, IOpcionesGlobales, (Salida, object?)> generadora = SeleccionarFuncionYAjustarFlags(flags);
-			if (!flags.TipoExtra && (flags.DivisorDirecto < 2 || flags.BaseDirecto < 2 || !SonCoprimos(flags.DivisorDirecto, flags.BaseDirecto))) {
+			if (!flags.TipoExtra && (flags.Divisor < 2 || flags.Base < 2 || !SonCoprimos(flags.Divisor, flags.Base))) {
 				Console.Error.WriteLine(ErrorDivisorCoprimo);
 				Console.Error.WriteLine(ErrorBase);
 				_estadoSalida = Salida.ERROR;
 			} else {
-				if (flags.DatosRegla.Count == 2) flags.Directo = flags.Directo!.Append(1);
-				(_estadoSalida, object? elementoCreado) = generadora(flags.DivisorDirecto, flags.BaseDirecto, flags.LongitudDirecta, flags);
+				(_estadoSalida, object? elementoCreado) = generadora(flags.Divisor, flags.Base, flags.Longitud, flags);
 				string textoResultado = CalcDivCLI.ObjetoAString(elementoCreado, flags.JSON);
 				if (elementoCreado is null) {
 					throw new NullReferenceException(ErrorReglaNula);
 				}
-				CalcDivCLI.EscribirReglaPorConsola(textoResultado, flags.DivisorDirecto, flags.BaseDirecto, flags.LongitudDirecta);
+				CalcDivCLI.EscribirReglaPorConsola(textoResultado, flags.Divisor, flags.Base, flags.Longitud);
 				if (elementoCreado is not ReglaCoeficientes) {
 					//Por si hiciera falta
 				} else {
-					if (!SonCoprimos(flags.DivisorDirecto, flags.BaseDirecto)) {
+					if (!SonCoprimos(flags.Divisor, flags.Base)) {
 						Console.Error.WriteLine(ErrorPrimo);
 					}
 				}
 				if (flags.Dividendo?.Any() ?? false) {
 					Console.Error.WriteLine();
-					AplicarReglaDivisibilidad((IRegla)elementoCreado, flags.Dividendo);
+					AplicarReglaDivisibilidad((IRegla)elementoCreado, flags.DividendoList);
 				}
 			}
 			return _estadoSalida;
@@ -84,8 +84,8 @@ namespace ProgramaDivisibilidad {
 			return (salida, resultado.Item2);
 		}
 
-		private static void AplicarReglaDivisibilidad(IRegla regla, IEnumerable<long> dividendos) {
-			foreach (long dividendo in dividendos) {
+		private static void AplicarReglaDivisibilidad(IRegla regla, IEnumerable<BigInteger> dividendos) {
+			foreach (BigInteger dividendo in dividendos) {
 				Console.Out.WriteLine(regla.AplicarRegla(dividendo));
 			}
 		}

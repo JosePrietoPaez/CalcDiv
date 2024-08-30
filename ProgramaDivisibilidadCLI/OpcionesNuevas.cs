@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using ProgramaDivisibilidad.Recursos;
+using System.Numerics;
 
 namespace ProgramaDivisibilidad {
 
@@ -11,17 +12,17 @@ namespace ProgramaDivisibilidad {
 		[Option("base", MetaValue = "LONG"
 			, HelpText = "HelpBaseDialogo"
 			, ResourceType = typeof(TextoResource))]
-		public long? BaseDialogo { get; set; }
+		public long? Base { get; set; }
 
 		[Option("divisor", MetaValue = "LONG"
 			, HelpText = "HelpDivisorDialogo"
 			, ResourceType = typeof(TextoResource))]
-		public long? DivisorDialogo { get; set; }
+		public long? Divisor { get; set; }
 
 		[Option("length", MetaValue = "INT"
 			, HelpText = "HelpLongitudDialogo"
 			, ResourceType = typeof(TextoResource))]
-		public int? LongitudDialogo { get; set; }
+		public int? Longitud { get; set; }
 
 		[Option("no-loop"
 			, HelpText = "HelpAnularBucle"
@@ -39,7 +40,9 @@ namespace ProgramaDivisibilidad {
 		public bool TipoExtra { get; set; }
 		public bool Todos { get ; set ; }
 		public bool JSON { get; set; }
-		public IEnumerable<long>? Dividendo { get; set; }
+		public IEnumerable<string> Dividendo { get; set; } = [];
+
+		public List<BigInteger> DividendoList => Dividendo.Select(BigInteger.Parse).ToList();
 
 		/// <summary>
 		/// Esta propiedad devuelve si todos los flags, excepto los de valores de diálogo están inactivos.
@@ -51,99 +54,61 @@ namespace ProgramaDivisibilidad {
 	internal class OpcionesDirecto : IOpcionesGlobales {
 
 		/// <summary>
-		/// Esta propiedad indica los argumentos pasados a -d, si no se ha indicado estará vacía.
+		/// Devuelve el divisor pasado por parámetro.
 		/// </summary>
-		[Value(0, MetaName = "arguments", MetaValue = "LONG LONG (INT)"
-			, Min = 2, Max = 3
-			, HelpText = "HelpDirecto"
+		[Value(0, MetaName = "divisor", MetaValue = "LONG"
+			, Required = true
+			, HelpText = "HelpDivisor"
 			, ResourceType = typeof(TextoResource))]
-		public IEnumerable<long>? Directo { get; set; }
+		public long Divisor { get; set; }
 
 		/// <summary>
-		/// Propiedad auxiliar a <see cref="Directo"/>, permite gestionar los elementos como una lista.
+		/// Devuelve la base pasada por parámetro.
 		/// </summary>
-		/// <remarks>
-		/// Para guardar los cambios se debe usar el setter.
-		/// </remarks>
-		public List<long> DatosRegla {
-			get {
-				return Directo!.ToList();
-			}
-			set {
-				Directo = value.AsEnumerable();
-			}
-		}
+		[Value(1, MetaName = "base", MetaValue = "LONG"
+			, Default = 10
+			, HelpText = "HelpBase"
+			, ResourceType = typeof(TextoResource))]
+		public long Base { get; set; } = 10;
 
 		/// <summary>
-		/// Devuelve el primer elemento de <see cref="DatosRegla"/> o <c>-1</c> si es nulo
+		/// Devuelve la longitud pasada por parámetro.
 		/// </summary>
-		public long DivisorDirecto {
-			get {
-				if (DatosRegla is null)
-					return -1;
-				else
-					return DatosRegla.ElementAt(0);
-			}
-		}
-
-		/// <summary>
-		/// Devuelve el segundo elemento de <see cref="DatosRegla"/> o <c>-1</c> si es nulo
-		/// </summary>
-		public long BaseDirecto {
-			get {
-				if (DatosRegla is null)
-					return -1;
-				else
-					return DatosRegla.ElementAt(1);
-			}
-		}
-
-		/// <summary>
-		/// Devuelve el tercer elemento de <see cref="DatosRegla"/> o <c>-1</c> si es nulo
-		/// </summary>
-		public int LongitudDirecta {
-			get {
-				if (DatosRegla is null || DatosRegla.Count() < 3)
-					return -1;
-				else
-					return (int)DatosRegla.ElementAt(2);
-			}
-		}
+		[Value(2, MetaName = "length", MetaValue = "INT"
+			, Default = 1
+			, HelpText = "HelpLongitud"
+			, ResourceType = typeof(TextoResource))]
+		public int Longitud { get; set; } = 1;
 
 		public bool TipoExtra { get; set; }
 		public bool Todos { get; set; }
 		public bool JSON { get; set; }
-		public IEnumerable<long>? Dividendo { get; set; }
+		public IEnumerable<string> Dividendo { get; set; } = [];
+
+		public List<BigInteger> DividendoList => Dividendo.Select(BigInteger.Parse).ToList();
 	}
 
 	[Verb("multiple", false, HelpText = "HelpTextMultiple", ResourceType = typeof(TextoResource))]
 	internal class OpcionesVarias : IOpcionesGlobales {
 
 		/// <summary>
-		/// Esta propiedad indica si la opción -m está activa y cuales.
+		/// Esta propiedad obtiene la información de las reglas para calcularlas.
 		/// </summary>
-		[Value(0, HelpText = "HelpVarias"
-			, Min = 2
-			, Max = 3
+		[Value(0, MetaName = "divisor-base", MetaValue = "[LONG] [LONG]"
+			, Min = 1
+			, Max = 2
+			, HelpText = "HelpVarias"
 			, ResourceType = typeof(TextoResource))]
-		public IEnumerable<string>? VariasReglas { get; set; }
+		public IEnumerable<string> VariasReglas { get; set; } = [""];
 
 		private const char SEPARADOR = ',';
-
 		private long[]? _listaDivisores = null
 			, _listaBases = null;
-		private int? _longitudVarias = null;
 
 		/// <summary>
-		/// Devuelve la lista de divisores pasada por <see cref="VariasReglas"/>.
+		/// Devuelve la lista de divisores de las reglas pasada a multiple
 		/// </summary>
-		/// <remarks>
-		/// Se inicializa una única vez.
-		/// <para>
-		/// Siempre se devuelve una nueva copia para evitar la modificación indirecta.
-		/// </para>
-		/// </remarks>
-		public long[] ListaDivisores {
+		public long[] Divisores { 
 			get {
 				if (_listaDivisores == null) {
 					string[] lista = VariasReglas!.First().Split(SEPARADOR);
@@ -157,21 +122,20 @@ namespace ProgramaDivisibilidad {
 		}
 
 		/// <summary>
-		/// Devuelve la lista de bases pasada por <see cref="VariasReglas"/>.
+		/// Devuelve la lista de bases pasada a multiple
 		/// </summary>
-		/// <remarks>
-		/// Se inicializa una única vez.
-		/// <para>
-		/// Siempre se devuelve una nueva copia para evitar la modificación indirecta.
-		/// </para>
-		/// </remarks>
-		public long[] ListaBases {
+		public long[] Bases {
 			get {
 				if (_listaBases == null) {
-					string[] lista = VariasReglas!.ElementAt(1).Split(SEPARADOR);
-					long[] result = ParsearStringsLong(lista, TextoResource.ErrorBase);
-					_listaBases = [.. result];
-					return result;
+					if (VariasReglas.Count() == 1) {
+						_listaBases = [10];
+						return [10];
+					} else {
+						string[] lista = VariasReglas!.ElementAt(1).Split(SEPARADOR);
+						long[] result = ParsearStringsLong(lista, TextoResource.ErrorBase);
+						_listaBases = [.. result];
+						return result;
+					}
 				} else {
 					return [.. _listaBases];
 				}
@@ -179,26 +143,13 @@ namespace ProgramaDivisibilidad {
 		}
 
 		/// <summary>
-		/// Esta propiedad devuelve el número de coeficientes deseado para las reglas con -m
+		/// Devuelve la longitud de las reglas pasada a multiple
 		/// </summary>
-		public int LongitudesVarias {
-			get {
-				if (_longitudVarias is null) {
-					if (VariasReglas!.Count() == 2) { // Es opcional, así que se pone el valor por defecto
-						_longitudVarias = 1;
-						VariasReglas = VariasReglas!.Append("1");
-					} else {
-						if (int.TryParse(VariasReglas!.ElementAt(2), out int numeroParseado)) {
-							_longitudVarias = numeroParseado;
-						} else {
-							throw new FormatException(TextoResource.ErrorCoeficientes);
-						}
-					}
-				}
-				return _longitudVarias ?? 1;
-			}
-			set => _longitudVarias = value;
-		}
+		[Value(1, MetaName = "length", MetaValue = "INT"
+			, HelpText = "HelpLongitud"
+			, Default = 1
+			, ResourceType = typeof(TextoResource))]
+		public int Longitud { get; set; } = 1;
 
 		private static long[] ParsearStringsLong(string[] numeros, string mensajeError = "") {
 			long[] result = [];
@@ -217,7 +168,9 @@ namespace ProgramaDivisibilidad {
 		public bool TipoExtra { get; set; }
 		public bool Todos { get; set; }
 		public bool JSON { get; set; }
-		public IEnumerable<long>? Dividendo { get; set; }
+		public IEnumerable<string> Dividendo { get; set; } = [];
+
+		public List<BigInteger> DividendoList => Dividendo.Select(BigInteger.Parse).ToList();
 	}
 
 	internal interface IOpcionesGlobales : IOpciones {
@@ -249,11 +202,13 @@ namespace ProgramaDivisibilidad {
 			, ResourceType = typeof(TextoResource))]
 		public bool JSON { get; set; }
 
-		[Option('d', longName:"dividend", MetaValue = "[LONG]"
+		[Option('d', longName: "dividend", MetaValue = "[LONG]"
 			, Separator = ','
 			, HelpText = "HelpDividendo"
 			, ResourceType = typeof(TextoResource))]
-		public IEnumerable<long>? Dividendo { get; set; }
+		public IEnumerable<string> Dividendo { get; set; }
+
+		public List<BigInteger> DividendoList => Dividendo.Select(BigInteger.Parse).ToList();
 
 	}
 }

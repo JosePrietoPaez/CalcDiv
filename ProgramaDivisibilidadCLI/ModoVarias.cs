@@ -1,4 +1,6 @@
-﻿using static ProgramaDivisibilidad.Recursos.TextoResource;
+﻿using Operaciones;
+using ProgramaDivisibilidad.Recursos;
+using static ProgramaDivisibilidad.Recursos.TextoResource;
 
 namespace ProgramaDivisibilidad {
 	class ModoVarias : IModoEjecucion {
@@ -10,7 +12,7 @@ namespace ProgramaDivisibilidad {
 			Func<long, long, int, IOpcionesGlobales, (Salida, object?)> generadora = ModoDirecto.SeleccionarFuncionYAjustarFlags(varias);
 			Func<object?, long, long, int, List<(TextWriter, string)>> consumidora = SeleccionarConsumidora(varias);
 			Func<List<object?>, List<(TextWriter, string)>> final = SeleccionarFinal(varias);
-			return EjectutarVarias(generadora, consumidora, final, varias.ListaDivisores, varias.ListaBases, varias.LongitudesVarias, varias);
+			return EjectutarVarias(generadora, consumidora, final, varias.Divisores, varias.Bases, varias.Longitud, varias);
 		}
 
 		private static Salida EjectutarVarias(Func<long, long, int, IOpcionesGlobales, (Salida, object?)> generadora,
@@ -54,6 +56,15 @@ namespace ProgramaDivisibilidad {
 				funcion = (_,_,_,_) => [(_writerDesecho, string.Empty)];
 			} else {
 				funcion = (o, divisor, @base, longitud) => ReglaConMensaje(CalcDivCLI.ObjetoAString(o), divisor, @base, longitud);
+				if (flags.Dividendo.Any()) {
+					Func<object?, long, long, int, List<(TextWriter, string)>> funcionAuxiliar = funcion;
+					funcion = (o, divisor, @base, longitud) => {
+						var resultado = funcionAuxiliar(o, divisor, @base, longitud);
+						resultado.Add((Console.Out,
+							(o as IRegla)?.AplicarVariosDividendos(flags.DividendoList) ?? ObjetoNuloMensaje));
+						return resultado;
+					};
+				}
 			}
 			return funcion;
 		}
@@ -70,6 +81,16 @@ namespace ProgramaDivisibilidad {
 			Func<List<object?>, List<(TextWriter, string)>> funcion;
 			if (flags.JSON) {
 				funcion = (lista) => [(Console.Out, CalcDivCLI.ObjetoAString(lista, true))];
+				if (flags.Dividendo.Any()) {
+					Func<List<object?>, List<(TextWriter, string)>> funcionAuxiliar = funcion;
+					funcion = (lista) => {
+						var resultado = funcionAuxiliar(lista);
+						foreach (var obj in lista) {
+							resultado.Add((Console.Out, (obj as IRegla)?.AplicarVariosDividendos(flags.DividendoList) ?? ObjetoNuloMensaje));
+						}
+						return resultado;
+					};
+				}
 			} else {
 				funcion = (_) => [(_writerDesecho, string.Empty)];
 			}

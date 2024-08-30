@@ -152,7 +152,7 @@
     <value>La regla recibida está vacía</value>
   </data>
   <data name="MensajeAplicarInicio" xml:space="preserve">
-    <value>Aplicando la regla de divisibilidad de {0}, en base {1} a {2} con {3} coeficientes:</value>
+    <value>Aplicando la regla de divisibilidad de {0} en base {1} a {2} con {3} coeficientes:</value>
   </data>
   <data name="MensajeAplicarSeparar" xml:space="preserve">
     <value>Separamos el número en dos partes, la derecha tendrá longitud {0}:
@@ -235,8 +235,8 @@ Se harán dos iteraciones más antes de parar.</value>
   </data>
   <data name="MensajeAplicarRestaBloques" xml:space="preserve">
     <value>Paso uno: separar el dividendo en grupos de {0} cifras empezando desde las unidades, separando los grupos en posiciones pares de las impares.
-grupos impares: {1}
-grupos pares: {2}</value>
+Grupos impares: {1}
+Grupos pares: {2}</value>
   </data>
   <data name="MensajeAplicarRestaSuma" xml:space="preserve">
     <value>Paso dos: sumar todos los grupos del mismo tipo.
@@ -256,5 +256,14 @@ Grupos: {1}</value>
   </data>
   <data name="MensajeAplicarSumaSuma" xml:space="preserve">
     <value>Paso dos: suma todos los grupos de cifras como números y usa el resultado: {0}</value>
+  </data>
+  <data name="MensajeAplicarDividendoIgual" xml:space="preserve">
+    <value>La regla no cambió el dividendo, {0}, no se puede reducir más con esta regla.</value>
+  </data>
+  <data name="ReglaExplicadaCompuesta" xml:space="preserve">
+    <value>El dividendo será divisible entre {0} si, y solo si, es divisible entre todos sus factores primos elevados a la potencia que le corresponde.</value>
+  </data>
+  <data name="MensajeAplicarInicioCompuesto" xml:space="preserve">
+    <value>Aplicando las reglas de divisibilidad de {0} en base {1} a {2}:</value>
   </data>
 </root>

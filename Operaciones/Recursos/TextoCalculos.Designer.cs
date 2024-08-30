@@ -232,6 +232,24 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string MensajeAplicarCompuestoBucle {
+            get {
+                return ResourceManager.GetString("MensajeAplicarCompuestoBucle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The rule did not change the dividend, {0}, cannot reduce further..
+        /// </summary>
+        public static string MensajeAplicarDividendoIgual {
+            get {
+                return ResourceManager.GetString("MensajeAplicarDividendoIgual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a {0} is divisible by {1}, therefore the original dividend, {2}, also is..
         /// </summary>
         public static string MensajeAplicarFin {
@@ -273,6 +291,15 @@ namespace Operaciones.Recursos {
         public static string MensajeAplicarInicio {
             get {
                 return ResourceManager.GetString("MensajeAplicarInicio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Applying the divisibility rules of {0} in base {1} to {2}:.
+        /// </summary>
+        public static string MensajeAplicarInicioCompuesto {
+            get {
+                return ResourceManager.GetString("MensajeAplicarInicioCompuesto", resourceCulture);
             }
         }
         
@@ -481,6 +508,15 @@ namespace Operaciones.Recursos {
         public static string ReglaExplicadaCifras {
             get {
                 return ResourceManager.GetString("ReglaExplicadaCifras", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The dividend will be divisible by {0} if, and only if, it is divisible by all of its prime factors at their respective powers..
+        /// </summary>
+        public static string ReglaExplicadaCompuesta {
+            get {
+                return ResourceManager.GetString("ReglaExplicadaCompuesta", resourceCulture);
             }
         }
         

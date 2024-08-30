@@ -1,4 +1,5 @@
 ﻿using Operaciones.Recursos;
+using System.Numerics;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -16,9 +17,9 @@ namespace Operaciones {
 		[JsonPropertyName("type")]
 		public abstract CasosDivisibilidad Tipo { get; }
 
-		public virtual string AplicarRegla(long dividendo) {
+		public virtual string AplicarRegla(BigInteger dividendo) {
 			StringBuilder sb = new();
-			long dividendoMenor = dividendo,
+			BigInteger dividendoMenor = dividendo,
 				dividendoActual;
 			int iteracionesRestantes = int.MaxValue; // Se cambiará si el actual es mayor que el menor y hará una cantidad limitada
 			bool saltarBucle = false;
@@ -27,13 +28,17 @@ namespace Operaciones {
 				if (iteracionesRestantes < int.MaxValue) { // Iteraciones después de la primera
 					sb.AppendFormat(TextoCalculos.MensajeAplicarRepeticion, dividendoMenor).AppendLine();
 				}
-				dividendoActual = Math.Abs(ObtenerNuevoDividendo(dividendoMenor, sb));
+				dividendoActual = BigInteger.Abs(ObtenerNuevoDividendo(dividendoMenor, sb));
+				sb.AppendLine();
 				if (iteracionesRestantes == 0) { // No debería haber dos mil millones de iteraciones, forzando a que se haya encontrado un dividendo mayor
 					saltarBucle = true;
 				}
 				if (dividendoActual < dividendoMenor) {
 					dividendoMenor = dividendoActual;
-				} else {
+				} else if (dividendoActual == dividendoMenor) {
+					sb.AppendFormat(TextoCalculos.MensajeAplicarDividendoIgual, dividendoActual).AppendLine();
+					break;
+				} else if (iteracionesRestantes > 2) {
 					iteracionesRestantes = 2;
 					sb.AppendFormat(TextoCalculos.MensajeAplicarMinimoEncontrado, dividendoActual, dividendoMenor).AppendLine();
 				}
@@ -54,7 +59,7 @@ namespace Operaciones {
 		/// </remarks>
 		protected long LimiteTrivialidadEstimado => 2 * Divisor * Base;
 
-		protected void InsertarMensajeBase(StringBuilder sb, long dividendo) {
+		protected void InsertarMensajeBase(StringBuilder sb, BigInteger dividendo) {
 			if (Base != 10) {
 				if (Base <= Calculos.BASE_64_STRING.Length) {
 					sb.AppendFormat(TextoCalculos.MensajeAlfabetoNumericoExito, Base)
@@ -69,7 +74,7 @@ namespace Operaciones {
 			} 
 		}
 
-		protected void InsertarMensajeFin(StringBuilder sb, long dividendo, long equivalente) {
+		protected void InsertarMensajeFin(StringBuilder sb, BigInteger dividendo, BigInteger equivalente) {
 			if (equivalente <= LimiteTrivialidadEstimado) {
 				sb.AppendFormat(TextoCalculos.MensajeAplicarFinPorTamaño, equivalente).AppendLine();
 			} else {
@@ -82,7 +87,7 @@ namespace Operaciones {
 			}
 		}
 
-		protected string LongAStringCondicional(long numero) {
+		protected string LongAStringCondicional(BigInteger numero) {
 			string resultado;
 			if (Base <= Calculos.BASE_64_STRING.Length) {
 				resultado = Calculos.LongToStringFast(numero, Base);
@@ -98,8 +103,8 @@ namespace Operaciones {
 		/// <param name="dividendo">Dividendo que se quiere reducir</param>
 		/// <param name="sb">StringBuilder para guardar los mensajes</param>
 		/// <returns>
-		/// <see cref="long"/> igual de divisible entre <see cref="Divisor"/> que <c>dividendo</c>.
+		/// <see cref="BigInteger"/> igual de divisible entre <see cref="Divisor"/> que <c>dividendo</c>.
 		/// </returns>
-		protected abstract long ObtenerNuevoDividendo(long dividendo, StringBuilder sb);
+		protected abstract BigInteger ObtenerNuevoDividendo(BigInteger dividendo, StringBuilder sb);
 	}
 }

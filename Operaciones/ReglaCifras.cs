@@ -1,4 +1,5 @@
 ﻿using Operaciones.Recursos;
+using System.Numerics;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -40,7 +41,7 @@ namespace Operaciones {
 		public int Cifras => _cifras;
 
 		[JsonPropertyName("allowed-lowest-digits")]
-		public List<long> CasosPermitidos {
+		public List<BigInteger> CasosPermitidos {
 			get {
 				return new(_menoresPermitidos);
 			}
@@ -49,7 +50,7 @@ namespace Operaciones {
 		[JsonIgnore]
 		public string CasosPermitidosString => _stringCifras;
 
-		private readonly List<long> _menoresPermitidos = [0];
+		private readonly List<BigInteger> _menoresPermitidos = [0];
 
 		private readonly string _stringCifras;
 
@@ -63,11 +64,11 @@ namespace Operaciones {
 		[JsonPropertyName("type")]
 		public override CasosDivisibilidad Tipo => CasosDivisibilidad.DIGITS;
 
-		public override string AplicarRegla(long dividendo) {
+		public override string AplicarRegla(BigInteger dividendo) {
 			StringBuilder sb = new();
 			sb.AppendFormat(TextoCalculos.MensajeAplicarCifrasInicio, Divisor, Base, dividendo, Cifras).AppendLine();
 			InsertarMensajeBase(sb, dividendo);
-			long cifrasUsadas = ObtenerNuevoDividendo(dividendo, sb);
+			BigInteger cifrasUsadas = ObtenerNuevoDividendo(dividendo, sb);
 			InsertarMensajeFin(sb, dividendo, cifrasUsadas);
 			return sb.ToString();
 		}
@@ -77,8 +78,8 @@ namespace Operaciones {
 				+ string.Format(TextoCalculos.MensajePosiblesCifras, CasosPermitidosString, Base);
 		}
 
-		protected override long ObtenerNuevoDividendo(long dividendo, StringBuilder sb) {
-			long cifrasUsadas = dividendo % Calculos.PotenciaEntera(Base, Cifras);
+		protected override BigInteger ObtenerNuevoDividendo(BigInteger dividendo, StringBuilder sb) {
+			BigInteger cifrasUsadas = dividendo % Calculos.PotenciaEntera(Base, Cifras);
 			sb.AppendFormat(TextoCalculos.MensajeAplicarCifrasSeparar, Cifras, LongAStringCondicional(cifrasUsadas)).AppendLine();
 			return cifrasUsadas;
 		}

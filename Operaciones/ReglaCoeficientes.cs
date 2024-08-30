@@ -1,5 +1,6 @@
 ﻿using Operaciones.Recursos;
 using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -82,17 +83,17 @@ namespace Operaciones {
 		[JsonPropertyName("type")]
 		public override CasosDivisibilidad Tipo => CasosDivisibilidad.COEFFICIENTS;
 
-		protected override long ObtenerNuevoDividendo(long dividendo, StringBuilder sb) { // Escribe en el sb y devuelve un nuevo dividendo
+		protected override BigInteger ObtenerNuevoDividendo(BigInteger dividendo, StringBuilder sb) { // Escribe en el sb y devuelve un nuevo dividendo
 			sb.AppendFormat(TextoCalculos.MensajeAplicarInicio, Divisor, Base, LongAStringCondicional(dividendo), Longitud).AppendLine();
-			long parteIzquierda = dividendo / Calculos.PotenciaEntera(Base, Longitud),
-				parteDerecha = Calculos.IntervaloCifras(dividendo, Base, 0, (byte)Longitud);
+			BigInteger parteIzquierda = dividendo / Calculos.PotenciaEntera(Base, Longitud),
+				parteDerecha = Calculos.IntervaloCifras(dividendo, Base, 0, Longitud);
 			sb.AppendFormat(TextoCalculos.MensajeAplicarSeparar, Longitud, LongAStringCondicional(parteIzquierda), LongAStringCondicional(parteDerecha))
 				.AppendLine()
 				.AppendLine(TextoCalculos.MensajeAplicarMultiplicarCoeficientes);
 			if (Calculos.Cifras(parteDerecha, Base) < Longitud) {
 				sb.AppendFormat(TextoCalculos.MensajeAplicarParteDerechaPequeña, parteDerecha).AppendLine();
 			}
-			long productoTotal = CalcularNuevoDividendoYPonerEnBuilder(parteDerecha, sb),
+			BigInteger productoTotal = CalcularNuevoDividendoYPonerEnBuilder(parteDerecha, sb),
 				nuevoDividendo = productoTotal + parteIzquierda; // Paso dos
 			sb.AppendLine(TextoCalculos.MensajeAplicarSuma)
 				.AppendLine(LongAStringCondicional(productoTotal) + " + " + LongAStringCondicional(parteIzquierda)
@@ -100,13 +101,13 @@ namespace Operaciones {
 			return nuevoDividendo;
 		}
 
-		private long CalcularNuevoDividendoYPonerEnBuilder(long parteDerecha, StringBuilder sb) {
-			byte indiceCoeficientes = 0;
-			long resultadoProducto = 0;
+		private BigInteger CalcularNuevoDividendoYPonerEnBuilder(BigInteger parteDerecha, StringBuilder sb) {
+			int indiceCoeficientes = 0;
+			BigInteger resultadoProducto = 0;
 			// Se itera al revés por las cifras ya que están en el orden inverso
-			for (byte cifras = Calculos.Cifras(parteDerecha, Base); indiceCoeficientes < cifras - 1; indiceCoeficientes++) {
-				long coeficienteActual = Coeficientes[indiceCoeficientes],
-					cifraActual = Calculos.Cifra(parteDerecha, (byte)(cifras - indiceCoeficientes - 1), Base);
+			for (int cifras = (int)Calculos.Cifras(parteDerecha, Base); indiceCoeficientes < cifras - 1; indiceCoeficientes++) {
+				long coeficienteActual = Coeficientes[indiceCoeficientes];
+				BigInteger cifraActual = Calculos.Cifra(parteDerecha, cifras - indiceCoeficientes - 1, Base);
 				sb.Append(LongAStringCondicional(coeficienteActual) + " * " + LongAStringCondicional(cifraActual) + " + "); // O sea coeficiente * cifra +
 				resultadoProducto += coeficienteActual * cifraActual;
 			}

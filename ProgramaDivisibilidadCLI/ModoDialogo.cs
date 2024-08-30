@@ -11,18 +11,18 @@ namespace ProgramaDivisibilidad {
 
 		private static bool GestionarOpcionesDialogo(OpcionesDialogo flags) {
 			bool saltarPreguntaExtra = flags.TipoExtra;
-			if (flags.BaseDialogo.HasValue && flags.DivisorDialogo.HasValue) {
-				if (!SonCoprimos(flags.BaseDialogo.Value, flags.DivisorDialogo.Value)) {
-					if (!flags.TipoExtra && !flags.FlagsInactivos) throw new ArgumentException(ErrorDivisorCoprimo, nameof(flags.DivisorDialogo));
+			if (flags.Base.HasValue && flags.Divisor.HasValue) {
+				if (!SonCoprimos(flags.Base.Value, flags.Divisor.Value)) {
+					if (!flags.TipoExtra && !flags.FlagsInactivos) throw new ArgumentException(ErrorDivisorCoprimo, nameof(flags.Divisor));
 					flags.TipoExtra = true; // No se pueden usar las de coeficientes, como se cambia después de evaluar para sinFlags, se sigue preguntando
 					saltarPreguntaExtra = true;
 				} else {
-					ArgumentOutOfRangeException.ThrowIfLessThan(flags.BaseDialogo.Value, 2, nameof(flags.BaseDialogo));
-					ArgumentOutOfRangeException.ThrowIfLessThan(flags.DivisorDialogo.Value, 2, nameof(flags.DivisorDialogo));
+					ArgumentOutOfRangeException.ThrowIfLessThan(flags.Base.Value, 2, nameof(flags.Base));
+					ArgumentOutOfRangeException.ThrowIfLessThan(flags.Divisor.Value, 2, nameof(flags.Divisor));
 				}
 			}
-			if (flags.LongitudDialogo.HasValue) {
-				ArgumentOutOfRangeException.ThrowIfLessThan(flags.LongitudDialogo.Value, 1, nameof(flags.LongitudDialogo));
+			if (flags.Longitud.HasValue) {
+				ArgumentOutOfRangeException.ThrowIfLessThan(flags.Longitud.Value, 1, nameof(flags.Longitud));
 			}
 			return saltarPreguntaExtra;
 		}
@@ -59,7 +59,7 @@ namespace ProgramaDivisibilidad {
 					}
 
 					var (Mensaje, Divisor, Base, Longitud) = 
-						FlujoDatosRegla(flags.DivisorDialogo, flags.BaseDialogo, flags.LongitudDialogo, sinFlags, flags);
+						FlujoDatosRegla(flags.Divisor, flags.Base, flags.Longitud, sinFlags, flags);
 
 					CalcDivCLI.EscribirReglaPorConsola(Mensaje + Environment.NewLine, Divisor, Base, Longitud);
 

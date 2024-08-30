@@ -1,4 +1,5 @@
 ﻿using Operaciones.Recursos;
+using System.Numerics;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -55,13 +56,13 @@ namespace Operaciones {
 		[JsonPropertyName("type")]
 		public override CasosDivisibilidad Tipo => CasosDivisibilidad.ADD_BLOCKS;
 
-		protected override long ObtenerNuevoDividendo(long dividendo, StringBuilder sb) {
+		protected override BigInteger ObtenerNuevoDividendo(BigInteger dividendo, StringBuilder sb) {
 			byte bloquesDividendo = (byte)(Calculos.Cifras(dividendo, Base) / Longitud + (Calculos.Cifras(dividendo, Base) % Longitud == 0 ? 0 : 1));
-			long[] bloques = new long[bloquesDividendo];
-			long suma = 0;
+			BigInteger[] bloques = new BigInteger[bloquesDividendo];
+			BigInteger suma = 0;
 			sb.AppendFormat(TextoCalculos.MensajeAplicarRestaInicio, Divisor, Base, dividendo, Longitud).AppendLine();
 			for (byte i = 0; i < bloquesDividendo; i++) {
-				bloques[i] = Calculos.IntervaloCifras(dividendo, Base, (byte)(i * Longitud), (byte)((i + 1) * Longitud));
+				bloques[i] = Calculos.IntervaloCifras(dividendo, Base, i * Longitud, (i + 1) * Longitud);
 				suma += bloques[i];
 			}
 			sb.AppendFormat(TextoCalculos.MensajeAplicarSumaBloques, Longitud

@@ -1,4 +1,5 @@
 ﻿using Operaciones.Recursos;
+using System.Numerics;
 using System.Text.Json.Serialization;
 
 namespace Operaciones {
@@ -32,7 +33,7 @@ namespace Operaciones {
 		[JsonPropertyName("type")]
 		public CasosDivisibilidad Tipo => CasosDivisibilidad.DIVISOR_ZERO;
 
-		public string AplicarRegla(long dividendo) => TextoCalculos.ReglaExplicadaCero;
+		public string AplicarRegla(BigInteger dividendo) => TextoCalculos.ReglaExplicadaCero;
 		public override string ToString() {
 			return ReglaExplicada;
 		}

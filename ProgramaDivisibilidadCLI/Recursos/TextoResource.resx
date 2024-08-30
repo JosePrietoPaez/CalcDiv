@@ -418,4 +418,20 @@ The elements in the same lists are separated by commas.</value>
   <data name="ErrorReglaNula" xml:space="preserve">
     <value>A rule was null when calculated, cannot continue execution.</value>
   </data>
+  <data name="HelpDivisor" xml:space="preserve">
+    <value>Sets the divisor to find its divisibility rule.
+Obligatory, must be a valid 64-bit non-negative integer.</value>
+  </data>
+  <data name="HelpBase" xml:space="preserve">
+    <value>Sets a value for the base the rule will be applied in.
+Defaults to ten, must be greater than one.</value>
+  </data>
+  <data name="HelpLongitud" xml:space="preserve">
+    <value>Sets a value for the length of the rule if it is a coefficient rule.
+Defaults to one, must be a valid positive 32-bit integer.</value>
+  </data>
+  <data name="HelpDivisorVarias" xml:space="preserve">
+    <value>Sets the divisor to find its divisibility rule.
+Obligatory, must be a list of valid 64-bit non-negative integers.</value>
+  </data>
 </root>

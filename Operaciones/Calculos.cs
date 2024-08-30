@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using static System.Math;
 using System.Text;
+using System.Numerics;
 
 namespace Operaciones
 {
@@ -225,6 +226,14 @@ namespace Operaciones
 		/// <summary>
 		/// Calcula el número de cifras de <c>numero</c> en base <c>@base</c>.
 		/// </summary>
+		public static long Cifras(BigInteger numero, long @base) { //El valor máximo será 64 en base 2
+			if (numero == 0) return 1;
+			return (long)Ceiling(BigInteger.Log(BigInteger.Abs(numero) + 1L) / Log(@base));
+		}
+
+		/// <summary>
+		/// Calcula el número de cifras de <c>numero</c> en base <c>@base</c>.
+		/// </summary>
 		public static short Cifras(double numero, double @base) { //El valor máximo será 1024 en base dos, creo
 			if (numero == 0) return 1;
 			return (short)Ceiling(Log(BitIncrement(Abs(numero))) / Log(@base));
@@ -249,10 +258,25 @@ namespace Operaciones
 		/// <returns>
 		/// Cifra <c>pos</c> de <c>numero</c> en base <c>@base</c>
 		/// </returns>
-		public static long Cifra(long numero, byte pos, long @base) {
+		public static long Cifra(long numero, int pos, long @base) {
 			if (pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
 			if (pos >= Cifras(numero, @base)) return 0; //Suponemos que las cifras de la izquierda son 0
 			return Abs(numero) / PotenciaEntera(@base,pos) % @base;	
+		}
+
+		/// <summary>
+		/// Calcula la cifra en la posición <c>pos</c> de <c>numero</c> en base <c>@base</c>.
+		/// </summary>
+		/// <remarks>
+		/// La cifra 0 es la menos significativa.
+		/// </remarks>
+		/// <returns>
+		/// Cifra <c>pos</c> de <c>numero</c> en base <c>@base</c>
+		/// </returns>
+		public static BigInteger Cifra(BigInteger numero, int pos, long @base) {
+			if (pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
+			if (pos >= Cifras(numero, @base)) return 0; //Suponemos que las cifras de la izquierda son 0
+			return BigInteger.Abs(numero) / PotenciaEntera(@base,pos) % @base;
 		}
 
 		/// <summary>
@@ -265,9 +289,24 @@ namespace Operaciones
 		/// <returns>
 		/// Cifras en el intervalo indica
 		/// </returns>
-		public static long IntervaloCifras(long numero, long @base, byte cifraInicio, byte cifraFin) {
+		public static long IntervaloCifras(long numero, long @base, int cifraInicio, int cifraFin) {
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(cifraInicio, cifraFin, nameof(cifraInicio));
 			return Abs(numero) / PotenciaEntera(@base,cifraInicio) % PotenciaEntera(@base, cifraFin - cifraInicio);
+		}
+
+		/// <summary>
+		/// Devuelve un número con las cifras de <c>numero</c> entre las posiciones <c>cifraInicio</c> inclusive y <c>cifraFin</c> no inclusive en la base indicada
+		/// </summary>
+		/// <param name="numero">Número del que se sacarán las cifras</param>
+		/// <param name="base">Base de la que se obtendrán las cifras</param>
+		/// <param name="cifraInicio">Primera cifra que obtener</param>
+		/// <param name="cifraFin">Posición posterior a la última</param>
+		/// <returns>
+		/// Cifras en el intervalo indica
+		/// </returns>
+		public static BigInteger IntervaloCifras(BigInteger numero, long @base, int cifraInicio, int cifraFin) {
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(cifraInicio, cifraFin, nameof(cifraInicio));
+			return BigInteger.Abs(numero) / PotenciaEnteraGrande(@base,cifraInicio) % PotenciaEnteraGrande(@base, cifraFin - cifraInicio);
 		}
 
 		/**
@@ -279,8 +318,8 @@ namespace Operaciones
 			if (numero < 0) {
 				res.Append('₋');
 			}
-			short cifras = Cifras(numero, 10);
-			for (byte i = (byte)cifras; i > 0; i--) {
+			byte cifras = Cifras(numero, 10);
+			for (byte i = cifras; i > 0; i--) {
 				res.Append(CifraASubindice(Cifra(numero, (byte)(i - 1), 10)));
 			}
 			return res.ToString();
@@ -296,17 +335,17 @@ namespace Operaciones
 		/// <remarks>
 		/// Basado en https://stackoverflow.com/a/923814/22934376.
 		/// </remarks>
-		public static string LongToStringFast(long value, char[] baseChars) {
+		public static string LongToStringFast(BigInteger value, char[] baseChars) {
 			// Es 64 para el caso máximo en base 2 y uno más para negativo
-			int i = 65;
-			char[] buffer = new char[i];
 			uint targetBase = (uint)baseChars.Length;
-			bool ponerSigno = value < 0;
+			int cifras = (int)Cifras(value, targetBase) + 1, i = cifras;
+			char[] buffer = new char[i];
+			bool ponerSigno = value.Sign == -1;
 			if (ponerSigno)
-				value = Abs(value); //Para quitarle el signo, jódase el caso máximo
+				value = BigInteger.Abs(value); //Para quitarle el signo, jódase el caso máximo
 
 			do {
-				buffer[--i] = baseChars[value % targetBase];
+				buffer[--i] = baseChars[(int)(value % targetBase)];
 				value /= targetBase;
 			}
 			while (value > 0);
@@ -314,13 +353,13 @@ namespace Operaciones
 			if (ponerSigno)
 				buffer[--i] = '-';
 
-			char[] result = new char[65 - i];
-			Array.Copy(buffer, i, result, 0, 65 - i);
+			char[] result = new char[cifras - i];
+			Array.Copy(buffer, i, result, 0, cifras - i);
 
 			if (targetBase == 10) {
-				return new string(result, 0, 65 - i);
+				return new string(result, 0, cifras - i);
 			}
-			return new string(result, 0, 65 - i)
+			return new string(result, 0, cifras - i)
 			 //Se supone que no debería hacer esto para que vaya rápido, pero necesito poner la base
 			 + '(' + targetBase + ')';
 
@@ -330,12 +369,12 @@ namespace Operaciones
 		/// Sobrecarga que permite poner la base y usa un string predeterminado para las cifras.
 		/// </summary>
 		/// <remarks>
-		/// Para más detalles: <see cref="LongToStringFast(long, char[])"/>
+		/// Para más detalles: <see cref="LongToStringFast(BigInteger, char[])"/>
 		/// <para>
 		/// El máximo de <c>base</c> por defecto es <c>64</c>.
 		/// </para>
 		/// </remarks>
-		public static string LongToStringFast(long value, long @base) => LongToStringFast(value, BASE_64_STRING.ToCharArray()[0..(int)@base]);
+		public static string LongToStringFast(BigInteger value, long @base) => LongToStringFast(value, BASE_64_STRING.ToCharArray()[0..(int)@base]);
 
 		/// <summary>
 		/// Devuelve un string que representa a un <see cref="long"/> en una base arbitraria.
@@ -354,7 +393,29 @@ namespace Operaciones
 		public static string LongToStringNoAlphabet(long value, long @base) {
 			long[] cifras = new long[Cifras(value, @base)];
 			for (byte i = 0; i < cifras.Length; i++) {
-				cifras[i] = Cifra(value, (byte)(cifras.Length - i - 1), @base);
+				cifras[i] = Cifra(value, cifras.Length - i - 1, @base);
+			}
+			return (value < 0 ? "-" : "") + '[' + string.Join(',', cifras) + "](" + @base + ")";
+		}
+
+		/// <summary>
+		/// Devuelve un string que representa a un <see cref="long"/> en una base arbitraria.
+		/// </summary>
+		/// <remarks>
+		/// El formato es: "[Cifra(Longitud),Cifra(Longitud-1),...,Cifra(0)](base)".
+		/// <para>
+		/// Por ejemplo: "[15,12,3,0](16)" para <c>0xFC30</c> y base 16.
+		/// </para>
+		/// </remarks>
+		/// <param name="value"></param>
+		/// <param name="base"></param>
+		/// <returns>
+		/// String equivalente a <c>value</c>, con las cifras en decimal.
+		/// </returns>
+		public static string LongToStringNoAlphabet(BigInteger value, long @base) {
+			BigInteger[] cifras = new BigInteger[Cifras(value, @base)];
+			for (byte i = 0; i < cifras.Length; i++) {
+				cifras[i] = Cifra(value, cifras.Length - i - 1, @base);
 			}
 			return (value < 0 ? "-" : "") + '[' + string.Join(',', cifras) + "](" + @base + ")";
 		}
@@ -483,6 +544,32 @@ namespace Operaciones
 					checked {
 						result *= @base;
 					}
+				}
+				exp >>= 1;
+				@base *= @base;
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// Calcula la potencia de enteros de forma eficiente.
+		/// </summary>
+		/// <remarks>
+		/// <c>exp</c> debe ser positivo.
+		/// <para>
+		/// Obtenido de https://stackoverflow.com/a/2065303/22934376
+		/// </para>
+		/// </remarks>
+		/// <param name="base"></param>
+		/// <param name="exp"></param>
+		/// <returns>
+		/// <c>base</c> ^ <c>exp</c>
+		/// </returns>
+		public static BigInteger PotenciaEnteraGrande(BigInteger @base, long exp) {
+			BigInteger result = 1;
+			while (exp > 0) {
+				if ((exp & 1) != 0) {
+					result *= @base;
 				}
 				exp >>= 1;
 				@base *= @base;

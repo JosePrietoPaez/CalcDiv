@@ -269,4 +269,16 @@ Groups: {1}</value>
   <data name="MensajeAplicarSumaSuma" xml:space="preserve">
     <value>Step two: add all the groups of digits as numbers and use the result: {0}</value>
   </data>
+  <data name="MensajeAplicarDividendoIgual" xml:space="preserve">
+    <value>The rule did not change the dividend, {0}, cannot reduce further.</value>
+  </data>
+  <data name="ReglaExplicadaCompuesta" xml:space="preserve">
+    <value>The dividend will be divisible by {0} if, and only if, it is divisible by all of its prime factors at their respective powers.</value>
+  </data>
+  <data name="MensajeAplicarInicioCompuesto" xml:space="preserve">
+    <value>Applying the divisibility rules of {0} in base {1} to {2}:</value>
+  </data>
+  <data name="MensajeAplicarCompuestoBucle" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
