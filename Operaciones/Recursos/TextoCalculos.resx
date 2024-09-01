@@ -278,7 +278,10 @@ Groups: {1}</value>
   <data name="MensajeAplicarInicioCompuesto" xml:space="preserve">
     <value>Applying the divisibility rules of {0} in base {1} to {2}:</value>
   </data>
-  <data name="MensajeAplicarCompuestoBucle" xml:space="preserve">
-    <value></value>
+  <data name="MensajeAplicarCompuestaFracaso" xml:space="preserve">
+    <value>{0} isn't divisible by all the prime factors of {1}, therefore, it is not divisible by {1}.</value>
+  </data>
+  <data name="MensajeAplicarCompuestaExito" xml:space="preserve">
+    <value>{0} is divisible by all the prime factors of {1}, therefore, it is divisible by {1}.</value>
   </data>
 </root>

@@ -61,8 +61,8 @@ namespace Operaciones {
 		/// <see cref="IRegla"/> del tipo correspondiente.
 		/// </returns>
 		internal static IRegla GenerarReglaPorTipo(CasosDivisibilidad caso, long divisor, long @base, int informacion) => caso switch {
-			CasosDivisibilidad.DIVISOR_ZERO => new ReglaCero(divisor, @base),
-			CasosDivisibilidad.DIVISOR_ONE => new ReglaUno(divisor, @base),
+			CasosDivisibilidad.DIVISOR_ZERO => new ReglaCero(@base),
+			CasosDivisibilidad.DIVISOR_ONE => new ReglaUno(@base),
 			CasosDivisibilidad.COEFFICIENTS when Calculos.SonCoprimos(@base, divisor) => new ReglaCoeficientes(divisor, @base, 1),
 			CasosDivisibilidad.COEFFICIENTS when !Calculos.SonCoprimos(@base, divisor) => new ReglaCompuesta(divisor, @base),
 			CasosDivisibilidad.DIGITS => new ReglaCifras(divisor, @base, informacion),
@@ -71,9 +71,9 @@ namespace Operaciones {
 			_ => throw new NotImplementedException()
 		};
 
-		public static IRegla GenerarReglaPorTipo(long @base, long divisor) {
-			var (caso, informacion) = Calculos.CasoEspecialRegla(@base, divisor);
-			return GenerarReglaPorTipo(caso, @base, divisor, informacion);
+		public static IRegla GenerarReglaPorTipo(long divisor, long @base) {
+			var (caso, informacion) = Calculos.CasoEspecialRegla(divisor, @base);
+			return GenerarReglaPorTipo(caso, divisor, @base, informacion);
 		}
 
 		public string AplicarVariosDividendos(IEnumerable<long> dividendos) {

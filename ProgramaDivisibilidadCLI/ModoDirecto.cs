@@ -29,7 +29,7 @@ namespace ProgramaDivisibilidad {
 				if (elementoCreado is null) {
 					throw new NullReferenceException(ErrorReglaNula);
 				}
-				CalcDivCLI.EscribirReglaPorConsola(textoResultado, flags.Divisor, flags.Base, flags.Longitud);
+				CalcDivCLI.EscribirReglaPorConsola(textoResultado, flags.Divisor, flags.Base);
 				if (elementoCreado is not ReglaCoeficientes) {
 					//Por si hiciera falta
 				} else {

@@ -266,4 +266,10 @@ Grupos: {1}</value>
   <data name="MensajeAplicarInicioCompuesto" xml:space="preserve">
     <value>Aplicando las reglas de divisibilidad de {0} en base {1} a {2}:</value>
   </data>
+  <data name="MensajeAplicarCompuestaFracaso" xml:space="preserve">
+    <value>{0} no es divisible entre todos los factores primos de {1}, por lo tanto, tampoco es divisible entre {1}.</value>
+  </data>
+  <data name="MensajeAplicarCompuestaExito" xml:space="preserve">
+    <value>{0} es divisible entre todos los factores primos de {1}, por lo tanto, también es divisible entre {1}.</value>
+  </data>
 </root>

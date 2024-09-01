@@ -23,7 +23,7 @@ namespace TestCalculadoraIT {
 			,_lectorEntrada;
 		private string[] _args = [];
 
-		private CultureInfo _culturaActual = CultureInfo.CurrentCulture;
+		private readonly CultureInfo _culturaActual = CultureInfo.CurrentCulture;
 
 		[SetUp]
 		public void CambiarEntradaYSalida() {

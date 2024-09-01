@@ -10,12 +10,12 @@ namespace Operaciones {
 	/// <remarks>
 	/// Las reglas de este tipo se pueden aplicar recursivamente.
 	/// </remarks>
-	internal class ReglaSumar : ReglaAplicable {
+	public class ReglaSumar : ReglaAplicable {
 		private readonly long _divisor;
 		private readonly long _base;
 		private readonly int _longitud;
 
-		public ReglaSumar(long divisor, long @base, int longitud) {
+		internal ReglaSumar(long divisor, long @base, int longitud) {
 			ArgumentOutOfRangeException.ThrowIfNegative(longitud, nameof(longitud));
 			ArgumentOutOfRangeException.ThrowIfLessThan(@base, 2, nameof(@base));
 			ArgumentOutOfRangeException.ThrowIfLessThan(divisor, 2, nameof(divisor));

@@ -61,7 +61,7 @@ namespace ProgramaDivisibilidad {
 					var (Mensaje, Divisor, Base, Longitud) = 
 						FlujoDatosRegla(flags.Divisor, flags.Base, flags.Longitud, sinFlags, flags);
 
-					CalcDivCLI.EscribirReglaPorConsola(Mensaje + Environment.NewLine, Divisor, Base, Longitud);
+					CalcDivCLI.EscribirReglaPorConsola(Mensaje + Environment.NewLine, Divisor, Base);
 
 					if (!flags.AnularBucle) {
 						salir = !ObtenerDeUsuario(MensajeDialogoRepetir, esS);

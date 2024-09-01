@@ -136,8 +136,8 @@ namespace ProgramaDivisibilidad {
 		/// <summary>
 		/// Escribe la regla de coeficientes por el <see cref="TextWriter"/> proporcionado
 		/// </summary>
-		internal static void EscribirReglaPorConsola(string reglaCoeficientes, long divisor, long @base, int longitud = 1) {
-			Console.Error.WriteLine(MensajeParametrosDirecto, divisor, @base, longitud);
+		internal static void EscribirReglaPorConsola(string reglaCoeficientes, long divisor, long @base) {
+			Console.Error.WriteLine(MensajeParametrosDirecto, divisor, @base);
 			Console.Out.Write(reglaCoeficientes);
 			Console.Error.WriteLine();
 		}

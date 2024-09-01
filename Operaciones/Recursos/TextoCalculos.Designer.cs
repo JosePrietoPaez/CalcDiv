@@ -232,11 +232,20 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a {0} is divisible by all the prime factors of {1}, therefore, it is divisible by {1}..
         /// </summary>
-        public static string MensajeAplicarCompuestoBucle {
+        public static string MensajeAplicarCompuestaExito {
             get {
-                return ResourceManager.GetString("MensajeAplicarCompuestoBucle", resourceCulture);
+                return ResourceManager.GetString("MensajeAplicarCompuestaExito", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} isn&apos;t divisible by all the prime factors of {1}, therefore, it is not divisible by {1}..
+        /// </summary>
+        public static string MensajeAplicarCompuestaFracaso {
+            get {
+                return ResourceManager.GetString("MensajeAplicarCompuestaFracaso", resourceCulture);
             }
         }
         

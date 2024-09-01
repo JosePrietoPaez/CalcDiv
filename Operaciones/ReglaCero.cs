@@ -9,15 +9,10 @@ namespace Operaciones {
 	/// <remarks>
 	/// Las reglas de este tipo no se pueden aplicar.
 	/// </remarks>
-	internal class ReglaCero : IRegla {
-		private readonly long divisor;
+	public class ReglaCero : IRegla {
 		private readonly long @base;
 
-		public ReglaCero(long divisor, long @base) {
-			if (divisor != 0) {
-				throw new ArgumentException(TextoCalculos.ReglaConstructorRestriccionCero, nameof(divisor));
-			}
-			this.divisor = divisor;
+		internal ReglaCero(long @base) {
 			this.@base = @base;
 		}
 
@@ -28,7 +23,7 @@ namespace Operaciones {
 		public long Base => @base;
 
 		[JsonPropertyName("divisor")]
-		public long Divisor => divisor;
+		public long Divisor => 0;
 
 		[JsonPropertyName("type")]
 		public CasosDivisibilidad Tipo => CasosDivisibilidad.DIVISOR_ZERO;

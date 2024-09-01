@@ -15,7 +15,7 @@ namespace Operaciones {
 		private readonly long _divisor, _base;
 		private readonly int _cifras;
 
-		public ReglaCifras(long divisor, long @base, int cifras) {
+		internal ReglaCifras(long divisor, long @base, int cifras) {
 			ArgumentOutOfRangeException.ThrowIfLessThan(divisor, 1);
 			ArgumentOutOfRangeException.ThrowIfLessThan(@base, 2);
 			ArgumentOutOfRangeException.ThrowIfLessThan(cifras, 1);

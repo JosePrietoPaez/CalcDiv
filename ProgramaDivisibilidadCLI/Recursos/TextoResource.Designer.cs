@@ -565,7 +565,7 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Divisor: {0}, Base: {1}, Length: {2}..
+        ///   Busca una cadena traducida similar a Divisor: {0}, Base: {1}..
         /// </summary>
         public static string MensajeParametrosDirecto {
             get {

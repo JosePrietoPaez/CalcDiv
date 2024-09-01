@@ -56,11 +56,20 @@ namespace Operaciones {
 		}
 
 		public override string AplicarRegla(BigInteger dividendo) {
+			BigInteger dividendoOriginal = dividendo;
 			StringBuilder sb = new();
 			InsertarMensajeBase(sb, dividendo);
-			foreach (var regla in _reglas) {
+			bool salirBucle = false;
+			for (int i = 0; i < _reglas.Count && !salirBucle; i++) {
+				IRegla regla = _reglas[i];
 				sb.AppendLine(regla.AplicarRegla(dividendo));
+				salirBucle = (dividendo % regla.Divisor) != 0;
 				dividendo /= regla.Divisor;
+			}
+			if (salirBucle) {
+				sb.AppendFormat(TextoCalculos.MensajeAplicarCompuestaFracaso, LongAStringCondicional(dividendoOriginal), _divisor).AppendLine();
+			} else {
+				sb.AppendFormat(TextoCalculos.MensajeAplicarCompuestaExito, LongAStringCondicional(dividendoOriginal), _divisor).AppendLine();
 			}
 			return sb.ToString();
 		}

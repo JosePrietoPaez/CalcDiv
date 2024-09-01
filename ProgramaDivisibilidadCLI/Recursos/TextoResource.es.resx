@@ -153,7 +153,7 @@ Ejecute este programa con la opción -x o actívela en el diálogo para obtener 
     <value>Se ha detectado el mensaje de salida, se ha detenido el programa.</value>
   </data>
   <data name="MensajeParametrosDirecto" xml:space="preserve">
-    <value>Divisor: {0}, Base: {1}, Longitud: {2}.</value>
+    <value>Divisor: {0}, Base: {1}.</value>
   </data>
   <data name="MensajeFinDirecto" xml:space="preserve">
     <value>Se ha calculado la regla.</value>

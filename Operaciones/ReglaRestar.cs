@@ -14,7 +14,7 @@ namespace Operaciones {
 		private readonly long _divisor, _base;
 		private readonly int _longitud;
 
-		public ReglaRestar(long divisor, long @base, int longitud) {
+		internal ReglaRestar(long divisor, long @base, int longitud) {
 			ArgumentOutOfRangeException.ThrowIfNegative(longitud, nameof(longitud));
 			ArgumentOutOfRangeException.ThrowIfLessThan(@base, 2, nameof(@base));
 			ArgumentOutOfRangeException.ThrowIfLessThan(divisor, 2, nameof(divisor));

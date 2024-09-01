@@ -481,7 +481,7 @@ namespace Operaciones
 			List<ReglaCoeficientes> reglas = new(iteracionesMaximas) {
 				new(divisor, @base, reglaInicial)
 			};
-			Func<long, long, bool, long> restaCondicional = (coeficiente, divisorResta, resta) => resta ? coeficiente - divisorResta : coeficiente;
+			static long restaCondicional(long coeficiente, long divisorResta, bool resta) => resta ? coeficiente - divisorResta : coeficiente;
 			OperacionesListas.IncrementarArray(producto); //Como el primero ya está se incrementa
 			do {
 				for (int i = 0; i < reglaInicial.Count; i++) {
@@ -666,7 +666,7 @@ namespace Operaciones
 			while (descomposicionDivisor.Count < descomposicionRaiz.Count)
 				descomposicionDivisor.Add(0);
 
-			var tuplaCaso = ProductoDePotenciasDeBases(descomposicionDivisor, descomposicionRaiz, @base);
+			var tuplaCaso = ProductoDePotenciasDeBases(descomposicionDivisor, descomposicionRaiz);
 
 			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.DIGITS, tuplaCaso.dato);
 			tuplaCaso = UnoMenosQuePotencia(divisor, @base);
@@ -718,7 +718,7 @@ namespace Operaciones
 			return (restoUno, potencia);
 		}
 
-		private static (bool cumpleCondicion,int dato) ProductoDePotenciasDeBases(List<long> divisor, List<long> @base, long valorRaiz) {
+		private static (bool cumpleCondicion,int dato) ProductoDePotenciasDeBases(List<long> divisor, List<long> @base) {
 			if (@base.Count == 0) return (false, -1);
 			int maxPotencia = 0;
 			for (int i = 0; i < Min(divisor.Count,@base.Count); i++) { //Comprueba que todos los valores de divisor estén en @base

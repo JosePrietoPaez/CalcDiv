@@ -19,7 +19,7 @@ namespace Operaciones {
 
 		public virtual string AplicarRegla(BigInteger dividendo) {
 			StringBuilder sb = new();
-			BigInteger dividendoMenor = dividendo,
+			BigInteger dividendoMenor = BigInteger.Abs(dividendo),
 				dividendoActual;
 			int iteracionesRestantes = int.MaxValue; // Se cambiará si el actual es mayor que el menor y hará una cantidad limitada
 			bool saltarBucle = false;

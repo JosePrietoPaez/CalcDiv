@@ -1,5 +1,4 @@
 ﻿using Operaciones;
-using ProgramaDivisibilidad.Recursos;
 using static ProgramaDivisibilidad.Recursos.TextoResource;
 
 namespace ProgramaDivisibilidad {
@@ -73,7 +72,7 @@ namespace ProgramaDivisibilidad {
 		/// Devuelve una lista con strings y los writers por los que deben ser escritos.
 		/// </summary>
 		internal static List<(TextWriter, string)> ReglaConMensaje(string reglaCoeficientes, long divisor, long @base, int longitud = 1) {
-			return [(Console.Error, string.Format(MensajeParametrosDirecto, divisor, @base, longitud))
+			return [(Console.Error, string.Format(MensajeParametrosDirecto, divisor, @base))
 				, (Console.Out, reglaCoeficientes)];
 		}
 

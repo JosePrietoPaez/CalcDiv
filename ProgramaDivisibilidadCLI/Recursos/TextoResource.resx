@@ -156,7 +156,7 @@ Run this program with the option-x to obtain a different type of rule, or activa
     <comment>Shown when the user sends the exit sequence in dialog mode</comment>
   </data>
   <data name="MensajeParametrosDirecto" xml:space="preserve">
-    <value>Divisor: {0}, Base: {1}, Length: {2}.</value>
+    <value>Divisor: {0}, Base: {1}.</value>
     <comment>The parameters are the arguments passed to the -d flag</comment>
   </data>
   <data name="MensajeFinDirecto" xml:space="preserve">

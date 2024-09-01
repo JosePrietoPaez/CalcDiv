@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace TestCalculadora {
+namespace TestReglas {
 
 	[TestFixture]
 	internal class ReglaCoeficientesTests {

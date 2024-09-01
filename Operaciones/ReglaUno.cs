@@ -9,26 +9,21 @@ namespace Operaciones {
 	/// <remarks>
 	/// Las reglas de este tipo no necesitan usarse, pero existen para que haya consistencia.
 	/// </remarks>
-	internal class ReglaUno : IRegla {
-		private readonly long divisor;
-		private readonly long @base;
+	public class ReglaUno : IRegla {
+		private readonly long _base;
 
-		public ReglaUno(long divisor, long @base) {
-			if (divisor != 1) {
-				throw new ArgumentException(TextoCalculos.ReglaConstructorRestriccionCero, nameof(divisor));
-			}
-			this.divisor = divisor;
-			this.@base = @base;
+		internal ReglaUno(long @base) {
+			_base = @base;
 		}
 
 		[JsonPropertyName("rule-explained")]
 		public string ReglaExplicada => TextoCalculos.ReglaExplicadaUno;
 
 		[JsonPropertyName("base")]
-		public long Base => @base;
+		public long Base => _base;
 
 		[JsonPropertyName("divisor")]
-		public long Divisor => divisor;
+		public long Divisor => 1;
 
 		[JsonPropertyName("type")]
 		public CasosDivisibilidad Tipo => CasosDivisibilidad.DIVISOR_ONE;
