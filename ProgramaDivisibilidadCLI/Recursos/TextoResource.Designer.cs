@@ -141,6 +141,15 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Find rule for seven in base twelve, using two coefficients..
+        /// </summary>
+        public static string EjemploReglaUno {
+            get {
+                return ResourceManager.GetString("EjemploReglaUno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The base must be an integer greater than one..
         /// </summary>
         public static string ErrorBase {

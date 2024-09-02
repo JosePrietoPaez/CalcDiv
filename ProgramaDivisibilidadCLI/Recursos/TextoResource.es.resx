@@ -428,4 +428,7 @@ Por defecto uno, debe ser un entero positivo de 32 bits válido.</value>
     <value>Indica el divisor usado para encontrar su regla de divisibilidad.
 Obligatorio, debe ser una lista de enteros de 64 bits no negativos válidos.</value>
   </data>
+  <data name="EjemploReglaUno" xml:space="preserve">
+    <value>Encontrar la regla de siete en base doce, usando dos coeficientes.</value>
+  </data>
 </root>

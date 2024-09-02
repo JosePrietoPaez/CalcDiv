@@ -155,7 +155,7 @@
     <value>Aplicando la regla de divisibilidad de {0} en base {1} a {2} con {3} coeficientes:</value>
   </data>
   <data name="MensajeAplicarSeparar" xml:space="preserve">
-    <value>Separamos el número en dos partes, la derecha tendrá longitud {0}:
+    <value>Paso uno: separar el número en dos partes, la derecha tendrá longitud {0}:
 Izquierda: {1}
 Derecha: {2}</value>
   </data>

@@ -67,11 +67,11 @@ Para aprender a usar *CalcDiv* usaremos un ejemplo:
 
 Veremos si 12735, en base 10, es divisible entre 7, usando 2 coeficientes.
 
-Podríamos ejecutar la aplicación sin argumentos e introducir estos datos en el diálogo,
-u obtener el resultado directamente con la opción `--direct-output`, o también `-d`.
+Podríamos ejecutar la aplicación sin argumentos e introducir estos datos en el diálogo con el verbo `dialog`,
+u obtener el resultado directamente con el verbo `single`.
 
 Tendremos que ejecutar el siguiente comando, suponiendo que el nombre del ejecutable es `CalcDivCLI.exe` y no se modifica:
-`CalcDivCLI.exe --direct-output 7 10 2`, o podemos usar `-d` para abreviar.
+`CalcDivCLI.exe single 7 10 2`, o podemos omitir `single` para abreviar.
 
 7 es el divisor, 10 es la base y 2 la cantidad de coeficientes.
 
@@ -97,6 +97,23 @@ Volvemos a aplicar la regla, esta vez para 106:
 Trivialmente, -17, en base 10, no es divisible entre 7.
 Por lo tanto, ni 106 ni 12735, el dividendo original, lo son.
 
+Se puede obtener una explicación parecida a esta usando la opción `--dividend`, o `-d`, seguida por los números con los que se quiere probar, por ejemplo: `-d 483,-123`
+
+Hay muchas opciones como `-d` que se pueden usar para cambiar los resultados o su representación
+, vea la ayuda usando el verbo `help`, seguido del verbo del que quiere obtener información.
+
+Verbos disponibles:
+
+ - `single`(por defecto): busca una única regla de divisibilidad usando los argumentos del comando.
+
+	- Argumentos: `divisor (base del dividendo, diez por defecto) (longitud de la regla, solo si no se usa -x, uno por defecto)`
+
+ - `multiple`: busca una regla para cada combinación de divisores y bases.
+
+	- Argumentos: `divisor([,divisores siguientes]) (base[,bases siguientes], un único diez por defecto) (longitud, igual que con single)`
+
+ - `dialog`: pide los argumentos y las opciones por la entrada estándar en lugar del comando.
+
 ---
 
 ## Datos sobre *CalcDiv*
@@ -111,6 +128,8 @@ Sacamos un 7 de 10, así que, fue bien, dadas las circunstancias.
 
 Tras la version 0.1 he estado refactorizando muchas partes del código para facilitar su mantenimiento y desarrollo.
 
-Mis planes para características futuras son más pequeñas que las introducidas en la versión 0.3, y seguiré refactorizando el código, ya que hay muchas partes que tienen problemas.
+Por ahora no tengo planes concretos para la versión 0.5, la 0.4 ha acabado expandiéndose mucho más de lo que esperaba.
+
+Probablemente lance la primera versión finalizada, ya que todas las características que esperaba añadir están en la 0.4, pero no prometo nada.
 
 Quiero crear una versión GUI de la aplicación, parecida a lo que creé en Java.

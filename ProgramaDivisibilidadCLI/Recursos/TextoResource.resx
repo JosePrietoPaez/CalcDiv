@@ -434,4 +434,7 @@ Defaults to one, must be a valid positive 32-bit integer.</value>
     <value>Sets the divisor to find its divisibility rule.
 Obligatory, must be a list of valid 64-bit non-negative integers.</value>
   </data>
+  <data name="EjemploReglaUno" xml:space="preserve">
+    <value>Find rule for seven in base twelve, using two coefficients.</value>
+  </data>
 </root>

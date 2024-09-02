@@ -71,10 +71,11 @@ To learn how to use *CalcDiv* and apply rules, we will use an example:
 
 We will test 12735, in base ten, for divisibility with 7, using 2 coefficients.
 
-We could run CalcDivCLI and enter these arguments during dialog, or run it with the `--direct-output` option to avoid this dialog, also `-d`.
+We could run CalcDivCLI and enter these arguments during dialog using the `dialog` verb
+, or run it with the `single` verb to avoid this dialog.
 
 We will need to run the following command, assuming the name of the executable is `CalcDivCLI.exe` and is not changed:
-`CalcDivCLI.exe --direct-output 7 10 2`, or use `-d` instead.
+`CalcDivCLI.exe single 7 10 2`, or omit `single`.
 
 7 is the divisor, 10 is the base, and 2 is the amount of coefficients.
 
@@ -100,6 +101,23 @@ We would need to use the rule for 106 this time, we repeat the same process:
 Trivially, -17, in base 10, is not divisible by 7.
 Therefore, neither is 106 nor 12735, the original dividend.
 
+An explanation similar to this one can be obtained for rules obtained using the `--dividend`, or `-d`, option followed by the numbers you want to test separated by commas, like: `-d 483,-123`
+
+There are many options like `-d` that can be used to obtain different results or change its representation
+, see the in-app help for more details using the `help` verb, followed by the verb you want to find help for.
+
+Available verbs:
+
+ - `single`(default): finds a single divisibility rule for the given arguments.
+
+	- Arguments: `divisor (base of the dividend, defaults to ten) (length of the rule, used if -x is not specified, defaults to one)`
+
+ - `multiple`: finds a rule for every combination of the divisors and bases arguments.
+
+	- Arguments: `divisor([,following divisors]) (base[,following bases], defaults to a single ten) (length, same as single)`
+
+ - `dialog`: asks for arguments and options from the standard input and returns a rule until stopped.
+
 ---
 
 ## Something about *CalcDiv*'s development
@@ -111,12 +129,12 @@ For this I finished version 0.1, this gave me the motivation to continue develop
 
 We got a 7 out of 10, so I guess it went well.
 
-There are many options like `-d` that can be used to obtain different results or change its representation, see the in-app help for more details.
-
 ## About the future of *CalcDiv*
 
 Since version 0.1 I have refactored many parts of the code, making it easier to maintain and develop.
 
-My plans for future features are smaller than those of version 0.3, and I will continue to refactor the application since there are still many problems that should have been addressed already.
+I don't currently have plans for the following 0.5 version, 0.4 has expanded a lot more than I expected.
+
+I might jump to a full release given that all the important features are in 0.4, but I can't guarantee anything.
 
 I want to make a GUI application from the CLI version, similar to what I did in Java, however that version has stopped working for some reason.

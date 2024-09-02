@@ -1,12 +1,22 @@
 ﻿using CommandLine;
+using CommandLine.Text;
 using ProgramaDivisibilidad.Recursos;
 using System.Numerics;
 
 namespace ProgramaDivisibilidad {
 
-	internal interface IOpciones {}
+	internal interface IOpciones {
+		[Usage(ApplicationAlias = "CalcDiv.exe")]
+		public static IEnumerable<Example> Examples {
+			get {
+				return [
+					new(TextoResource.EjemploReglaUno, new OpcionesDirecto {Base = 12, Divisor = 7, Longitud = 2})
+				]; 
+			}
+		}
+	}
 
-	[Verb("dialog", true, HelpText = "HelpVerbDialog", ResourceType = typeof(TextoResource))]
+	[Verb("dialog", false, HelpText = "HelpVerbDialog", ResourceType = typeof(TextoResource))]
 	internal class OpcionesDialogo : IOpcionesGlobales {
 
 		[Option("base", MetaValue = "LONG"
@@ -50,7 +60,7 @@ namespace ProgramaDivisibilidad {
 		public bool FlagsInactivos => !(DialogoSencillo || JSON || TipoExtra || Todos);
 	}
 
-	[Verb("single", false, HelpText = "HelpVerbSingle", ResourceType = typeof(TextoResource))]
+	[Verb("single", true, HelpText = "HelpVerbSingle", ResourceType = typeof(TextoResource))]
 	internal class OpcionesDirecto : IOpcionesGlobales {
 
 		/// <summary>
