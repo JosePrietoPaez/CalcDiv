@@ -13,7 +13,7 @@ namespace TestCalculadoraIT {
 	/// No son unitarias, ya que se prueba la salida del método main, que involucra varias clases
 	/// </remarks>
 	[TestFixture]
-	internal class ITCalculadoraDivisibilidadCLI {
+	internal class ITCalcDivCLI {
 
 		private TextWriter _salidaOriginal
 			,_escritorSalida
@@ -43,7 +43,7 @@ namespace TestCalculadoraIT {
 
 		[Test(Description = "Al llamar a la calculadora en modo directo con base y divisor coprimos devuelve la regla por consola")]
 		public void Calculadora_Directo_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
-			_args = ["single","7","10","4"];
+			_args = ["single","7","10","--length","4"];
 			ReglaCoeficientes regla = Calculos.ReglaDivisibilidadOptima(7, 4, 10);
 
 			int salida = CalcDivCLI.Main(_args);
@@ -59,7 +59,7 @@ namespace TestCalculadoraIT {
 
 		[Test(Description = "Al llamar a la calculadora en modo directo con -j con base y divisor coprimos devuelve la regla por consola en JSON")]
 		public void Calculadora_DirectoJSON_ArgumentosCorrectos_SalidaCeroJSONCorrectoYUnaRegla() {
-			_args = ["single", "17", "10", "3", "-j"];
+			_args = ["single", "17", "10","--length", "3", "-j"];
 			long @base = 10, divisor = 17;
 			int coeficientes = 3;
 			ReglaCoeficientes regla = Calculos.ReglaDivisibilidadOptima(divisor, coeficientes, @base);
@@ -82,34 +82,9 @@ namespace TestCalculadoraIT {
 			});
 		}
 
-		[Test(Description = "Al llamar a la calculadora en modo directo con -j y -a con base y divisor coprimos devuelve todas las reglas por consola en JSON")]
-		public void Calculadora_DirectoTodosJSONNombre_ArgumentosCorrectos_SalidaCeroJSONCorrectoYTodasLasReglas() {
-			_args = ["single", "-aj", "17", "5", "3"];
-			long @base = 5, divisor = 17;
-			int coeficientes = 3;
-			List<ReglaCoeficientes> reglas = Calculos.ReglasDivisibilidad(divisor, coeficientes, @base);
-			JsonNode nodo = new JsonObject();
-
-			int salida = CalcDivCLI.Main(_args);
-
-			Assert.DoesNotThrow(() => nodo = JsonNode.Parse(_escritorSalida.ToString()));
-			Assert.Multiple(() => {
-				Assert.That(salida, Is.Zero);
-				Assert.That(nodo, Is.Not.Null);
-				for (int i = 0; i < reglas.Count; i++) {
-					JsonNode regla = nodo[i]!;
-					Assert.That((long?)regla["base"], Is.EqualTo(@base));
-					Assert.That((long?)regla["divisor"], Is.EqualTo(divisor));
-					for (int j = 0; j < reglas[0].Longitud; j++) {
-						Assert.That((long)regla["coefficients"][j]!, Is.EqualTo(reglas[i].Coeficientes[j]));
-					}
-				}
-			});
-		}
-
 		[Test(Description = "Al llamar a la calculadora en modo directo con datos no numéricos devuelve una pantalla de error y 2")]
 		public void Calculadora_Directo_ArgumentosInvalidos_SalidaDosYError() {
-			_args = ["single", "sd", "5", "3"];
+			_args = ["single", "-sd", "5", "3"];
 
 			int salida = CalcDivCLI.Main(_args);
 
@@ -151,25 +126,9 @@ namespace TestCalculadoraIT {
 			});
 		}
 
-		[Test(Description = "Al llamar a la calculadora en modo directo con base y divisor coprimos devuelve la regla por consola")]
-		public void Calculadora_DirectoTodos_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
-			_args = ["single", "-a", "5", "13", "5"];
-			List<ReglaCoeficientes> regla = Calculos.ReglasDivisibilidad(5, 5, 13); //Genera 2^cantidad reglas
-			string[] lineasReglas = ReglasToArray(regla);
-
-			int salida = CalcDivCLI.Main(_args);
-
-			string[] lineasResultado = LineasDeWriter(_escritorSalida);
-			Assert.Multiple(() => {
-				Assert.That(lineasResultado[0..32], Is.EqualTo(lineasReglas)); //La segunda porque primero se escriben los argumentos 
-				Assert.That(lineasResultado, Has.Length.EqualTo(lineasReglas.Length));
-				Assert.That(salida, Is.Zero);
-			});
-		}
-
 		[Test(Description = "Al llamar con -m y dos strings de longs separados por comas, todos coprimos entre sí, devuelve todas las reglas de divisibilidad")]
 		public void Calculadora_VariasReglas_ArgumentosValidos_DevuelveTodasLasReglasYCero() { //Se comprueba la salida en otra prueba
-			_args = ["multiple", "3,7,11,101", "10,20", "3"];
+			_args = ["multiple", "3,7,11,101", "10,20", "--length", "3"];
 			int longitudEsperada = 9; // Ocho de las reglas y otro más
 
 			int salida = CalcDivCLI.Main(_args);
@@ -183,7 +142,7 @@ namespace TestCalculadoraIT {
 
 		[Test(Description = "Al llamar con -m y dos strings de longs separados por comas, todos coprimos entre sí, devuelve todas las reglas de divisibilidad")]
 		public void Calculadora_VariasReglas_ArgumentosParcialmenteCoprimos_DevuelveTodasLasReglasPosiblesYCinco() { //Se comprueba la salida en otra prueba
-			_args = ["multiple", "3,7,11,101,20,10", "10,20", "3"];
+			_args = ["multiple", "3,7,11,101,20,10", "10,20", "--length", "3"];
 			int longitudEsperada = 9;
 
 			int salida = CalcDivCLI.Main(_args);
@@ -197,7 +156,7 @@ namespace TestCalculadoraIT {
 
 		[Test(Description = "Al llamar con -m y dos strings de longs separados por comas, todos coprimos entre sí, devuelve todas las reglas de divisibilidad")]
 		public void Calculadora_VariasReglas_ArgumentosNoCoprimos_NoDevuelveReglasYSeis() { //Se comprueba la salida en otra prueba
-			_args = ["multiple", "2,4,5,10", "10,20", "3"];
+			_args = ["multiple", "2,4,5,10", "10,20", "--length", "3"];
 
 			int salida = CalcDivCLI.Main(_args);
 
@@ -207,24 +166,10 @@ namespace TestCalculadoraIT {
 			});
 		}
 
-		[Test(Description = "Al llamar con -m y dos strings de longs separados por comas, todos coprimos entre sí, devuelve todas las reglas de divisibilidad")]
-		public void Calculadora_VariasReglasTodas_ArgumentosParcialmenteCoprimos_DevuelveTodasLasReglasPosiblesYCinco() {
-			_args = ["multiple", "-a", "3,7,101,20", "10,20", "3"];
-			int longitudEsperada = 49;
-
-			int salida = CalcDivCLI.Main(_args);
-
-			string[] lineasResultado = LineasDeWriter(_escritorSalida);
-			Assert.Multiple(() => {
-				Assert.That(salida, Is.EqualTo(5));
-				Assert.That(lineasResultado, Has.Length.EqualTo(longitudEsperada));
-			});
-		}
-
 		[Test]
 		public void Calculadora_VariasJSON_ArgumentosParcialmenteCorrectos_DevuelveLasCorrectasJSONCorrectoYCinco() {
 			int[] divisores = [3, 7, 101, 20], bases = [10, 13];
-			_args = ["multiple", "-j", "3,7,101,20", "10,13", "3"];
+			_args = ["multiple", "-j", "3,7,101,20", "10,13", "--length", "3"];
 			JsonArray jsonReglas = [];
 			List<ReglaCoeficientes> reglas = [];
 			foreach (int i in divisores) {
@@ -251,7 +196,7 @@ namespace TestCalculadoraIT {
 		[Test]
 		public void Calculadora_VariasExtraJSON_ArgumentosCorrectos_DevuelveJSONCorrectoYCero() {
 			int[] divisores = [0, 1, 2, 7, 9], bases = [10];
-			_args = ["multiple", "-xj", "0,1,2,7,9", "10", "3"];
+			_args = ["multiple", "-xj", "0,1,2,7,9", "10", "--length", "3"];
 			JsonArray jsonReglas = [];
 			List<ReglaCoeficientes> reglas = [];
 			foreach (int i in divisores) {

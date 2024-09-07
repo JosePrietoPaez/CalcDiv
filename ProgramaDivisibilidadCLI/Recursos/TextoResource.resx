@@ -277,37 +277,28 @@ Two numbers are coprime if their greatest common divisor is greater than one.</v
   <data name="Ayuda" xml:space="preserve">
     <value>CalcDivCLI Help:
 
-- Usage: CalcDivCLI.exe [-&lt;short option name&gt;|--&lt;long option name&gt; [&lt;mandatory arguments ...&gt; [&lt;optional arguments&gt;...]]
-
-Example: *CalcDiv.exe --json --direct-output 7 10 --named-rule Nombre*
-Equivalent to: *CalcDiv.exe -jd 7 10 -n Nombre*
-Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and outputs it in JSON.
-
-- Program options, can be concatenated after a dash: *CalcDiv.exe -ajd 3 4 1* o *CalcDiv.exe -H*, use --help for further info.
-
--H: shows this message, ignores other options.
--h: shows a summary of this message, ignores other options.
--d: allows for the arguments to be passed in the command line instead of keyboard input. 2 or 3 arguments are passed: the divisor, base and optionally the rule length.
--a: writes all possible rules using the given rule length, the coefficients' absolute value will be lower than the divisor.
--j: outputs the rule in JSON, unless -x is used.
--x: outputs a different rule, also explains how to apply said rule. Possible cases are similar to the rules of 0, 1, 2, 3 and 11.
--m: receives divisors and bases separated by commas and returns all the rules of every divisor,base pair. May also receive the length of the rules.
-
-All arguments and options must be valid.
-Options with arguments must not be followed by another option in the same combination, for example *CalcDivCLI.exe -na Nombre* is invalid, but the combination -an Nombre is valid.
-
-This program calculates divisibility rules of the given integers for any integer base larger than one.
-Rules are usually expressed as a list of coefficients, these are multiplied to the digits in the same position of a number, these products are added together and this sum is added to the rest of the digits.
-This rule is applied to the resulting number until we can see that it is a multiple of the divisor.
-The length of a rule can be given as an argument if -d is used without -x.
-
-To better understand we will apply the rule [-2, -3], obtained from the divisor 7 and base 10 on the number 1234.
-
--First, we multiply 3 by -3 and 4 by -2, we get -6 and -12.
--After that, we add these products to the rest of the number, in this case 12. The result is -6.
-
-Trivially, -6 is not a multiple of 7, therefore 1234 cannot be a multiple of 7.
-If we cannot determine whether the number is a multiple of the divisor, we apply the rule to the number we obtain until we can.
+- Program options per verb: use --help for information on the available verbs.
+    * General options, except for manual:
+        * -j, --json: Outputs the rule as JSON.
+        * -d, --dividend: Applies and explains all rules obtained using the integers passed to it, separated by commas.
+        * -x, --extra-rules-types: Will attempt to fina a rule without coefficients if possible. Bases and divisors no longer have to be coprime.
+		* --length: Sets the amount of coefficients in coefficient rules. Must be a positive integer.
+    * single (default):
+        * Arguments: This verbs uses two positional arguments.
+            * Divisor: Mandatory. Rules will test divisibility by this number.
+            * Base: Optional, defaults to ten. Rules will be applied in this base.
+            * Length: Optional, defaults to one, used for coefficient rules. Coefficient rules will have this many coefficients.
+    * multiple: 
+        * Arguments: This verbs uses two positional arguments.
+            * Divisors: Mandatory. Rules will test divisibility by these numbers. The different divisors must be separated by commas.
+            * Base: Optional, defaults to a single ten. Rules will be applied in these bases. The different bases must be separated by commas.
+            * Length: Optional, defaults to one, used for coefficient rules. Coefficient rules will have this many coefficients.
+    * dialog:
+        * --divisor: Skips inputting the divisor and forces this value.
+        * --base: Skips inputting the base and forces this value.
+        * --no-loop: Forces a single execution of this application.
+        * -s, --simple-dialog: Stops other options from being inputted and only asks for the arguments for the rule.
+        * If any other option is active, they will be used and the application will act as if -s was activated.
 
 - Output values
 
@@ -315,10 +306,9 @@ If we cannot determine whether the number is a multiple of the divisor, we apply
 1: there were invalid arguments.
 2: there was an error parsing the options or arguments.
 3: the user quit during dialog.
-4: could not find an alternative rule with -x.
+4: could not find a non-coefficient rule.
 5: multiple rules were requested, some weren't calculated.
-6: multiple rules were requested, none were calculated.
-</value>
+6: multiple rules were requested, none were calculated.</value>
   </data>
   <data name="AyudaCorta" xml:space="preserve">
     <value>- Usage: CalcDivCLI.exe [-&amp;lt;short option name&amp;gt;|--&amp;lt;long option name&amp;gt; [&amp;lt;mandatory arguments ...&amp;gt; [&amp;lt;optional arguments&amp;gt;...]]
@@ -435,6 +425,27 @@ Defaults to one, must be a valid positive 32-bit integer.</value>
 Obligatory, must be a list of valid 64-bit non-negative integers.</value>
   </data>
   <data name="EjemploReglaUno" xml:space="preserve">
-    <value>Find rule for seven in base twelve, using two coefficients.</value>
+    <value>Find rule for seven in base twelve, using two coefficients</value>
+  </data>
+  <data name="EjemploReglaJsonExtendido" xml:space="preserve">
+    <value>Find non-coefficient rule for thirteen in base sixteen and output as JSON</value>
+  </data>
+  <data name="EjemploReglaDialogo" xml:space="preserve">
+    <value>Start dialog with application to find rules</value>
+  </data>
+  <data name="EjemploReglaVarias" xml:space="preserve">
+    <value>Find non-coefficient rules for 7, 100 and 41 in bases 10 and 8 and apply the rules using 6342 and 289</value>
+  </data>
+  <data name="HelpVerbManual" xml:space="preserve">
+    <value>Outputs a more detailed help document.</value>
+  </data>
+  <data name="MensajeDialogoDividendoVacio" xml:space="preserve">
+    <value>Write all the numbers to apply the rules to, stop by writing "{0}":</value>
+  </data>
+  <data name="MensajeDialogoDividendoBucle" xml:space="preserve">
+    <value>Write a non-negative integer:</value>
+  </data>
+  <data name="MensajeDialogoDividendoError" xml:space="preserve">
+    <value>The number was not valid or negative:</value>
   </data>
 </root>

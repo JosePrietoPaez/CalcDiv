@@ -332,7 +332,7 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a The dividend represented in base {0} is {1}..
+        ///   Busca una cadena traducida similar a The dividend, {2}, represented in base {0} is {1}..
         /// </summary>
         public static string MensajeAplicarNumero {
             get {

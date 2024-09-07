@@ -63,15 +63,12 @@ namespace ProgramaDivisibilidad.Recursos {
         /// <summary>
         ///   Busca una cadena traducida similar a CalcDivCLI Help:
         ///
-        ///- Usage: CalcDivCLI.exe [-&lt;short option name&gt;|--&lt;long option name&gt; [&lt;mandatory arguments ...&gt; [&lt;optional arguments&gt;...]]
-        ///
-        ///Example: *CalcDiv.exe --json --direct-output 7 10 --named-rule Nombre*
-        ///Equivalent to: *CalcDiv.exe -jd 7 10 -n Nombre*
-        ///Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and outputs it in JSON.
-        ///
-        ///- Program options, can be concatenated after a dash: *CalcDiv.exe -ajd 3 4 1* o *CalcDiv.exe -H*, use --help for further info.
-        ///
-        ///-H: shows this  [resto de la cadena truncado]&quot;;.
+        ///- Program options per verb: use --help for information on the available verbs.
+        ///    * General options, except for manual:
+        ///        * -j, --json: Outputs the rule as JSON.
+        ///        * -d, --dividend: Applies and explains all rules obtained using the integers passed to it, separated by commas.
+        ///        * -x, --extra-rules-types: Will attempt to fina a rule without coefficients if possible. Bases and divisors no longer have to be coprime.
+        ///		* --length: Sets the amount of coefficients in coe [resto de la cadena truncado]&quot;;.
         /// </summary>
         public static string Ayuda {
             get {
@@ -141,11 +138,38 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Find rule for seven in base twelve, using two coefficients..
+        ///   Busca una cadena traducida similar a Start dialog with application to find rules.
+        /// </summary>
+        public static string EjemploReglaDialogo {
+            get {
+                return ResourceManager.GetString("EjemploReglaDialogo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Find non-coefficient rule for thirteen in base sixteen and output as JSON.
+        /// </summary>
+        public static string EjemploReglaJsonExtendido {
+            get {
+                return ResourceManager.GetString("EjemploReglaJsonExtendido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Find rule for seven in base twelve, using two coefficients.
         /// </summary>
         public static string EjemploReglaUno {
             get {
                 return ResourceManager.GetString("EjemploReglaUno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Find non-coefficient rules for 7, 100 and 41 in bases 10 and 8 and apply the rules using 6342 and 289.
+        /// </summary>
+        public static string EjemploReglaVarias {
+            get {
+                return ResourceManager.GetString("EjemploReglaVarias", resourceCulture);
             }
         }
         
@@ -457,6 +481,15 @@ namespace ProgramaDivisibilidad.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Outputs a more detailed help document..
+        /// </summary>
+        public static string HelpVerbManual {
+            get {
+                return ResourceManager.GetString("HelpVerbManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Outputs a single rule given its divisor, base and length, if it is a coefficient rule..
         /// </summary>
         public static string HelpVerbSingle {
@@ -480,6 +513,33 @@ namespace ProgramaDivisibilidad.Recursos {
         public static string MensajeDialogoCoeficientes {
             get {
                 return ResourceManager.GetString("MensajeDialogoCoeficientes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Write a non-negative integer:.
+        /// </summary>
+        public static string MensajeDialogoDividendoBucle {
+            get {
+                return ResourceManager.GetString("MensajeDialogoDividendoBucle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The number was not valid or negative:.
+        /// </summary>
+        public static string MensajeDialogoDividendoError {
+            get {
+                return ResourceManager.GetString("MensajeDialogoDividendoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Write all the numbers to apply the rules to, stop by writing &quot;{0}&quot;:.
+        /// </summary>
+        public static string MensajeDialogoDividendoVacio {
+            get {
+                return ResourceManager.GetString("MensajeDialogoDividendoVacio", resourceCulture);
             }
         }
         

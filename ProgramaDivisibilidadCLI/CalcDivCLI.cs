@@ -34,18 +34,19 @@ namespace ProgramaDivisibilidad {
 			//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
 			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
 			SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
-			var parser = new Parser(with => with.HelpWriter = null); 
-			var resultado = parser.ParseArguments<OpcionesDirecto, OpcionesVarias, OpcionesDialogo>(args); //Parsea los argumentos
-			resultado
-			.WithParsed(options => {
-				//Console.Error.WriteLine(options.Dump());
-				_estadoSalida = SeleccionarModo((IOpciones)options);
-			})
-			.WithNotParsed(errors => {
-				_estadoSalida = Salida.ENTRADA_MALFORMADA;
-				//Console.Error.WriteLine(resultado);
-				MostrarAyuda(resultado, errors);
-			});
+			using (var parser = new Parser(with => { with.HelpWriter = null; })) {
+				var resultado = parser.ParseArguments(args, typeof(OpcionesDirecto), typeof(OpcionesVarias), typeof(OpcionesDialogo), typeof(OpcionesManual)); //Parsea los argumentos
+				resultado
+				.WithParsed(options => {
+					//Console.Error.WriteLine(options.Dump());
+					_estadoSalida = SeleccionarModo((IOpciones)options);
+				})
+				.WithNotParsed(errors => {
+					_estadoSalida = Salida.ENTRADA_MALFORMADA;
+					//Console.Error.WriteLine(resultado);
+					MostrarAyuda(resultado, errors);
+				});
+			}
 			return (int)_estadoSalida;
 		}
 
@@ -56,6 +57,7 @@ namespace ProgramaDivisibilidad {
 				ayuda.Copyright = string.Empty;
 				ayuda.AddEnumValuesToHelpText = true;
 				ayuda.AddDashesToOption = true;
+				ayuda.AddNewLineBetweenHelpSections = true;
 				return HelpText.DefaultParsingErrorsHandler(resultado, ayuda);
 			}, ejemplo => ejemplo
 			, verbsIndex: true);
@@ -67,6 +69,7 @@ namespace ProgramaDivisibilidad {
 				OpcionesDialogo => new ModoDialogo(),
 				OpcionesDirecto => new ModoDirecto(),
 				OpcionesVarias => new ModoVarias(),
+				OpcionesManual => new ModoManual(),
 				_ => throw new Exception(ErrorTipoVerbo),
 			};
 			return modo.Ejecutar(obj);
@@ -87,15 +90,8 @@ namespace ProgramaDivisibilidad {
 			if (flags.TipoExtra) {
 				resultado = ReglaDivisibilidadExtendida(divisor, @base).Item2.ReglaExplicada;
 			} else {
-				object? reglasObj;
-				if (flags.Todos) { //Si se piden las 2^coeficientes reglasObj
-					List<ReglaCoeficientes> reglas = ReglasDivisibilidad(divisor, longitud, @base);
-					reglasObj = reglas;
-				} else {
-					ReglaCoeficientes serie = ReglaDivisibilidadOptima(divisor, longitud, @base);
-					reglasObj = serie;
-				}
-				resultado = ObjetoAString(reglasObj);
+				ReglaCoeficientes serie = ReglaDivisibilidadOptima(divisor, longitud, @base);
+				resultado = ObjetoAString(serie);
 			}
 			return resultado;
 		}
@@ -152,5 +148,12 @@ namespace ProgramaDivisibilidad {
 	internal interface IModoEjecucion {
 		Salida Ejecutar(IOpciones opciones);
 	}
-	
+
+	internal class ModoManual : IModoEjecucion {
+		public Salida Ejecutar(IOpciones opciones) {
+			Console.Out.WriteLine(Ayuda);
+			return Salida.CORRECTA;
+		}
+	}
+
 }

@@ -69,7 +69,7 @@ namespace Operaciones {
 				} else {
 					sb.AppendLine(TextoCalculos.MensajeAlfabetoNumericoExceso);
 				}
-				sb.AppendFormat(TextoCalculos.MensajeAplicarNumero, Base, LongAStringCondicional(dividendo)).AppendLine();
+				sb.AppendFormat(TextoCalculos.MensajeAplicarNumero, Base, LongAStringCondicional(dividendo), dividendo).AppendLine();
 				sb.AppendLine();
 			} 
 		}

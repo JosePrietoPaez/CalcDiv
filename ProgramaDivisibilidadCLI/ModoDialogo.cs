@@ -1,4 +1,5 @@
-﻿using static Operaciones.Calculos;
+﻿using System.Numerics;
+using static Operaciones.Calculos;
 using static ProgramaDivisibilidad.Recursos.TextoResource;
 
 namespace ProgramaDivisibilidad {
@@ -20,9 +21,6 @@ namespace ProgramaDivisibilidad {
 					ArgumentOutOfRangeException.ThrowIfLessThan(flags.Base.Value, 2, nameof(flags.Base));
 					ArgumentOutOfRangeException.ThrowIfLessThan(flags.Divisor.Value, 2, nameof(flags.Divisor));
 				}
-			}
-			if (flags.Longitud.HasValue) {
-				ArgumentOutOfRangeException.ThrowIfLessThan(flags.Longitud.Value, 1, nameof(flags.Longitud));
 			}
 			return saltarPreguntaExtra;
 		}
@@ -145,6 +143,20 @@ namespace ProgramaDivisibilidad {
 			Console.Error.Write(mensajePregunta);
 			string? linea = Console.In.ReadLine();
 			while (!long.TryParse(linea, out dato) || dato < minimo) {
+				LanzarExcepcionSiSalida(linea);
+				Console.Error.WriteLine(Environment.NewLine + mensajeError);
+				Console.Error.Write(mensajePregunta);
+				linea = Console.In.ReadLine();
+			}
+			Console.Error.WriteLine();
+			return dato;
+		}
+
+		private static BigInteger ObtenerDeUsuario(BigInteger minimo, string mensajeError, string mensajePregunta) {
+			BigInteger dato;
+			Console.Error.Write(mensajePregunta);
+			string? linea = Console.In.ReadLine();
+			while (!BigInteger.TryParse(linea, out dato) || dato < minimo) {
 				LanzarExcepcionSiSalida(linea);
 				Console.Error.WriteLine(Environment.NewLine + mensajeError);
 				Console.Error.Write(mensajePregunta);

@@ -228,7 +228,7 @@ Se harán dos iteraciones más antes de parar.</value>
 {0}</value>
   </data>
   <data name="MensajeAplicarNumero" xml:space="preserve">
-    <value>El dividendo representado en base {0} es {1}.</value>
+    <value>El dividendo, {2}, representado en base {0} es {1}.</value>
   </data>
   <data name="MensajeAplicarRestaInicio" xml:space="preserve">
     <value>Aplicando la regla de divisibilidad de {0}, en base {1} a {2}, usando grupos de {3} cifras:</value>

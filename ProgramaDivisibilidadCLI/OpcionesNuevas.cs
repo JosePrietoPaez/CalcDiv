@@ -10,14 +10,17 @@ namespace ProgramaDivisibilidad {
 		public static IEnumerable<Example> Examples {
 			get {
 				return [
-					new(TextoResource.EjemploReglaUno, new OpcionesDirecto {Base = 12, Divisor = 7, Longitud = 2})
+					new(TextoResource.EjemploReglaUno, new OpcionesDirecto {Base = 12, Divisor = 7, Longitud = 2}),
+					new(TextoResource.EjemploReglaJsonExtendido, new OpcionesDirecto {Base = 16, Divisor = 13, TipoExtra = true, JSON = true}),
+					new(TextoResource.EjemploReglaDialogo, new OpcionesDialogo{ }),
+					new(TextoResource.EjemploReglaVarias, new OpcionesVarias{ VariasReglas = ["7,100,41", "10,8"], TipoExtra = true, Dividendo = ["6341, 289"] })
 				]; 
 			}
 		}
 	}
 
 	[Verb("dialog", false, HelpText = "HelpVerbDialog", ResourceType = typeof(TextoResource))]
-	internal class OpcionesDialogo : IOpcionesGlobales {
+	internal class OpcionesDialogo : GlobalesAbstractas {
 
 		[Option("base", MetaValue = "LONG"
 			, HelpText = "HelpBaseDialogo"
@@ -28,11 +31,6 @@ namespace ProgramaDivisibilidad {
 			, HelpText = "HelpDivisorDialogo"
 			, ResourceType = typeof(TextoResource))]
 		public long? Divisor { get; set; }
-
-		[Option("length", MetaValue = "INT"
-			, HelpText = "HelpLongitudDialogo"
-			, ResourceType = typeof(TextoResource))]
-		public int? Longitud { get; set; }
 
 		[Option("no-loop"
 			, HelpText = "HelpAnularBucle"
@@ -47,13 +45,6 @@ namespace ProgramaDivisibilidad {
 			, ResourceType = typeof(TextoResource))]
 		public bool DialogoSencillo { get; set; }
 
-		public bool TipoExtra { get; set; }
-		public bool Todos { get ; set ; }
-		public bool JSON { get; set; }
-		public IEnumerable<string> Dividendo { get; set; } = [];
-
-		public List<BigInteger> DividendoList => Dividendo.Select(BigInteger.Parse).ToList();
-
 		/// <summary>
 		/// Esta propiedad devuelve si todos los flags, excepto los de valores de diálogo están inactivos.
 		/// </summary>
@@ -61,7 +52,7 @@ namespace ProgramaDivisibilidad {
 	}
 
 	[Verb("single", true, HelpText = "HelpVerbSingle", ResourceType = typeof(TextoResource))]
-	internal class OpcionesDirecto : IOpcionesGlobales {
+	internal class OpcionesDirecto : GlobalesAbstractas {
 
 		/// <summary>
 		/// Devuelve el divisor pasado por parámetro.
@@ -77,29 +68,14 @@ namespace ProgramaDivisibilidad {
 		/// </summary>
 		[Value(1, MetaName = "base", MetaValue = "LONG"
 			, Default = 10
+			, Required = false
 			, HelpText = "HelpBase"
 			, ResourceType = typeof(TextoResource))]
-		public long Base { get; set; } = 10;
-
-		/// <summary>
-		/// Devuelve la longitud pasada por parámetro.
-		/// </summary>
-		[Value(2, MetaName = "length", MetaValue = "INT"
-			, Default = 1
-			, HelpText = "HelpLongitud"
-			, ResourceType = typeof(TextoResource))]
-		public int Longitud { get; set; } = 1;
-
-		public bool TipoExtra { get; set; }
-		public bool Todos { get; set; }
-		public bool JSON { get; set; }
-		public IEnumerable<string> Dividendo { get; set; } = [];
-
-		public List<BigInteger> DividendoList => Dividendo.Select(BigInteger.Parse).ToList();
+		public long? Base { get; set; } = null;
 	}
 
 	[Verb("multiple", false, HelpText = "HelpTextMultiple", ResourceType = typeof(TextoResource))]
-	internal class OpcionesVarias : IOpcionesGlobales {
+	internal class OpcionesVarias : GlobalesAbstractas {
 
 		/// <summary>
 		/// Esta propiedad obtiene la información de las reglas para calcularlas.
@@ -152,15 +128,6 @@ namespace ProgramaDivisibilidad {
 			}
 		}
 
-		/// <summary>
-		/// Devuelve la longitud de las reglas pasada a multiple
-		/// </summary>
-		[Value(1, MetaName = "length", MetaValue = "INT"
-			, HelpText = "HelpLongitud"
-			, Default = 1
-			, ResourceType = typeof(TextoResource))]
-		public int Longitud { get; set; } = 1;
-
 		private static long[] ParsearStringsLong(string[] numeros, string mensajeError = "") {
 			long[] result = [];
 			foreach (string s in numeros) {
@@ -175,14 +142,28 @@ namespace ProgramaDivisibilidad {
 			return result;
 		}
 
+	}
+
+	/// <summary>
+	/// Clase abstracta para no tener que copiar estas propiedades
+	/// </summary>
+	internal abstract class GlobalesAbstractas : IOpcionesGlobales {
 		public bool TipoExtra { get; set; }
 		public bool Todos { get; set; }
 		public bool JSON { get; set; }
-		public IEnumerable<string> Dividendo { get; set; } = [];
-
-		public List<BigInteger> DividendoList => Dividendo.Select(BigInteger.Parse).ToList();
+		public int Longitud { get; set; }
+		public IEnumerable<string>? Dividendo { get; set; }
+		public List<BigInteger> DividendoList => Dividendo?.Select(BigInteger.Parse).ToList() ?? [];
 	}
 
+	[Verb("manual", false, HelpText = "HelpVerbManual", ResourceType = typeof(TextoResource))]
+	internal class OpcionesManual : IOpciones {
+
+		[Value(0, Hidden = true, Default = "")]
+		public string? Show { get; set; }
+
+	}
+	
 	internal interface IOpcionesGlobales : IOpciones {
 
 		/// <summary>
@@ -193,15 +174,6 @@ namespace ProgramaDivisibilidad {
 			, ResourceType = typeof(TextoResource)
 			, SetName = "extra")]
 		public bool TipoExtra { get; set; }
-
-		/// <summary>
-		/// Esta propiedad indica si la opción -a está activa.
-		/// </summary>
-		[Option('a', longName: "all-rules"
-			, HelpText = "HelpTodos"
-			, ResourceType = typeof(TextoResource)
-			, SetName = "coef")]
-		public bool Todos { get; set; }
 
 		/// <summary>
 		/// Esta propiedad indica si la opción -j está activa.
@@ -216,9 +188,16 @@ namespace ProgramaDivisibilidad {
 			, Separator = ','
 			, HelpText = "HelpDividendo"
 			, ResourceType = typeof(TextoResource))]
-		public IEnumerable<string> Dividendo { get; set; }
+		public IEnumerable<string>? Dividendo { get; set; }
 
-		public List<BigInteger> DividendoList => Dividendo.Select(BigInteger.Parse).ToList();
+		/// <summary>
+		/// Devuelve la longitud de las reglas pasada a multiple
+		/// </summary>
+		[Option("length", MetaValue = "INT"
+			, HelpText = "HelpLongitud"
+			, Default = 1
+			, ResourceType = typeof(TextoResource))]
+		public int Longitud { get; set; }
 
 	}
 }
