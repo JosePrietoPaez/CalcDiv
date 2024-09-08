@@ -10,13 +10,13 @@ namespace ProgramaDivisibilidad {
 			OpcionesVarias varias = (OpcionesVarias) opciones;
 			Func<long, long, int, IOpcionesGlobales, (Salida, IRegla)> generadora = ModoDirecto.SeleccionarFuncionYAjustarFlags(varias);
 			Func<IRegla, long, long, int, List<(TextWriter, string)>> consumidora = SeleccionarConsumidora(varias);
-			Func<List<IRegla>, List<(TextWriter, string)>> final = SeleccionarFinal(varias);
-			return EjectutarVarias(generadora, consumidora, final, varias.Divisores, varias.Bases, varias.Longitud, varias);
+			Func<List<object>, List<(TextWriter, string)>> final = SeleccionarFinal(varias);
+			return EjectutarVarias(generadora, consumidora, final, varias.Divisores, varias.Bases, varias.Longitud ?? 1, varias);
 		}
 
 		private static Salida EjectutarVarias(Func<long, long, int, IOpcionesGlobales, (Salida, IRegla)> generadora,
 			Func<IRegla, long, long, int, List<(TextWriter, string)>> consumidora,
-			Func<List<IRegla>, List<(TextWriter, string)>> final,
+			Func<List<object>, List<(TextWriter, string)>> final,
 			long[] divisores, long[] bases, int longitud,
 			OpcionesVarias flags) {
 
@@ -36,7 +36,7 @@ namespace ProgramaDivisibilidad {
 					EscribirListaPorWriters(consumidora(nuevoElemento, divisor, @base, longitud));
 				}
 			}
-			EscribirListaPorWriters(final(reglas));
+			EscribirListaPorWriters(final(reglas.Select(o => o as object).ToList()));
 			if (!hayExito) { // Si no hay reglas, no se escriben
 				Console.Error.WriteLine(VariasMensajeErrorTotal);
 				valorEjecucion = Salida.VARIAS_ERROR_TOTAL;
@@ -55,12 +55,12 @@ namespace ProgramaDivisibilidad {
 				funcion = (_,_,_,_) => [(_writerDesecho, string.Empty)];
 			} else {
 				funcion = (o, divisor, @base, longitud) => ReglaConMensaje(CalcDivCLI.ObjetoAString(o), divisor, @base);
-				if (flags.DividendoList.Count != 0) {
+				if ((flags as IOpcionesGlobales).DividendoList.Count != 0) {
 					Func<IRegla, long, long, int, List<(TextWriter, string)>> funcionAuxiliar = funcion;
 					funcion = (o, divisor, @base, longitud) => {
 						var resultado = funcionAuxiliar(o, divisor, @base, longitud);
 						resultado.Add((Console.Out,
-							o.AplicarVariosDividendos(flags.DividendoList) ?? ObjetoNuloMensaje));
+							o.AplicarVariosDividendos((flags as IOpcionesGlobales).DividendoList) ?? ObjetoNuloMensaje));
 						return resultado;
 					};
 				}
@@ -76,16 +76,16 @@ namespace ProgramaDivisibilidad {
 				, (Console.Out, reglaCoeficientes)];
 		}
 
-		private static Func<List<IRegla>, List<(TextWriter, string)>> SeleccionarFinal(OpcionesVarias flags) {
-			Func<List<IRegla>, List<(TextWriter, string)>> funcion;
+		private static Func<List<object>, List<(TextWriter, string)>> SeleccionarFinal(OpcionesVarias flags) {
+			Func<List<object>, List<(TextWriter, string)>> funcion;
 			if (flags.JSON) {
 				funcion = (lista) => [(Console.Out, CalcDivCLI.ObjetoAString(lista, true))];
-				if (flags.DividendoList.Count != 0) {
-					Func<List<IRegla>, List<(TextWriter, string)>> funcionAuxiliar = funcion;
+				if ((flags as IOpcionesGlobales).DividendoList.Count != 0) {
+					Func<List<object>, List<(TextWriter, string)>> funcionAuxiliar = funcion;
 					funcion = (lista) => {
 						var resultado = funcionAuxiliar(lista);
 						foreach (var obj in lista) {
-							resultado.Add((Console.Out, obj.AplicarVariosDividendos(flags.DividendoList)));
+							resultado.Add((Console.Out, (obj as IRegla).AplicarVariosDividendos((flags as IOpcionesGlobales).DividendoList)));
 						}
 						return resultado;
 					};

@@ -7,10 +7,10 @@
     <Nullable>enable</Nullable>
     <StartupObject>ProgramaDivisibilidad.CalcDivCLI</StartupObject>
     <AssemblyName>CalcDivCLI</AssemblyName>
-    <AssemblyVersion>0.3.0.1</AssemblyVersion>
+    <AssemblyVersion>0.4.0.0</AssemblyVersion>
     <NeutralLanguage>en</NeutralLanguage>
     <PublishSingleFile>true</PublishSingleFile>
-    <Version>0.3.0.1</Version>
+    <Version>0.4.0.0</Version>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PublishTrimmed>False</PublishTrimmed>
     <SignAssembly>False</SignAssembly>

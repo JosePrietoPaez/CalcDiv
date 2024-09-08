@@ -19,7 +19,7 @@ namespace ProgramaDivisibilidad {
 			_estadoSalida = Salida.CORRECTA;
 			long @base = flags.Base ?? 10;
 			Func<long, long, int, IOpcionesGlobales, (Salida, IRegla)> generadora = SeleccionarFuncionYAjustarFlags(flags);
-			return GestionarErrorYUsarDatos(flags, @base, flags.Divisor, flags.Longitud, generadora);
+			return GestionarErrorYUsarDatos(flags, @base, flags.Divisor, flags.Longitud ?? 1, generadora);
 		}
 
 		private Salida GestionarErrorYUsarDatos(OpcionesDirecto flags, long @base, long divisor, int longitud
@@ -50,7 +50,7 @@ namespace ProgramaDivisibilidad {
 			return _estadoSalida;
 		}
 
-		internal static void AplicarReglaPorObjeto(object? regla, GlobalesAbstractas flags) {
+		internal static void AplicarReglaPorObjeto(object? regla, IOpcionesGlobales flags) {
 			if (regla is null) return;
 			AplicarReglaDivisibilidad((IRegla)regla, flags.DividendoList);
 		}

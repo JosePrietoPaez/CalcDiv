@@ -20,7 +20,7 @@ namespace ProgramaDivisibilidad {
 	}
 
 	[Verb("dialog", false, HelpText = "HelpVerbDialog", ResourceType = typeof(TextoResource))]
-	internal class OpcionesDialogo : GlobalesAbstractas {
+	internal class OpcionesDialogo : IOpcionesGlobales {
 
 		[Option("base", MetaValue = "LONG"
 			, HelpText = "HelpBaseDialogo"
@@ -48,11 +48,16 @@ namespace ProgramaDivisibilidad {
 		/// <summary>
 		/// Esta propiedad devuelve si todos los flags, excepto los de valores de diálogo están inactivos.
 		/// </summary>
-		public bool FlagsInactivos => !(DialogoSencillo || JSON || TipoExtra || Todos);
+		public bool FlagsInactivos => !(DialogoSencillo || JSON || TipoExtra);
+
+		public bool TipoExtra { get; set; }
+		public bool JSON { get; set; }
+		public IEnumerable<string>? Dividendo { get; set; }
+		public int? Longitud { get; set; }
 	}
 
 	[Verb("single", true, HelpText = "HelpVerbSingle", ResourceType = typeof(TextoResource))]
-	internal class OpcionesDirecto : GlobalesAbstractas {
+	internal class OpcionesDirecto : IOpcionesGlobales {
 
 		/// <summary>
 		/// Devuelve el divisor pasado por parámetro.
@@ -72,10 +77,15 @@ namespace ProgramaDivisibilidad {
 			, HelpText = "HelpBase"
 			, ResourceType = typeof(TextoResource))]
 		public long? Base { get; set; } = null;
+
+		public bool TipoExtra { get; set; }
+		public bool JSON { get; set; }
+		public IEnumerable<string>? Dividendo { get; set; }
+		public int? Longitud { get; set; }
 	}
 
 	[Verb("multiple", false, HelpText = "HelpTextMultiple", ResourceType = typeof(TextoResource))]
-	internal class OpcionesVarias : GlobalesAbstractas {
+	internal class OpcionesVarias : IOpcionesGlobales {
 
 		/// <summary>
 		/// Esta propiedad obtiene la información de las reglas para calcularlas.
@@ -128,6 +138,11 @@ namespace ProgramaDivisibilidad {
 			}
 		}
 
+		public bool TipoExtra { get; set; }
+		public bool JSON { get; set; }
+		public IEnumerable<string>? Dividendo { get; set; }
+		public int? Longitud { get; set; }
+
 		private static long[] ParsearStringsLong(string[] numeros, string mensajeError = "") {
 			long[] result = [];
 			foreach (string s in numeros) {
@@ -142,18 +157,6 @@ namespace ProgramaDivisibilidad {
 			return result;
 		}
 
-	}
-
-	/// <summary>
-	/// Clase abstracta para no tener que copiar estas propiedades
-	/// </summary>
-	internal abstract class GlobalesAbstractas : IOpcionesGlobales {
-		public bool TipoExtra { get; set; }
-		public bool Todos { get; set; }
-		public bool JSON { get; set; }
-		public int Longitud { get; set; }
-		public IEnumerable<string>? Dividendo { get; set; }
-		public List<BigInteger> DividendoList => Dividendo?.Select(BigInteger.Parse).ToList() ?? [];
 	}
 
 	[Verb("manual", false, HelpText = "HelpVerbManual", ResourceType = typeof(TextoResource))]
@@ -195,9 +198,9 @@ namespace ProgramaDivisibilidad {
 		/// </summary>
 		[Option("length", MetaValue = "INT"
 			, HelpText = "HelpLongitud"
-			, Default = 1
 			, ResourceType = typeof(TextoResource))]
-		public int Longitud { get; set; }
+		public int? Longitud { get; set; }
+		public virtual List<BigInteger> DividendoList => Dividendo?.Select(BigInteger.Parse).ToList() ?? [];
 
 	}
 }

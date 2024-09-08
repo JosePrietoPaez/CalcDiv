@@ -224,7 +224,7 @@ namespace TestCalculadoraIT {
 
 		[Test]
 		public void Calculadora_DialogoSinBuclesCoeficientesCorrectos_DevuelveReglaYCero() {
-			_args = ["-s", "--no-loop"];
+			_args = ["dialog", "-s", "--no-loop"];
 			int longitud = 5;
 			long divisor = 7, @base = 10;
 			ReglaCoeficientes reglaEsperada = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);

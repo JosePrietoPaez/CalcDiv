@@ -109,11 +109,6 @@ namespace ProgramaDivisibilidad {
 
 				longitud = ObtenerValorODefecto(longitudNull,
 					() => ObtenerDeUsuario(0, ErrorCoeficientes, MensajeDialogoCoeficientes));
-
-				if (sinFlags) {
-
-					flags.Todos = ObtenerDeUsuario(MensajeDialogoTodas, c => c == 's' | c == 'S');
-				}
 			}
 
 			return (flags.ObtenerReglas(divisor, @base, longitud), divisor, @base, longitud);

@@ -4,6 +4,12 @@ using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Operaciones {
+	/// <summary>
+	/// Clase abstracta que representa reglas que se pueden aplicar, generalmente de forma recursiva.
+	/// </summary>
+	/// <remarks>
+	/// Ofrece métodos para estandarizar la forma de escribir las explicaciones.
+	/// </remarks>
 	public abstract class ReglaAplicable : IRegla {
 		[JsonPropertyName("rule-explained")]
 		public abstract string ReglaExplicada { get; }

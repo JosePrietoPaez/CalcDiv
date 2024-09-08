@@ -8,6 +8,8 @@ using Operaciones;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Text.Json.Serialization;
+using System.Globalization;
+using System.Numerics;
 
 namespace ProgramaDivisibilidad {
 
@@ -16,18 +18,14 @@ namespace ProgramaDivisibilidad {
 	/// </summary>
 	public static class CalcDivCLI {
 
+		private static bool puesto = false;
+
 		/// <summary>
 		/// Este método calcula la regla de divisibilidad, obteniendo los datos desde la consola reglasObj desde los argumentos.
 		/// </summary>
 		/// <param name="args"></param>
 		/// <returns>
-		/// <list type="bullet">
-		/// <item>0, ejecución correcta</item>
-		/// <item>1, código de error general</item>
-		/// <item>2, argumentos incorrectos en modo directo</item>
-		/// <item>3, el usuario sale voluntariamente durante el diálogo</item>
-		/// <item>4, fracaso al encontrar una regla alternativa en modo directo</item>
-		/// </list>
+		/// Salida con el código apropiado.
 		/// </returns>
 		public static int Main(string[] args) {
 			Salida _estadoSalida = Salida.CORRECTA;
@@ -39,6 +37,10 @@ namespace ProgramaDivisibilidad {
 				resultado
 				.WithParsed(options => {
 					//Console.Error.WriteLine(options.Dump());
+					if (!puesto) {
+						opcionesJson.Converters.Add(new BigIntegerConverter());
+						puesto = true;
+					}
 					_estadoSalida = SeleccionarModo((IOpciones)options);
 				})
 				.WithNotParsed(errors => {
@@ -154,6 +156,24 @@ namespace ProgramaDivisibilidad {
 			Console.Out.WriteLine(Ayuda);
 			return Salida.CORRECTA;
 		}
+	}
+
+	/// <summary>
+	/// Genera JSON para <see cref="BigInteger"/>, haciendo que se vea su valor y no sus propiedades.
+	/// </summary>
+	/// <remarks>
+	/// Gracias a Dios por https://stackoverflow.com/questions/64788895/serialising-biginteger-using-system-text-json
+	/// </remarks>
+	public class BigIntegerConverter : JsonConverter<BigInteger> {
+		public override BigInteger Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
+			if (reader.TokenType != JsonTokenType.Number)
+				throw new JsonException(string.Format("Found token {0} but expected token {1}", reader.TokenType, JsonTokenType.Number));
+			using var doc = JsonDocument.ParseValue(ref reader);
+			return BigInteger.Parse(doc.RootElement.GetRawText(), NumberFormatInfo.InvariantInfo);
+		}
+
+		public override void Write(Utf8JsonWriter writer, BigInteger value, JsonSerializerOptions options) =>
+			writer.WriteRawValue(value.ToString(NumberFormatInfo.InvariantInfo), false);
 	}
 
 }
