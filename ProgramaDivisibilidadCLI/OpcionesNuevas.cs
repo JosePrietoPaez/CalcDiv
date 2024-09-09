@@ -76,7 +76,7 @@ namespace ProgramaDivisibilidad {
 			, Required = false
 			, HelpText = "HelpBase"
 			, ResourceType = typeof(TextoResource))]
-		public long? Base { get; set; } = null;
+		public long Base { get; set; }
 
 		public bool TipoExtra { get; set; }
 		public bool JSON { get; set; }
@@ -194,7 +194,7 @@ namespace ProgramaDivisibilidad {
 		public IEnumerable<string>? Dividendo { get; set; }
 
 		/// <summary>
-		/// Devuelve la longitud de las reglas pasada a multiple
+		/// Devuelve la longitud de las reglas de coeficientes
 		/// </summary>
 		[Option("length", MetaValue = "INT"
 			, HelpText = "HelpLongitud"

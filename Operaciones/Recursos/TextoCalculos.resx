@@ -102,7 +102,7 @@
     <comment>Appears after the type of rule and before the description.</comment>
   </data>
   <data name="CalculosExtendidaMensajeExceso" xml:space="preserve">
-    <value>Result is too large</value>
+    <value>Error while calculating, might be too large</value>
   </data>
   <data name="CalculosExtendidaMensajeFracaso" xml:space="preserve">
     <value>Could not find an alternative rule, apply the coefficient rule if possible.</value>

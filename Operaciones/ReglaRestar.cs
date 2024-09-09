@@ -28,10 +28,10 @@ namespace Operaciones {
 			get {
 				string potencia;
 				try {
-					long resultado = Calculos.PotenciaEntera(Base, Longitud) + 1;
+					BigInteger resultado = Calculos.PotenciaEnteraGrande(Base, Longitud) + 1;
 					potencia = resultado.ToString(); //Puede dar overflow si el exponente es grande
 				}
-				catch (OverflowException) {
+				catch {
 					potencia = TextoCalculos.CalculosExtendidaMensajeExceso;
 				}
 				return string.Format(TextoCalculos.CalculosExtendidaRestarPrincipio, Divisor, Base, Longitud, potencia)

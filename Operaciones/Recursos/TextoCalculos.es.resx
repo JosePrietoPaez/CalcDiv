@@ -101,7 +101,7 @@
     <value>Un entero en base {0} será divisible entre {1} si </value>
   </data>
   <data name="CalculosExtendidaMensajeExceso" xml:space="preserve">
-    <value>Resultado demasiado grande</value>
+    <value>Error calculando, puede ser demasiado grande</value>
   </data>
   <data name="CalculosExtendidaMensajeFracaso" xml:space="preserve">
     <value>No se ha encontrado ninguna regla alternativa, aplique la regla de coeficientes si se puede calcular.</value>

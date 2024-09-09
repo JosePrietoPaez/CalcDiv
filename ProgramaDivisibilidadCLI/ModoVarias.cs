@@ -85,7 +85,7 @@ namespace ProgramaDivisibilidad {
 					funcion = (lista) => {
 						var resultado = funcionAuxiliar(lista);
 						foreach (var obj in lista) {
-							resultado.Add((Console.Out, (obj as IRegla).AplicarVariosDividendos((flags as IOpcionesGlobales).DividendoList)));
+							resultado.Add((Console.Out, (obj as IRegla)!.AplicarVariosDividendos((flags as IOpcionesGlobales).DividendoList)));
 						}
 						return resultado;
 					};

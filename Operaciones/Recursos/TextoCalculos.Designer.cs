@@ -97,7 +97,7 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Result is too large.
+        ///   Busca una cadena traducida similar a Error while calculating, might be too large.
         /// </summary>
         public static string CalculosExtendidaMensajeExceso {
             get {

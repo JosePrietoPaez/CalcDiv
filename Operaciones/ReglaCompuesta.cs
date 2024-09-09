@@ -45,8 +45,12 @@ namespace Operaciones {
 		[JsonPropertyName("powers")]
 		public List<long> Potencias => new(_potencias);
 
-		[JsonPropertyName("subrules")]
+		[JsonIgnore]
 		public List<IRegla> Subreglas => new(_reglas);
+
+		[JsonPropertyName("subrules")]
+		[JsonInclude]
+		private List<object> SubreglasJSON => new(_reglas);
 
 		[JsonPropertyName("type")]
 		public override CasosDivisibilidad Tipo => CasosDivisibilidad.COMPOSITE_RULE;

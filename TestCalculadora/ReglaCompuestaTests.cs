@@ -3,15 +3,25 @@ using Operaciones;
 using System;
 using System.Globalization;
 using System.Numerics;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace TestReglas {
 	[TestFixture]
 	public class ReglaCompuestaTests {
 
 		private readonly CultureInfo _culturaActual = CultureInfo.CurrentCulture;
+		private JsonSerializerOptions options = new() {
+			Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement),
+			Converters = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseUpper) },
+			PropertyNamingPolicy = JsonNamingPolicy.KebabCaseLower
+		};
 
 		[Test]
-		public void Generar_DevuelveReglaCompuesta() {
+		public void Generar_DevuelveReglaCompuestaConJSONCorrecto() {
 			// Arrange
 			long @base = 10, divisor = 780;
 			var listaPotencias = new List<long>([2,1,1,1]);
@@ -24,6 +34,8 @@ namespace TestReglas {
 
 			// Act
 			var regla = IRegla.GenerarReglaPorTipo(divisor, @base);
+			var reglaJSON = JsonNode.Parse(JsonSerializer.Serialize((object)regla, options));
+
 
 			Assert.Multiple(() => {
 				// Assert
@@ -31,9 +43,14 @@ namespace TestReglas {
 				Assert.That(regla.Base, Is.EqualTo(@base));
 				Assert.That(regla.Divisor, Is.EqualTo(divisor));
 				var reglaCompuesta = regla as ReglaCompuesta;
+				Assert.That(reglaCompuesta, Is.Not.Null);
 				Assert.That(reglaCompuesta!.Subreglas.Select(reg => reg.Tipo), Is.EquivalentTo(listaTipos));
-				Assert.That(reglaCompuesta!.FactoresPrimos, Is.EquivalentTo(listaPrimos));
-				Assert.That(reglaCompuesta!.Potencias, Is.EquivalentTo(listaPotencias));
+				Assert.That(reglaCompuesta.FactoresPrimos, Is.EquivalentTo(listaPrimos));
+				Assert.That(reglaCompuesta.Potencias, Is.EquivalentTo(listaPotencias));
+				Assert.That((int)reglaJSON!["subrules"]![0]!["digits-used"]
+					, Is.EqualTo((reglaCompuesta.Subreglas[0] as ReglaCifras)!.Cifras)); //Para asegurar de que el JSON se genera igual que para las reglas
+				Assert.That((int)reglaJSON!["subrules"]![1]!["block-length"]
+					, Is.EqualTo((reglaCompuesta.Subreglas[1] as ReglaSumar)!.Longitud)); //Para asegurar de que el JSON se genera igual que para las reglas
 			});
 		}
 

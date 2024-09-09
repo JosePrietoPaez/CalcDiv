@@ -17,9 +17,8 @@ namespace ProgramaDivisibilidad {
 		public Salida Ejecutar(IOpciones opciones) { //Intenta dar las reglas de forma directa, cambia _salida para mostrar el error
 			OpcionesDirecto flags = (OpcionesDirecto)opciones;
 			_estadoSalida = Salida.CORRECTA;
-			long @base = flags.Base ?? 10;
 			Func<long, long, int, IOpcionesGlobales, (Salida, IRegla)> generadora = SeleccionarFuncionYAjustarFlags(flags);
-			return GestionarErrorYUsarDatos(flags, @base, flags.Divisor, flags.Longitud ?? 1, generadora);
+			return GestionarErrorYUsarDatos(flags, flags.Base, flags.Divisor, flags.Longitud ?? 1, generadora);
 		}
 
 		private Salida GestionarErrorYUsarDatos(OpcionesDirecto flags, long @base, long divisor, int longitud

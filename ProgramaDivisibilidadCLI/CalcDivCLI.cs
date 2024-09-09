@@ -165,6 +165,8 @@ namespace ProgramaDivisibilidad {
 	/// Gracias a Dios por https://stackoverflow.com/questions/64788895/serialising-biginteger-using-system-text-json
 	/// </remarks>
 	public class BigIntegerConverter : JsonConverter<BigInteger> {
+
+		/// <inheritdoc/>
 		public override BigInteger Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
 			if (reader.TokenType != JsonTokenType.Number)
 				throw new JsonException(string.Format("Found token {0} but expected token {1}", reader.TokenType, JsonTokenType.Number));
@@ -172,6 +174,7 @@ namespace ProgramaDivisibilidad {
 			return BigInteger.Parse(doc.RootElement.GetRawText(), NumberFormatInfo.InvariantInfo);
 		}
 
+		/// <inheritdoc/>
 		public override void Write(Utf8JsonWriter writer, BigInteger value, JsonSerializerOptions options) =>
 			writer.WriteRawValue(value.ToString(NumberFormatInfo.InvariantInfo), false);
 	}
