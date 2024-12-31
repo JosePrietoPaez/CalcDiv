@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EjemploReglaVarias" xml:space="preserve">
+    <value>Encuentra reglas sin coeficientes para 7, 100, 41 en las bases 10 y 8 y aplicar las reglas con 6342 y 289</value>
+  </data>
+  <data name="EjemploReglaDialogo" xml:space="preserve">
+    <value>Comenzar un dialogo con la aplicación para buscar reglas</value>
+  </data>
+  <data name="EjemploReglaJsonExtendido" xml:space="preserve">
+    <value>Encontrar una regla sin coeficientes para trece en base dieciséis y mostrar como JSON</value>
+  </data>
+  <data name="EjemploReglaUno" xml:space="preserve">
+    <value>Encontrar la regla de siete en base doce, usando dos coeficientes</value>
+  </data>
+  <data name="ErrorBase" xml:space="preserve">
+    <value>La base debe ser un entero mayor que uno.</value>
+  </data>
+  <data name="DirectoReferirExtendidoErrorInesperado" xml:space="preserve">
+    <value>No se puede calcular una regla de coeficientes debido a un error inesperado, pruebe a ejecutar con la opción -x, por ejemplo: </value>
+  </data>
+  <data name="DirectoReferirExtendidoPotencias" xml:space="preserve">
+    <value>No se puede calcular una regla de coeficientes, el divisor está compuesto de los factores primos de la base, para obtener una regla en este caso ejecute con la opción -x, por ejemplo: </value>
+  </data>
+  <data name="DirectoReferirExtendidoUsable" xml:space="preserve">
+    <value>Se puede calcular una regla de coeficientes, pero en estos casos se recomienda ejecutar con la opción -x, por ejemplo: </value>
+  </data>
+  <data name="DirectoReferirExtendidoValido" xml:space="preserve">
+    <value>Se puede calcular la regla de coeficientes, en este caso no se recomienda usar la opción -x.</value>
+  </data>
+  <data name="VariasMensajeVacio" xml:space="preserve">
+    <value>La regla no se calculó, seguramente sea causado porque el divisor no sea coprimo con la base.
+Puede ignorar esta regla.</value>
+  </data>
+  <data name="VariasMensajeError" xml:space="preserve">
+    <value>No se pudieron calcular algunas reglas.
+Probablemente causado por algún par divisor, base no coprimo.
+Compruebe la salida de errores para obtener más información.</value>
+  </data>
+  <data name="VariasMensajeErrorTotal" xml:space="preserve">
+    <value>No se pudo calcular ninguna regla.
+Puede ser debido a que ningún divisor sea coprimo con la base.
+Compruebe la salida de errores para obtener más información.</value>
+  </data>
+  <data name="Ayuda" xml:space="preserve">
+    <value>Ayuda de CalcDivCLI:
+
+- Opciones del programa por verbo: use --help para más información de los verbos disponibles.
+    * Opciones generales, excepto manual:
+        * -j, --json: La salida de las reglas se genera en JSON.
+        * -d, --dividend: Aplica y explica todas las reglas obtenidas usando los enteros que se les ha pasado, separados por comas.
+        * -x, --extra-rules-types: Intentará encontrar una regla que no sea de coeficientes si es posible. Las bases y coeficientes no tendrán que ser coprimos.
+		* --length: Establece la longitud de las reglas de coeficientes. Debe ser un entero positivo.
+    * single (default):
+        * Arguments: Este verbo usa dos argumentos posicionales.
+            * Divisor: Obligatorio. Las reglas probarán la divisibilidad con este número.
+            * Base: Opcional, diez por defecto. Las reglas se aplicarán en esta base.
+    * multiple: 
+        * Arguments: Este verbo usa dos argumentos posicionales.
+            * Divisor: Obligatorio. Las reglas probarán la divisibilidad con estos números. Separados por comas.
+            * Base: Opcional, diez por defecto. Las reglas se aplicarán en estas bases. Separados por comas.
+    * dialog:
+        * --divisor: Salta la pregunta del divisor y fuerza este valor.
+        * --base: Salta la pregunta de la base y fuerza este valor.
+        * --no-loop: Fuerza a que se ejecute un única iteración.
+        * -s, --simple-dialog: Impide que se pregunten por otras opciones y se limita a preguntar por los argumentos de la regla.
+        * Si cualquier otra opción activa, se utilizarán y se actuará como si -s estuviera activa.
+
+- Mensajes de salida
+
+0: el programa se ha ejecutado de forma correcta.
+1: no todos los datos introducidos fueron correctos.
+2: se han introducido argumentos de forma errónea.
+3: el usuario ha cerrado el programa de forma voluntaria.
+4: se pidió una regla sin coeficientes, pero no se pudo encontrar.
+5: se pidieron varias reglas, pero no todas se calcularon.
+6: se pidieron varias reglas, pero ninguna se calculó.</value>
+  </data>
+  <data name="AyudaCorta" xml:space="preserve">
+    <value>- Plantilla de uso: CalcDivCLI.exe [-&lt;nombre de opción corto&gt;|--&lt;nombre de opción largo&gt; [&lt;argumentos obligatorios ...&gt; [&lt;argumentos opcionales&gt;...]]
+
+Ejemplo: *CalcDiv.exe --json --direct-output 7 10 --named-rule Nombre*
+Equivalente a: *CalcDiv.exe -jd 7 10 -n Nombre*
+Calcula la regla de 7 en base 10, le da el nombre Nombre y lo escribe en JSON.
+
+Use --help para ver información de las opciones y argumentos o -H para ver más información sobre la aplicación.</value>
+  </data>
+  <data name="ErrorBaseCoprima" xml:space="preserve">
+    <value>La base debe ser un entero mayor que uno y coprima con el divisor.</value>
+  </data>
+  <data name="ErrorCoeficientes" xml:space="preserve">
+    <value>El número de coeficientes debe ser un entero positivo.</value>
+  </data>
+  <data name="ErrorDivisor" xml:space="preserve">
+    <value>El divisor debe ser un entero no negativo.
+Tenga en cuenta que los números divisibles entre un número negativo son divisibles entre su valor absoluto.</value>
+  </data>
+  <data name="ErrorDivisorCoprimo" xml:space="preserve">
+    <value>El divisor debe ser un entero positivo mayor que uno y coprimo con la base.
+Dos números son coprimos si su máximo común divisor es mayor que uno.</value>
+  </data>
+  <data name="ErrorDivisorExtra" xml:space="preserve">
+    <value>El divisor debe ser un entero no negativo.</value>
+  </data>
+  <data name="ErrorNumerico" xml:space="preserve">
+    <value>El divisor, la base y el número de coeficientes deben ser números enteros positivos.</value>
+  </data>
+  <data name="ErrorPrimo" xml:space="preserve">
+    <value>El divisor y la base no son coprimos.
+El cálculo de reglas de coeficientes en este caso no será implementado.
+Ejecute este programa con la opción -x o actívela en el diálogo para obtener una regla de otro tipo.</value>
+  </data>
+  <data name="ErrorPrimoExtra" xml:space="preserve">
+    <value>El divisor y la base no son coprimos.
+El cálculo de reglas de coeficientes en este caso no sera implementado.</value>
+  </data>
+  <data name="ErrorReglaNula" xml:space="preserve">
+    <value>Una regla fue nula al calcularla, no se puede seguir con la ejecución.</value>
+  </data>
+  <data name="ObjetoNuloMensaje" xml:space="preserve">
+    <value>El objeto es nulo.</value>
+  </data>
+  <data name="MensajeParametrosDirecto" xml:space="preserve">
+    <value>Divisor: {0}, Base: {1}.</value>
+  </data>
+  <data name="HelpVerbDialog" xml:space="preserve">
+    <value>Inicia un diálogo para crear reglas de divisibilidad.</value>
+  </data>
+  <data name="HelpVerbHelp" xml:space="preserve">
+    <value>Muestra la ayuda de esta aplicación.</value>
+  </data>
+  <data name="HelpVerbManual" xml:space="preserve">
+    <value>Muestra un documento de ayuda con más detalles.</value>
+  </data>
+  <data name="HelpVerbSingle" xml:space="preserve">
+    <value>Genera una única regla dado un divisor, su base y su longitud si la regla es de coeficientes.</value>
+  </data>
+  <data name="HelpAnularBucle" xml:space="preserve">
+    <value>Anula el bucle del modo diálogo. Solo hará un calculo de reglas.</value>
+  </data>
+  <data name="HelpAyuda" xml:space="preserve">
+    <value>Devuelve por salida un documento de ayuda más largo explicando la aplicación con más detalle.</value>
+  </data>
+  <data name="HelpAyudaCorta" xml:space="preserve">
+    <value>Devuelve por salida un pequeño documento indicando como ejecutar esta aplicación.</value>
+  </data>
+  <data name="HelpBase" xml:space="preserve">
+    <value>Indica la base en la que se aplicará la regla.
+Por defecto diez, debe ser mayor que uno.</value>
+  </data>
+  <data name="HelpBaseDialogo" xml:space="preserve">
+    <value>Inicializa un valor para la base en modo diálogo, salta la pregunta por consola.
+Debe ser un entero de 64 bits válido mayor que 1.</value>
+  </data>
+  <data name="HelpDirecto" xml:space="preserve">
+    <value>La base, divisor y, opcionalmente la longitud de las reglas de coeficientes, como argumentos en lugar de preguntarlos en modo diálogo.</value>
+  </data>
+  <data name="HelpDividendo" xml:space="preserve">
+    <value>Indica los valores de los dividendos a los que se les aplicará la regla.
+Deben ser enteros de 64 bits válidos separados por comas.
+Se usarán sus valores absolutos, esto no afecta al resultado.</value>
+  </data>
+  <data name="HelpDivisor" xml:space="preserve">
+    <value>Indica el divisor usado para encontrar su regla de divisibilidad.
+Obligatorio, debe ser un entero de 64 bits no negativo válido.</value>
+  </data>
+  <data name="HelpDivisorDialogo" xml:space="preserve">
+    <value>Inicializa un valor para el divisor en modo diálogo, salta la pregunta por consola.
+Debe ser un entero válido no negativo.
+Si se especifica la base, se activarán las reglas extra, a no ser que la base y el divisor sean coprimos.</value>
+  </data>
+  <data name="HelpDivisorVarias" xml:space="preserve">
+    <value>Indica el divisor usado para encontrar su regla de divisibilidad.
+Obligatorio, debe ser una lista de enteros de 64 bits no negativos válidos.</value>
+  </data>
+  <data name="HelpExtendido" xml:space="preserve">
+    <value>Puede devolver reglas de tipos distintos, también devuelve por pantalla explicaciones sobre como se aplican.</value>
+  </data>
+  <data name="HelpJson" xml:space="preserve">
+    <value>Las reglas de coeficientes se devolveran como un objeto JSON, se reflejarán los cambios causados por otros flags.</value>
+  </data>
+  <data name="HelpLongitud" xml:space="preserve">
+    <value>Indica la longitud de la regla si es de coeficientes.
+Por defecto uno, debe ser un entero positivo de 32 bits válido.</value>
+  </data>
+  <data name="HelpLongitudDialogo" xml:space="preserve">
+    <value>Inicializa la longitud de las reglas en modo diálogo, salta la pregunta por consola.
+Debe ser un entero positivo válido.
+Activa las reglas de coeficientes, a no ser que se activen las extra.</value>
+  </data>
+  <data name="HelpNombre" xml:space="preserve">
+    <value>Le da un nombre a las reglas de coeficientes, incluido en la salida.</value>
+  </data>
+  <data name="HelpSaltar" xml:space="preserve">
+    <value>Si no se usan otras opciones, salta el dialogo relacionado con el resto de opciones, no afecta a la salida.</value>
+  </data>
+  <data name="HelpTextMultiple" xml:space="preserve">
+    <value>Devuelve todas las combinaciones válidas de reglas dadas unas listas de divisores, bases y longitudes si son reglas de coeficientes.
+Los elementos de una misma lista deben estar separados por una coma.</value>
+  </data>
+  <data name="HelpTodos" xml:space="preserve">
+    <value>Devuelve todas las reglas con valores absolutos menores al divisor elegido.</value>
+  </data>
+  <data name="HelpVarias" xml:space="preserve">
+    <value>Recibe varias bases, divisores y coeficientes como argumentos y devuelve la regla de cada tupla (divisor, base, coeficiente).
+Todas las bases, divisores y coeficientes deben ser válidos.
+Activa el modo directo.</value>
+  </data>
+</root>

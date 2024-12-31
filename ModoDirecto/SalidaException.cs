@@ -1,5 +1,5 @@
-﻿namespace ProgramaDivisibilidad {
-	internal class SalidaException : Exception {
+﻿namespace ModosEjecucion {
+	public class SalidaException : Exception {
 		public SalidaException() : base() { }
 
 		public SalidaException(string message) : base(message) { }

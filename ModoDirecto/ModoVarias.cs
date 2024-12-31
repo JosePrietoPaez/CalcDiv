@@ -1,34 +1,34 @@
 ﻿using Operaciones;
-using static ProgramaDivisibilidad.Recursos.TextoResource;
+using static ModosEjecucion.Recursos.TextoEjecucion;
 
-namespace ProgramaDivisibilidad {
-	class ModoVarias : IModoEjecucion {
+namespace ModosEjecucion {
+	public class ModoVarias : IModoEjecucion {
 
 		private static readonly StringWriter _writerDesecho = new();
 
-		public Salida Ejecutar(IOpciones opciones) {
+		public EstadoEjecucion Ejecutar(IOpciones opciones) {
 			OpcionesVarias varias = (OpcionesVarias) opciones;
-			Func<long, long, int, IOpcionesGlobales, (Salida, IRegla)> generadora = ModoDirecto.SeleccionarFuncionYAjustarFlags(varias);
+			Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora = ModoDirecto.SeleccionarFuncionYAjustarFlags(varias);
 			Func<IRegla, long, long, int, List<(TextWriter, string)>> consumidora = SeleccionarConsumidora(varias);
 			Func<List<object>, List<(TextWriter, string)>> final = SeleccionarFinal(varias);
 			return EjectutarVarias(generadora, consumidora, final, varias.Divisores, varias.Bases, varias.Longitud ?? 1, varias);
 		}
 
-		private static Salida EjectutarVarias(Func<long, long, int, IOpcionesGlobales, (Salida, IRegla)> generadora,
+		private static EstadoEjecucion EjectutarVarias(Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora,
 			Func<IRegla, long, long, int, List<(TextWriter, string)>> consumidora,
 			Func<List<object>, List<(TextWriter, string)>> final,
 			long[] divisores, long[] bases, int longitud,
 			OpcionesVarias flags) {
 
-			Salida valorEjecucion = Salida.CORRECTA;
+			EstadoEjecucion valorEjecucion = EstadoEjecucion.CORRECTA;
 			bool hayFallo = false, hayExito = false;
 			List<IRegla> reglas = new(divisores.Length * bases.Length); // Contendrá las listas o listas de listas
 			foreach (long divisor in divisores) {
 				foreach (long @base in bases) {
 					(valorEjecucion, IRegla nuevoElemento) = generadora(divisor, @base, longitud, flags); // La divisibilidad se maneja en el método
-					if (!hayExito && valorEjecucion == Salida.CORRECTA) {
+					if (!hayExito && valorEjecucion == EstadoEjecucion.CORRECTA) {
 						hayExito = true;
-					} else if (!hayFallo && valorEjecucion != Salida.CORRECTA) {
+					} else if (!hayFallo && valorEjecucion != EstadoEjecucion.CORRECTA) {
 						hayFallo = true;
 					}
 					if (!hayExito) continue;
@@ -39,11 +39,11 @@ namespace ProgramaDivisibilidad {
 			EscribirListaPorWriters(final(reglas.Select(o => o as object).ToList()));
 			if (!hayExito) { // Si no hay reglas, no se escriben
 				Console.Error.WriteLine(VariasMensajeErrorTotal);
-				valorEjecucion = Salida.VARIAS_ERROR_TOTAL;
+				valorEjecucion = EstadoEjecucion.VARIAS_ERROR_TOTAL;
 			} else {
 				if (hayFallo) {
 					Console.Error.WriteLine(VariasMensajeError);
-					valorEjecucion = Salida.VARIAS_ERROR;
+					valorEjecucion = EstadoEjecucion.VARIAS_ERROR;
 				}
 			}
 			return valorEjecucion;
@@ -54,7 +54,7 @@ namespace ProgramaDivisibilidad {
 			if (flags.JSON) {
 				funcion = (_,_,_,_) => [(_writerDesecho, string.Empty)];
 			} else {
-				funcion = (o, divisor, @base, longitud) => ReglaConMensaje(CalcDivCLI.ObjetoAString(o), divisor, @base);
+				funcion = (o, divisor, @base, longitud) => ReglaConMensaje(Salida.ObjetoAString(o), divisor, @base);
 				if ((flags as IOpcionesGlobales).DividendoList.Count != 0) {
 					Func<IRegla, long, long, int, List<(TextWriter, string)>> funcionAuxiliar = funcion;
 					funcion = (o, divisor, @base, longitud) => {
@@ -79,7 +79,7 @@ namespace ProgramaDivisibilidad {
 		private static Func<List<object>, List<(TextWriter, string)>> SeleccionarFinal(OpcionesVarias flags) {
 			Func<List<object>, List<(TextWriter, string)>> funcion;
 			if (flags.JSON) {
-				funcion = (lista) => [(Console.Out, CalcDivCLI.ObjetoAString(lista, true))];
+				funcion = (lista) => [(Console.Out, Salida.ObjetoAString(lista, true))];
 				if ((flags as IOpcionesGlobales).DividendoList.Count != 0) {
 					Func<List<object>, List<(TextWriter, string)>> funcionAuxiliar = funcion;
 					funcion = (lista) => {

@@ -1,6 +1,8 @@
-﻿using System.Numerics;
+﻿using ModosEjecucion;
+using System.Numerics;
 using static Operaciones.Calculos;
 using static ProgramaDivisibilidad.Recursos.TextoResource;
+using static ModosEjecucion.Recursos.TextoEjecucion;
 
 namespace ProgramaDivisibilidad {
 	/// <summary>
@@ -36,11 +38,11 @@ namespace ProgramaDivisibilidad {
 		/// <returns>
 		/// Código de la salida de la aplicación.
 		/// </returns>
-		public Salida Ejecutar(IOpciones opciones) {
+		public EstadoEjecucion Ejecutar(IOpciones opciones) {
 			OpcionesDialogo flags = (OpcionesDialogo) opciones;
 			Console.Error.WriteLine(MensajeInicioDialogo, SALIDA_DIALOGO);
 			bool sinFlags = flags.FlagsInactivos, salir = true;
-			Salida resultadoSalida = Salida.CORRECTA;
+			EstadoEjecucion resultadoSalida = EstadoEjecucion.CORRECTA;
 			static bool esS(char letra) => letra == 's' | letra == 'S';
 			try {
 				bool saltarPreguntaExtra = GestionarOpcionesDialogo(flags);
@@ -59,23 +61,23 @@ namespace ProgramaDivisibilidad {
 					var (Mensaje, Divisor, Base, Longitud) = 
 						FlujoDatosRegla(flags.Divisor, flags.Base, flags.Longitud, sinFlags, flags);
 
-					CalcDivCLI.EscribirReglaPorConsola(Mensaje + Environment.NewLine, Divisor, Base);
+					Salida.EscribirReglaPorConsola(Mensaje + Environment.NewLine, Divisor, Base);
 
 					if (!flags.AnularBucle) {
 						salir = !ObtenerDeUsuario(MensajeDialogoRepetir, esS);
 					}
-					resultadoSalida = Salida.CORRECTA;
+					resultadoSalida = EstadoEjecucion.CORRECTA;
 
 				} while (!salir);
 			}
 			// Si decide salir, se saldrá por este catch
 			catch (SalidaException) {
-				resultadoSalida = Salida.VOLUNTARIA;
+				resultadoSalida = EstadoEjecucion.VOLUNTARIA;
 				Console.Error.WriteLine(Environment.NewLine + MensajeDialogoInterrumpido);
 			}
 			// Si ocurre otro error se saldrá por este catch
 			catch (Exception e) {
-				resultadoSalida = Salida.ERROR;
+				resultadoSalida = EstadoEjecucion.ERROR;
 				Console.Error.WriteLine(e.Message);
 				Console.Error.WriteLine(e.StackTrace);
 				Console.Error.WriteLine(DialogoExcepcionInesperada);
@@ -111,7 +113,7 @@ namespace ProgramaDivisibilidad {
 					() => ObtenerDeUsuario(0, ErrorCoeficientes, MensajeDialogoCoeficientes));
 			}
 
-			return (flags.ObtenerReglas(divisor, @base, longitud), divisor, @base, longitud);
+			return (((IOpcionesGlobales)flags).ObtenerReglas(divisor, @base, longitud), divisor, @base, longitud);
 		}
 
 		#region ObtenerSHUTTHEFUCKUP
