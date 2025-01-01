@@ -59,6 +59,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ModoDirecto\ModosEjecucionExterno.csproj" />
+    <ProjectReference Include="..\ModosEjecucionInterno\ModosEjecucionInterno.csproj" />
     <ProjectReference Include="..\Operaciones\Operaciones.csproj" />
   </ItemGroup>
 

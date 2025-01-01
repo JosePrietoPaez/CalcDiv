@@ -39,10 +39,11 @@ namespace Operaciones
 			return primo;
 		}
 
-		
 		/// <summary>
-		/// Devuelve el factorial de <c>@base</c>.
+		/// Devuelve el factorial de <paramref name="numero"/>.
 		/// </summary>
+		/// <param name="numero">Número del cual se calculará el factorial</param>
+		/// <returns>Factorial <paramref name="numero"/></returns>
 		public static long Factorial(long numero) {
 			ArgumentOutOfRangeException.ThrowIfNegative(numero);
 			long res = numero;
@@ -54,8 +55,11 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Devuelve el máximo común divisor de <c>@base</c> y <c>segundo</c>.
+		/// Devuelve el máximo común divisor de <paramref name="primero"/> y <paramref name="segundo"/>.
 		/// </summary>
+		/// <param name="primero">Primer número</param>
+		/// <param name="segundo">Segundo número</param>
+		/// <returns>Máximo común divisor de los dos números</returns>
 		public static long Mcd(long primero, long segundo)
 		{
 			if (primero < 0 || segundo < 0) throw new ArgumentException("Los argumentos deben ser no negativos");
@@ -69,24 +73,30 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Indica si <c>primero</c> y <c>segundo</c> son coprimos.
+		/// Indica si <paramref name="primero"/> y <paramref name="segundo"/> son coprimos.
 		/// </summary>
 		/// <remarks>
 		/// Ambos parámetros deben ser mayores o iguales que 0.
 		/// </remarks>
+		/// <param name="primero">Primer número</param>
+		/// <param name="segundo">Segundo número</param>
 		/// <returns>
-		/// <c>true</c> si primero y segundo son coprimos, si no <c>false</c>.
+		/// <see langword="true"/> si primero y segundo son coprimos, si no <see langword="false"/>.
 		/// </returns>
 		public static bool SonCoprimos(long primero, long segundo) {
 			return Mcd(primero,segundo) == 1;
 		}
 
 		/// <summary>
-		/// Devuelve una serie que contiene la descomposición en números primos de <c>divisor</c>.
+		/// Devuelve una serie que contiene la descomposición en números primos de <paramref name="numero"/>.
 		/// </summary>
 		/// <remarks>
 		/// Los elementos de la serie son los exponentes de los números primos en orden ascendente hasta llegar al último con coeficiente positivo.
 		/// </remarks>
+		/// <param name="numero">Número a descomponer</param>
+		/// <returns>
+		/// <see cref="List{T}"/> con la descomposición en números primos.
+		/// </returns>
 		public static List<long> DescompsicionEnPrimos(long numero) {
 			if (numero < 0) throw new ArgumentException("El argumento debe ser positivo");
 			List<long> primos = PrimosHasta(numero);
@@ -101,15 +111,17 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Calcula el mínimo común múltiplo de <c>primero</c> y <c>segundo</c>.
+		/// Calcula el mínimo común múltiplo de <paramref name="primero"/> y <paramref name="segundo"/>.
 		/// </summary>
 		/// <remarks>
-		/// <c>primero</c> y <c>segundo</c> deben ser no negativos.
+		/// <paramref name="primero"/> y <paramref name="segundo"/> deben ser no negativos.
 		/// </remarks>
-		/// <exception cref="ArgumentException"></exception>
+		/// <param name="primero">Primer número</param>
+		/// <param name="segundo">Segundo número</param>
 		/// <returns>
-		/// El mínimo número positivo que es múltiplo de los segundo argumentos.
+		/// El mínimo número positivo que es múltiplo de los dos argumentos.
 		/// </returns>
+		/// <exception cref="ArgumentException">Si alguno de los argumentos es negativo</exception>
 		public static long Mcm(long primero, long segundo) {
 			if (primero < 0 || segundo < 0) throw new ArgumentException("Los argumentos deben ser no negativos");
 			if (primero == 0 || segundo == 0) return 0;
@@ -117,8 +129,10 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Devuelve una lista con los números primos hasta <c>divisor</c> incluido
+		/// Devuelve una lista con los números primos hasta <paramref name="numero"/> incluido.
 		/// </summary>
+		/// <param name="numero">Número hasta el cual se calcularán los primos</param>
+		/// <returns>Lista de números primos hasta el número dado.</returns>
 		public static List<long> PrimosHasta(long numero) {
 			long cont;
 			List<long> serie = [];
@@ -151,15 +165,17 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Calcula el inverso multiplicativo de <c>a</c> en módulo <c>m</c>.
+		/// Calcula el inverso multiplicativo de <paramref name="a"/> en módulo <paramref name="m"/>.
 		/// </summary>
 		/// <remarks>
 		/// Devuelve 0 si no hay inverso.<para>
-		/// El resultado nunca es negativo
+		/// El resultado nunca es negativo.
 		/// </para>
 		/// </remarks>
+		/// <param name="a">Número del cual se calculará el inverso</param>
+		/// <param name="m">Módulo</param>
 		/// <returns>
-		/// a^-1 talque a * a^-1 equivale a 1 (mód m)
+		/// <paramref name="a"/>^-1 talque <paramref name="a"/> * <paramref name="a"/>^-1 equivale a 1 (mód <paramref name="m"/>).
 		/// </returns>
 		public static long InversoMod(long a, long m) {
 			long c1 = 1;
@@ -195,20 +211,23 @@ namespace Operaciones
 			}
 		}
 
-		/**
-		 * Calcula la progresión aritmética que empieza en inicio, acaba en fin y tiene divisor números
-		 * @param inicio primer número del sumatorio
-		 * @param fin último número del sumatorio
-		 * @param divisor número de elementos de la progresión
-		 * @return valor de la progresión aritmética
-		 */
+		/// <summary>
+		/// Calcula la progresión aritmética que empieza en <paramref name="inicio"/>, acaba en <paramref name="fin"/> y tiene <paramref name="numero"/> números
+		/// </summary>
+		/// <param name="inicio">Primer número del sumatorio</param>
+		/// <param name="fin">Último número del sumatorio</param>
+		/// <param name="numero">Número de elementos de la progresión</param>
+		/// <returns>Valor de la progresión aritmética.</returns>
 		public static long SumatorioIntervalo(long inicio, long fin, long numero) {
 			return (inicio + fin) * numero / 2;
 		}
 
 		/// <summary>
-		/// Devuelve el mínimo de los absolutos entre <c>primero</c> y <c>segundo</c>.
+		/// Devuelve el mínimo de los absolutos entre <paramref name="primero"/> y <paramref name="segundo"/>.
 		/// </summary>
+		/// <param name="primero">Primer número</param>
+		/// <param name="segundo">Segundo número</param>
+		/// <returns>El mínimo de los valores absolutos de los dos números.</returns>
 		public static long MinAbs(long primero, long segundo) {
 			if (Min(Abs(primero), Abs(segundo)) == Abs(primero))
 				return primero;
@@ -216,62 +235,81 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Calcula el número de cifras de <c>numero</c> en base <c>@base</c>.
+		/// Calcula el número de cifras de <paramref name="numero"/> en base <paramref name="base"/>.
 		/// </summary>
+		/// <param name="numero">Número del cual se calcularán las cifras</param>
+		/// <param name="base">Base en la que se calcularán las cifras</param>
+		/// <returns>Número de cifras del número en la base dada.</returns>
 		public static byte Cifras(long numero, long @base) { //El valor máximo será 64 en base 2
 			if (numero == 0) return 1;
 			return (byte)Ceiling(Log(Abs(numero) + 1L) / Log(@base));
 		}
 
 		/// <summary>
-		/// Calcula el número de cifras de <c>numero</c> en base <c>@base</c>.
+		/// Calcula el número de cifras de <paramref name="numero"/> en base <paramref name="base"/>.
 		/// </summary>
+		/// <param name="numero">Número del cual se calcularán las cifras</param>
+		/// <param name="base">Base en la que se calcularán las cifras</param>
+		/// <returns>Número de cifras del número en la base dada.</returns>
 		public static long Cifras(BigInteger numero, long @base) { //El valor máximo será 64 en base 2
 			if (numero == 0) return 1;
 			return (long)Ceiling(BigInteger.Log(BigInteger.Abs(numero) + 1L) / Log(@base));
 		}
 
 		/// <summary>
-		/// Calcula el número de cifras de <c>numero</c> en base <c>@base</c>.
+		/// Calcula el número de cifras de <paramref name="numero"/> en base <paramref name="base"/>.
 		/// </summary>
+		/// <param name="numero">Número del cual se calcularán las cifras</param>
+		/// <param name="base">Base en la que se calcularán las cifras</param>
+		/// <returns>Número de cifras del número en la base dada.</returns>
 		public static short Cifras(double numero, double @base) { //El valor máximo será 1024 en base dos, creo
 			if (numero == 0) return 1;
 			return (short)Ceiling(Log(BitIncrement(Abs(numero))) / Log(@base));
 		}
 
 		/// <summary>
-		/// Calcula el número de cifras de <c>numero</c> en base 10.
+		/// Calcula el número de cifras de <paramref name="numero"/> en base 10.
 		/// </summary>
+		/// <param name="numero">Número del cual se calcularán las cifras</param>
+		/// <returns>Número de cifras del número en base 10.</returns>
 		public static byte Cifras10(long numero) => Cifras(numero, 10);
 
 		/// <summary>
-		/// Calcula el número de cifras de <c>numero</c> en base 10.
+		/// Calcula el número de cifras de <paramref name="numero"/> en base 10.
 		/// </summary>
+		/// <param name="numero">Número del cual se calcularán las cifras</param>
+		/// <returns>Número de cifras del número en base 10.</returns>
 		public static short Cifras10(double numero) => Cifras(numero, 10);
 
 		/// <summary>
-		/// Calcula la cifra en la posición <c>pos</c> de <c>numero</c> en base <c>@base</c>.
+		/// Calcula la cifra en la posición <paramref name="pos"/> de <paramref name="numero"/> en base <paramref name="base"/>.
 		/// </summary>
 		/// <remarks>
 		/// La cifra 0 es la menos significativa.
 		/// </remarks>
+		/// <param name="numero">Número del cual se obtendrá la cifra</param>
+		/// <param name="pos">Posición de la cifra a obtener</param>
+		/// <param name="base">Base en la que se calculará la cifra</param>
 		/// <returns>
-		/// Cifra <c>pos</c> de <c>numero</c> en base <c>@base</c>
+		/// Cifra <paramref name="pos"/> de <paramref name="numero"/> en base <paramref name="base"/>.
 		/// </returns>
 		public static long Cifra(long numero, int pos, long @base) {
 			if (pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
 			if (pos >= Cifras(numero, @base)) return 0; //Suponemos que las cifras de la izquierda son 0
-			return Abs(numero) / PotenciaEntera(@base,pos) % @base;	
+			return Abs(numero) / PotenciaEntera(@base,pos) % @base;
 		}
 
 		/// <summary>
-		/// Calcula la cifra en la posición <c>pos</c> de <c>numero</c> en base <c>@base</c>.
+		/// Calcula la cifra en la posición <paramref name="pos"/> de <paramref name="numero"/> en base <paramref name="base"/>.
 		/// </summary>
 		/// <remarks>
 		/// La cifra 0 es la menos significativa.
 		/// </remarks>
+		/// <param name="numero">Número del cual se obtendrá la cifra</param>
+		/// <param name="pos">Posición de la cifra a obtener</param>
+		/// <param name="base">Base en la que se calculará la cifra</param>
 		/// <returns>
-		/// Cifra <c>pos</c> de <c>numero</c> en base <c>@base</c>
+		/// Cifra <paramref name="pos"/> de <paramref name="numero"/> en base <paramref name="base"/>
 		/// </returns>
 		public static BigInteger Cifra(BigInteger numero, int pos, long @base) {
 			if (pos < 0) throw new ArgumentException("La posición debe ser una cifra del número");
@@ -280,14 +318,14 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Devuelve un número con las cifras de <c>numero</c> entre las posiciones <c>cifraInicio</c> inclusive y <c>cifraFin</c> no inclusive en la base indicada
+		/// Devuelve un número con las cifras de <paramref name="numero"/> entre las posiciones <paramref name="cifraInicio"/> inclusive y <paramref name="cifraFin"/> no inclusive en la base indicada.
 		/// </summary>
 		/// <param name="numero">Número del que se sacarán las cifras</param>
 		/// <param name="base">Base de la que se obtendrán las cifras</param>
 		/// <param name="cifraInicio">Primera cifra que obtener</param>
 		/// <param name="cifraFin">Posición posterior a la última</param>
 		/// <returns>
-		/// Cifras en el intervalo indica
+		/// Cifras en el intervalo indicado.
 		/// </returns>
 		public static long IntervaloCifras(long numero, long @base, int cifraInicio, int cifraFin) {
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(cifraInicio, cifraFin, nameof(cifraInicio));
@@ -295,24 +333,25 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Devuelve un número con las cifras de <c>numero</c> entre las posiciones <c>cifraInicio</c> inclusive y <c>cifraFin</c> no inclusive en la base indicada
+		/// Devuelve un número con las cifras de <paramref name="numero"/> entre las posiciones <paramref name="cifraInicio"/> inclusive y <paramref name="cifraFin"/> no inclusive en la base indicada.
 		/// </summary>
 		/// <param name="numero">Número del que se sacarán las cifras</param>
 		/// <param name="base">Base de la que se obtendrán las cifras</param>
 		/// <param name="cifraInicio">Primera cifra que obtener</param>
 		/// <param name="cifraFin">Posición posterior a la última</param>
 		/// <returns>
-		/// Cifras en el intervalo indica
+		/// Cifras en el intervalo indicado.
 		/// </returns>
 		public static BigInteger IntervaloCifras(BigInteger numero, long @base, int cifraInicio, int cifraFin) {
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(cifraInicio, cifraFin, nameof(cifraInicio));
 			return BigInteger.Abs(numero) / PotenciaEnteraGrande(@base,cifraInicio) % PotenciaEnteraGrande(@base, cifraFin - cifraInicio);
 		}
 
-		/**
-		 * Devuelve primero objeto {@code String} que contiene {@code numero} escrito con subíndices de sus cifras en @base 10
-		 * @return {@code numero} en subíndices
-		 */
+		/// <summary>
+		/// Devuelve primero objeto <see cref="string"/> que contiene <paramref name="numero"/> escrito con subíndices de sus cifras en base 10.
+		/// </summary>
+		/// <param name="numero">Número a convertir a subíndices</param>
+		/// <returns><paramref name="numero"/> en subíndices.</returns>
 		public static string NumASubindice(long numero) {
 			StringBuilder res = new();
 			if (numero < 0) {
@@ -325,6 +364,11 @@ namespace Operaciones
 			return res.ToString();
 		}
 
+		/// <summary>
+		/// Convierte una cifra a su representación en subíndice.
+		/// </summary>
+		/// <param name="numero">Cifra a convertir</param>
+		/// <returns><see langword="char"/> que representa la cifra en subíndice.</returns>
 		public static char CifraASubindice(long numero) { return (char)(numero + 0x2080); }
 
 		/// <summary>
@@ -335,6 +379,9 @@ namespace Operaciones
 		/// <remarks>
 		/// Basado en https://stackoverflow.com/a/923814/22934376.
 		/// </remarks>
+		/// <param name="value">Número a convertir</param>
+		/// <param name="baseChars">Caracteres de la base</param>
+		/// <returns><see langword="string"/> que representa el número en la base dada.</returns>
 		public static string LongToStringFast(BigInteger value, char[] baseChars) {
 			// Es 64 para el caso máximo en base 2 y uno más para negativo
 			uint targetBase = (uint)baseChars.Length;
@@ -371,9 +418,12 @@ namespace Operaciones
 		/// <remarks>
 		/// Para más detalles: <see cref="LongToStringFast(BigInteger, char[])"/>
 		/// <para>
-		/// El máximo de <c>base</c> por defecto es <c>64</c>.
+		/// El máximo de <paramref name="base"/> por defecto es <c>64</c>.
 		/// </para>
 		/// </remarks>
+		/// <param name="value">Número a convertir</param>
+		/// <param name="base">Base en la que se convertirá el número</param>
+		/// <returns><see langword="string"/> que representa el número en la base dada.</returns>
 		public static string LongToStringFast(BigInteger value, long @base) => LongToStringFast(value, BASE_64_STRING.ToCharArray()[0..(int)@base]);
 
 		/// <summary>
@@ -385,11 +435,9 @@ namespace Operaciones
 		/// Por ejemplo: "[15,12,3,0](16)" para <c>0xFC30</c> y base 16.
 		/// </para>
 		/// </remarks>
-		/// <param name="value"></param>
-		/// <param name="base"></param>
-		/// <returns>
-		/// String equivalente a <c>value</c>, con las cifras en decimal.
-		/// </returns>
+		/// <param name="value">Número a convertir</param>
+		/// <param name="base">Base en la que se convertirá el número</param>
+		/// <returns><see langword="string"/> equivalente a <paramref name="value"/>, con las cifras en decimal.</returns>
 		public static string LongToStringNoAlphabet(long value, long @base) {
 			long[] cifras = new long[Cifras(value, @base)];
 			for (byte i = 0; i < cifras.Length; i++) {
@@ -407,11 +455,9 @@ namespace Operaciones
 		/// Por ejemplo: "[15,12,3,0](16)" para <c>0xFC30</c> y base 16.
 		/// </para>
 		/// </remarks>
-		/// <param name="value"></param>
-		/// <param name="base"></param>
-		/// <returns>
-		/// String equivalente a <c>value</c>, con las cifras en decimal.
-		/// </returns>
+		/// <param name="value">Número a convertir</param>
+		/// <param name="base">Base en la que se convertirá el número</param>
+		/// <returns><see langword="string"/> equivalente a <paramref name="value"/>, con las cifras en decimal.</returns>
 		public static string LongToStringNoAlphabet(BigInteger value, long @base) {
 			BigInteger[] cifras = new BigInteger[Cifras(value, @base)];
 			for (byte i = 0; i < cifras.Length; i++) {
@@ -422,15 +468,13 @@ namespace Operaciones
 
 		public const string BASE_64_STRING = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_";
 
-		/**
-		 * Calcula {@code numero}^{@code exp} en módulo {@code @base} multiplicando {@code numero} por sí mismo y haciendo el módulo en cada paso
-		 * <p>Intenta evitar el overflow que se produciría al hacer la potencia antes del módulo,
-		 * pero esto no se garantiza</p>
-		 * @param numero @base de la potencia
-		 * @param exp exponente
-		 * @param @base @base del módulo
-		 * @return {@code numero}^{@code exp} en módulo {@code @base}
-		 */
+		/// <summary>
+		/// Calcula <paramref name="numero"/>^<paramref name="exp"/> en módulo <paramref name="base"/> multiplicando <paramref name="numero"/> por sí mismo y haciendo el módulo en cada paso.
+		/// </summary>
+		/// <param name="numero">Base de la potencia</param>
+		/// <param name="exp">Exponente</param>
+		/// <param name="base">Base del módulo</param>
+		/// <returns><paramref name="numero"/>^<paramref name="exp"/> en módulo <paramref name="base"/>.</returns>
 		public static long PotenciaMod(long numero, long exp, long @base) {
 			long res = 1;
 			numero %= @base;
@@ -442,11 +486,12 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Calcula el producto de <c>fac1</c> y <c>fac2</c> en módulo <c>@base</c>
+		/// Calcula el producto de <paramref name="fac1"/> y <paramref name="fac2"/> en módulo <paramref name="base"/>.
 		/// </summary>
-		/// <returns>
-		/// <c>fac1 * fac2 % @base</c>
-		/// </returns>
+		/// <param name="fac1">Primer factor</param>
+		/// <param name="fac2">Segundo factor</param>
+		/// <param name="base">Base del módulo</param>
+		/// <returns><paramref name="fac1"/> * <paramref name="fac2"/> % <paramref name="base"/>.</returns>
 		/// <exception cref="DivideByZeroException"></exception>
 		public static long ProductoMod(long fac1, long fac2, long @base) {
 			if (@base == 0) throw new DivideByZeroException("No se puede calcular el resto con divisor 0");
@@ -464,11 +509,12 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Devuelve todas las reglas de divisibilidad de <c>divisor</c> en base <c>@base</c> con longitud <c>longitud</c> cuyo valor absoluto no supera <c>@base</c>.
+		/// Devuelve todas las reglas de divisibilidad de <paramref name="divisor"/> en base <paramref name="base"/> con longitud <paramref name="longitud"/> cuyo valor absoluto no supera <paramref name="base"/>.
 		/// </summary>
-		/// <returns>
-		/// <see cref="List{T}"/> de <see cref="ReglaCoeficientes"/> con todas las combinaciones de reglas.
-		/// </returns>
+		/// <param name="divisor">Divisor de la regla</param>
+		/// <param name="longitud">Longitud de la regla</param>
+		/// <param name="base">Base en la que se aplicará la regla</param>
+		/// <returns><see cref="List{T}"/> de <see cref="ReglaCoeficientes"/> con todas las combinaciones de reglas.</returns>
 		public static List<ReglaCoeficientes> ReglasDivisibilidad(long divisor, int longitud, long @base) {
 			List<long> reglaInicial = ReglaDivisibilidadBase(divisor, longitud, @base), //Se calcula la regla de positivos
 				listaAuxiliar = [];
@@ -495,11 +541,15 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Calcula la regla de divisibilidad óptima de <c>divisor</c> para la base <c>@base</c> con longitud <c>longitud</c>.
+		/// Calcula la regla de divisibilidad óptima de <paramref name="divisor"/> para la base <paramref name="base"/> con longitud <paramref name="longitud"/>.
 		/// </summary>
 		/// <remarks>
-		/// <c>divisor</c> y <c>@base</c> deben ser coprimos
+		/// <paramref name="divisor"/> y <paramref name="base"/> deben ser coprimos.
 		/// </remarks>
+		/// <param name="divisor">Divisor de la regla</param>
+		/// <param name="longitud">Longitud de la regla</param>
+		/// <param name="base">Base en la que se aplicará la regla</param>
+		/// <returns><see cref="ReglaCoeficientes"/> con la regla de divisibilidad óptima.</returns>
 		public static ReglaCoeficientes ReglaDivisibilidadOptima(long divisor, int longitud, long @base) {
 			List<long> regla = ReglaDivisibilidadBase(divisor, longitud, @base);
 			for (int i = 0; i < regla.Count; i++) {
@@ -509,11 +559,15 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Calcula la regla de divisibilidad positiva de <c>divisor</c> para la base <c>@base</c> con longitud <c>longitud</c>.
+		/// Calcula la regla de divisibilidad positiva de <paramref name="divisor"/> para la base <paramref name="base"/> con longitud <paramref name="longitud"/>.
 		/// </summary>
 		/// <remarks>
-		/// <c>divisor</c> y <c>@base</c> deben ser coprimos
+		/// <paramref name="divisor"/> y <paramref name="base"/> deben ser coprimos.
 		/// </remarks>
+		/// <param name="divisor">Divisor de la regla</param>
+		/// <param name="longitud">Longitud de la regla</param>
+		/// <param name="base">Base en la que se aplicará la regla</param>
+		/// <returns><see cref="List{T}"/> de coeficientes de la regla de divisibilidad.</returns>
 		public static List<long> ReglaDivisibilidadBase(long divisor, int longitud, long @base) {
 			ArgumentOutOfRangeException.ThrowIfLessThan(divisor, 2, nameof(divisor));
 			ArgumentOutOfRangeException.ThrowIfLessThan(@base, 2, nameof(@base));
@@ -527,16 +581,14 @@ namespace Operaciones
 		/// Calcula la potencia de enteros de forma eficiente.
 		/// </summary>
 		/// <remarks>
-		/// <c>exp</c> debe ser positivo.
+		/// <paramref name="exp"/> debe ser positivo.
 		/// <para>
-		/// Obtenido de https://stackoverflow.com/a/2065303/22934376
+		/// Obtenido de <see href="https://stackoverflow.com/a/2065303/22934376"/>.
 		/// </para>
 		/// </remarks>
-		/// <param name="base"></param>
-		/// <param name="exp"></param>
-		/// <returns>
-		/// <c>base</c> ^ <c>exp</c>
-		/// </returns>
+		/// <param name="base">Base de la potencia</param>
+		/// <param name="exp">Exponente</param>
+		/// <returns><paramref name="base"/> ^ <paramref name="exp"/>.</returns>
 		public static long PotenciaEntera(long @base, long exp) {
 			long result = 1;
 			while (exp > 0) {
@@ -555,16 +607,14 @@ namespace Operaciones
 		/// Calcula la potencia de enteros de forma eficiente.
 		/// </summary>
 		/// <remarks>
-		/// <c>exp</c> debe ser positivo.
+		/// <paramref name="exp"/> debe ser positivo.
 		/// <para>
-		/// Obtenido de https://stackoverflow.com/a/2065303/22934376
+		/// Obtenido de <see href="https://stackoverflow.com/a/2065303/22934376"/>.
 		/// </para>
 		/// </remarks>
-		/// <param name="base"></param>
-		/// <param name="exp"></param>
-		/// <returns>
-		/// <c>base</c> ^ <c>exp</c>
-		/// </returns>
+		/// <param name="base">Base de la potencia</param>
+		/// <param name="exp">Exponente</param>
+		/// <returns><paramref name="base"/> ^ <paramref name="exp"/>.</returns>
 		public static BigInteger PotenciaEnteraGrande(BigInteger @base, long exp) {
 			BigInteger result = 1;
 			while (exp > 0) {
@@ -581,16 +631,14 @@ namespace Operaciones
 		/// Calcula la potencia de enteros de forma eficiente.
 		/// </summary>
 		/// <remarks>
-		/// <c>exp</c> debe ser positivo.
+		/// <paramref name="exp"/> debe ser positivo.
 		/// <para>
-		/// Obtenido de https://stackoverflow.com/a/2065303/22934376
+		/// Obtenido de <see href="https://stackoverflow.com/a/2065303/22934376"/>.
 		/// </para>
 		/// </remarks>
-		/// <param name="base"></param>
-		/// <param name="exp"></param>
-		/// <returns>
-		/// <c>base</c> ^ <c>exp</c>
-		/// </returns>
+		/// <param name="base">Base de la potencia</param>
+		/// <param name="exp">Exponente</param>
+		/// <returns><paramref name="base"/> ^ <paramref name="exp"/>.</returns>
 		public static int PotenciaEntera(int @base, int exp) {
 			int result = 1;
 			while (exp > 0) {
@@ -609,18 +657,16 @@ namespace Operaciones
 		/// Devuelve una tupla indicando si se ha encontrado una regla alternativa y una explicación de como aplicarla.
 		/// </summary>
 		/// <remarks>
-		/// <c>divisor</c> y <c>@base</c> deben ser mayores que uno.
+		/// <paramref name="divisor"/> y <paramref name="base"/> deben ser mayores que uno.
 		/// <para>
-		/// Si no se encuentra una regla debería usarse <see cref="ReglasDivisibilidad(long, int, long)"/>
-		/// para calcularlas.
+		/// Si no se encuentra una regla debería usarse <see cref="ReglasDivisibilidad(long, int, long)"/> para calcularlas.
 		/// </para>
 		/// El divisor debe ser mayor o igual que 2.
 		/// </remarks>
-		/// <exception cref="ArgumentOutOfRangeException"></exception>
 		/// <param name="divisor">Divisor de la regla</param>
 		/// <param name="base">Base para aplicar la regla</param>
 		/// <returns>
-		/// Tupla con primero booleano indicando el éxito del método, segundo la regla con su información inicializada.
+		/// Tupla <see langword="bool"/>, <see cref="IRegla"/> indicando el éxito del método y la regla obtenida.
 		/// </returns>
 		public static (bool, IRegla) ReglaDivisibilidadExtendida(long divisor, long @base) {
 			var caso = CasoEspecialRegla(divisor, @base);
@@ -629,7 +675,7 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Devuelve una tupla que representa la regla de divisibilidad encontrada para <c>divisor</c> y <c>@base</c>.
+		/// Devuelve una tupla que representa la regla de divisibilidad encontrada para <paramref name="divisor"/> y <paramref name="base"/>.
 		/// </summary>
 		/// <remarks>
 		/// Para obtener los mensajes use <see cref="ReglaDivisibilidadExtendida(long, long)"/> en su lugar.
@@ -639,16 +685,18 @@ namespace Operaciones
 		/// El divisor debe ser mayor o igual que 2.
 		/// <list type="bullet">
 		/// <listheader>Significado de <c>informacion</c> según el caso:</listheader>
-		/// <item>CERO, UNO y USAR_NORMAL</item> - <description>Ninguno, siempre es -1 ya que no se requiere más información</description>
-		/// <item>MIRAR_CIFRAS</item> - <description>Cifras que se deben considerar</description>
-		/// <item>RESTAR_BLOQUES y SUMAR_BLOQUES</item> - <description>Longitud de los bloques para agrupar las cifras</description>
+		/// <item><see cref="CasosDivisibilidad.DIVISOR_ZERO"/>, <see cref="CasosDivisibilidad.DIVISOR_ONE"/> y <see cref="CasosDivisibilidad.COEFFICIENTS"/></item>
+		/// <description>- Ninguno, siempre es -1 ya que no se requiere más información</description>
+		/// <item><see cref="CasosDivisibilidad.DIGITS"/></item>
+		/// <description>- Cifras que se deben considerar</description>
+		/// <item><see cref="CasosDivisibilidad.SUBSTRACT_BLOCKS"/> y <see cref="CasosDivisibilidad.ADD_BLOCKS"/></item>
+		/// <description>- Longitud de los bloques para agrupar las cifras</description>
 		/// </list>
 		/// </remarks>
-		/// <exception cref="ArgumentOutOfRangeException"></exception>
-		/// <param name="divisor"></param>
-		/// <param name="base"></param>
+		/// <param name="divisor">Divisor de la regla</param>
+		/// <param name="base">Base para aplicar la regla</param>
 		/// <returns>
-		/// Tupla con primero caso y primero entero con información
+		/// Tupla <see cref="CasosDivisibilidad"/>, <see langword="int"/>.
 		/// </returns>
 		[return: NotNull]
 		public static (CasosDivisibilidad caso,int informacion) CasoEspecialRegla(long divisor, long @base) {
@@ -677,9 +725,11 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Comprueba si divisor es una potencia de @base menos uno, o una de los divisores de @base menos uno, lo que permite usar una regla distinta
+		/// Comprueba si <paramref name="divisor"/> es una potencia de <paramref name="base"/> menos uno, o una de los divisores de <paramref name="base"/> menos uno, lo que permite usar una regla distinta.
 		/// </summary>
-		/// <returns></returns>
+		/// <param name="divisor">Divisor a comprobar</param>
+		/// <param name="base">Base a comprobar</param>
+		/// <returns>Tupla con un <see langword="bool"/> indicando si cumple la condición y un <see langword="int"/> con la potencia.</returns>
 		private static (bool, int) UnoMenosQuePotencia(long divisor, long @base) {
 			if (!SonCoprimos(divisor, @base)) return (false, -1);
 			List<long> modulos = []; // Para evitar que entre en primero bucle
@@ -698,9 +748,11 @@ namespace Operaciones
 		}
 
 		/// <summary>
-		/// Comprueba si divisor es una potencia de @base más uno, o uno de sus divisores, lo que permite usar una regla distinta
+		/// Comprueba si <paramref name="divisor"/> es una potencia de <paramref name="base"/> más uno, o uno de sus divisores, lo que permite usar una regla distinta.
 		/// </summary>
-		/// <returns></returns>
+		/// <param name="divisor">Divisor a comprobar</param>
+		/// <param name="base">Base a comprobar</param>
+		/// <returns>Tupla con un <see langword="bool"/> indicando si cumple la condición y un <see langword="bool"/> con la potencia.</returns>
 		private static (bool,int) UnoMasQuePotencia(long divisor, long @base) {
 			if (!SonCoprimos(divisor, @base)) return (false, -1);
 			List<long> modulos = []; // Para evitar que entre en primero bucle
@@ -718,6 +770,12 @@ namespace Operaciones
 			return (restoUno, potencia);
 		}
 
+		/// <summary>
+		/// Comprueba si el producto de las potencias de las bases cumple la condición.
+		/// </summary>
+		/// <param name="divisor">Lista de potencias del divisor</param>
+		/// <param name="base">Lista de potencias de la base</param>
+		/// <returns>Tupla con un <see langword="bool"/> indicando si cumple la condición y un <see langword="int"/> con el dato.</returns>
 		private static (bool cumpleCondicion,int dato) ProductoDePotenciasDeBases(List<long> divisor, List<long> @base) {
 			if (@base.Count == 0) return (false, -1);
 			int maxPotencia = 0;

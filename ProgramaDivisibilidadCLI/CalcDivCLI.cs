@@ -1,17 +1,13 @@
 ﻿using CommandLine;
-using System.Text;
-using static Operaciones.Calculos;
 using static ProgramaDivisibilidad.Recursos.TextoResource;
 using static ModosEjecucion.Recursos.TextoEjecucion;
 using CommandLine.Text;
 using System.Text.Json;
-using Operaciones;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
 using System.Text.Json.Serialization;
 using System.Globalization;
 using System.Numerics;
 using ModosEjecucion;
+using ModosEjecucionInterno;
 
 namespace ProgramaDivisibilidad {
 

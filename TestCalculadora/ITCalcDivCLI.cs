@@ -2,6 +2,7 @@
 using Operaciones.Recursos;
 using ProgramaDivisibilidad;
 using ProgramaDivisibilidad.Recursos;
+using ModosEjecucion.Recursos;
 using System.Globalization;
 using System.Text.Json.Nodes;
 
@@ -122,7 +123,7 @@ namespace TestCalculadoraIT {
 				Assert.That(lineasResultado[0], Is.EqualTo(TextoCalculos.ReglaExplicadaUno));
 				Assert.That(lineasResultado, Has.Length.EqualTo(1));
 				Assert.That(salida, Is.Zero);
-				Assert.That(lineasError[0], Is.EqualTo(string.Format(TextoResource.MensajeParametrosDirecto, 1, 10, 1))); //Uno para el mensaje de parámetros
+				Assert.That(lineasError[0], Is.EqualTo(string.Format(TextoEjecucion.MensajeParametrosDirecto, 1, 10, 1))); //Uno para el mensaje de parámetros
 			});
 		}
 

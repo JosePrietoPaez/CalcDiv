@@ -1,14 +1,14 @@
 ﻿using ModosEjecucion;
 using System.Numerics;
 using static Operaciones.Calculos;
-using static ProgramaDivisibilidad.Recursos.TextoResource;
 using static ModosEjecucion.Recursos.TextoEjecucion;
+using static ModosEjecucionInterno.Recursos.TextoEjecucionInterno;
 
-namespace ProgramaDivisibilidad {
+namespace ModosEjecucionInterno {
 	/// <summary>
 	/// Esta clase contiene la lógica para el modo diálogo
 	/// </summary>
-	class ModoDialogo : IModoEjecucion {
+	public class ModoDialogo : IModoEjecucion {
 
 		private const string SALIDA_DIALOGO = "/";
 

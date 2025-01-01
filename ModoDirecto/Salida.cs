@@ -16,33 +16,10 @@ namespace ModosEjecucion {
 		VARIAS_ERROR_TOTAL = 6
 	}
 
-	public class Salida {
-		public EstadoEjecucion Estado { get; set; }
+	public class Salida(EstadoEjecucion estado = EstadoEjecucion.CORRECTA) {
+		public EstadoEjecucion Estado { get; set; } = estado;
 
-		public List<string> Salidas { get; set; }
-
-		public List<string> Errores { get; set; }
-
-		public Salida() {
-			Estado = EstadoEjecucion.CORRECTA;
-			Salidas = [];
-			Errores = [];
-		}
-
-		public Salida(EstadoEjecucion estado) {
-			Estado = estado;
-			Salidas = [];
-			Errores = [];
-		}
-
-		public void EscribirSalida(TextWriter salida, TextWriter error) {
-			foreach (string s in Salidas) {
-				salida.WriteLine(s);
-			}
-			foreach (string e in Errores) {
-				error.WriteLine(e);
-			}
-		}
+		public List<(TextWriter, string)> Mensajes { get; set; } = [];
 
 		public static readonly JsonSerializerOptions opcionesJson = new() {
 			WriteIndented = true,
@@ -68,6 +45,14 @@ namespace ModosEjecucion {
 			return resultadoObjeto;
 		}
 
+		/// <summary>
+		/// Devuelve un <see langword="string"></see> con los elementos de un <see cref="IEnumerable{T}"/> separados por una nueva línea.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="enumerable"></param>
+		/// <returns>
+		/// <see langword="string"/> con los elementos de <paramref name="enumerable"/> separados por una nueva línea.
+		/// </returns>
 		public static string EnumerableStringSeparadoLinea<T>(IEnumerable<T> enumerable) {
 			StringBuilder stringBuilder = new();
 			foreach (T item in enumerable) {

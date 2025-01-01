@@ -117,70 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SentenceBadFormatConversionErrorOption" xml:space="preserve">
-    <value>Option '{0}' is defined in the wrong format.</value>
+  <data name="MensajeDialogoBase" xml:space="preserve">
+    <value>Base de la regla: </value>
   </data>
-  <data name="SentenceBadFormatConversionErrorValue" xml:space="preserve">
-    <value>A value not bound to option name is defined with a bad format.</value>
+  <data name="MensajeDialogoCoeficientes" xml:space="preserve">
+    <value>Número de coeficientes de la regla: </value>
   </data>
-  <data name="SentenceBadFormatTokenError" xml:space="preserve">
-    <value>Token '{0}' is not recognized.</value>
+  <data name="MensajeDialogoDividendoBucle" xml:space="preserve">
+    <value>Introduzca un entero no negativo:</value>
   </data>
-  <data name="SentenceBadVerbSelectedError" xml:space="preserve">
-    <value>Verb '{0}' is not recognized.</value>
+  <data name="MensajeDialogoDividendoError" xml:space="preserve">
+    <value>El número no fue válido o negativo:</value>
   </data>
-  <data name="SentenceErrorsHeadingText" xml:space="preserve">
-    <value>ERROR(S):</value>
+  <data name="MensajeDialogoDividendoVacio" xml:space="preserve">
+    <value>Escriba todos los números a los que se aplicará las reglas, para terminar, escriba "{0}":</value>
   </data>
-  <data name="SentenceHelpCommandTextOption" xml:space="preserve">
-    <value>Display this help screen.</value>
+  <data name="MensajeDialogoDivisor" xml:space="preserve">
+    <value>Divisor de la regla: </value>
   </data>
-  <data name="SentenceHelpCommandTextVerb" xml:space="preserve">
-    <value>Display more information on a specific command.</value>
+  <data name="MensajeDialogoExtendido" xml:space="preserve">
+    <value>Pulse &lt;&lt;s&gt;&gt; para obtener reglas de coeficientes u otra letra para otras reglas: </value>
   </data>
-  <data name="SentenceMissingRequiredOptionError" xml:space="preserve">
-    <value>Required option '{0}' is missing.</value>
+  <data name="MensajeDialogoInterrumpido" xml:space="preserve">
+    <value>Se ha interrumpido el programa.</value>
   </data>
-  <data name="SentenceMissingRequiredValueError" xml:space="preserve">
-    <value>A required value not bound to option name is missing.</value>
+  <data name="MensajeDialogoJson" xml:space="preserve">
+    <value>Pulse &lt;&lt;s&gt;&gt; para que la regla se escriba en un JSON, si la regla no va a ser pasada a un programa, pulse otra tecla: </value>
   </data>
-  <data name="SentenceMissingValueOptionError" xml:space="preserve">
-    <value>Option '{0}' has no value.</value>
+  <data name="MensajeDialogoRegla" xml:space="preserve">
+    <value>Nombre de la regla, puede dejarse vacío: </value>
   </data>
-  <data name="SentenceMutuallyExclusiveSetErrors" xml:space="preserve">
-    <value>Options: {0} are not compatible with {1}.</value>
+  <data name="MensajeDialogoRepetir" xml:space="preserve">
+    <value>Pulse &lt;&lt;s&gt;&gt; para calcular otra regla: </value>
   </data>
-  <data name="SentenceNoVerbSelectedError" xml:space="preserve">
-    <value>No verb selected.</value>
+  <data name="MensajeDialogoResultado" xml:space="preserve">
+    <value>Regla obtenida: </value>
   </data>
-  <data name="SentenceRepeatedOptionError" xml:space="preserve">
-    <value>Option '{0}' is defined multiple times.</value>
+  <data name="MensajeDialogoTodas" xml:space="preserve">
+    <value>Pulse &lt;&lt;s&gt;&gt; para obtener todas las reglas derivadas de la original u otra letra obtener solo la menor: </value>
   </data>
-  <data name="SentenceRequiredWord" xml:space="preserve">
-    <value>Required.</value>
+  <data name="MensajeFinDirecto" xml:space="preserve">
+    <value>Se ha calculado la regla.</value>
   </data>
-  <data name="SentenceSequenceOutOfRangeErrorOption" xml:space="preserve">
-    <value>A sequence option '{0}' is defined with fewer or more items than required.</value>
+  <data name="MensajeInicioDialogo" xml:space="preserve">
+    <value>Se pedirá que introduzca los datos por consola, escriba {0} para interrumpir el programa.</value>
   </data>
-  <data name="SentenceSequenceOutOfRangeErrorValue" xml:space="preserve">
-    <value>A sequence value not bound to option name is defined with fewer items than required.</value>
+  <data name="MensajeSalidaVoluntaria" xml:space="preserve">
+    <value>Se ha detectado el mensaje de salida, se ha detenido el programa.</value>
   </data>
-  <data name="SentenceSetValueExceptionError" xml:space="preserve">
-    <value>Error setting value to option '{0}': {1}</value>
-  </data>
-  <data name="SentenceUnknownOptionError" xml:space="preserve">
-    <value>Option '{0}' is unknown.</value>
-  </data>
-  <data name="SentenceUsageHeadingText" xml:space="preserve">
-    <value>USAGE:</value>
-  </data>
-  <data name="SentenceVersionCommandText" xml:space="preserve">
-    <value>Display version information.</value>
-  </data>
-  <data name="OptionGroupWord" xml:space="preserve">
-    <value>option</value>
-  </data>
-  <data name="ErrorTipoVerbo" xml:space="preserve">
-    <value>Unexpected error while starting application.</value>
+  <data name="DialogoExcepcionInesperada" xml:space="preserve">
+    <value>Ha ocurrido un error inesperado, considere crear un Issue en GitHub si no existe, incluya la traza de error de arrbia y los argumentos del programa:
+https://github.com/JosePrietoPaez/CalcDiv/issues</value>
   </data>
 </root>
