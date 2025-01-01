@@ -38,11 +38,11 @@ namespace ModosEjecucionInterno {
 		/// <returns>
 		/// Código de la salida de la aplicación.
 		/// </returns>
-		public EstadoEjecucion Ejecutar(IOpciones opciones) {
+		public Salida Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) {
 			OpcionesDialogo flags = (OpcionesDialogo) opciones;
 			Console.Error.WriteLine(MensajeInicioDialogo, SALIDA_DIALOGO);
 			bool sinFlags = flags.FlagsInactivos, salir = true;
-			EstadoEjecucion resultadoSalida = EstadoEjecucion.CORRECTA;
+			Salida resultadoSalida = new(EstadoEjecucion.CORRECTA);
 			static bool esS(char letra) => letra == 's' | letra == 'S';
 			try {
 				bool saltarPreguntaExtra = GestionarOpcionesDialogo(flags);
@@ -61,23 +61,25 @@ namespace ModosEjecucionInterno {
 					var (Mensaje, Divisor, Base, Longitud) = 
 						FlujoDatosRegla(flags.Divisor, flags.Base, flags.Longitud, sinFlags, flags);
 
-					Salida.EscribirReglaPorConsola(Mensaje + Environment.NewLine, Divisor, Base);
+					resultadoSalida.EscribirReglaPorConsola(Mensaje + Environment.NewLine, Divisor, Base, salida, error);
+					resultadoSalida.EscribirMensajes();
+					resultadoSalida.Mensajes.Clear();
 
 					if (!flags.AnularBucle) {
 						salir = !ObtenerDeUsuario(MensajeDialogoRepetir, esS);
 					}
-					resultadoSalida = EstadoEjecucion.CORRECTA;
+					resultadoSalida.Estado = EstadoEjecucion.CORRECTA;
 
 				} while (!salir);
 			}
 			// Si decide salir, se saldrá por este catch
 			catch (SalidaException) {
-				resultadoSalida = EstadoEjecucion.VOLUNTARIA;
+				resultadoSalida.Estado = EstadoEjecucion.VOLUNTARIA;
 				Console.Error.WriteLine(Environment.NewLine + MensajeDialogoInterrumpido);
 			}
 			// Si ocurre otro error se saldrá por este catch
 			catch (Exception e) {
-				resultadoSalida = EstadoEjecucion.ERROR;
+				resultadoSalida.Estado = EstadoEjecucion.ERROR;
 				Console.Error.WriteLine(e.Message);
 				Console.Error.WriteLine(e.StackTrace);
 				Console.Error.WriteLine(DialogoExcepcionInesperada);

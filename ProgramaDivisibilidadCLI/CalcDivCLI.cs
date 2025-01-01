@@ -26,7 +26,7 @@ namespace ProgramaDivisibilidad {
 		/// Salida con el código apropiado.
 		/// </returns>
 		public static int Main(string[] args) {
-			EstadoEjecucion _estadoSalida = EstadoEjecucion.CORRECTA;
+			Salida _estadoSalida = new(EstadoEjecucion.CORRECTA);
 			//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
 			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
 			SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
@@ -42,12 +42,13 @@ namespace ProgramaDivisibilidad {
 					_estadoSalida = SeleccionarModo((IOpciones)options);
 				})
 				.WithNotParsed(errors => {
-					_estadoSalida = EstadoEjecucion.ENTRADA_MALFORMADA;
+					_estadoSalida.Estado = EstadoEjecucion.ENTRADA_MALFORMADA;
 					//Console.Error.WriteLine(resultado);
 					MostrarAyuda(resultado, errors);
 				});
 			}
-			return (int)_estadoSalida;
+			_estadoSalida.EscribirMensajes();
+			return (int)_estadoSalida.Estado;
 		}
 
 		private static void MostrarAyuda<T>(ParserResult<T> resultado, IEnumerable<Error> errores) {
@@ -64,7 +65,7 @@ namespace ProgramaDivisibilidad {
 			Console.Error.WriteLine(textoAyuda);
 		}
 
-		private static EstadoEjecucion SeleccionarModo(IOpciones obj) {
+		private static Salida SeleccionarModo(IOpciones obj) {
 			IModoEjecucion modo = obj switch {
 				OpcionesDialogo => new ModoDialogo(),
 				OpcionesDirecto => new ModoDirecto(),
@@ -72,14 +73,13 @@ namespace ProgramaDivisibilidad {
 				OpcionesManual => new ModoManual(),
 				_ => throw new Exception(ErrorTipoVerbo),
 			};
-			return modo.Ejecutar(obj);
+			return modo.Ejecutar(Console.Out, Console.Error, obj);
 		}
 	}
 
 	internal class ModoManual : IModoEjecucion {
-		public EstadoEjecucion Ejecutar(IOpciones opciones) {
-			Console.Out.WriteLine(Ayuda);
-			return EstadoEjecucion.CORRECTA;
+		public Salida Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) {
+			return new(EstadoEjecucion.CORRECTA) { Mensajes = [(salida, Ayuda, true)] };
 		}
 	}
 

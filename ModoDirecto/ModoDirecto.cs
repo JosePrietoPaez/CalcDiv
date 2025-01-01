@@ -6,52 +6,52 @@ using static ModosEjecucion.Recursos.TextoEjecucion;
 namespace ModosEjecucion {
 	public class ModoDirecto : IModoEjecucion {
 
-		private EstadoEjecucion _estadoSalida;
+		private readonly Salida _estadoSalida = new();
 
 		/// <summary>
 		/// Lógica de la aplicación en modo directo.
 		/// </summary>
 		/// <returns>
-		/// <see cref="EstadoEjecucion"/> que indica si ha conseguido calcular la regla.
+		/// <see cref="Salida"/> que indica si ha conseguido calcular la regla.
 		/// </returns>
-		public EstadoEjecucion Ejecutar(IOpciones opciones) { //Intenta dar las reglas de forma directa, cambia _salida para mostrar el error
+		public Salida Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) { //Intenta dar las reglas de forma directa, cambia _salida para mostrar el error
 			OpcionesDirecto flags = (OpcionesDirecto)opciones;
-			_estadoSalida = EstadoEjecucion.CORRECTA;
 			Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora = SeleccionarFuncionYAjustarFlags(flags);
-			return GestionarErrorYUsarDatos(flags, flags.Base, flags.Divisor, flags.Longitud ?? 1, generadora);
+			return GestionarErrorYUsarDatos(flags, flags.Base, flags.Divisor, flags.Longitud ?? 1, generadora, salida, error);
 		}
 
-		private EstadoEjecucion GestionarErrorYUsarDatos(OpcionesDirecto flags, long @base, long divisor, int longitud
-			, Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora) {
+		private Salida GestionarErrorYUsarDatos(OpcionesDirecto flags, long @base, long divisor, int longitud
+			, Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora
+			, TextWriter salida, TextWriter error) {
 			if (!flags.TipoExtra && (divisor < 2 || @base < 2 || !SonCoprimos(divisor, @base))) {
-				Console.Error.WriteLine(ErrorDivisorCoprimo);
-				Console.Error.WriteLine(ErrorBase);
-				_estadoSalida = EstadoEjecucion.ERROR;
+				_estadoSalida.Mensajes.Add((error, ErrorDivisorCoprimo, true));
+				_estadoSalida.Mensajes.Add((error, ErrorBase, true));
+				_estadoSalida.Estado = EstadoEjecucion.ERROR;
 			} else {
-				(_estadoSalida, object? elementoCreado) = generadora(divisor, @base, longitud, flags);
+				(_estadoSalida.Estado, object? elementoCreado) = generadora(divisor, @base, longitud, flags);
 				string textoResultado = Salida.ObjetoAString(elementoCreado, flags.JSON);
 				if (elementoCreado is null) {
 					throw new NullReferenceException(ErrorReglaNula);
 				}
-				Salida.EscribirReglaPorConsola(textoResultado, divisor, @base);
+				_estadoSalida.EscribirReglaPorConsola(textoResultado, divisor, @base, salida, error);
 				if (elementoCreado is not ReglaCoeficientes) {
 					//Por si hiciera falta
 				} else {
 					if (!SonCoprimos(divisor, @base)) {
-						Console.Error.WriteLine(ErrorPrimo);
+						_estadoSalida.Mensajes.Add((error, ErrorPrimo, true));
 					}
 				}
 				if (flags.Dividendo?.Any() ?? false) {
-					Console.Error.WriteLine();
-					AplicarReglaPorObjeto(elementoCreado, flags);
+					_estadoSalida.Mensajes.Add((salida, Environment.NewLine, true));
+					AplicarReglaPorObjeto(elementoCreado, flags, _estadoSalida, salida);
 				}
 			}
 			return _estadoSalida;
 		}
 
-		internal static void AplicarReglaPorObjeto(object? regla, IOpcionesGlobales flags) {
+		internal static void AplicarReglaPorObjeto(object? regla, IOpcionesGlobales flags, Salida salida, TextWriter text) {
 			if (regla is null) return;
-			AplicarReglaDivisibilidad((IRegla)regla, flags.DividendoList);
+			AplicarReglaDivisibilidad((IRegla)regla, flags.DividendoList, salida, text);
 		}
 
 		internal static Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion,IRegla)> SeleccionarFuncionYAjustarFlags(IOpcionesGlobales flags) {
@@ -89,15 +89,10 @@ namespace ModosEjecucion {
 			return (salida, resultado.Item2);
 		}
 
-		private static void AplicarReglaDivisibilidad(IRegla regla, IEnumerable<BigInteger> dividendos) {
+		private static void AplicarReglaDivisibilidad(IRegla regla, IEnumerable<BigInteger> dividendos, Salida salida, TextWriter text) {
 			foreach (BigInteger dividendo in dividendos) {
-				Console.Out.WriteLine(regla.AplicarRegla(dividendo));
+				salida.Mensajes.Add((text, regla.AplicarRegla(dividendo), true));
 			}
-		}
-
-		private static EstadoEjecucion MostrarAyuda() {
-			Console.Out.WriteLine(Ayuda);
-			return EstadoEjecucion.CORRECTA;
 		}
 	}
 }

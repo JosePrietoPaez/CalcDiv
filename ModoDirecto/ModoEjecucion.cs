@@ -7,6 +7,6 @@
 	/// Contiene un método para redirigir el main.
 	/// </remarks>
 	public interface IModoEjecucion {
-		EstadoEjecucion Ejecutar(IOpciones opciones);
+		Salida Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones);
 	}
 }

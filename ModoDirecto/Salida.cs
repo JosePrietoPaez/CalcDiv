@@ -19,7 +19,21 @@ namespace ModosEjecucion {
 	public class Salida(EstadoEjecucion estado = EstadoEjecucion.CORRECTA) {
 		public EstadoEjecucion Estado { get; set; } = estado;
 
-		public List<(TextWriter, string)> Mensajes { get; set; } = [];
+		public List<(TextWriter, string, bool)> Mensajes { get; set; } = [];
+
+		public void EscribirMensajes() {
+			foreach ((TextWriter writer, string mensaje, bool nuevaLinea) in Mensajes) {
+				if (mensaje.Equals(Environment.NewLine)) {
+					writer.WriteLine();
+				} else if (mensaje.Length > 0) {
+					if (nuevaLinea) {
+						writer.WriteLine(mensaje);
+					} else {
+						writer.Write(mensaje);
+					}
+				}
+			}
+		}
 
 		public static readonly JsonSerializerOptions opcionesJson = new() {
 			WriteIndented = true,
@@ -65,10 +79,10 @@ namespace ModosEjecucion {
 		/// <summary>
 		/// Escribe la regla de coeficientes por el <see cref="TextWriter"/> proporcionado
 		/// </summary>
-		public static void EscribirReglaPorConsola(string reglaCoeficientes, long divisor, long @base) {
-			Console.Error.WriteLine(MensajeParametrosDirecto, divisor, @base);
-			Console.Out.Write(reglaCoeficientes);
-			Console.Error.WriteLine();
+		public void EscribirReglaPorConsola(string reglaCoeficientes, long divisor, long @base, TextWriter salida, TextWriter error) {
+			Mensajes.Add((error, string.Format(MensajeParametrosDirecto, divisor, @base), true));
+			Mensajes.Add((salida, reglaCoeficientes, false));
+			Mensajes.Add((error, Environment.NewLine, true));
 		}
 
 	}
