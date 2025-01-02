@@ -38,6 +38,11 @@ namespace ModosEjecucion {
 				}
 			}
 			salida.Mensajes.AddRange(final(reglas.Select(o => o as object).ToList()));
+			ComprobarErrorVarias(textError, salida, hayFallo, hayExito);
+			return salida;
+		}
+
+		private static void ComprobarErrorVarias(TextWriter textError, Salida salida, bool hayFallo, bool hayExito) {
 			if (!hayExito) { // Si no hay reglas, no se escriben
 				salida.Mensajes.Add((textError, VariasMensajeErrorTotal, true));
 				salida.Estado = EstadoEjecucion.VARIAS_ERROR_TOTAL;
@@ -47,7 +52,6 @@ namespace ModosEjecucion {
 					salida.Estado = EstadoEjecucion.VARIAS_ERROR;
 				}
 			}
-			return salida;
 		}
 
 		private static Func<IRegla, long, long, int, List<(TextWriter, string, bool)>> SeleccionarConsumidora(OpcionesVarias flags, TextWriter salida, TextWriter error) {
@@ -96,6 +100,27 @@ namespace ModosEjecucion {
 				funcion = (_) => [(_writerDesecho, string.Empty, true)];
 			}
 			return funcion;
+		}
+
+		public (EstadoEjecucion, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones) {
+			OpcionesVarias varias = (OpcionesVarias)opciones;
+			Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora = ModoDirecto.SeleccionarFuncionYAjustarFlags(varias);
+			bool hayFallo = false, hayExito = false;
+			Salida salida = new();
+			List<IRegla> reglas = [];
+			foreach (long divisor in varias.Divisores) {
+				foreach (long @base in varias.Bases) {
+					(EstadoEjecucion estado, IRegla regla) = generadora(divisor, @base, varias.Longitud ?? 1, varias);
+					reglas.Add(regla);
+					if (!hayExito && estado == EstadoEjecucion.CORRECTA) {
+						hayExito = true;
+					} else if (!hayFallo && estado != EstadoEjecucion.CORRECTA) {
+						hayFallo = true;
+					}
+				}
+			}
+			ComprobarErrorVarias(_writerDesecho, salida, hayFallo, hayExito);
+			return (salida.Estado, reglas);
 		}
 	}
 }

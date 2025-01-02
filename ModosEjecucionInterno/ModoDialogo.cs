@@ -3,6 +3,7 @@ using System.Numerics;
 using static Operaciones.Calculos;
 using static ModosEjecucion.Recursos.TextoEjecucion;
 using static ModosEjecucionInterno.Recursos.TextoEjecucionInterno;
+using Operaciones;
 
 namespace ModosEjecucionInterno {
 	/// <summary>
@@ -195,6 +196,10 @@ namespace ModosEjecucionInterno {
 
 		private static void LanzarExcepcionSiSalida(string? linea) {
 			if (linea == SALIDA_DIALOGO) throw new SalidaException(MensajeSalidaVoluntaria);
+		}
+
+		public (EstadoEjecucion, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones) {
+			throw new NotImplementedException();
 		}
 
 		#endregion

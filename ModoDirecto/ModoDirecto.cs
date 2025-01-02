@@ -14,7 +14,7 @@ namespace ModosEjecucion {
 		/// <returns>
 		/// <see cref="Salida"/> que indica si ha conseguido calcular la regla.
 		/// </returns>
-		public Salida Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) { //Intenta dar las reglas de forma directa, cambia _salida para mostrar el error
+		public Salida Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) {
 			OpcionesDirecto flags = (OpcionesDirecto)opciones;
 			Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora = SeleccionarFuncionYAjustarFlags(flags);
 			return GestionarErrorYUsarDatos(flags, flags.Base, flags.Divisor, flags.Longitud ?? 1, generadora, salida, error);
@@ -93,6 +93,13 @@ namespace ModosEjecucion {
 			foreach (BigInteger dividendo in dividendos) {
 				salida.Mensajes.Add((text, regla.AplicarRegla(dividendo), true));
 			}
+		}
+
+		public (EstadoEjecucion, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones) {
+			OpcionesDirecto flags = (OpcionesDirecto)opciones;
+			Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora = SeleccionarFuncionYAjustarFlags(flags);
+			var resultado = generadora(flags.Divisor, flags.Base, flags.Longitud ?? 1, flags);
+			return (resultado.Item1, [resultado.Item2]);
 		}
 	}
 }

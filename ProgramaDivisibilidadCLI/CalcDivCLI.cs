@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Numerics;
 using ModosEjecucion;
 using ModosEjecucionInterno;
+using Operaciones;
 
 namespace ProgramaDivisibilidad {
 
@@ -78,6 +79,10 @@ namespace ProgramaDivisibilidad {
 	}
 
 	internal class ModoManual : IModoEjecucion {
+		public (EstadoEjecucion, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones) {
+			throw new NotImplementedException();
+		}
+
 		public Salida Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) {
 			return new(EstadoEjecucion.CORRECTA) { Mensajes = [(salida, Ayuda, true)] };
 		}

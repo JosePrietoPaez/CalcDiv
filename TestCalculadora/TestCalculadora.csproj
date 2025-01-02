@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ModoDirecto\ModosEjecucionExterno.csproj" />
     <ProjectReference Include="..\ModosEjecucionInterno\ModosEjecucionInterno.csproj" />
+    <ProjectReference Include="..\NoCLICalcDiv\Divisibility.csproj" />
     <ProjectReference Include="..\Operaciones\Operaciones.csproj" />
     <ProjectReference Include="..\ProgramaDivisibilidadCLI\ProgramaDivisibilidadCLI.csproj" />
   </ItemGroup>
