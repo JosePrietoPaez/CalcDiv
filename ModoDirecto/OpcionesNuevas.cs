@@ -2,6 +2,9 @@
 using CommandLine.Text;
 using ModosEjecucion.Recursos;
 using Operaciones;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using static Operaciones.Calculos;
 
@@ -13,9 +16,9 @@ namespace ModosEjecucion {
 			get {
 				return [
 					new(TextoEjecucion.EjemploReglaUno, new OpcionesDirecto {Base = 12, Divisor = 7, Longitud = 2}),
-					new(TextoEjecucion.EjemploReglaJsonExtendido, new OpcionesDirecto {Base = 16, Divisor = 13, TipoExtra = true, JSON = true}),
+					new(TextoEjecucion.EjemploReglaJsonExtendido, new OpcionesDirecto {Base = 16, Divisor = 13, ReglasVariadas = true, JSON = true}),
 					new(TextoEjecucion.EjemploReglaDialogo, new OpcionesDialogo{ }),
-					new(TextoEjecucion.EjemploReglaVarias, new OpcionesVarias{ VariasReglas = ["7,100,41", "10,8"], TipoExtra = true, Dividendo = ["6341, 289"] })
+					new(TextoEjecucion.EjemploReglaVarias, new OpcionesVarias{ VariasReglas = ["7,100,41", "10,8"], ReglasVariadas = true, Dividendo = ["6341, 289"] })
 				]; 
 			}
 		}
@@ -50,9 +53,9 @@ namespace ModosEjecucion {
 		/// <summary>
 		/// Esta propiedad devuelve si todos los flags, excepto los de valores de diálogo están inactivos.
 		/// </summary>
-		public bool FlagsInactivos => !(DialogoSencillo || JSON || TipoExtra);
+		public bool FlagsInactivos => !(DialogoSencillo || JSON || ReglasVariadas);
 
-		public bool TipoExtra { get; set; }
+		public bool ReglasVariadas { get; set; }
 		public bool JSON { get; set; }
 		public IEnumerable<string>? Dividendo { get; set; }
 		public int? Longitud { get; set; }
@@ -80,7 +83,7 @@ namespace ModosEjecucion {
 			, ResourceType = typeof(TextoEjecucion))]
 		public long Base { get; set; }
 
-		public bool TipoExtra { get; set; }
+		public bool ReglasVariadas { get; set; }
 		public bool JSON { get; set; }
 		public IEnumerable<string>? Dividendo { get; set; }
 		public int? Longitud { get; set; }
@@ -140,7 +143,7 @@ namespace ModosEjecucion {
 			}
 		}
 
-		public bool TipoExtra { get; set; }
+		public bool ReglasVariadas { get; set; }
 		public bool JSON { get; set; }
 		public IEnumerable<string>? Dividendo { get; set; }
 		public int? Longitud { get; set; }
@@ -174,16 +177,16 @@ namespace ModosEjecucion {
 		/// <summary>
 		/// Esta propiedad indica si la opción -x está activa.
 		/// </summary>
-		[Option('x', longName: "extra-rule-types"
+		[Option('x', longName: "varied-rule-types"
 			, HelpText = "HelpExtendido"
 			, ResourceType = typeof(TextoEjecucion)
-			, SetName = "extra")]
-		public bool TipoExtra { get; set; }
+			, SetName = "varied"
+			, Default = true)]
+		public bool ReglasVariadas { get; set; }
 
 		/// <summary>
 		/// Esta propiedad indica si la opción -j está activa.
 		/// </summary>
-
 		[Option('j', longName: "json"
 			, HelpText = "HelpJson"
 			, ResourceType = typeof(TextoEjecucion))]
@@ -210,13 +213,12 @@ namespace ModosEjecucion {
 		/// <param name="divisor"></param>
 		/// <param name="base"></param>
 		/// <param name="longitud"></param>
-		/// <param name="flags"></param>
 		/// <returns>
 		/// String apropiado para la regla según los datos proporcionados.
 		/// </returns>
 		public string ObtenerReglas(long divisor, long @base, int longitud) {
 			string resultado;
-			if (TipoExtra) {
+			if (ReglasVariadas) {
 				resultado = ReglaDivisibilidadExtendida(divisor, @base).Item2.ReglaExplicada;
 			} else {
 				ReglaCoeficientes serie = ReglaDivisibilidadOptima(divisor, longitud, @base);

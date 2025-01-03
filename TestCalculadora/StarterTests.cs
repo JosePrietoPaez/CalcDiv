@@ -12,14 +12,14 @@ public class StarterTests {
 	[Test]
 	public void CalculateRule_Manual_ThrowsException() {
 		Assert.Throws<NotImplementedException>(() => {
-			Starter.CalculateRule(new OpcionesManual());
+			DivisibilityCalculator.CalculateRule(new OpcionesManual());
 		});
 	}
 
 	[Test]
 	public void CalculateRule_Dialog_ThrowsException() {
 		Assert.Throws<NotImplementedException>(() => {
-			Starter.CalculateRule(new OpcionesDialogo());
+			DivisibilityCalculator.CalculateRule(new OpcionesDialogo());
 		});
 	}
 
@@ -35,11 +35,11 @@ public class StarterTests {
 			Longitud = (int?)length,
 			Dividendo = null,
 			JSON = false,
-			TipoExtra = false
+			ReglasVariadas = false
 		};
 
 		// Act
-		var result = Starter.CalculateRule(options);
+		var result = DivisibilityCalculator.CalculateRule(options);
 
 		// Assert
 		Assert.Multiple(() => {
@@ -59,13 +59,13 @@ public class StarterTests {
 			bases = [10, 25];
 		var options = new OpcionesVarias() {
 			Dividendo = null,
-			TipoExtra = true,
+			ReglasVariadas = true,
 			VariasReglas = [string.Join(',', divisors.Select(n => n.ToString())),
 			string.Join(',', divisors.Select(n => n.ToString()))]
 		};
 
 		// Act
-		var result = Starter.CalculateRule(options);
+		var result = DivisibilityCalculator.CalculateRule(options);
 
 		// Assert
 		Assert.Multiple(() => {

@@ -2,6 +2,10 @@
 using System.Numerics;
 using static Operaciones.Calculos;
 using static ModosEjecucion.Recursos.TextoEjecucion;
+using System.IO;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace ModosEjecucion {
 	public class ModoDirecto : IModoEjecucion {
@@ -23,7 +27,7 @@ namespace ModosEjecucion {
 		private Salida GestionarErrorYUsarDatos(OpcionesDirecto flags, long @base, long divisor, int longitud
 			, Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora
 			, TextWriter salida, TextWriter error) {
-			if (!flags.TipoExtra && (divisor < 2 || @base < 2 || !SonCoprimos(divisor, @base))) {
+			if (!flags.ReglasVariadas && (divisor < 2 || @base < 2 || !SonCoprimos(divisor, @base))) {
 				_estadoSalida.Mensajes.Add((error, ErrorDivisorCoprimo, true));
 				_estadoSalida.Mensajes.Add((error, ErrorBase, true));
 				_estadoSalida.Estado = EstadoEjecucion.ERROR;
@@ -56,7 +60,7 @@ namespace ModosEjecucion {
 
 		internal static Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion,IRegla)> SeleccionarFuncionYAjustarFlags(IOpcionesGlobales flags) {
 			Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> resultado;
-			if (flags.TipoExtra) { // Para separar la funcion de las llamadas en VariasReglas
+			if (flags.ReglasVariadas) { // Para separar la funcion de las llamadas en VariasReglas
 				resultado = CrearReglaExtra;
 			} else {
 				resultado = CrearReglaCoeficientes;

@@ -4,6 +4,9 @@ using System.Text.Json;
 using System.Text.Unicode;
 using System.Text;
 using static ModosEjecucion.Recursos.TextoEjecucion;
+using System.Collections.Generic;
+using System;
+using System.IO;
 
 namespace ModosEjecucion {
 	public enum EstadoEjecucion {

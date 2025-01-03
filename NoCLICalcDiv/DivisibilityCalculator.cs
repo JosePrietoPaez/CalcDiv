@@ -1,9 +1,12 @@
 ﻿using Operaciones;
 using ModosEjecucion;
 using static Divisibility.Resources.APIText;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace Divisibility {
-	public static class Starter {
+	public static class DivisibilityCalculator {
 
 		/// <summary>
 		/// Calculates divisibility rules based on the options.
@@ -44,7 +47,7 @@ namespace Divisibility {
 				Longitud = length,
 				Dividendo = null,
 				JSON = false,
-				TipoExtra = !coefficientRule
+				ReglasVariadas = !coefficientRule
 			};
 			var result = new ModoDirecto().CalcularRegla(flags);
 			return (result.Item1, result.Item2.First());
@@ -69,10 +72,9 @@ namespace Divisibility {
 				Dividendo = null,
 				VariasReglas = [ string.Join(',', divisors), string.Join(',', bases) ],
 				JSON = false,
-				TipoExtra = !coefficientRule
+				ReglasVariadas = !coefficientRule
 			};
 			return new ModoVarias().CalcularRegla(flags);
 		}
-
 	}
 }

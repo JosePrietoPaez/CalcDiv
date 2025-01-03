@@ -397,3 +397,8 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /ProgramaDivisibilidadCLI/ArchivosCompilados
+.Rproj.user
+*.Rproj
+PerformanceTests/.RData
+PerformanceTests/.Rhistory
+*.csv

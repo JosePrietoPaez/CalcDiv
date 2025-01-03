@@ -1,4 +1,6 @@
-﻿namespace ModosEjecucion {
+﻿using System;
+
+namespace ModosEjecucion {
 	public class SalidaException : Exception {
 		public SalidaException() : base() { }
 

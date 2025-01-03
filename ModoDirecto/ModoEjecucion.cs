@@ -1,4 +1,6 @@
 ﻿using Operaciones;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ModosEjecucion {
 

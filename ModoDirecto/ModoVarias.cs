@@ -1,4 +1,8 @@
 ﻿using Operaciones;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using static ModosEjecucion.Recursos.TextoEjecucion;
 
 namespace ModosEjecucion {

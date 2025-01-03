@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModosEjecucionInterno", "Mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Divisibility", "NoCLICalcDiv\Divisibility.csproj", "{DA4D09CA-6817-4AD3-AF03-13AE2E71D7F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTests", "PerformanceTests\PerformanceTests.csproj", "{AC562FA8-6FC1-4E5B-8094-3BE05984BD0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{DA4D09CA-6817-4AD3-AF03-13AE2E71D7F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA4D09CA-6817-4AD3-AF03-13AE2E71D7F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA4D09CA-6817-4AD3-AF03-13AE2E71D7F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC562FA8-6FC1-4E5B-8094-3BE05984BD0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC562FA8-6FC1-4E5B-8094-3BE05984BD0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC562FA8-6FC1-4E5B-8094-3BE05984BD0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC562FA8-6FC1-4E5B-8094-3BE05984BD0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

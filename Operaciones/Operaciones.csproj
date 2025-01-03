@@ -9,11 +9,13 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DebugType>portable</DebugType>
+		<IsTrimmable>True</IsTrimmable>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DebugSymbols>False</DebugSymbols>
 		<DebugType>None</DebugType>
+		<IsTrimmable>True</IsTrimmable>
 	</PropertyGroup>
 
   <ItemGroup>
