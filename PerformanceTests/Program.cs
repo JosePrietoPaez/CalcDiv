@@ -12,6 +12,9 @@ void DumpResults(TextWriter writer) {
 	}
 	results.Clear();
 }
+
+const int MAX_SIZE = 100;
+
 void Single_Coefficient_Performance_BaseIncrement() {
 	long divisor = 7;
 	int longitud = 1;
@@ -20,13 +23,13 @@ void Single_Coefficient_Performance_BaseIncrement() {
 	File.Create(path).Close();
 	using TextWriter writer = new StreamWriter(path);
 	writer.WriteLine("Base, Tiempo, Regla");
-	for (long @base = 9; @base < 10000000L; @base += 2) {
+	for (long @base = 2; @base < 10000000L; @base *= 2) {
 		if (!Calculos.SonCoprimos(divisor, @base)) continue;
 		stopwatch.Restart();
 		ReglaCoeficientes regla = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
 		stopwatch.Stop();
 		results.Add($"{@base},{stopwatch.ElapsedTicks},{regla}");
-		if (results.Count == 1000) {
+		if (results.Count == MAX_SIZE) {
 			DumpResults(writer);
 		}
 	}
@@ -41,13 +44,13 @@ void Single_Coefficient_Performance_DivisorIncrement() {
 	File.Create(path).Close();
 	using TextWriter writer = new StreamWriter(path);
 	writer.WriteLine("Divisor, Tiempo, Regla");
-	for (long divisor = 3; divisor < 10000000L; divisor += 2) {
+	for (long divisor = 2; divisor < 10000000L; divisor *= 2) {
 		if (!Calculos.SonCoprimos(divisor, @base)) continue;
 		stopwatch.Restart();
 		ReglaCoeficientes regla = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
 		stopwatch.Stop();
 		results.Add($"{divisor},{stopwatch.ElapsedTicks},{regla}");
-		if (results.Count == 1000) {
+		if (results.Count == MAX_SIZE) {
 			DumpResults(writer);
 		}
 	}
@@ -66,7 +69,7 @@ void Single_Coefficient_Performance_LengthIncrement() {
 		ReglaCoeficientes regla = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
 		stopwatch.Stop();
 		results.Add($"{longitud},{stopwatch.ElapsedTicks},{regla.Longitud}");
-		if (results.Count == 1000) {
+		if (results.Count == MAX_SIZE) {
 			DumpResults(writer);
 		}
 	}
@@ -80,15 +83,32 @@ void Single_Varied_Performance_BaseIncrement() {
 	File.Create(path).Close();
 	using TextWriter writer = new StreamWriter(path);
 	writer.WriteLine("Base, Tiempo, Tipo");
-	for (long @base = 3; @base < 100000L; @base += 2) {
-		if (!Calculos.SonCoprimos(divisor, @base)) continue;
+	for (long @base = 2; @base < 10000000L; @base *= 2) {
 		stopwatch.Restart();
 		(bool exito, IRegla regla) = Calculos.ReglaDivisibilidadExtendida(divisor, @base);
 		stopwatch.Stop();
 		results.Add($"{@base},{stopwatch.ElapsedTicks},{regla.Tipo}");
-		if (results.Count == 1000) {
+		if (results.Count == MAX_SIZE) {
 			DumpResults(writer);
 		}
+	}
+	DumpResults(writer);
+}
+
+void Single_Varied_Performance_DivisorIncrement() {
+	long @base = 10;
+	Stopwatch stopwatch = new();
+	string path = filePath + "/Single_Varied_Performance_DivisorIncrement.csv";
+	File.Create(path).Close();
+	using TextWriter writer = new StreamWriter(path);
+	writer.WriteLine("Divisor, Tiempo, Tipo");
+	for (long divisor = 2, i = 2; divisor < 100000L; divisor = (long)Math.Pow(i++,2)) {
+		stopwatch.Restart();
+		(bool exito, IRegla regla) = Calculos.ReglaDivisibilidadExtendida(divisor, @base);
+		stopwatch.Stop();
+		results.Add($"{divisor},{stopwatch.ElapsedTicks},{regla.Tipo}");
+		DumpResults(writer);
+		writer.Flush();
 	}
 }
 
@@ -100,3 +120,5 @@ Single_Coefficient_Performance_LengthIncrement();
 Console.WriteLine("Length increment finished");
 Single_Varied_Performance_BaseIncrement();
 Console.WriteLine("Varied base increment finished");
+Single_Varied_Performance_DivisorIncrement();
+Console.WriteLine("Varied divisor increment finished");
