@@ -284,4 +284,7 @@ Groups: {1}</value>
   <data name="MensajeAplicarCompuestaExito" xml:space="preserve">
     <value>{0} is divisible by all the prime factors of {1}, therefore, it is divisible by {1}.</value>
   </data>
+  <data name="MensajeCifrasDemasiadas" xml:space="preserve">
+    <value>Too many possible combinations, {0}, returning none to avoid memory limitations.</value>
+  </data>
 </root>

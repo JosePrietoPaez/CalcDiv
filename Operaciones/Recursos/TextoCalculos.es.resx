@@ -272,4 +272,7 @@ Grupos: {1}</value>
   <data name="MensajeAplicarCompuestaExito" xml:space="preserve">
     <value>{0} es divisible entre todos los factores primos de {1}, por lo tanto, también es divisible entre {1}.</value>
   </data>
+  <data name="MensajeCifrasDemasiadas" xml:space="preserve">
+    <value>Demasiadas combinaciones posibles, {0}, no se devuelve ninguna para evitar limitaciones de memoria.</value>
+  </data>
 </root>

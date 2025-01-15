@@ -219,7 +219,7 @@ internal class ITCalcDivCLI {
 			Assert.That((string)jsonReglas[0]["type"], Is.EqualTo(CasosDivisibilidad.DIVISOR_ZERO.ToString()));
 			Assert.That((string)jsonReglas[1]["type"], Is.EqualTo(CasosDivisibilidad.DIVISOR_ONE.ToString()));
 			Assert.That((string)jsonReglas[2]["type"], Is.EqualTo(CasosDivisibilidad.DIGITS.ToString()));
-			Assert.That((string)jsonReglas[3]["type"], Is.EqualTo(CasosDivisibilidad.SUBSTRACT_BLOCKS.ToString()));
+			Assert.That((string)jsonReglas[3]["type"], Is.EqualTo(CasosDivisibilidad.SUBTRACT_BLOCKS.ToString()));
 			Assert.That((string)jsonReglas[4]["type"], Is.EqualTo(CasosDivisibilidad.ADD_BLOCKS.ToString()));
 		});
 	}

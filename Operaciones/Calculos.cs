@@ -689,7 +689,7 @@ namespace Operaciones
 		/// <description>- Ninguno, siempre es -1 ya que no se requiere más información</description>
 		/// <item><see cref="CasosDivisibilidad.DIGITS"/></item>
 		/// <description>- Cifras que se deben considerar</description>
-		/// <item><see cref="CasosDivisibilidad.SUBSTRACT_BLOCKS"/> y <see cref="CasosDivisibilidad.ADD_BLOCKS"/></item>
+		/// <item><see cref="CasosDivisibilidad.SUBTRACT_BLOCKS"/> y <see cref="CasosDivisibilidad.ADD_BLOCKS"/></item>
 		/// <description>- Longitud de los bloques para agrupar las cifras</description>
 		/// </list>
 		/// </remarks>
@@ -718,7 +718,7 @@ namespace Operaciones
 
 			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.DIGITS, tuplaCaso.dato);
 			tuplaCaso = UnoMenosQuePotencia(divisor, @base);
-			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.SUBSTRACT_BLOCKS, tuplaCaso.dato);
+			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.SUBTRACT_BLOCKS, tuplaCaso.dato);
 			tuplaCaso = UnoMasQuePotencia(divisor, @base);
 			if (tuplaCaso.cumpleCondicion) return (CasosDivisibilidad.ADD_BLOCKS, tuplaCaso.dato);
 			return (CasosDivisibilidad.COEFFICIENTS,-1);

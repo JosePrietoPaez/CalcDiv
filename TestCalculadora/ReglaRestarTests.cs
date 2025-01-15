@@ -20,7 +20,7 @@ namespace TestReglas {
 				// Assert
 				Assert.That(regla.Base, Is.EqualTo(@base));
 				Assert.That(regla.Divisor, Is.EqualTo(divisor));
-				Assert.That(regla.Tipo, Is.EqualTo(CasosDivisibilidad.SUBSTRACT_BLOCKS));
+				Assert.That(regla.Tipo, Is.EqualTo(CasosDivisibilidad.SUBTRACT_BLOCKS));
 				var reglaSumar = regla as ReglaRestar;
 				Assert.That(reglaSumar!.Longitud, Is.EqualTo(2));
 			});

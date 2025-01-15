@@ -67,7 +67,7 @@ namespace Operaciones {
 			CasosDivisibilidad.COEFFICIENTS when !Calculos.SonCoprimos(@base, divisor) => new ReglaCompuesta(divisor, @base),
 			CasosDivisibilidad.DIGITS => new ReglaCifras(divisor, @base, informacion),
 			CasosDivisibilidad.ADD_BLOCKS => new ReglaSumar(divisor, @base, informacion),
-			CasosDivisibilidad.SUBSTRACT_BLOCKS => new ReglaRestar(divisor, @base, informacion),
+			CasosDivisibilidad.SUBTRACT_BLOCKS => new ReglaRestar(divisor, @base, informacion),
 			_ => throw new NotImplementedException()
 		};
 

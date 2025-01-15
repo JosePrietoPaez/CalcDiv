@@ -30,7 +30,7 @@ namespace TestReglas {
 				[CasosDivisibilidad.DIGITS
 				, CasosDivisibilidad.ADD_BLOCKS
 				, CasosDivisibilidad.DIGITS
-				, CasosDivisibilidad.SUBSTRACT_BLOCKS]);
+				, CasosDivisibilidad.SUBTRACT_BLOCKS]);
 
 			// Act
 			var regla = IRegla.GenerarReglaPorTipo(divisor, @base);

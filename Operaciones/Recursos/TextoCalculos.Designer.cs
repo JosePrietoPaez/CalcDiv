@@ -448,6 +448,15 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Too many possible combinations, {0}, returning none to avoid memory limitations..
+        /// </summary>
+        public static string MensajeCifrasDemasiadas {
+            get {
+                return ResourceManager.GetString("MensajeCifrasDemasiadas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The result must be one of these numbers, written in base {1}:
         ///{0}.
         /// </summary>

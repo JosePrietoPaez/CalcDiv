@@ -14,6 +14,7 @@ namespace Operaciones {
 
 		private readonly long _divisor, _base;
 		private readonly int _cifras;
+		public const int POSIBLES_MENORES = 65536;
 
 		internal ReglaCifras(long divisor, long @base, int cifras) {
 			ArgumentOutOfRangeException.ThrowIfLessThan(divisor, 1);
@@ -22,8 +23,12 @@ namespace Operaciones {
 			_divisor = divisor;
 			_base = @base;
 			_cifras = cifras;
-			CalcularMenoresCifras();
-			_stringCifras = '[' + string.Join(",", _menoresPermitidos.Select(LongAStringCondicional)) + ']';
+			long iteraciones = Calculos.PotenciaEntera(Base, Cifras) / Divisor;
+			if (iteraciones <= POSIBLES_MENORES) {
+				_stringCifras = CalcularMenoresCifras();
+			} else {
+				_stringCifras = TextoCalculos.MensajeCifrasDemasiadas;
+			}
 		}
 
 		[JsonPropertyName("rule-explained")]
@@ -54,11 +59,16 @@ namespace Operaciones {
 
 		private readonly string _stringCifras;
 
-		private void CalcularMenoresCifras() {
+		private string CalcularMenoresCifras() {
 			long iteraciones = Calculos.PotenciaEntera(Base, Cifras) / Divisor;
+			StringBuilder resultado = new();
+			resultado.Append('[');
 			for (int i = 1; i < iteraciones; i++) {
 				_menoresPermitidos.Add(Divisor * i);
+				resultado.Append(',').Append(_menoresPermitidos.Select(LongAStringCondicional));
 			}
+			resultado.Append(']');
+			return resultado.ToString();
 		}
 
 		[JsonPropertyName("type")]

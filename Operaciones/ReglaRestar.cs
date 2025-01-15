@@ -53,7 +53,7 @@ namespace Operaciones {
 		public int Longitud => _longitud;
 
 		[JsonPropertyName("type")]
-		public override CasosDivisibilidad Tipo => CasosDivisibilidad.SUBSTRACT_BLOCKS;
+		public override CasosDivisibilidad Tipo => CasosDivisibilidad.SUBTRACT_BLOCKS;
 
 		public override string ToString() {
 			return ReglaExplicada;

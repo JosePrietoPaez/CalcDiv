@@ -1,0 +1,89 @@
+---
+title: "Performance Tests"
+author: "Trolltoad"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+## Imports and functions
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+graph_predictions <- function(data, y_pred, name) {
+ggplot(data) +
+  geom_line(aes(data[,1], data[,2])) +
+  geom_line(aes(data[,1], y_pred, colour = "red")) +
+  labs(title = name)
+}
+
+graph_data <- function(data,name) {
+  ggplot(data) +
+    geom_line(aes(data[,1], data[,2])) +
+    labs(title = name)
+}
+
+graph_by_type <- function(data) {
+  ggplot(data, aes(data[,1], data[,2])) +
+    geom_line() +
+    facet_wrap(facets = vars(data$Tipo), scales = "free_y")
+}
+
+handle_model <- function(model, data, name) {
+  print(summary(model))
+  aux_frame = data.frame(data[,1])
+  colnames(aux_frame) <- c(name)
+  return(predict(model, newdata = aux_frame))
+}
+```
+
+## Graphing and modelling
+
+Creates graphs and regression models for the data.
+
+### Coefficient rules for increasing length
+
+
+```{r}
+length_data <- read.csv("Single_Coefficient_Performance_LengthIncrement.csv")
+
+length_data[,1:3] <- sapply(length_data[,1:3], as.numeric)
+
+length_model = lm(data = length_data, formula = Tiempo ~ Longitud)
+predictions = handle_model(length_model, length_data, "Longitud")
+
+graph_predictions(length_data, predictions, "Execution time versus rule length")
+```
+
+### Varied rule types for increasing base
+
+```{r}
+varied_base_data <- read.csv("Single_Varied_Performance_BaseIncrement.csv")
+
+varied_base_data[,1:2] <- sapply(varied_base_data[,1:2], as.numeric)
+
+varied_base_model = lm(data = varied_base_data, formula = Tiempo ~ Base + I(Base ^ 2))
+predictions = handle_model(varied_base_model, varied_base_data, "Base")
+
+graph_predictions(varied_base_data, predictions, "Execution time versus base value")
+graph_by_type(varied_base_data)
+```
+
+```{r}
+
+varied_divisor_data <- read.csv("Single_Varied_Performance_DivisorIncrement.csv")
+
+varied_divisor_data[1:2] <- sapply(varied_divisor_data[,1:2], as.numeric)
+
+varied_divisor_model = lm(data = varied_divisor_data, formula = Tiempo ~ Divisor)
+predictions = handle_model(varied_divisor_model, varied_divisor_data, "Divisor")
+
+graph_predictions(varied_divisor_data, predictions, "Execution time versus divisor value")
+graph_by_type(varied_divisor_data)
+```
+

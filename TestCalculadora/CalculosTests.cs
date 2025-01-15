@@ -1090,7 +1090,7 @@ namespace TestCalculadora
 				// Assert
 				Assert.Multiple(() =>
 				{
-					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.SUBSTRACT_BLOCKS));
+					Assert.That(result.caso, Is.EqualTo(CasosDivisibilidad.SUBTRACT_BLOCKS));
 					Assert.That(result.informacion, Is.EqualTo(potencia));
 				});
 			}

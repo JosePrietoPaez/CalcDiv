@@ -37,7 +37,7 @@ void Single_Coefficient_Performance_BaseIncrement() {
 }
 
 void Single_Coefficient_Performance_DivisorIncrement() {
-	long @base = 10;
+	long @base = 11;
 	int longitud = 1;
 	Stopwatch stopwatch = new();
 	string path = filePath + "/Single_Coefficient_Performance_DivisorIncrement.csv";
@@ -64,7 +64,7 @@ void Single_Coefficient_Performance_LengthIncrement() {
 	File.Create(path).Close();
 	using TextWriter writer = new StreamWriter(path);
 	writer.WriteLine("Longitud, Tiempo, Regla");
-	for (int longitud = 1; longitud < 10000; longitud +=5) {
+	for (int longitud = 1; longitud < 100000; longitud +=5) {
 		stopwatch.Restart();
 		ReglaCoeficientes regla = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
 		stopwatch.Stop();
@@ -83,7 +83,7 @@ void Single_Varied_Performance_BaseIncrement() {
 	File.Create(path).Close();
 	using TextWriter writer = new StreamWriter(path);
 	writer.WriteLine("Base, Tiempo, Tipo");
-	for (long @base = 2; @base < 10000000L; @base *= 2) {
+	for (long @base = 2; @base < 10000000L; @base = (long)(@base * 1.3) + 1) {
 		stopwatch.Restart();
 		(bool exito, IRegla regla) = Calculos.ReglaDivisibilidadExtendida(divisor, @base);
 		stopwatch.Stop();
@@ -102,7 +102,7 @@ void Single_Varied_Performance_DivisorIncrement() {
 	File.Create(path).Close();
 	using TextWriter writer = new StreamWriter(path);
 	writer.WriteLine("Divisor, Tiempo, Tipo");
-	for (long divisor = 2, i = 2; divisor < 100000L; divisor = (long)Math.Pow(i++,2)) {
+	for (long divisor = 2, i = 2; divisor < 1000000L; divisor = (long)Math.Pow(i++,2)) {
 		stopwatch.Restart();
 		(bool exito, IRegla regla) = Calculos.ReglaDivisibilidadExtendida(divisor, @base);
 		stopwatch.Stop();
@@ -112,13 +112,13 @@ void Single_Varied_Performance_DivisorIncrement() {
 	}
 }
 
-Single_Coefficient_Performance_BaseIncrement();
-Console.WriteLine("Base increment finished");
-Single_Coefficient_Performance_DivisorIncrement();
-Console.WriteLine("Divisor increment finished");
-Single_Coefficient_Performance_LengthIncrement();
-Console.WriteLine("Length increment finished");
-Single_Varied_Performance_BaseIncrement();
-Console.WriteLine("Varied base increment finished");
+//Single_Coefficient_Performance_BaseIncrement();
+//Console.WriteLine("Base increment finished");
+//Single_Coefficient_Performance_DivisorIncrement();
+//Console.WriteLine("Divisor increment finished");
+//Single_Coefficient_Performance_LengthIncrement();
+//Console.WriteLine("Length increment finished");
+//Single_Varied_Performance_BaseIncrement();
+//Console.WriteLine("Varied base increment finished");
 Single_Varied_Performance_DivisorIncrement();
 Console.WriteLine("Varied divisor increment finished");
