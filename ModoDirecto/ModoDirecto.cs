@@ -27,7 +27,7 @@ namespace ModosEjecucion {
 		private Salida GestionarErrorYUsarDatos(OpcionesDirecto flags, long @base, long divisor, int longitud
 			, Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora
 			, TextWriter salida, TextWriter error) {
-			if (!flags.ReglasVariadas && (divisor < 2 || @base < 2 || !SonCoprimos(divisor, @base))) {
+			if (flags.ReglasCoeficientes && (divisor < 2 || @base < 2 || !SonCoprimos(divisor, @base))) {
 				_estadoSalida.Mensajes.Add((error, ErrorDivisorCoprimo, true));
 				_estadoSalida.Mensajes.Add((error, ErrorBase, true));
 				_estadoSalida.Estado = EstadoEjecucion.ERROR;
@@ -60,10 +60,10 @@ namespace ModosEjecucion {
 
 		internal static Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion,IRegla)> SeleccionarFuncionYAjustarFlags(IOpcionesGlobales flags) {
 			Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> resultado;
-			if (flags.ReglasVariadas) { // Para separar la funcion de las llamadas en VariasReglas
-				resultado = CrearReglaExtra;
-			} else {
+			if (flags.ReglasCoeficientes) {
 				resultado = CrearReglaCoeficientes;
+			} else { // Para separar la funcion de las llamadas en VariasReglas
+				resultado = CrearReglaExtra;
 			}
 			return resultado;
 		}
@@ -71,13 +71,13 @@ namespace ModosEjecucion {
 		internal static (EstadoEjecucion, IRegla) CrearReglaCoeficientes(long divisor, long @base, int coefientes, IOpcionesGlobales flags) {
 			EstadoEjecucion salida;
 			IRegla elementoCreado;
-			if (!SonCoprimos(divisor,@base)) {
-				salida = EstadoEjecucion.ERROR;
-				elementoCreado = new ReglaCoeficientes(divisor, @base, coefientes);
-			} else {
+			if (SonCoprimos(divisor, @base)) {
 				ReglaCoeficientes reglaAuxiliar = ReglaDivisibilidadOptima(divisor, coefientes, @base);
 				elementoCreado = reglaAuxiliar;
 				salida = EstadoEjecucion.CORRECTA;
+			} else {
+				salida = EstadoEjecucion.ERROR;
+				elementoCreado = new ReglaCoeficientes(divisor, @base, coefientes);
 			}
 			return (salida, elementoCreado);
 		}

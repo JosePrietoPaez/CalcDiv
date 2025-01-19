@@ -165,7 +165,7 @@ Compruebe la salida de errores para obtener más información.</value>
     * Opciones generales, excepto manual:
         * -j, --json: La salida de las reglas se genera en JSON.
         * -d, --dividend: Aplica y explica todas las reglas obtenidas usando los enteros que se les ha pasado, separados por comas.
-        * -x, --extra-rules-types: Intentará encontrar una regla que no sea de coeficientes si es posible. Las bases y coeficientes no tendrán que ser coprimos.
+        * -c, --coefficient-rules: Intentará encontrar una regla que sea de coeficientes si es posible. Las bases y coeficientes tendrán que ser coprimos.
 		* --length: Establece la longitud de las reglas de coeficientes. Debe ser un entero positivo.
     * single (default):
         * Arguments: Este verbo usa dos argumentos posicionales.

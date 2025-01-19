@@ -16,9 +16,9 @@ namespace ModosEjecucion {
 			get {
 				return [
 					new(TextoEjecucion.EjemploReglaUno, new OpcionesDirecto {Base = 12, Divisor = 7, Longitud = 2}),
-					new(TextoEjecucion.EjemploReglaJsonExtendido, new OpcionesDirecto {Base = 16, Divisor = 13, ReglasVariadas = true, JSON = true}),
+					new(TextoEjecucion.EjemploReglaJsonExtendido, new OpcionesDirecto {Base = 16, Divisor = 13, ReglasCoeficientes = false, JSON = true}),
 					new(TextoEjecucion.EjemploReglaDialogo, new OpcionesDialogo{ }),
-					new(TextoEjecucion.EjemploReglaVarias, new OpcionesVarias{ VariasReglas = ["7,100,41", "10,8"], ReglasVariadas = true, Dividendo = ["6341, 289"] })
+					new(TextoEjecucion.EjemploReglaVarias, new OpcionesVarias{ VariasReglas = ["7,100,41", "10,8"], ReglasCoeficientes = false, Dividendo = ["6341,289"] })
 				]; 
 			}
 		}
@@ -53,9 +53,9 @@ namespace ModosEjecucion {
 		/// <summary>
 		/// Esta propiedad devuelve si todos los flags, excepto los de valores de diálogo están inactivos.
 		/// </summary>
-		public bool FlagsInactivos => !(DialogoSencillo || JSON || ReglasVariadas);
+		public bool FlagsInactivos => !(DialogoSencillo || JSON || ReglasCoeficientes);
 
-		public bool ReglasVariadas { get; set; }
+		public bool ReglasCoeficientes { get; set; }
 		public bool JSON { get; set; }
 		public IEnumerable<string>? Dividendo { get; set; }
 		public int? Longitud { get; set; }
@@ -83,7 +83,7 @@ namespace ModosEjecucion {
 			, ResourceType = typeof(TextoEjecucion))]
 		public long Base { get; set; }
 
-		public bool ReglasVariadas { get; set; }
+		public bool ReglasCoeficientes { get; set; }
 		public bool JSON { get; set; }
 		public IEnumerable<string>? Dividendo { get; set; }
 		public int? Longitud { get; set; }
@@ -143,7 +143,7 @@ namespace ModosEjecucion {
 			}
 		}
 
-		public bool ReglasVariadas { get; set; }
+		public bool ReglasCoeficientes { get; set; }
 		public bool JSON { get; set; }
 		public IEnumerable<string>? Dividendo { get; set; }
 		public int? Longitud { get; set; }
@@ -177,12 +177,12 @@ namespace ModosEjecucion {
 		/// <summary>
 		/// Esta propiedad indica si la opción -x está activa.
 		/// </summary>
-		[Option('x', longName: "varied-rule-types"
+		[Option('c', longName: "coefficient-rules"
 			, HelpText = "HelpExtendido"
 			, ResourceType = typeof(TextoEjecucion)
 			, SetName = "varied"
-			, Default = true)]
-		public bool ReglasVariadas { get; set; }
+			, Default = false)]
+		public bool ReglasCoeficientes { get; set; }
 
 		/// <summary>
 		/// Esta propiedad indica si la opción -j está activa.
@@ -218,11 +218,11 @@ namespace ModosEjecucion {
 		/// </returns>
 		public string ObtenerReglas(long divisor, long @base, int longitud) {
 			string resultado;
-			if (ReglasVariadas) {
-				resultado = ReglaDivisibilidadExtendida(divisor, @base).Item2.ReglaExplicada;
-			} else {
+			if (ReglasCoeficientes) {
 				ReglaCoeficientes serie = ReglaDivisibilidadOptima(divisor, longitud, @base);
 				resultado = Salida.ObjetoAString(serie);
+			} else {
+				resultado = ReglaDivisibilidadExtendida(divisor, @base).Item2.ReglaExplicada;
 			}
 			return resultado;
 		}

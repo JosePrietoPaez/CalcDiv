@@ -67,8 +67,8 @@ namespace ModosEjecucion.Recursos {
         ///    * General options, except for manual:
         ///        * -j, --json: Outputs the rule as JSON.
         ///        * -d, --dividend: Applies and explains all rules obtained using the integers passed to it, separated by commas.
-        ///        * -x, --extra-rules-types: Will attempt to fina a rule without coefficients if possible. Bases and divisors no longer have to be coprime.
-        ///		* --length: Sets the amount of coefficients in coe [resto de la cadena truncado]&quot;;.
+        ///        * -c, --coefficient-rules: Will attempt to find a coefficient rule if possible. Bases and divisors will now have to be coprime.
+        ///		* --length: Sets the amount of coefficients in coefficient r [resto de la cadena truncado]&quot;;.
         /// </summary>
         public static string Ayuda {
             get {

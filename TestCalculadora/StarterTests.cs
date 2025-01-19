@@ -35,7 +35,7 @@ public class StarterTests {
 			Longitud = (int?)length,
 			Dividendo = null,
 			JSON = false,
-			ReglasVariadas = false
+			ReglasCoeficientes = true
 		};
 
 		// Act
@@ -59,7 +59,7 @@ public class StarterTests {
 			bases = [10, 25];
 		var options = new OpcionesVarias() {
 			Dividendo = null,
-			ReglasVariadas = true,
+			ReglasCoeficientes = false,
 			VariasReglas = [string.Join(',', divisors.Select(n => n.ToString())),
 			string.Join(',', divisors.Select(n => n.ToString()))]
 		};

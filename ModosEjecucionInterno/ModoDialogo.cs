@@ -14,11 +14,11 @@ namespace ModosEjecucionInterno {
 		private const string SALIDA_DIALOGO = "/";
 
 		private static bool GestionarOpcionesDialogo(OpcionesDialogo flags) {
-			bool saltarPreguntaExtra = flags.ReglasVariadas;
+			bool saltarPreguntaExtra = flags.ReglasCoeficientes;
 			if (flags.Base.HasValue && flags.Divisor.HasValue) {
 				if (!SonCoprimos(flags.Base.Value, flags.Divisor.Value)) {
-					if (!flags.ReglasVariadas && !flags.FlagsInactivos) throw new ArgumentException(ErrorDivisorCoprimo, nameof(flags.Divisor));
-					flags.ReglasVariadas = true; // No se pueden usar las de coeficientes, como se cambia después de evaluar para sinFlags, se sigue preguntando
+					if (flags.ReglasCoeficientes) throw new ArgumentException(ErrorDivisorCoprimo, nameof(flags.Divisor));
+					flags.ReglasCoeficientes = false; // No se pueden usar las de coeficientes, como se cambia después de evaluar para sinFlags, se sigue preguntando
 					saltarPreguntaExtra = true;
 				} else {
 					ArgumentOutOfRangeException.ThrowIfLessThan(flags.Base.Value, 2, nameof(flags.Base));
@@ -53,7 +53,7 @@ namespace ModosEjecucionInterno {
 
 						//Le una tecla de entrada reglasObj lanza excepción si es la _salida
 						if (!saltarPreguntaExtra) {
-							flags.ReglasVariadas = !ObtenerDeUsuario(MensajeDialogoExtendido, esS);
+							flags.ReglasCoeficientes = ObtenerDeUsuario(MensajeDialogoExtendido, esS);
 						}
 						
 						flags.JSON = ObtenerDeUsuario(MensajeDialogoJson, esS);
@@ -104,7 +104,7 @@ namespace ModosEjecucionInterno {
 			@base = ObtenerValorODefecto(baseNull,
 				() => ObtenerDeUsuarioLong(2, ErrorBase, MensajeDialogoBase));
 
-			if (flags.ReglasVariadas) {
+			if (!flags.ReglasCoeficientes) {
 				divisor = ObtenerValorODefecto(divisorNull,
 					() => ObtenerDeUsuarioLong(2, ErrorDivisor, MensajeDialogoDivisor));
 

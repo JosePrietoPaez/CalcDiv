@@ -45,7 +45,7 @@ internal class ITCalcDivCLI {
 
 	[Test(Description = "Al llamar a la calculadora en modo directo con base y divisor coprimos devuelve la regla por consola")]
 	public void Calculadora_Directo_ArgumentosCorrectos_SalidaCeroYUnaRegla() {
-		_args = ["single","7","10","--length","4"];
+		_args = ["single", "7", "10", "--length", "4", "-c"];
 		ReglaCoeficientes regla = Calculos.ReglaDivisibilidadOptima(7, 4, 10);
 
 		int salida = CalcDivCLI.Main(_args);
@@ -61,7 +61,7 @@ internal class ITCalcDivCLI {
 
 	[Test(Description = "Al llamar a la calculadora en modo directo con -j con base y divisor coprimos devuelve la regla por consola en JSON")]
 	public void Calculadora_DirectoJSON_ArgumentosCorrectos_SalidaCeroJSONCorrectoYUnaRegla() {
-		_args = ["single", "17", "10","--length", "3", "-j"];
+		_args = ["single", "17", "10","--length", "3", "-cj"];
 		long @base = 10, divisor = 17;
 		int coeficientes = 3;
 		ReglaCoeficientes regla = Calculos.ReglaDivisibilidadOptima(divisor, coeficientes, @base);
@@ -98,7 +98,7 @@ internal class ITCalcDivCLI {
 
 	[Test(Description = "Al llamar a la calculadora en modo directo con base y divisor coprimos devuelve la regla por consola")]
 	public void Calculadora_DirectoCoeficientes_ArgumentosNoCoprimos_SalidaUnoYSinRegla() {
-		_args = ["single", "7", "14"]; //Mcd = 7
+		_args = ["single", "7", "14", "-c"]; //Mcd = 7
 
 		int salida = CalcDivCLI.Main(_args);
 
@@ -114,7 +114,7 @@ internal class ITCalcDivCLI {
 
 	[Test(Description = "Al llamar a la calculadora en modo directo con base y divisor coprimos devuelve la regla por consola")]
 	public void Calculadora_DirectoExtra_ArgumentosNoCoprimos_SalidaUnoYSinRegla() {
-		_args = ["single", "1", "10", "-x"];
+		_args = ["single", "1", "10"];
 
 		int salida = CalcDivCLI.Main(_args);
 
@@ -130,7 +130,7 @@ internal class ITCalcDivCLI {
 
 	[Test(Description = "Al llamar con -m y dos strings de longs separados por comas, todos coprimos entre sí, devuelve todas las reglas de divisibilidad")]
 	public void Calculadora_VariasReglas_ArgumentosValidos_DevuelveTodasLasReglasYCero() { //Se comprueba la salida en otra prueba
-		_args = ["multiple", "3,7,11,101", "10,20", "--length", "3"];
+		_args = ["multiple", "3,7,11,101", "10,20", "--length", "3", "-c"];
 		int longitudEsperada = 9; // Ocho de las reglas y otro más
 
 		int salida = CalcDivCLI.Main(_args);
@@ -144,7 +144,7 @@ internal class ITCalcDivCLI {
 
 	[Test(Description = "Al llamar con -m y dos strings de longs separados por comas, todos coprimos entre sí, devuelve todas las reglas de divisibilidad")]
 	public void Calculadora_VariasReglas_ArgumentosParcialmenteCoprimos_DevuelveTodasLasReglasPosiblesYCinco() { //Se comprueba la salida en otra prueba
-		_args = ["multiple", "3,7,11,101,20,10", "10,20", "--length", "3"];
+		_args = ["multiple", "3,7,11,101,20,10", "10,20", "--length", "3", "-c"];
 		int longitudEsperada = 9;
 
 		int salida = CalcDivCLI.Main(_args);
@@ -158,7 +158,7 @@ internal class ITCalcDivCLI {
 
 	[Test(Description = "Al llamar con -m y dos strings de longs separados por comas, todos coprimos entre sí, devuelve todas las reglas de divisibilidad")]
 	public void Calculadora_VariasReglas_ArgumentosNoCoprimos_NoDevuelveReglasYSeis() { //Se comprueba la salida en otra prueba
-		_args = ["multiple", "2,4,5,10", "10,20", "--length", "3"];
+		_args = ["multiple", "2,4,5,10", "10,20", "--length", "3", "-c"];
 
 		int salida = CalcDivCLI.Main(_args);
 
@@ -171,7 +171,7 @@ internal class ITCalcDivCLI {
 	[Test]
 	public void Calculadora_VariasJSON_ArgumentosParcialmenteCorrectos_DevuelveLasCorrectasJSONCorrectoYCinco() {
 		int[] divisores = [3, 7, 101, 20], bases = [10, 13];
-		_args = ["multiple", "-j", "3,7,101,20", "10,13", "--length", "3"];
+		_args = ["multiple", "-j", "3,7,101,20", "10,13", "--length", "3", "-c"];
 		JsonArray jsonReglas = [];
 		List<ReglaCoeficientes> reglas = [];
 		foreach (int i in divisores) {
@@ -198,7 +198,7 @@ internal class ITCalcDivCLI {
 	[Test]
 	public void Calculadora_VariasExtraJSON_ArgumentosCorrectos_DevuelveJSONCorrectoYCero() {
 		int[] divisores = [0, 1, 2, 7, 9], bases = [10];
-		_args = ["multiple", "-xj", "0,1,2,7,9", "10", "--length", "3"];
+		_args = ["multiple", "-j", "0,1,2,7,9", "10", "--length", "3"];
 		JsonArray jsonReglas = [];
 		List<ReglaCoeficientes> reglas = [];
 		foreach (int i in divisores) {
@@ -226,7 +226,7 @@ internal class ITCalcDivCLI {
 
 	[Test]
 	public void Calculadora_DialogoSinBuclesCoeficientesCorrectos_DevuelveReglaYCero() {
-		_args = ["dialog", "-s", "--no-loop"];
+		_args = ["dialog", "-s", "--no-loop", "-c"];
 		int longitud = 5;
 		long divisor = 7, @base = 10;
 		ReglaCoeficientes reglaEsperada = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);

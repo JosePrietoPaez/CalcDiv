@@ -47,7 +47,7 @@ namespace Divisibility {
 				Longitud = length,
 				Dividendo = null,
 				JSON = false,
-				ReglasVariadas = !coefficientRule
+				ReglasCoeficientes = coefficientRule
 			};
 			var result = new ModoDirecto().CalcularRegla(flags);
 			return (result.Item1, result.Item2.First());
@@ -72,7 +72,7 @@ namespace Divisibility {
 				Dividendo = null,
 				VariasReglas = [ string.Join(',', divisors), string.Join(',', bases) ],
 				JSON = false,
-				ReglasVariadas = !coefficientRule
+				ReglasCoeficientes = coefficientRule
 			};
 			return new ModoVarias().CalcularRegla(flags);
 		}

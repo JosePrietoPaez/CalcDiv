@@ -2,7 +2,7 @@
   "profiles": {
     "ProgramaDivisibilidadCLI": {
       "commandName": "Project",
-      "commandLineArgs": "single 123 327"
+      "commandLineArgs": "dialog --varied-rule-types false"
     }
   }
 }

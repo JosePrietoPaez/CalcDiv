@@ -145,7 +145,7 @@ Check the error stream for more information.</value>
     * General options, except for manual:
         * -j, --json: Outputs the rule as JSON.
         * -d, --dividend: Applies and explains all rules obtained using the integers passed to it, separated by commas.
-        * -x, --extra-rules-types: Will attempt to fina a rule without coefficients if possible. Bases and divisors no longer have to be coprime.
+        * -c, --coefficient-rules: Will attempt to find a coefficient rule if possible. Bases and divisors will now have to be coprime.
 		* --length: Sets the amount of coefficients in coefficient rules. Must be a positive integer.
     * single (default):
         * Arguments: This verbs uses two positional arguments.
