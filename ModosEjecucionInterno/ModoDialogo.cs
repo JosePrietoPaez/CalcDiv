@@ -55,12 +55,12 @@ namespace ModosEjecucionInterno {
 						if (!saltarPreguntaExtra) {
 							flags.ReglasCoeficientes = ObtenerDeUsuario(MensajeDialogoExtendido, esS);
 						}
-						
+
 						flags.JSON = ObtenerDeUsuario(MensajeDialogoJson, esS);
 					}
 
 					var (Mensaje, Divisor, Base, Longitud) = 
-						FlujoDatosRegla(flags.Divisor, flags.Base, flags.Longitud, sinFlags, flags);
+						FlujoDatosRegla(flags.Divisor, flags.Base, flags.Longitud, flags);
 
 					resultadoSalida.EscribirReglaPorConsola(Mensaje + Environment.NewLine, Divisor, Base, salida, error);
 					resultadoSalida.EscribirMensajes();
@@ -97,7 +97,7 @@ namespace ModosEjecucionInterno {
 		/// <param name="sinFlags"></param>
 		/// <param name="flags"></param>
 		private static (string Mensaje, long Divisor, long Base, int Longitud) FlujoDatosRegla(
-			long? divisorNull, long? baseNull, int? longitudNull, bool sinFlags, OpcionesDialogo flags) {
+			long? divisorNull, long? baseNull, int? longitudNull, OpcionesDialogo flags) {
 			long divisor, @base;
 			int longitud = 1;
 			// Se carga la base primero, necesaria en todos los casos
@@ -116,7 +116,7 @@ namespace ModosEjecucionInterno {
 					() => ObtenerDeUsuario(0, ErrorCoeficientes, MensajeDialogoCoeficientes));
 			}
 
-			return (((IOpcionesGlobales)flags).ObtenerReglas(divisor, @base, longitud), divisor, @base, longitud);
+			return (((IOpcionesGlobales)flags).ObtenerReglas(divisor, @base, longitud, flags.JSON), divisor, @base, longitud);
 		}
 
 		#region ObtenerSHUTTHEFUCKUP

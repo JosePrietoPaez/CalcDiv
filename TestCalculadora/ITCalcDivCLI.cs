@@ -246,6 +246,32 @@ internal class ITCalcDivCLI {
 		});
 	}
 
+	[Test]
+	public void Calculadora_DialogoSinBuclesCoeficientesCorrectosJSON_DevuelveReglaEnJSONYCero() {
+		_args = ["dialog", "-js", "--no-loop", "-c"];
+		int longitud = 5;
+		long divisor = 7, @base = 10;
+		JsonNode? jsonReglas = null;
+		ReglaCoeficientes reglaEsperada = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
+		_lectorEntrada =
+			new StringReader(@base + _escritorError.NewLine
+			 + divisor + _escritorError.NewLine
+			 + longitud + _escritorError.NewLine
+			 + "-");
+		Console.SetIn(_lectorEntrada);
+
+		int salida = CalcDivCLI.Main(_args);
+		Assert.DoesNotThrow(() => jsonReglas = JsonNode.Parse(_escritorSalida.ToString())!); // Debe devolver una lista de objetos
+
+		Assert.Multiple(() => {
+			Assert.That(salida, Is.Zero);
+			Assert.That(jsonReglas, Is.Not.Null);
+			Assert.That((long)jsonReglas["base"], Is.EqualTo(@base));
+			Assert.That((long)jsonReglas["divisor"], Is.EqualTo(divisor));
+			Assert.That((JsonArray)jsonReglas["coefficients"], Is.Not.Null.And.Property("Count").EqualTo(longitud));
+		});
+	}
+
 	private static string[] ReglasToArray(List<ReglaCoeficientes> reglas) {
 		return reglas.Select(regla => regla.ToString()).ToArray();
 	}

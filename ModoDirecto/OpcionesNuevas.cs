@@ -216,14 +216,15 @@ namespace ModosEjecucion {
 		/// <returns>
 		/// String apropiado para la regla según los datos proporcionados.
 		/// </returns>
-		public string ObtenerReglas(long divisor, long @base, int longitud) {
+		public string ObtenerReglas(long divisor, long @base, int longitud, bool json) {
 			string resultado;
+			IRegla regla;
 			if (ReglasCoeficientes) {
-				ReglaCoeficientes serie = ReglaDivisibilidadOptima(divisor, longitud, @base);
-				resultado = Salida.ObjetoAString(serie);
+				regla = ReglaDivisibilidadOptima(divisor, longitud, @base);
 			} else {
-				resultado = ReglaDivisibilidadExtendida(divisor, @base).Item2.ReglaExplicada;
+				regla = ReglaDivisibilidadExtendida(divisor, @base).Item2;
 			}
+			resultado = Salida.ObjetoAString(regla,json);
 			return resultado;
 		}
 
