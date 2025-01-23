@@ -51,9 +51,17 @@ namespace ModosEjecucion {
 		public bool DialogoSencillo { get; set; }
 
 		/// <summary>
+		/// Esta propiedad indica si la opción --skip-explanation está activa.
+		/// </summary>
+		[Option("skip-explanation"
+			, HelpText = "HelpExplicacion"
+			, ResourceType = typeof(TextoEjecucion))]
+		public bool SaltarExplicacion { get; set; }
+
+		/// <summary>
 		/// Esta propiedad devuelve si todos los flags, excepto los de valores de diálogo están inactivos.
 		/// </summary>
-		public bool FlagsInactivos => !(DialogoSencillo || JSON || ReglasCoeficientes);
+		public bool FlagsInactivos => !(DialogoSencillo || JSON || ReglasCoeficientes || SaltarExplicacion);
 
 		public bool ReglasCoeficientes { get; set; }
 		public bool JSON { get; set; }
@@ -216,7 +224,7 @@ namespace ModosEjecucion {
 		/// <returns>
 		/// String apropiado para la regla según los datos proporcionados.
 		/// </returns>
-		public string ObtenerReglas(long divisor, long @base, int longitud, bool json) {
+		public (string, IRegla) ObtenerReglas(long divisor, long @base, int longitud, bool json) {
 			string resultado;
 			IRegla regla;
 			if (ReglasCoeficientes) {
@@ -225,7 +233,7 @@ namespace ModosEjecucion {
 				regla = ReglaDivisibilidadExtendida(divisor, @base).Item2;
 			}
 			resultado = Salida.ObjetoAString(regla,json);
-			return resultado;
+			return (resultado, regla);
 		}
 
 	}

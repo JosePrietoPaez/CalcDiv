@@ -64,11 +64,11 @@ namespace ModosEjecucion.Recursos {
         ///   Busca una cadena traducida similar a CalcDivCLI Help:
         ///
         ///- Program options per verb: use --help for information on the available verbs.
-        ///    * General options, except for manual:
-        ///        * -j, --json: Outputs the rule as JSON.
-        ///        * -d, --dividend: Applies and explains all rules obtained using the integers passed to it, separated by commas.
-        ///        * -c, --coefficient-rules: Will attempt to find a coefficient rule if possible. Bases and divisors will now have to be coprime.
-        ///		* --length: Sets the amount of coefficients in coefficient r [resto de la cadena truncado]&quot;;.
+        ///	* General options, except for manual:
+        ///		* -j, --json: Outputs the rule as JSON.
+        ///		* -d, --dividend: Applies and explains all rules obtained using the integers passed to it, separated by commas.
+        ///		* -c, --coefficient-rules: Will attempt to find a coefficient rule if possible. Bases and divisors will now have to be coprime.
+        ///		* --length: Sets the amount of coefficients in coefficient rules. Must be a posit [resto de la cadena truncado]&quot;;.
         /// </summary>
         public static string Ayuda {
             get {
@@ -353,6 +353,15 @@ namespace ModosEjecucion.Recursos {
         public static string HelpDivisorVarias {
             get {
                 return ResourceManager.GetString("HelpDivisorVarias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Skips rule explanation and application confirmation in dialog mode and skips to repetition confirmation if not disabled..
+        /// </summary>
+        public static string HelpExplicacion {
+            get {
+                return ResourceManager.GetString("HelpExplicacion", resourceCulture);
             }
         }
         

@@ -124,10 +124,10 @@
     <value>Number of coefficients in the rule: </value>
   </data>
   <data name="MensajeDialogoDividendoBucle" xml:space="preserve">
-    <value>Write a non-negative integer:</value>
+    <value>Write a non-negative integer: </value>
   </data>
   <data name="MensajeDialogoDividendoError" xml:space="preserve">
-    <value>The number was not valid or negative:</value>
+    <value>The number was not valid or negative: </value>
   </data>
   <data name="MensajeDialogoDividendoVacio" xml:space="preserve">
     <value>Write all the numbers to apply the rules to, stop by writing "{0}":</value>
@@ -136,25 +136,25 @@
     <value>Divisor of the rule: </value>
   </data>
   <data name="MensajeDialogoExtendido" xml:space="preserve">
-    <value>Type "s" to obtain coefficient rules, type a different letter to obtain rules: </value>
+    <value>Type "s" or "y" to obtain coefficient rules, type a different letter to obtain rules: </value>
   </data>
   <data name="MensajeDialogoInterrumpido" xml:space="preserve">
     <value>The program was interrupted.</value>
   </data>
   <data name="MensajeDialogoJson" xml:space="preserve">
-    <value>Type "s" to output the rule as a JSON, if the rule is not going to be parsed type another letter: </value>
+    <value>Type "s" or "y" to output the rule as a JSON, if the rule is not going to be parsed type another letter: </value>
   </data>
   <data name="MensajeDialogoRegla" xml:space="preserve">
     <value>Name of the rule, can be left empty: </value>
   </data>
   <data name="MensajeDialogoRepetir" xml:space="preserve">
-    <value>Type "s" to calculate another rule: </value>
+    <value>Type "s" or "y" to calculate another rule: </value>
   </data>
   <data name="MensajeDialogoResultado" xml:space="preserve">
     <value>Obtained the following rule: </value>
   </data>
   <data name="MensajeDialogoTodas" xml:space="preserve">
-    <value>Type "s" to output all the rules derived from the original, type a different letter to obtain the minimum rule: </value>
+    <value>Type "s" or "y" to output all the rules derived from the original, type a different letter to obtain the minimum rule: </value>
   </data>
   <data name="MensajeFinDirecto" xml:space="preserve">
     <value>The rule was calculated.</value>
@@ -171,5 +171,14 @@
   <data name="DialogoExcepcionInesperada" xml:space="preserve">
     <value>An unexpected error ocurred, consider creating a new Issue on GitHub if it isn't present, include the trace above and the arguments provided:
 https://github.com/JosePrietoPaez/CalcDiv/issues</value>
+  </data>
+  <data name="MensajeDialogoExplicar" xml:space="preserve">
+    <value>Write a number to apply this rule to or press Enter to skip:</value>
+  </data>
+  <data name="MensajeDialogoExplicarFallido" xml:space="preserve">
+    <value>Input was not a number, enter a valid integer to apply the number:</value>
+  </data>
+  <data name="MensajeDialogoNoValido" xml:space="preserve">
+    <value>The number was not valid:</value>
   </data>
 </root>

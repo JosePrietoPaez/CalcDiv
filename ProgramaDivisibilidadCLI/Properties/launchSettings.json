@@ -2,7 +2,7 @@
   "profiles": {
     "ProgramaDivisibilidadCLI": {
       "commandName": "Project",
-      "commandLineArgs": "dialog"
+      "commandLineArgs": "dialog -d 12345,4455667767,90"
     }
   }
 }

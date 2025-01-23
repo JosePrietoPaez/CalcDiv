@@ -89,7 +89,7 @@ namespace ModosEjecucionInterno.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Write a non-negative integer:.
+        ///   Busca una cadena traducida similar a Write a non-negative integer: .
         /// </summary>
         public static string MensajeDialogoDividendoBucle {
             get {
@@ -98,7 +98,7 @@ namespace ModosEjecucionInterno.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a The number was not valid or negative:.
+        ///   Busca una cadena traducida similar a The number was not valid or negative: .
         /// </summary>
         public static string MensajeDialogoDividendoError {
             get {
@@ -125,7 +125,25 @@ namespace ModosEjecucionInterno.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Type &quot;s&quot; to obtain coefficient rules, type a different letter to obtain rules: .
+        ///   Busca una cadena traducida similar a Write a number to apply this rule to or press Enter to skip:.
+        /// </summary>
+        public static string MensajeDialogoExplicar {
+            get {
+                return ResourceManager.GetString("MensajeDialogoExplicar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Input was not a number, enter a valid integer to apply the number:.
+        /// </summary>
+        public static string MensajeDialogoExplicarFallido {
+            get {
+                return ResourceManager.GetString("MensajeDialogoExplicarFallido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Type &quot;s&quot; or &quot;y&quot; to obtain coefficient rules, type a different letter to obtain rules: .
         /// </summary>
         public static string MensajeDialogoExtendido {
             get {
@@ -143,11 +161,20 @@ namespace ModosEjecucionInterno.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Type &quot;s&quot; to output the rule as a JSON, if the rule is not going to be parsed type another letter: .
+        ///   Busca una cadena traducida similar a Type &quot;s&quot; or &quot;y&quot; to output the rule as a JSON, if the rule is not going to be parsed type another letter: .
         /// </summary>
         public static string MensajeDialogoJson {
             get {
                 return ResourceManager.GetString("MensajeDialogoJson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The number was not valid:.
+        /// </summary>
+        public static string MensajeDialogoNoValido {
+            get {
+                return ResourceManager.GetString("MensajeDialogoNoValido", resourceCulture);
             }
         }
         
@@ -161,7 +188,7 @@ namespace ModosEjecucionInterno.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Type &quot;s&quot; to calculate another rule: .
+        ///   Busca una cadena traducida similar a Type &quot;s&quot; or &quot;y&quot; to calculate another rule: .
         /// </summary>
         public static string MensajeDialogoRepetir {
             get {
@@ -179,7 +206,7 @@ namespace ModosEjecucionInterno.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Type &quot;s&quot; to output all the rules derived from the original, type a different letter to obtain the minimum rule: .
+        ///   Busca una cadena traducida similar a Type &quot;s&quot; or &quot;y&quot; to output all the rules derived from the original, type a different letter to obtain the minimum rule: .
         /// </summary>
         public static string MensajeDialogoTodas {
             get {
