@@ -6,6 +6,7 @@ using ModosEjecucion.Recursos;
 using System.Globalization;
 using System.Text.Json.Nodes;
 using System.Diagnostics;
+using NUnit.Framework.Constraints;
 
 namespace TestCalculadoraIT; 
 /// <summary>
@@ -41,6 +42,21 @@ internal class ITCalcDivCLI {
 	[Test(Description = "Aunque no haya usado NUnit demasiado quiero dejar un test con Assert.Charlie(), además si falla sabré que pasa algo")]
 	public void Charlie() {
 		Assert.Charlie();
+	}
+
+	[Test(Description = "Al llamar a la calculadora en modo directo con base y divisor coprimos devuelve la regla por consola")]
+	public void Calculadora_Invalido_DevuelveError() {
+		_args = ["cook"];
+		ReglaCoeficientes regla = Calculos.ReglaDivisibilidadOptima(7, 4, 10);
+
+		int salida = CalcDivCLI.Main(_args);
+
+		string[] lineasResultado = LineasDeWriter(_escritorError);
+		Assert.Multiple(() => {
+			Assert.That(salida, Is.EqualTo(2));
+			Assert.That(_escritorSalida.ToString(), Is.Empty);
+			Assert.That(lineasResultado.Where(s => s.Contains("ERROR")).Count(), Is.EqualTo(1));
+		});
 	}
 
 	[Test(Description = "Al llamar a la calculadora en modo directo con base y divisor coprimos devuelve la regla por consola")]
@@ -168,7 +184,7 @@ internal class ITCalcDivCLI {
 		});
 	}
 
-	[Test]
+	[Test(Description = "Al llamar a multiple con argumentos parcialmente coprimos entre sí, solo se generan algunas reglas")]
 	public void Calculadora_VariasJSON_ArgumentosParcialmenteCorrectos_DevuelveLasCorrectasJSONCorrectoYCinco() {
 		int[] divisores = [3, 7, 101, 20], bases = [10, 13];
 		_args = ["multiple", "-j", "3,7,101,20", "10,13", "--length", "3", "-c"];
@@ -195,7 +211,7 @@ internal class ITCalcDivCLI {
 		});
 	}
 
-	[Test]
+	[Test(Description = "Al llamar a multiple con argumentos totalmente coprimos, se generan todas las reglas posibles")]
 	public void Calculadora_VariasExtraJSON_ArgumentosCorrectos_DevuelveJSONCorrectoYCero() {
 		int[] divisores = [0, 1, 2, 7, 9], bases = [10];
 		_args = ["multiple", "-j", "0,1,2,7,9", "10", "--length", "3"];
@@ -224,7 +240,7 @@ internal class ITCalcDivCLI {
 		});
 	}
 
-	[Test]
+	[Test(Description = "Al llamar a dialog y meter los argumentos correctos, se devuelve la regla correcta")]
 	public void Calculadora_DialogoSinBuclesCoeficientesCorrectos_DevuelveReglaYCero() {
 		_args = ["dialog", "-s", "--no-loop", "-c", "--skip-explanation"];
 		int longitud = 5;
@@ -246,7 +262,7 @@ internal class ITCalcDivCLI {
 		});
 	}
 
-	[Test]
+	[Test(Description = "dialog puede devolver JSON correcto y que se corresponde a la regla")]
 	public void Calculadora_DialogoSinBuclesCoeficientesCorrectosJSON_DevuelveReglaEnJSONYCero() {
 		_args = ["dialog", "-js", "--no-loop", "-c", "--skip-explanation"];
 		int longitud = 5;
@@ -269,6 +285,54 @@ internal class ITCalcDivCLI {
 			Assert.That((long)jsonReglas["base"], Is.EqualTo(@base));
 			Assert.That((long)jsonReglas["divisor"], Is.EqualTo(divisor));
 			Assert.That((JsonArray)jsonReglas["coefficients"], Is.Not.Null.And.Property("Count").EqualTo(longitud));
+		});
+	}
+
+	[Test(Description = "Dialog puede explicar reglas de coeficientes")]
+	public void Calculadora_DialogoSinBuclesArgumentosInsertadosCoeficientesCorrectosJSONExplicacionDividendoSuficientementeAlto_DevuelveReglaEnJSONYCeroYExplicacion() {
+		_args = ["dialog", "--base", "10", "--divisor", "7", "--length", "7", "-cjd", "99223870", "--no-loop"];
+		int longitud = 7;
+		long divisor = 7, @base = 10;
+		string lineas;
+		JsonNode? jsonReglas = null;
+		ReglaCoeficientes reglaEsperada = Calculos.ReglaDivisibilidadOptima(divisor, longitud, @base);
+
+		int salida = CalcDivCLI.Main(_args);
+		lineas = _escritorSalida.ToString()!;
+		string json = lineas!.Split('}')[0] + "}";
+		Assert.DoesNotThrow(() => jsonReglas = JsonNode.Parse(json)); // Debe devolver una lista de objetos
+
+		Assert.Multiple(() => {
+			Assert.That(salida, Is.Zero);
+			Assert.That(jsonReglas, Is.Not.Null);
+			Assert.That((long)jsonReglas!["base"]!, Is.EqualTo(@base));
+			Assert.That((long)jsonReglas["divisor"]!, Is.EqualTo(divisor));
+			Assert.That((JsonArray)jsonReglas["coefficients"]!, Is.Not.Null.And.Property("Count").EqualTo(longitud));
+			Assert.That(lineas.ToString().Split(Environment.NewLine).Max(i => i.Count(c => c == '*')), Is.EqualTo(longitud)); // Se aplica el producto de todos los coeficientes, asegurando que se ha explicado correctamente
+		});
+	}
+
+	[Test(Description = "Dialog puede explicar reglas variadas")]
+	public void Calculadora_DialogoSinBuclesArgumentosInsertadosCorrectosJSONExplicacionDividendoSuficientementeAlto_DevuelveReglaEnJSONYCeroYExplicacion() {
+		_args = ["dialog", "--base", "10", "--divisor", "7", "-jd", "99223870", "--no-loop"];
+		long divisor = 7, @base = 10;
+		string lineas;
+		JsonNode? jsonReglas = null;
+		IRegla reglaEsperada = Calculos.ReglaDivisibilidadExtendida(divisor, @base).Item2;
+
+		int salida = CalcDivCLI.Main(_args);
+		lineas = _escritorSalida.ToString()!;
+		string json = lineas!.Split('}')[0] + "}";
+		Assert.DoesNotThrow(() => jsonReglas = JsonNode.Parse(json)); // Debe devolver una lista de objetos
+
+		Assert.Multiple(() => {
+			Assert.That(salida, Is.Zero);
+			Assert.That(jsonReglas, Is.Not.Null);
+			Assert.That((long)jsonReglas!["base"]!, Is.EqualTo(@base));
+			Assert.That((long)jsonReglas["divisor"]!, Is.EqualTo(divisor));
+			Assert.That((string)jsonReglas["type"]!, Is.EqualTo(CasosDivisibilidad.SUBTRACT_BLOCKS.ToString()));
+			Assert.That((int)jsonReglas["block-length"]!, Is.EqualTo((reglaEsperada as ReglaRestar)!.Longitud));
+			Assert.That(lineas.ToString().Split(Environment.NewLine).Where(s => s.Contains("99, 870")).Count(), Is.EqualTo(1)); // Se mira si sus bloques impares coinciden
 		});
 	}
 
