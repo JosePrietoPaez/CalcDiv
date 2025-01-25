@@ -27,7 +27,7 @@ namespace ProgramaDivisibilidad {
 		/// Salida con el código apropiado.
 		/// </returns>
 		public static int Main(string[] args) {
-			Salida _estadoSalida = new(EstadoEjecucion.CORRECTA);
+			Output _estadoSalida = new(ExitState.NO_ERROR);
 			//Thread.CurrentThread.CurrentCulture = new CultureInfo("es", false);
 			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("es", false);
 			SentenceBuilder.Factory = () => new LocalizableSentenceBuilder();
@@ -37,13 +37,13 @@ namespace ProgramaDivisibilidad {
 				.WithParsed(options => {
 					//Console.Error.WriteLine(options.Dump());
 					if (!puesto) {
-						Salida.opcionesJson.Converters.Add(new BigIntegerConverter());
+						Output.opcionesJson.Converters.Add(new BigIntegerConverter());
 						puesto = true;
 					}
 					_estadoSalida = SeleccionarModo((IOpciones)options);
 				})
 				.WithNotParsed(errors => {
-					_estadoSalida.Estado = EstadoEjecucion.ENTRADA_MALFORMADA;
+					_estadoSalida.Estado = ExitState.BAD_INPUT;
 					//Console.Error.WriteLine(resultado);
 					MostrarAyuda(resultado, errors);
 				});
@@ -66,7 +66,7 @@ namespace ProgramaDivisibilidad {
 			Console.Error.WriteLine(textoAyuda);
 		}
 
-		private static Salida SeleccionarModo(IOpciones obj) {
+		private static Output SeleccionarModo(IOpciones obj) {
 			IModoEjecucion modo = obj switch {
 				OpcionesDialogo => new ModoDialogo(),
 				OpcionesDirecto => new ModoDirecto(),
@@ -79,12 +79,12 @@ namespace ProgramaDivisibilidad {
 	}
 
 	internal class ModoManual : IModoEjecucion {
-		public (EstadoEjecucion, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones) {
+		public (ExitState, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones) {
 			throw new NotImplementedException();
 		}
 
-		public Salida Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) {
-			return new(EstadoEjecucion.CORRECTA) { Mensajes = [(salida, Ayuda, true)] };
+		public Output Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) {
+			return new(ExitState.NO_ERROR) { Mensajes = [(salida, Ayuda, true)] };
 		}
 	}
 

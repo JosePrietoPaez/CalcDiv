@@ -16,10 +16,10 @@ namespace Divisibility {
 		/// </remarks>
 		/// <param name="options"></param>
 		/// <returns>
-		/// <see cref="EstadoEjecucion"/> with the state of the execution and <see cref="IEnumerable{T}"/> with the calculated rules.
+		/// <see cref="ExitState"/> with the state of the execution and <see cref="IEnumerable{T}"/> with the calculated rules.
 		/// </returns>
 		/// <exception cref="NotImplementedException"></exception>
-		public static (EstadoEjecucion, IEnumerable<IRegla>) CalculateRule(IOpciones options) {
+		public static (ExitState State, IEnumerable<IRegla> Rules) CalculateRule(IOpciones options) {
 			return options switch {
 				OpcionesDirecto flags => new ModoDirecto().CalcularRegla(flags),
 				OpcionesVarias flags => new ModoVarias().CalcularRegla(flags),
@@ -38,9 +38,9 @@ namespace Divisibility {
 		/// <param name="length"></param>
 		/// <param name="coefficientRule"></param>
 		/// <returns>
-		/// <see cref="EstadoEjecucion"/> with the state of the execution and <see cref="IRegla"/> with the calculated rule.
+		/// <see cref="ExitState"/> with the state of the execution and <see cref="IRegla"/> with the calculated rule.
 		/// </returns>
-		public static (EstadoEjecucion, IRegla) CalculateSingleRule(long divisor, long @base, bool coefficientRule = false, int length = 1) {
+		public static (ExitState State, IRegla Rule) CalculateSingleRule(long divisor, long @base = 10, bool coefficientRule = false, int length = 1) {
 			OpcionesDirecto flags = new() {
 				Base = @base,
 				Divisor = divisor,
@@ -64,9 +64,9 @@ namespace Divisibility {
 		/// <param name="coefficientRule"></param>
 		/// <param name="length"></param>
 		/// <returns>
-		/// <see cref="EstadoEjecucion"/> with the state of the execution and <see cref="IEnumerable{T}"/> with the calculated rules.
+		/// <see cref="ExitState"/> with the state of the execution and <see cref="IEnumerable{T}"/> with the calculated rules.
 		/// </returns>
-		public static (EstadoEjecucion, IEnumerable<IRegla>) CalculateMultipleRules(IEnumerable<long> divisors, IEnumerable<long> bases, bool coefficientRule = false, int length = 1) {
+		public static (ExitState State, IEnumerable<IRegla> Rule) CalculateMultipleRules(IEnumerable<long> divisors, IEnumerable<long> bases, bool coefficientRule = false, int length = 1) {
 			OpcionesVarias flags = new() {
 				Longitud = length,
 				Dividendo = null,

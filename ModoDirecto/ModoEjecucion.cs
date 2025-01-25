@@ -19,9 +19,9 @@ namespace ModosEjecucion {
 		/// <param name="error"></param>
 		/// <param name="opciones"></param>
 		/// <returns>
-		/// <see cref="Salida"/> que indica si ha conseguido calcular la regla.
+		/// <see cref="Output"/> que indica si ha conseguido calcular la regla.
 		/// </returns>
-		public Salida Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones);
+		public Output Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones);
 
 		/// <summary>
 		/// Calcula la regla de divisibilidad.
@@ -31,8 +31,8 @@ namespace ModosEjecucion {
 		/// </remarks>
 		/// <param name="opciones"></param>
 		/// <returns>
-		/// <see cref="IRegla"/> con la regla calculada y <see cref="Salida"/> con el estado de la ejecución.
+		/// <see cref="IRegla"/> con la regla calculada y <see cref="Output"/> con el estado de la ejecución.
 		/// </returns>
-		public (EstadoEjecucion, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones);
+		public (ExitState, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones);
 	}
 }

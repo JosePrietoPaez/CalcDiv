@@ -39,11 +39,11 @@ namespace ModosEjecucionInterno {
 		/// <returns>
 		/// Código de la salida de la aplicación.
 		/// </returns>
-		public Salida Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) {
+		public Output Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) {
 			OpcionesDialogo flags = (OpcionesDialogo) opciones;
 			Console.Error.WriteLine(MensajeInicioDialogo, SALIDA_DIALOGO);
 			bool sinFlags = flags.FlagsInactivos, salir = true;
-			Salida resultadoSalida = new(EstadoEjecucion.CORRECTA);
+			Output resultadoSalida = new(ExitState.NO_ERROR);
 			static bool esSoY(char letra) => letra == 's' | letra == 'S' | letra == 'y' | letra == 'Y';
 			try {
 				bool saltarPreguntaExtra = GestionarOpcionesDialogo(flags);
@@ -52,12 +52,12 @@ namespace ModosEjecucionInterno {
 			}
 			// Si decide salir, se saldrá por este catch
 			catch (SalidaException) {
-				resultadoSalida.Estado = EstadoEjecucion.VOLUNTARIA;
+				resultadoSalida.Estado = ExitState.VOLUNTARY_EXIT;
 				Console.Error.WriteLine(Environment.NewLine + MensajeDialogoInterrumpido);
 			}
 			// Si ocurre otro error se saldrá por este catch
 			catch (Exception e) {
-				resultadoSalida.Estado = EstadoEjecucion.ERROR;
+				resultadoSalida.Estado = ExitState.ERROR;
 				Console.Error.WriteLine(e.Message);
 				Console.Error.WriteLine(e.StackTrace);
 				Console.Error.WriteLine(DialogoExcepcionInesperada);
@@ -65,7 +65,7 @@ namespace ModosEjecucionInterno {
 			return resultadoSalida;
 
 			static bool EjecutarDialogo(TextWriter salida, TextWriter error,
-				OpcionesDialogo flags, bool sinFlags, bool salir, Salida resultadoSalida,
+				OpcionesDialogo flags, bool sinFlags, bool salir, Output resultadoSalida,
 				bool saltarPreguntaExtra, bool saltarPreguntaDividendo) {
 				do {
 					//Si no tiene flags las pedirá durante la ejecución
@@ -121,7 +121,7 @@ namespace ModosEjecucionInterno {
 						salir = !ObtenerDeUsuario(MensajeDialogoRepetir, esSoY);
 					}
 
-					resultadoSalida.Estado = EstadoEjecucion.CORRECTA;
+					resultadoSalida.Estado = ExitState.NO_ERROR;
 
 				} while (!salir);
 				return salir;
@@ -250,7 +250,7 @@ namespace ModosEjecucionInterno {
 			if (linea == SALIDA_DIALOGO) throw new SalidaException(MensajeSalidaVoluntaria);
 		}
 
-		public (EstadoEjecucion, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones) {
+		public (ExitState, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones) {
 			throw new NotImplementedException();
 		}
 

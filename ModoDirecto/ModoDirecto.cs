@@ -10,30 +10,30 @@ using System.Collections.Generic;
 namespace ModosEjecucion {
 	public class ModoDirecto : IModoEjecucion {
 
-		private readonly Salida _estadoSalida = new();
+		private readonly Output _estadoSalida = new();
 
 		/// <summary>
 		/// Lógica de la aplicación en modo directo.
 		/// </summary>
 		/// <returns>
-		/// <see cref="Salida"/> que indica si ha conseguido calcular la regla.
+		/// <see cref="Output"/> que indica si ha conseguido calcular la regla.
 		/// </returns>
-		public Salida Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) {
+		public Output Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) {
 			OpcionesDirecto flags = (OpcionesDirecto)opciones;
-			Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora = SeleccionarFuncionYAjustarFlags(flags);
+			Func<long, long, int, IOpcionesGlobales, (ExitState, IRegla)> generadora = SeleccionarFuncionYAjustarFlags(flags);
 			return GestionarErrorYUsarDatos(flags, flags.Base, flags.Divisor, flags.Longitud ?? 1, generadora, salida, error);
 		}
 
-		private Salida GestionarErrorYUsarDatos(OpcionesDirecto flags, long @base, long divisor, int longitud
-			, Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora
+		private Output GestionarErrorYUsarDatos(OpcionesDirecto flags, long @base, long divisor, int longitud
+			, Func<long, long, int, IOpcionesGlobales, (ExitState, IRegla)> generadora
 			, TextWriter salida, TextWriter error) {
 			if (flags.ReglasCoeficientes && (divisor < 2 || @base < 2 || !SonCoprimos(divisor, @base))) {
 				_estadoSalida.Mensajes.Add((error, ErrorDivisorCoprimo, true));
 				_estadoSalida.Mensajes.Add((error, ErrorBase, true));
-				_estadoSalida.Estado = EstadoEjecucion.ERROR;
+				_estadoSalida.Estado = ExitState.ERROR;
 			} else {
 				(_estadoSalida.Estado, object? elementoCreado) = generadora(divisor, @base, longitud, flags);
-				string textoResultado = Salida.ObjetoAString(elementoCreado, flags.JSON);
+				string textoResultado = Output.ObjetoAString(elementoCreado, flags.JSON);
 				if (elementoCreado is null) {
 					throw new NullReferenceException(ErrorReglaNula);
 				}
@@ -53,13 +53,13 @@ namespace ModosEjecucion {
 			return _estadoSalida;
 		}
 
-		internal static void AplicarReglaPorObjeto(object? regla, IOpcionesGlobales flags, Salida salida, TextWriter text) {
+		internal static void AplicarReglaPorObjeto(object? regla, IOpcionesGlobales flags, Output salida, TextWriter text) {
 			if (regla is null) return;
 			AplicarReglaDivisibilidad((IRegla)regla, flags.DividendoList, salida, text);
 		}
 
-		internal static Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion,IRegla)> SeleccionarFuncionYAjustarFlags(IOpcionesGlobales flags) {
-			Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> resultado;
+		internal static Func<long, long, int, IOpcionesGlobales, (ExitState,IRegla)> SeleccionarFuncionYAjustarFlags(IOpcionesGlobales flags) {
+			Func<long, long, int, IOpcionesGlobales, (ExitState, IRegla)> resultado;
 			if (flags.ReglasCoeficientes) {
 				resultado = CrearReglaCoeficientes;
 			} else { // Para separar la funcion de las llamadas en VariasReglas
@@ -68,40 +68,40 @@ namespace ModosEjecucion {
 			return resultado;
 		}
 
-		internal static (EstadoEjecucion, IRegla) CrearReglaCoeficientes(long divisor, long @base, int coefientes, IOpcionesGlobales flags) {
-			EstadoEjecucion salida;
+		internal static (ExitState, IRegla) CrearReglaCoeficientes(long divisor, long @base, int coefientes, IOpcionesGlobales flags) {
+			ExitState salida;
 			IRegla elementoCreado;
 			if (SonCoprimos(divisor, @base)) {
 				ReglaCoeficientes reglaAuxiliar = ReglaDivisibilidadOptima(divisor, coefientes, @base);
 				elementoCreado = reglaAuxiliar;
-				salida = EstadoEjecucion.CORRECTA;
+				salida = ExitState.NO_ERROR;
 			} else {
-				salida = EstadoEjecucion.ERROR;
+				salida = ExitState.ERROR;
 				elementoCreado = new ReglaCoeficientes(divisor, @base, coefientes);
 			}
 			return (salida, elementoCreado);
 		}
 
-		internal static (EstadoEjecucion, IRegla) CrearReglaExtra(long divisor, long @base, int coefientes, IOpcionesGlobales flags) {
+		internal static (ExitState, IRegla) CrearReglaExtra(long divisor, long @base, int coefientes, IOpcionesGlobales flags) {
 			var resultado = ReglaDivisibilidadExtendida(divisor, @base);
-			EstadoEjecucion salida;
+			ExitState salida;
 			if (resultado.Item1) {
-				salida = EstadoEjecucion.CORRECTA;
+				salida = ExitState.NO_ERROR;
 			} else {
-				salida = EstadoEjecucion.FRACASO_EXPANDIDA;
+				salida = ExitState.VARIED_RULE_ERROR;
 			}
 			return (salida, resultado.Item2);
 		}
 
-		private static void AplicarReglaDivisibilidad(IRegla regla, IEnumerable<BigInteger> dividendos, Salida salida, TextWriter text) {
+		private static void AplicarReglaDivisibilidad(IRegla regla, IEnumerable<BigInteger> dividendos, Output salida, TextWriter text) {
 			foreach (BigInteger dividendo in dividendos) {
 				salida.Mensajes.Add((text, regla.AplicarRegla(dividendo), true));
 			}
 		}
 
-		public (EstadoEjecucion, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones) {
+		public (ExitState, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones) {
 			OpcionesDirecto flags = (OpcionesDirecto)opciones;
-			Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora = SeleccionarFuncionYAjustarFlags(flags);
+			Func<long, long, int, IOpcionesGlobales, (ExitState, IRegla)> generadora = SeleccionarFuncionYAjustarFlags(flags);
 			var resultado = generadora(flags.Divisor, flags.Base, flags.Longitud ?? 1, flags);
 			return (resultado.Item1, [resultado.Item2]);
 		}

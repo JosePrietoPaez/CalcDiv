@@ -232,7 +232,7 @@ namespace ModosEjecucion {
 			} else {
 				regla = ReglaDivisibilidadExtendida(divisor, @base).Item2;
 			}
-			resultado = Salida.ObjetoAString(regla,json);
+			resultado = Output.ObjetoAString(regla,json);
 			return (resultado, regla);
 		}
 

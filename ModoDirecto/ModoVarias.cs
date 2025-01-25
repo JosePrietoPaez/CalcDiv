@@ -10,30 +10,30 @@ namespace ModosEjecucion {
 
 		private static readonly StringWriter _writerDesecho = new();
 
-		public Salida Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) {
+		public Output Ejecutar(TextWriter salida, TextWriter error, IOpciones opciones) {
 			OpcionesVarias varias = (OpcionesVarias) opciones;
-			Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora = ModoDirecto.SeleccionarFuncionYAjustarFlags(varias);
+			Func<long, long, int, IOpcionesGlobales, (ExitState, IRegla)> generadora = ModoDirecto.SeleccionarFuncionYAjustarFlags(varias);
 			Func<IRegla, long, long, int, List<(TextWriter, string, bool)>> consumidora = SeleccionarConsumidora(varias, salida, error);
 			Func<List<object>, List<(TextWriter, string, bool)>> final = SeleccionarFinal(varias, salida, error);
 			return EjectutarVarias(generadora, consumidora, final, varias.Divisores, varias.Bases, varias.Longitud ?? 1, varias, salida, error);
 		}
 
-		private static Salida EjectutarVarias(Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora,
+		private static Output EjectutarVarias(Func<long, long, int, IOpcionesGlobales, (ExitState, IRegla)> generadora,
 			Func<IRegla, long, long, int, List<(TextWriter, string, bool)>> consumidora,
 			Func<List<object>, List<(TextWriter, string, bool)>> final,
 			long[] divisores, long[] bases, int longitud,
 			OpcionesVarias flags,
 			TextWriter textSalida, TextWriter textError) {
 
-			Salida salida = new(EstadoEjecucion.CORRECTA);
+			Output salida = new(ExitState.NO_ERROR);
 			bool hayFallo = false, hayExito = false;
 			List<IRegla> reglas = new(divisores.Length * bases.Length); // Contendrá las listas o listas de listas
 			foreach (long divisor in divisores) {
 				foreach (long @base in bases) {
 					(salida.Estado, IRegla nuevoElemento) = generadora(divisor, @base, longitud, flags); // La divisibilidad se maneja en el método
-					if (!hayExito && salida.Estado == EstadoEjecucion.CORRECTA) {
+					if (!hayExito && salida.Estado == ExitState.NO_ERROR) {
 						hayExito = true;
-					} else if (!hayFallo && salida.Estado != EstadoEjecucion.CORRECTA) {
+					} else if (!hayFallo && salida.Estado != ExitState.NO_ERROR) {
 						hayFallo = true;
 					}
 					if (!hayExito) continue;
@@ -46,14 +46,14 @@ namespace ModosEjecucion {
 			return salida;
 		}
 
-		private static void ComprobarErrorVarias(TextWriter textError, Salida salida, bool hayFallo, bool hayExito) {
+		private static void ComprobarErrorVarias(TextWriter textError, Output salida, bool hayFallo, bool hayExito) {
 			if (!hayExito) { // Si no hay reglas, no se escriben
 				salida.Mensajes.Add((textError, VariasMensajeErrorTotal, true));
-				salida.Estado = EstadoEjecucion.VARIAS_ERROR_TOTAL;
+				salida.Estado = ExitState.TOTAL_ERROR_MULTIPLE;
 			} else {
 				if (hayFallo) {
 					salida.Mensajes.Add((textError, VariasMensajeError, true));
-					salida.Estado = EstadoEjecucion.VARIAS_ERROR;
+					salida.Estado = ExitState.PARTIAL_ERROR_MULTIPLE;
 				}
 			}
 		}
@@ -63,7 +63,7 @@ namespace ModosEjecucion {
 			if (flags.JSON) {
 				funcion = (_,_,_,_) => [(_writerDesecho, string.Empty, true)];
 			} else {
-				funcion = (o, divisor, @base, longitud) => ReglaConMensaje(Salida.ObjetoAString(o), divisor, @base, salida, error);
+				funcion = (o, divisor, @base, longitud) => ReglaConMensaje(Output.ObjetoAString(o), divisor, @base, salida, error);
 				if ((flags as IOpcionesGlobales).DividendoList.Count != 0) {
 					Func<IRegla, long, long, int, List<(TextWriter, string, bool)>> funcionAuxiliar = funcion;
 					funcion = (o, divisor, @base, longitud) => {
@@ -89,7 +89,7 @@ namespace ModosEjecucion {
 		private static Func<List<object>, List<(TextWriter, string, bool)>> SeleccionarFinal(OpcionesVarias flags, TextWriter salida, TextWriter error) {
 			Func<List<object>, List<(TextWriter, string, bool)>> funcion;
 			if (flags.JSON) {
-				funcion = (lista) => [(salida, Salida.ObjetoAString(lista, true), true)];
+				funcion = (lista) => [(salida, Output.ObjetoAString(lista, true), true)];
 				if ((flags as IOpcionesGlobales).DividendoList.Count != 0) {
 					Func<List<object>, List<(TextWriter, string, bool)>> funcionAuxiliar = funcion;
 					funcion = (lista) => {
@@ -106,21 +106,20 @@ namespace ModosEjecucion {
 			return funcion;
 		}
 
-		public (EstadoEjecucion, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones) {
+		public (ExitState, IEnumerable<IRegla>) CalcularRegla(IOpciones opciones) {
 			OpcionesVarias varias = (OpcionesVarias)opciones;
-			Func<long, long, int, IOpcionesGlobales, (EstadoEjecucion, IRegla)> generadora = ModoDirecto.SeleccionarFuncionYAjustarFlags(varias);
+			Func<long, long, int, IOpcionesGlobales, (ExitState, IRegla)> generadora = ModoDirecto.SeleccionarFuncionYAjustarFlags(varias);
 			bool hayFallo = false, hayExito = false;
-			Salida salida = new();
+			Output salida = new();
 			List<IRegla> reglas = [];
 			foreach (long divisor in varias.Divisores) {
 				foreach (long @base in varias.Bases) {
-					(EstadoEjecucion estado, IRegla regla) = generadora(divisor, @base, varias.Longitud ?? 1, varias);
-					reglas.Add(regla);
-					if (!hayExito && estado == EstadoEjecucion.CORRECTA) {
-						hayExito = true;
-					} else if (!hayFallo && estado != EstadoEjecucion.CORRECTA) {
-						hayFallo = true;
+					(ExitState estado, IRegla regla) = generadora(divisor, @base, varias.Longitud ?? 1, varias);
+					if (estado == ExitState.NO_ERROR) {
+						reglas.Add(regla);
 					}
+					hayExito |= estado == ExitState.NO_ERROR;
+					hayFallo |= estado != ExitState.NO_ERROR;
 				}
 			}
 			ComprobarErrorVarias(_writerDesecho, salida, hayFallo, hayExito);

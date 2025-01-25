@@ -9,18 +9,18 @@ using System;
 using System.IO;
 
 namespace ModosEjecucion {
-	public enum EstadoEjecucion {
-		CORRECTA = 0,
+	public enum ExitState {
+		NO_ERROR = 0,
 		ERROR = 1,
-		ENTRADA_MALFORMADA = 2,
-		VOLUNTARIA = 3,
-		FRACASO_EXPANDIDA = 4,
-		VARIAS_ERROR = 5,
-		VARIAS_ERROR_TOTAL = 6
+		BAD_INPUT = 2,
+		VOLUNTARY_EXIT = 3,
+		VARIED_RULE_ERROR = 4,
+		PARTIAL_ERROR_MULTIPLE = 5,
+		TOTAL_ERROR_MULTIPLE = 6
 	}
 
-	public class Salida(EstadoEjecucion estado = EstadoEjecucion.CORRECTA) {
-		public EstadoEjecucion Estado { get; set; } = estado;
+	public class Output(ExitState estado = ExitState.NO_ERROR) {
+		public ExitState Estado { get; set; } = estado;
 
 		public List<(TextWriter, string, bool)> Mensajes { get; set; } = [];
 
