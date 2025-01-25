@@ -18,7 +18,7 @@
     <Authors>JosePrietoPaez</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>IconoCalcDiv.png</PackageIcon>
-    <ApplicationIcon>Recursos\IconoCalcDiv0.3.ico</ApplicationIcon>
+    <ApplicationIcon>Recursos\CalcDivCLI1-0.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Recursos\IconoCalcDiv0.3.ico" />
+    <Content Include="Recursos\CalcDivCLI1-0.ico" />
   </ItemGroup>
 
   <ItemGroup>
