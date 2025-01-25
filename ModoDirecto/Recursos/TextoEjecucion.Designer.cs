@@ -79,11 +79,11 @@ namespace ModosEjecucion.Recursos {
         /// <summary>
         ///   Busca una cadena traducida similar a - Usage: CalcDivCLI.exe [-&amp;lt;short option name&amp;gt;|--&amp;lt;long option name&amp;gt; [&amp;lt;mandatory arguments ...&amp;gt; [&amp;lt;optional arguments&amp;gt;...]]
         ///
-        ///Example: *CalcDiv.exe --json --direct-output 7 10 --named-rule Nombre*
-        ///Equivalent to: *CalcDiv.exe -jd 7 10 -n Nombre*
-        ///Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and outputs it in JSON.
+        ///Example: *CalcDiv.exe single 7 10 --dividend 75 --json*
+        ///Equivalent to: *CalcDiv.exe single -jd 75*
+        ///Calculates the divisibility rule of 7 in base 10, outputs it in JSON and applies it to 75.
         ///
-        ///Use --help for more information about options and arguments or -H for more information about this application..
+        ///Use --help for more information about options and arguments..
         /// </summary>
         public static string AyudaCorta {
             get {

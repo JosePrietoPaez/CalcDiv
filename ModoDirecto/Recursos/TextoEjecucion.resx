@@ -151,12 +151,10 @@ Check the error stream for more information.</value>
 		* Arguments: This verbs uses two positional arguments.
 			* Divisor: Mandatory. Rules will test divisibility by this number.
 			* Base: Optional, defaults to ten. Rules will be applied in this base.
-			* Length: Optional, defaults to one, used for coefficient rules. Coefficient rules will have this many coefficients.
-	* multiple: 
+	* multiple:
 		* Arguments: This verbs uses two positional arguments.
 			* Divisors: Mandatory. Rules will test divisibility by these numbers. The different divisors must be separated by commas.
 			* Base: Optional, defaults to a single ten. Rules will be applied in these bases. The different bases must be separated by commas.
-			* Length: Optional, defaults to one, used for coefficient rules. Coefficient rules will have this many coefficients.
 	* dialog:
 		* --divisor: Skips inputting the divisor and forces this value.
 		* --base: Skips inputting the base and forces this value.
@@ -178,11 +176,11 @@ Check the error stream for more information.</value>
   <data name="AyudaCorta" xml:space="preserve">
 	<value>- Usage: CalcDivCLI.exe [-&amp;lt;short option name&amp;gt;|--&amp;lt;long option name&amp;gt; [&amp;lt;mandatory arguments ...&amp;gt; [&amp;lt;optional arguments&amp;gt;...]]
 
-Example: *CalcDiv.exe --json --direct-output 7 10 --named-rule Nombre*
-Equivalent to: *CalcDiv.exe -jd 7 10 -n Nombre*
-Calculates the divisibility rule of 7 in base 10, gives it the name Nombre and outputs it in JSON.
+Example: *CalcDiv.exe single 7 10 --dividend 75 --json*
+Equivalent to: *CalcDiv.exe single -jd 75*
+Calculates the divisibility rule of 7 in base 10, outputs it in JSON and applies it to 75.
 
-Use --help for more information about options and arguments or -H for more information about this application.</value>
+Use --help for more information about options and arguments.</value>
   </data>
   <data name="ErrorBaseCoprima" xml:space="preserve">
 	<value>The base must be an integer greater than one and coprime with the divisor.</value>
