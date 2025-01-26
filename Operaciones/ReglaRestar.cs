@@ -55,6 +55,9 @@ namespace Operaciones {
 		[JsonPropertyName("type")]
 		public override CasosDivisibilidad Tipo => CasosDivisibilidad.SUBTRACT_BLOCKS;
 
+		[JsonPropertyName("error")]
+		public override string Error => TextoCalculos.MensajeErrorNinguno;
+
 		public override string ToString() {
 			return ReglaExplicada;
 		}

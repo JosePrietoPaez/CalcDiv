@@ -190,9 +190,6 @@ Se harán dos iteraciones más antes de parar.</value>
   <data name="MensajeAplicarParteDerechaPequeña" xml:space="preserve">
     <value>El dividendo, {0}, es demasiado pequeño, use los primeros coeficientes desde la izquierda.</value>
   </data>
-  <data name="ReglaExpliacadaCoeficientes" xml:space="preserve">
-    <value>Aplique la regla como se especifica en el README con los coeficientes obtenidos</value>
-  </data>
   <data name="ReglaExplicadaCero" xml:space="preserve">
     <value>No se puede crear ninguna regla, la divisibilidad no es aplicable con divisor cero.</value>
   </data>
@@ -274,5 +271,17 @@ Grupos: {1}</value>
   </data>
   <data name="MensajeCifrasDemasiadas" xml:space="preserve">
     <value>Demasiadas combinaciones posibles, {0}, no se devuelve ninguna para evitar limitaciones de memoria.</value>
+  </data>
+  <data name="ReglaExpliacadaCoeficientes" xml:space="preserve">
+    <value>El dividendo será divisible entre {0} si, y solo si, la suma de los productos de cada coeficiente con la cifra del dividendo en base {1} que le corresponda, empezando desde la derecha quitando las cifras usadas, sumado al resto del dividendo es divisible entre {0}.</value>
+  </data>
+  <data name="MensajeErrorNinguno" xml:space="preserve">
+    <value>Ningún error.</value>
+  </data>
+  <data name="MensajeErrorDemasiadasPosibilidades" xml:space="preserve">
+    <value>Demasiadas últimas cifras posibles, ninguna se ha devuelto.</value>
+  </data>
+  <data name="MensajeErrorCoeficientes" xml:space="preserve">
+    <value>La base y el divisor, no se debería devolver la regla.</value>
   </data>
 </root>

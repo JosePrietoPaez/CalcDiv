@@ -39,6 +39,12 @@ namespace Operaciones {
 		public CasosDivisibilidad Tipo { get; }
 
 		/// <summary>
+		/// Esta propiedad tiene el mensaje de error que se generó al crear la regla.
+		/// </summary>
+		[JsonPropertyName("error")]
+		public string Error { get; }
+
+		/// <summary>
 		/// Aplica la regla a un dividendo y determina si es divisible entre él.
 		/// </summary>
 		/// <param name="dividendo">El número al que se le aplicará la regla</param>

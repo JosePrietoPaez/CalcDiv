@@ -23,6 +23,9 @@ namespace Operaciones {
 		[JsonPropertyName("type")]
 		public abstract CasosDivisibilidad Tipo { get; }
 
+		[JsonPropertyName("error")]
+		public abstract string Error { get; }
+
 		public virtual string AplicarRegla(BigInteger dividendo) {
 			StringBuilder sb = new();
 			BigInteger dividendoMenor = BigInteger.Abs(dividendo),
@@ -77,7 +80,7 @@ namespace Operaciones {
 				}
 				sb.AppendFormat(TextoCalculos.MensajeAplicarNumero, Base, LongAStringCondicional(dividendo), dividendo).AppendLine();
 				sb.AppendLine();
-			} 
+			}
 		}
 
 		protected void InsertarMensajeFin(StringBuilder sb, BigInteger dividendo, BigInteger equivalente) {

@@ -14,7 +14,7 @@ namespace Operaciones {
 
 		private readonly long _divisor, _base;
 		private readonly int _cifras;
-		public const int POSIBLES_MENORES = 65536;
+		public const int POSIBLES_MENORES = 256;
 
 		internal ReglaCifras(long divisor, long @base, int cifras) {
 			ArgumentOutOfRangeException.ThrowIfLessThan(divisor, 1);
@@ -26,8 +26,10 @@ namespace Operaciones {
 			long iteraciones = Calculos.PotenciaEntera(Base, Cifras) / Divisor;
 			if (iteraciones <= POSIBLES_MENORES) {
 				_stringCifras = CalcularMenoresCifras();
+				_stringError = TextoCalculos.MensajeErrorNinguno;
 			} else {
 				_stringCifras = TextoCalculos.MensajeCifrasDemasiadas;
+				_stringError = TextoCalculos.MensajeErrorDemasiadasPosibilidades;
 			}
 		}
 
@@ -57,7 +59,7 @@ namespace Operaciones {
 
 		private readonly List<BigInteger> _menoresPermitidos = [0];
 
-		private readonly string _stringCifras;
+		private readonly string _stringCifras, _stringError;
 
 		private string CalcularMenoresCifras() {
 			long iteraciones = Calculos.PotenciaEntera(Base, Cifras) / Divisor;
@@ -73,6 +75,9 @@ namespace Operaciones {
 
 		[JsonPropertyName("type")]
 		public override CasosDivisibilidad Tipo => CasosDivisibilidad.DIGITS;
+
+		[JsonPropertyName("error")]
+		public override string Error => _stringError;
 
 		public override string AplicarRegla(BigInteger dividendo) {
 			StringBuilder sb = new();

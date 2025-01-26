@@ -28,6 +28,9 @@ namespace Operaciones {
 		[JsonPropertyName("type")]
 		public CasosDivisibilidad Tipo => CasosDivisibilidad.DIVISOR_ZERO;
 
+		[JsonPropertyName("error")]
+		public string Error => TextoCalculos.MensajeErrorNinguno;
+
 		public string AplicarRegla(BigInteger dividendo) => TextoCalculos.ReglaExplicadaCero;
 		public override string ToString() {
 			return ReglaExplicada;

@@ -78,10 +78,13 @@ namespace Operaciones {
 		}
 
 		[JsonPropertyName("rule-explained")]
-		public override string ReglaExplicada { get => TextoCalculos.ReglaExpliacadaCoeficientes; }
+		public override string ReglaExplicada { get => string.Format(TextoCalculos.ReglaExpliacadaCoeficientes, Base, Divisor); }
 
 		[JsonPropertyName("type")]
 		public override CasosDivisibilidad Tipo => CasosDivisibilidad.COEFFICIENTS;
+
+		[JsonPropertyName("error")]
+		public override string Error { get => Calculos.SonCoprimos(Divisor, Base) ? TextoCalculos.MensajeErrorNinguno : TextoCalculos.MensajeErrorCoeficientes; }
 
 		protected override BigInteger ObtenerNuevoDividendo(BigInteger dividendo, StringBuilder sb) { // Escribe en el sb y devuelve un nuevo dividendo
 			sb.AppendFormat(TextoCalculos.MensajeAplicarInicio, Divisor, Base, LongAStringCondicional(dividendo), Longitud).AppendLine();

@@ -203,7 +203,7 @@ Two more iterations will be attempted.</value>
     <value>The dividend, {0}, is to small for this rule, use the first coefficients, starting from the left.</value>
   </data>
   <data name="ReglaExpliacadaCoeficientes" xml:space="preserve">
-    <value>Apply the rule as specified in the README using the coefficients obtained</value>
+    <value>The dividend will be divisible by {0} if, and only if, the sum of the products of each coefficient with the digit from the dividend in base {1} in the same position, starting from the right removing each digit used, added to the rest of the rest of the dividend is divisible by {0}.</value>
   </data>
   <data name="ReglaExplicadaCero" xml:space="preserve">
     <value>No rule can be created, divisibility is not applicable with divisor zero.</value>
@@ -286,5 +286,14 @@ Groups: {1}</value>
   </data>
   <data name="MensajeCifrasDemasiadas" xml:space="preserve">
     <value>Too many possible combinations, {0}, returning none to avoid memory limitations.</value>
+  </data>
+  <data name="MensajeErrorNinguno" xml:space="preserve">
+    <value>No error.</value>
+  </data>
+  <data name="MensajeErrorDemasiadasPosibilidades" xml:space="preserve">
+    <value>Too many possible last digits, none returned.</value>
+  </data>
+  <data name="MensajeErrorCoeficientes" xml:space="preserve">
+    <value>The base and divisor are not coprime, rule should not be returned.</value>
   </data>
 </root>

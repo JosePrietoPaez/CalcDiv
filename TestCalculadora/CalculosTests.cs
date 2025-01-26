@@ -580,7 +580,7 @@ namespace TestCalculadora
 				var resultado = Calculos.LongToStringNoAlphabet(numero, @base);
 
 				// Assert
-				Assert.That(resultado, Is.EqualTo("[15,14,13,12,11,10,9,0](" + @base + ")"));
+				Assert.That(resultado, Is.EqualTo("[15,14,13,12,11,10,9,0](" + @base + ") = " + numero));
 			}
 
 		}

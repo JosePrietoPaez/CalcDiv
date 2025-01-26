@@ -56,6 +56,9 @@ namespace Operaciones {
 		[JsonPropertyName("type")]
 		public override CasosDivisibilidad Tipo => CasosDivisibilidad.ADD_BLOCKS;
 
+		[JsonPropertyName("error")]
+		public override string Error => TextoCalculos.MensajeErrorNinguno;
+
 		protected override BigInteger ObtenerNuevoDividendo(BigInteger dividendo, StringBuilder sb) {
 			byte bloquesDividendo = (byte)(Calculos.Cifras(dividendo, Base) / Longitud + (Calculos.Cifras(dividendo, Base) % Longitud == 0 ? 0 : 1));
 			BigInteger[] bloques = new BigInteger[bloquesDividendo];

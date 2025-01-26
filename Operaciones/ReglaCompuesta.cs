@@ -55,6 +55,9 @@ namespace Operaciones {
 		[JsonPropertyName("type")]
 		public override CasosDivisibilidad Tipo => CasosDivisibilidad.COMPOSITE_RULE;
 
+		[JsonPropertyName("error")]
+		public override string Error => TextoCalculos.MensajeErrorNinguno;
+
 		protected override BigInteger ObtenerNuevoDividendo(BigInteger dividendo, StringBuilder sb) {
 			throw new NotImplementedException();
 		}

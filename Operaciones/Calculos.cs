@@ -383,6 +383,7 @@ namespace Operaciones
 		/// <param name="baseChars">Caracteres de la base</param>
 		/// <returns><see langword="string"/> que representa el número en la base dada.</returns>
 		public static string LongToStringFast(BigInteger value, char[] baseChars) {
+			BigInteger copia = value;
 			// Es 64 para el caso máximo en base 2 y uno más para negativo
 			uint targetBase = (uint)baseChars.Length;
 			int cifras = (int)Cifras(value, targetBase) + 1, i = cifras;
@@ -408,7 +409,7 @@ namespace Operaciones
 			}
 			return new string(result, 0, cifras - i)
 			 //Se supone que no debería hacer esto para que vaya rápido, pero necesito poner la base
-			 + '(' + targetBase + ')';
+			 + '(' + targetBase + ") = " + copia.ToString();
 
 		}
 
@@ -443,7 +444,7 @@ namespace Operaciones
 			for (byte i = 0; i < cifras.Length; i++) {
 				cifras[i] = Cifra(value, cifras.Length - i - 1, @base);
 			}
-			return (value < 0 ? "-" : "") + '[' + string.Join(',', cifras) + "](" + @base + ")";
+			return (value < 0 ? "-" : "") + '[' + string.Join(',', cifras) + "](" + @base + ") = " + value;
 		}
 
 		/// <summary>
@@ -463,7 +464,7 @@ namespace Operaciones
 			for (byte i = 0; i < cifras.Length; i++) {
 				cifras[i] = Cifra(value, cifras.Length - i - 1, @base);
 			}
-			return (value < 0 ? "-" : "") + '[' + string.Join(',', cifras) + "](" + @base + ")";
+			return (value < 0 ? "-" : "") + '[' + string.Join(',', cifras) + "](" + @base + ") = " + value;
 		}
 
 		public const string BASE_64_STRING = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_";

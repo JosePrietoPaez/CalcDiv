@@ -457,6 +457,33 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The base and divisor are not coprime, rule should not be returned..
+        /// </summary>
+        public static string MensajeErrorCoeficientes {
+            get {
+                return ResourceManager.GetString("MensajeErrorCoeficientes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Too many possible last digits, none returned..
+        /// </summary>
+        public static string MensajeErrorDemasiadasPosibilidades {
+            get {
+                return ResourceManager.GetString("MensajeErrorDemasiadasPosibilidades", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No error..
+        /// </summary>
+        public static string MensajeErrorNinguno {
+            get {
+                return ResourceManager.GetString("MensajeErrorNinguno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The result must be one of these numbers, written in base {1}:
         ///{0}.
         /// </summary>
@@ -503,7 +530,7 @@ namespace Operaciones.Recursos {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Apply the rule as specified in the README using the coefficients obtained.
+        ///   Busca una cadena traducida similar a The dividend will be divisible by {0} if, and only if, the sum of the products of each coefficient with the digit from the dividend in base {1} in the same position, starting from the right removing each digit used, added to the rest of the rest of the dividend is divisible by {0}..
         /// </summary>
         public static string ReglaExpliacadaCoeficientes {
             get {
