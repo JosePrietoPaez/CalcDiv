@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Divisibility", "NoCLICalcDi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTests", "PerformanceTests\PerformanceTests.csproj", "{AC562FA8-6FC1-4E5B-8094-3BE05984BD0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalcDivGUI", "CalcDivGUI\CalcDivGUI.csproj", "{FC1F01BA-1B90-56E3-EFEE-F2C68C6CD86B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalcDivGUI.Desktop", "CalcDivGUI.Desktop\CalcDivGUI.Desktop.csproj", "{CE280BDA-0042-232B-29A7-2BDB57CC3E70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +54,14 @@ Global
 		{AC562FA8-6FC1-4E5B-8094-3BE05984BD0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC562FA8-6FC1-4E5B-8094-3BE05984BD0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC562FA8-6FC1-4E5B-8094-3BE05984BD0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC1F01BA-1B90-56E3-EFEE-F2C68C6CD86B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC1F01BA-1B90-56E3-EFEE-F2C68C6CD86B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC1F01BA-1B90-56E3-EFEE-F2C68C6CD86B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC1F01BA-1B90-56E3-EFEE-F2C68C6CD86B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE280BDA-0042-232B-29A7-2BDB57CC3E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE280BDA-0042-232B-29A7-2BDB57CC3E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE280BDA-0042-232B-29A7-2BDB57CC3E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE280BDA-0042-232B-29A7-2BDB57CC3E70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
